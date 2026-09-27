@@ -13,7 +13,7 @@ The fix: save one test share in **Development** once, then deploy the schema to 
 No iPhone, no extra apps. A small script talks to Apple's CloudKit Web Services (`api.apple-cloudkit.com`) as you.
 
 ### 1. API token (CloudKit Console)
-https://icloud.developer.apple.com → **CloudKit Database** → container `iCloud.com.carolandmartin.familoq` → left menu **Tokens & Keys** (older console: *API Access*) → **API Tokens** → **+**
+https://icloud.developer.apple.com → **CloudKit Database** → container `iCloud.com.carolandmartin.familoq` → switch the environment at the top to **Development** (tokens belong to one environment - a Production token gives `AUTHENTICATION_FAILED: no auth method found`) → left menu **Tokens & Keys** (older console: *API Access*) → **API Tokens** → **+**
 - Name: `schema`
 - Sign-In Callback: **URL Redirect** → `http://localhost`
 - Allowed Origins: **Any domain**

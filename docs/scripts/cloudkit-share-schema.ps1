@@ -16,7 +16,12 @@ $zoneName = 'schema-bootstrap'
 
 Write-Host ''
 Write-Host 'Familoq - prepare iCloud for family invitations (Development environment)' -ForegroundColor Cyan
-$apiToken = (Read-Host 'Paste the CloudKit API token (step 1 in docs/11)').Trim()
+$apiToken = ((Read-Host 'Paste the CloudKit API token (step 1 in docs/11)') -replace '[^0-9a-fA-F]', '')
+Write-Host "Token: $($apiToken.Length) characters"
+if ($apiToken.Length -ne 64) {
+    Write-Host 'An API token is 64 characters (0-9, a-f). Copy it again from the CloudKit Console.' -ForegroundColor Red
+    exit 1
+}
 $script:webToken = $null
 
 function Invoke-CK([string]$Method, [string]$Path, $Body) {
@@ -66,7 +71,11 @@ function Assert-OK($Result, [string]$What) {
 $first = Invoke-CK 'GET' 'users/current' $null
 if (-not $first.redirectURL) {
     Write-Host "Unexpected answer: $($first | ConvertTo-Json -Compress)" -ForegroundColor Red
-    Write-Host 'Check the API token (container iCloud.com.carolandmartin.familoq, docs/11 step 1).'
+    if ($first.serverErrorCode -eq 'AUTHENTICATION_FAILED') {
+        Write-Host 'Apple does not know this token in the DEVELOPMENT environment.' -ForegroundColor Yellow
+        Write-Host 'API tokens belong to one environment: in the CloudKit Console switch the environment'
+        Write-Host '(top of the page) to DEVELOPMENT first, then Tokens & Keys -> API Tokens -> + (docs/11 step 1).'
+    }
     exit 1
 }
 Write-Host ''
