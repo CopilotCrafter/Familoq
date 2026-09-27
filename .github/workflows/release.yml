@@ -202,6 +202,8 @@ jobs:
           BUNDLE_ID=$(grep -E '^FQ_BUNDLE_ID' Config/App.xcconfig | cut -d= -f2 | xargs)
           [ "$PP_APPID" = "$APPLE_TEAM_ID.$BUNDLE_ID" ] \
             || fail "Profile is for '$PP_APPID' but the app is '$APPLE_TEAM_ID.$BUNDLE_ID' - check the App ID / FQ_BUNDLE_ID"
+          /usr/libexec/PlistBuddy -c "Print Entitlements:com.apple.developer.icloud-container-identifiers" "$RUNNER_TEMP/profile.plist" >/dev/null 2>&1 \
+            || fail "The provisioning profile has no iCloud capability. Enable iCloud (CloudKit, container iCloud.$BUNDLE_ID) on the App ID, regenerate the profile and update IOS_PROVISIONING_PROFILE_BASE64 (docs/09-invitations-cloudkit.md)."
           echo "Profile: $PP_NAME ($PP_UUID) for $PP_APPID"
           {
             echo "PP_NAME=$PP_NAME"
@@ -253,6 +255,7 @@ jobs:
               <key>${BUNDLE_ID}</key><string>${PP_NAME}</string>
             </dict>
             <key>uploadSymbols</key><true/>
+            <key>iCloudContainerEnvironment</key><string>Production</string>
             <key>manageAppVersionAndBuildNumber</key><false/>
           </dict>
           </plist>

@@ -36,6 +36,7 @@ cat > "$RUNNER_TEMP/UploadOptions.plist" <<EOF
     <key>${BUNDLE_ID}</key><string>${PP_NAME}</string>
   </dict>
   <key>uploadSymbols</key><true/>
+  <key>iCloudContainerEnvironment</key><string>Production</string>
 </dict>
 </plist>
 EOF

@@ -35,6 +35,8 @@ final class Expense {
     var note: String = ""
     var entryMethodRaw: String = "manual"
     @Attribute(.externalStorage) var receiptImageData: Data? = nil
+    /// Set when the expense was created from a scanned receipt.
+    var receiptID: UUID? = nil
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 

@@ -1,4 +1,7 @@
 import XCTest
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 @testable import FamiloqCore
 
 final class CurrencyConversionTests: XCTestCase {
@@ -85,8 +88,8 @@ final class FrankfurterClientTests: XCTestCase {
         var responses: [(Data, Int)]
         var requested: [URL] = []
         init(_ responses: [(Data, Int)]) { self.responses = responses }
-        func get(_ url: URL) async throws -> (Data, Int) {
-            requested.append(url)
+        func send(_ request: URLRequest) async throws -> (Data, Int) {
+            requested.append(request.url!)
             guard !responses.isEmpty else { throw ExchangeRateError.unavailable }
             return responses.removeFirst()
         }

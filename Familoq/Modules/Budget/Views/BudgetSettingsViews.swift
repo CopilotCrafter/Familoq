@@ -141,7 +141,7 @@ struct CategoryManagementView: View {
 
     private func addCategory() {
         let name = newCategoryName.trimmingCharacters(in: .whitespaces)
-        guard !name.isEmpty else { return }
+        guard session.can(.manageCategories), !name.isEmpty else { return }
         let order = (categories.map(\.sortOrder).max() ?? 0) + 1
         context.insert(ExpenseCategory(familyID: family.id, name: name, icon: "tag.fill", colorHex: "#607D8B", sortOrder: order))
         try? context.save()
@@ -220,7 +220,7 @@ struct CategoryEditorView: View {
 
     private func addSub() {
         let name = newSubName.trimmingCharacters(in: .whitespaces)
-        guard !name.isEmpty else { return }
+        guard session.can(.manageCategories), !name.isEmpty else { return }
         let order = (subcategories.map(\.sortOrder).max() ?? 0) + 1
         context.insert(ExpenseSubcategory(familyID: category.familyID, categoryID: category.id, name: name, sortOrder: order))
         try? context.save()

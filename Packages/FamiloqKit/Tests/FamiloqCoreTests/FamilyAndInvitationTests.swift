@@ -80,6 +80,13 @@ final class FamilyAndInvitationTests: XCTestCase {
         }
     }
 
+    /// Fixed test vector so the code format can never change by accident
+    /// (codes already sent to people must keep working).
+    func testCheckCharacterIsStable() {
+        XCTAssertEqual(InvitationCode.checkCharacter(for: Array("MBF7K92X4QP")), "7")
+        XCTAssertTrue(InvitationCode.isWellFormed("MBF7-K92X-4QP7"))
+    }
+
     func testRejectsLookAlikesAndWrongLength() {
         XCTAssertFalse(InvitationCode.isWellFormed("O0I1-AAAA-AAAA"))
         XCTAssertFalse(InvitationCode.isWellFormed("ABCD-EFGH"))

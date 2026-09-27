@@ -2,6 +2,7 @@
 *.xcodeproj/
 *.xcworkspace/
 Familoq/Info.plist
+Familoq/Familoq.entitlements
 
 # Build output
 build/
@@ -31,3 +32,4 @@ desktop.ini
 .vscode/*
 !.vscode/extensions.json
 .idea/
+

@@ -10,7 +10,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 
 | | |
 |---|---|
-| **Status** | Phase 1 of 6 - local budgeting app, CI/CD pipeline |
+| **Status** | Phases 1-3 of 6 - budgeting, receipt scanning, invite-only access |
 | **Platform** | iOS 17+ (iPhone) |
 | **Base currency** | EUR by default, switchable per family; foreign expenses converted with the ECB rate of the receipt/entry date |
 | **Privacy** | No ads, no tracking, no analytics, no third-party SDKs |
@@ -26,6 +26,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 7. [docs/06-security-test-plan.md](docs/06-security-test-plan.md) - the 12 security scenarios and where each is tested.
 8. [docs/07-roadmap.md](docs/07-roadmap.md) - phases, and how new spaces plug in.
 9. [docs/08-automatic-delivery.md](docs/08-automatic-delivery.md) - push to `main` -> TestFlight; tag `vX.Y.Z` -> App Store review.
+10. [docs/09-invitations-cloudkit.md](docs/09-invitations-cloudkit.md) - App Invitations in CloudKit: setup and administration.
 
 ## Costs at a glance
 
@@ -51,7 +52,7 @@ Familoq/                          iOS app (SwiftUI + SwiftData)
 │   ├── Models/                   Family, FamilyMember
 │   ├── Persistence/              ModelContainer, FamilyRepository (family-scoped data access)
 │   ├── Family/                   family settings & members
-│   ├── Authentication/           Phase 3: invitation gate, Sign in with Apple
+│   ├── Authentication/           invitation gate, CloudKit invitation store, Admin screen
 │   ├── Modules/                  FamiloqSpace + FamiloqModule plug-in contract
 │   └── Views/                    shared UI components
 ├── Modules/
@@ -92,6 +93,22 @@ git push                                  # -> GitHub Actions builds & tests aut
 - **Green check** on GitHub = it compiles and all tests pass.
 - **Actions -> Test -> Run workflow** = full tests + iPhone simulator **screenshots** you can download.
 - **Merge to `main`** = new TestFlight build automatically once Build is green; **tag `vX.Y.Z`** = submitted for App Store review (see doc 08).
+
+## Phase 2 - receipts
+- Scan with the VisionKit document camera (multi-page) or import a photo
+- On-device OCR (Vision, German + English); nothing leaves the iPhone
+- Recognises merchant, date & time, total, currency, VAT, items, discounts, quantities, deposit (Pfand)
+- Review screen: correct everything; item-level grocery subcategories or "categorize entire receipt"
+- Receipt image + items stored; expenses grouped per subcategory and linked to the receipt
+- Foreign receipts converted with the ECB rate of the receipt date
+
+## Phase 3 - invite-only access & families
+- First screen: Enter Invitation Code · Request an Invitation · About - no sign-up, no guest mode
+- App Invitations stored in the CloudKit public database; one-time use enforced by iCloud (docs 09)
+- Identity = the iCloud account; reinstall / new iPhone restores access automatically; revoked accounts are signed out
+- In-app Administration for you: create codes, revoke codes or people, read invitation requests
+- Create your family (name, your name, base currency); owner/member permissions enforced
+- Family invitation codes (7 days, single use); joining completes with iCloud sync in Phase 4
 
 ## Phase 1 features
 

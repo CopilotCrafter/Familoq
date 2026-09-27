@@ -2,14 +2,20 @@ import Foundation
 import SwiftData
 import FamiloqCore
 
-/// Creates the local family on first launch and lets every enabled module
-/// seed its defaults (Budget: categories and merchant rules).
+/// Creates families and lets every enabled module seed its defaults
+/// (Budget: categories and merchant rules).
 ///
-/// Phase 1 note: there is exactly one local family ("My Family") and the
-/// device user is its owner. Phase 3 replaces this with invitation-based
-/// onboarding (App Invitation -> account -> create/join family).
+/// Since Phase 3 a family is created explicitly in "Create your family" after
+/// the App Invitation was redeemed. `ensureFamily` remains for tests/demo.
 @MainActor
 enum FamilyBootstrapper {
+    /// The family on this device, if one was created or joined.
+    static func existingFamily(in context: ModelContext) throws -> Family? {
+        var descriptor = FetchDescriptor<Family>(sortBy: [SortDescriptor(\Family.createdAt)])
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first
+    }
+
     static func ensureFamily(in context: ModelContext) throws -> Family {
         var descriptor = FetchDescriptor<Family>(sortBy: [SortDescriptor(\Family.createdAt)])
         descriptor.fetchLimit = 1

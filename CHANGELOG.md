@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 - Phases 2 and 3
+
+### Added
+- Receipt scanning: VisionKit camera, photo import, on-device Vision OCR, receipt parser (merchant, date & time, total, currency, VAT, items, discounts, quantities), review screen, item-level or whole-receipt categorisation, receipt storage linked to expenses.
+- Invite-only access: onboarding (invitation code, request, restore), App Invitations in the CloudKit public database (one-time use, expiry, revocation), iCloud account as identity, daily check.
+- In-app Administration (FamiloqAdmin role): create codes, revoke codes and accounts, invitation requests.
+- Family setup (create family), owner/member permission checks, family invitation codes.
+- CI: compiler errors and failed tests shown as annotations; onboarding screenshot.
+
 ## 0.1.0 - Phase 1 (2026-09-27)
 
 ### Added

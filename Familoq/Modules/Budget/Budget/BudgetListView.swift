@@ -125,6 +125,7 @@ struct BudgetEditorView: View {
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var session: AppSession
     @State private var period: BudgetPeriod
     @State private var categoryID: UUID?
     @State private var subcategoryID: UUID?
@@ -181,6 +182,10 @@ struct BudgetEditorView: View {
     }
 
     private func save() {
+        guard session.can(.manageBudgets) else {
+            error = "Only the family owner can change budgets."
+            return
+        }
         guard let amount = DecimalParser.parse(amountText), amount > 0 else {
             error = "Enter an amount greater than zero."
             return
