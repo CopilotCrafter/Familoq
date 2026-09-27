@@ -26,7 +26,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 7. [docs/06-security-test-plan.md](docs/06-security-test-plan.md) - the 12 security scenarios and where each is tested.
 8. [docs/07-roadmap.md](docs/07-roadmap.md) - phases, and how new spaces plug in.
 9. [docs/08-automatic-delivery.md](docs/08-automatic-delivery.md) - push to `main` -> TestFlight; tag `vX.Y.Z` -> App Store review.
-10. [docs/09-invitation-service.md](docs/09-invitation-service.md) - App Invitations: Cloudflare setup and admin page.
+10. [docs/09-invitations-cloudkit.md](docs/09-invitations-cloudkit.md) - App Invitations in CloudKit: setup and administration.
 
 ## Costs at a glance
 
@@ -52,7 +52,7 @@ Familoq/                          iOS app (SwiftUI + SwiftData)
 │   ├── Models/                   Family, FamilyMember
 │   ├── Persistence/              ModelContainer, FamilyRepository (family-scoped data access)
 │   ├── Family/                   family settings & members
-│   ├── Authentication/           Phase 3: invitation gate, Sign in with Apple
+│   ├── Authentication/           invitation gate, CloudKit invitation store, Admin screen
 │   ├── Modules/                  FamiloqSpace + FamiloqModule plug-in contract
 │   └── Views/                    shared UI components
 ├── Modules/
@@ -75,7 +75,6 @@ Packages/FamiloqKit/              pure-Swift logic, tested on Linux too
 Config/App.xcconfig               bundle ID, version, signing variables
 project.yml                       XcodeGen spec (the .xcodeproj is generated in CI)
 scripts/ci/                       CI helper scripts
-server/invitation-service/        App Invitation service (Cloudflare Worker + D1, tests, admin page)
 .github/workflows/                build.yml · test.yml · release.yml
 fastlane/Fastfile                 App Store submission (runs on CI only)
 docs/                             everything you need to operate the project
@@ -105,8 +104,9 @@ git push                                  # -> GitHub Actions builds & tests aut
 
 ## Phase 3 - invite-only access & families
 - First screen: Enter Invitation Code · Request an Invitation · About - no sign-up, no guest mode
-- Sign in with Apple; App Invitations verified by the invitation service (docs 09)
-- Reinstall / new iPhone: sign in again with the same Apple ID; revoked accounts are signed out
+- App Invitations stored in the CloudKit public database; one-time use enforced by iCloud (docs 09)
+- Identity = the iCloud account; reinstall / new iPhone restores access automatically; revoked accounts are signed out
+- In-app Administration for you: create codes, revoke codes or people, read invitation requests
 - Create your family (name, your name, base currency); owner/member permissions enforced
 - Family invitation codes (7 days, single use); joining completes with iCloud sync in Phase 4
 

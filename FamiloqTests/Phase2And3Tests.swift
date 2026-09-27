@@ -4,110 +4,228 @@ import FamiloqCore
 import FamiloqBudget
 @testable import Familoq
 
-// MARK: - Phase 3: App Invitation / account
+// MARK: - Phase 3: App Invitation / account (CloudKit backend stubbed)
 
-final class StubInvitationService: InvitationServicing {
-    var redeemResult: Result<InvitationServiceClient.Session, Error> = .success(.init(status: "active", token: "t1", expiresAt: 2_000_000_000))
-    var restoreResult: Result<InvitationServiceClient.Session, Error> = .success(.init(status: "active", token: "t2", expiresAt: 2_000_000_000))
-    var refreshResult: Result<InvitationServiceClient.Session, Error> = .success(.init(status: "active", token: "t3", expiresAt: 2_000_000_000))
-    private(set) var redeemCalls = 0
-    private(set) var refreshCalls = 0
+final class StubAccessBackend: AccessBackend {
+    var userRecordName = "_user1"
+    var noICloud = false
+    var admin = false
+    var offline = false
+    /// codeHash -> status
+    var invitations: [String: AppInvitationStatus] = [:]
+    /// codeHash -> user who redeemed
+    var redemptions: [String: String] = [:]
+    var revoked: Set<String> = []
+    var requests: [(String, String, String)] = []
+    private(set) var createdCodes: [String] = []
 
-    func redeem(code: String, identityToken: String, nonce: String) async throws -> InvitationServiceClient.Session {
-        redeemCalls += 1
-        return try redeemResult.get()
+    private func checkOnline() throws {
+        if offline { throw AccessError.offline }
     }
-    func restore(identityToken: String, nonce: String) async throws -> InvitationServiceClient.Session { try restoreResult.get() }
-    func refresh(token: String) async throws -> InvitationServiceClient.Session {
-        refreshCalls += 1
-        return try refreshResult.get()
+
+    func currentUserRecordName() async throws -> String {
+        try checkOnline()
+        if noICloud { throw AccessError.noICloudAccount }
+        return userRecordName
     }
-    func requestInvitation(name: String, contact: String, message: String) async throws {}
+    func isAdministrator() async -> Bool { admin && !offline }
+    func invitationStatus(codeHash: String, now: Date) async throws -> AppInvitationStatus {
+        try checkOnline()
+        return invitations[codeHash] ?? .notFound
+    }
+    func redeem(codeHash: String, userRecordName: String) async throws -> RedemptionOutcome {
+        try checkOnline()
+        if let existing = redemptions[codeHash] {
+            return existing == userRecordName ? .alreadyMine : .usedBySomeoneElse
+        }
+        redemptions[codeHash] = userRecordName
+        return .redeemed
+    }
+    func hasRedemption(userRecordName: String) async throws -> Bool {
+        try checkOnline()
+        return redemptions.values.contains(userRecordName)
+    }
+    func isRevoked(userRecordName: String) async throws -> Bool {
+        try checkOnline()
+        return revoked.contains(userRecordName)
+    }
+    func submitRequest(name: String, contact: String, message: String) async throws {
+        try checkOnline()
+        requests.append((name, contact, message))
+    }
+    func createInvitations(count: Int, validityDays: Int, note: String) async throws -> [String] {
+        guard admin else { throw AccessError.notAdministrator }
+        let codes = (0..<count).map { _ in InvitationCode.generate() }
+        for code in codes { invitations[InvitationHashing.codeHash(code)] = .active }
+        createdCodes += codes
+        return codes
+    }
+    func adminOverview() async throws -> AdminOverview {
+        guard admin else { throw AccessError.notAdministrator }
+        return AdminOverview(invitations: [], accounts: [], requests: [])
+    }
+    func revokeInvitation(codeHash: String) async throws { invitations[codeHash] = .revoked }
+    func setUserRevoked(_ isRevoked: Bool, userRecordName: String) async throws {
+        if isRevoked { revoked.insert(userRecordName) } else { revoked.remove(userRecordName) }
+    }
+    func markRequestHandled(id: String) async throws {}
+
+    /// Helper: an active invitation code.
+    func makeCode(status: AppInvitationStatus = .active) -> String {
+        let code = InvitationCode.generate()
+        invitations[InvitationHashing.codeHash(code)] = status
+        return code
+    }
 }
 
 @MainActor
 final class AccountServiceTests: XCTestCase {
-    private let credential = AppleCredential(userID: "apple-1", identityToken: "token", rawNonce: "nonce", displayName: "Martin")
-    private let validCode = "MBF7-K92X-4QP7"
+    private func makeService(_ backend: StubAccessBackend, storage: InMemoryAccountStorage = InMemoryAccountStorage()) -> AccountService {
+        AccountService(backend: backend, storage: storage)
+    }
 
-    func testWithoutInvitationTheAppIsLocked() {
-        let service = AccountService(service: StubInvitationService(), storage: InMemoryAccountStorage())
-        service.load()
+    func testWithoutInvitationTheAppIsLocked() async {
+        let service = makeService(StubAccessBackend())
+        await service.load()
         XCTAssertEqual(service.state, .needsInvitation)
         XCTAssertFalse(service.isActive)
     }
 
     func testValidInvitationActivates() async {
+        let backend = StubAccessBackend()
         let storage = InMemoryAccountStorage()
-        let service = AccountService(service: StubInvitationService(), storage: storage)
-        service.load()
-        let ok = await service.redeem(code: validCode, credential: credential)
+        let service = makeService(backend, storage: storage)
+        await service.load()
+        let ok = await service.redeem(code: backend.makeCode())
         XCTAssertTrue(ok)
         XCTAssertTrue(service.isActive)
-        XCTAssertEqual(storage.account?.sessionToken, "t1")
-        XCTAssertEqual(storage.account?.displayName, "Martin")
+        XCTAssertEqual(storage.account?.userRecordName, "_user1")
+        XCTAssertFalse(service.isAdmin)
     }
 
-    func testTypoIsRejectedWithoutNetworkCall() async {
-        let stub = StubInvitationService()
-        let service = AccountService(service: stub, storage: InMemoryAccountStorage())
-        service.load()
-        let ok = await service.redeem(code: "MBF7-K92X-4QP8", credential: credential)
+    func testTypoIsRejectedBeforeAnyLookup() async {
+        let backend = StubAccessBackend()
+        let service = makeService(backend)
+        await service.load()
+        let ok = await service.redeem(code: "MBF7-K92X-4QP8")
         XCTAssertFalse(ok)
-        XCTAssertEqual(stub.redeemCalls, 0)
-        XCTAssertNotNil(service.errorMessage)
+        XCTAssertEqual(service.errorMessage, AccessError.invalidCode.localizedDescription)
     }
 
-    func testExpiredUsedRevokedInvitationsStayLocked() async {
-        for error in [InvitationServiceClient.ServiceError.expired, .used, .revoked] {
-            let stub = StubInvitationService()
-            stub.redeemResult = .failure(error)
-            let service = AccountService(service: stub, storage: InMemoryAccountStorage())
-            service.load()
-            let ok = await service.redeem(code: validCode, credential: credential)
+    func testUnknownExpiredAndRevokedInvitationsStayLocked() async {
+        let cases: [(AppInvitationStatus?, AccessError)] = [(nil, .invitationNotFound), (.expired, .expired), (.revoked, .revoked)]
+        for (status, expected) in cases {
+            let backend = StubAccessBackend()
+            let code = status.map { backend.makeCode(status: $0) } ?? InvitationCode.generate()
+            let service = makeService(backend)
+            await service.load()
+            let ok = await service.redeem(code: code)
             XCTAssertFalse(ok)
             XCTAssertEqual(service.state, .needsInvitation)
-            XCTAssertEqual(service.errorMessage, error.message)
+            XCTAssertEqual(service.errorMessage, expected.localizedDescription)
         }
     }
 
-    func testReinstallRestoresWithAppleID() async {
-        let service = AccountService(service: StubInvitationService(), storage: InMemoryAccountStorage())
-        service.load()
-        let ok = await service.restore(credential: credential)
-        XCTAssertTrue(ok)
-        XCTAssertTrue(service.isActive)
+    func testUsedInvitationCannotBeUsedByAnotherPerson() async {
+        let backend = StubAccessBackend()
+        let code = backend.makeCode()
+        let martin = makeService(backend)
+        await martin.load()
+        _ = await martin.redeem(code: code)
+
+        backend.userRecordName = "_stranger"
+        let stranger = makeService(backend)
+        await stranger.load()
+        let ok = await stranger.redeem(code: code)
+        XCTAssertFalse(ok)
+        XCTAssertEqual(stranger.errorMessage, AccessError.used.localizedDescription)
     }
 
-    func testRevokedAccountIsSignedOutOnRefresh() async {
-        let stub = StubInvitationService()
+    func testReinstallRestoresAutomatically() async {
+        let backend = StubAccessBackend()
+        let first = makeService(backend)
+        await first.load()
+        _ = await first.redeem(code: backend.makeCode())
+
+        // Fresh install: empty storage, same iCloud account.
+        let reinstalled = makeService(backend)
+        await reinstalled.load()
+        XCTAssertTrue(reinstalled.isActive)
+    }
+
+    func testAdministratorIsActivatedWithoutCode() async {
+        let backend = StubAccessBackend()
+        backend.admin = true
+        let service = makeService(backend)
+        await service.load()
+        XCTAssertTrue(service.isActive)
+        XCTAssertTrue(service.isAdmin)
+    }
+
+    func testNoICloudAccountExplainsWhatToDo() async {
+        let backend = StubAccessBackend()
+        backend.noICloud = true
+        let service = makeService(backend)
+        await service.load()
+        let ok = await service.redeem(code: backend.makeCode())
+        XCTAssertFalse(ok)
+        XCTAssertEqual(service.errorMessage, AccessError.noICloudAccount.localizedDescription)
+    }
+
+    func testRevokedAccountIsSignedOutOnDailyCheck() async {
+        let backend = StubAccessBackend()
         let storage = InMemoryAccountStorage()
-        let service = AccountService(service: stub, storage: storage)
-        service.load()
-        _ = await service.redeem(code: validCode, credential: credential)
-        stub.refreshResult = .failure(InvitationServiceClient.ServiceError.accountRevoked)
+        let service = makeService(backend, storage: storage)
+        await service.load()
+        _ = await service.redeem(code: backend.makeCode())
+        backend.revoked.insert("_user1")
         await service.refreshIfDue(force: true)
         XCTAssertEqual(service.state, .needsInvitation)
         XCTAssertNil(storage.account)
+        // and cannot come back via restore
+        let again = await service.restore()
+        XCTAssertFalse(again)
     }
 
-    func testOfflineRefreshKeepsUserSignedIn() async {
-        let stub = StubInvitationService()
-        let service = AccountService(service: stub, storage: InMemoryAccountStorage())
-        service.load()
-        _ = await service.redeem(code: validCode, credential: credential)
-        stub.refreshResult = .failure(InvitationServiceClient.ServiceError.offline)
+    func testOfflineCheckKeepsUserSignedIn() async {
+        let backend = StubAccessBackend()
+        let service = makeService(backend)
+        await service.load()
+        _ = await service.redeem(code: backend.makeCode())
+        backend.offline = true
         await service.refreshIfDue(force: true)
         XCTAssertTrue(service.isActive)
     }
 
-    func testRefreshHappensAtMostDaily() async {
-        let stub = StubInvitationService()
-        let service = AccountService(service: stub, storage: InMemoryAccountStorage())
-        service.load()
-        _ = await service.redeem(code: validCode, credential: credential)
-        await service.refreshIfDue()
-        XCTAssertEqual(stub.refreshCalls, 0, "just activated - no refresh needed")
+    func testDifferentICloudAccountNeedsOwnInvitation() async {
+        let backend = StubAccessBackend()
+        let service = makeService(backend)
+        await service.load()
+        _ = await service.redeem(code: backend.makeCode())
+        backend.userRecordName = "_someoneElse"
+        await service.refreshIfDue(force: true)
+        XCTAssertEqual(service.state, .needsInvitation)
+    }
+
+    func testAdminCreatesCodesThatWork() async throws {
+        let backend = StubAccessBackend()
+        backend.admin = true
+        let codes = try await backend.createInvitations(count: 2, validityDays: 14, note: "Friends")
+        XCTAssertEqual(codes.count, 2)
+        XCTAssertTrue(codes.allSatisfy { InvitationCode.isWellFormed($0) })
+
+        backend.admin = false
+        backend.userRecordName = "_friend"
+        let friend = makeService(backend)
+        await friend.load()
+        let ok = await friend.redeem(code: codes[0])
+        XCTAssertTrue(ok)
+    }
+
+    func testCodeHashIsStableAndIgnoresFormatting() {
+        XCTAssertEqual(InvitationHashing.codeHash("mbf7 k92x-4qp7"), InvitationHashing.codeHash("MBF7-K92X-4QP7"))
+        XCTAssertEqual(InvitationHashing.codeHash("MBF7K92X4QP7").count, 64)
+        XCTAssertNotEqual(InvitationHashing.codeHash("MBF7K92X4QP7"), "MBF7K92X4QP7")
     }
 }
 

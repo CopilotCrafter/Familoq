@@ -20,6 +20,7 @@ private struct FamilySettingsContent: View {
     @Bindable var family: Family
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var account: AccountService
     @Query private var members: [FamilyMember]
 
     init(family: Family) {
@@ -81,9 +82,35 @@ private struct FamilySettingsContent: View {
             }
             .font(.footnote)
 
-            Section("About") {
+            if account.isAdmin {
+                Section {
+                    NavigationLink {
+                        AdminView(backend: account.backend)
+                    } label: {
+                        Label("Invitations & accounts", systemImage: "person.badge.key.fill")
+                    }
+                } header: {
+                    Text("Administration")
+                } footer: {
+                    Text("You are the Familoq administrator.")
+                }
+            }
+
+            Section {
                 LabeledContent("Version", value: appVersion)
                 LabeledContent("Role", value: session.currentMember?.role.displayName ?? "-")
+                if let user = account.account?.userRecordName {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("iCloud user ID").font(.caption).foregroundStyle(.secondary)
+                        Text(user)
+                            .font(.caption2.monospaced())
+                            .textSelection(.enabled)
+                    }
+                }
+            } header: {
+                Text("About")
+            } footer: {
+                Text("The iCloud user ID is only needed once, when the administrator role is assigned in the CloudKit Console.")
             }
         }
         .navigationTitle("Family")

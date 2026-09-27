@@ -16,7 +16,7 @@ https://appstoreconnect.apple.com - the website for app records, TestFlight, tes
 ## 4. Bundle identifier
 - Chosen: **`com.carolandmartin.familoq`** (reverse of the domain you already own).
 - Registered once at developer.apple.com -> *Certificates, IDs & Profiles* -> *Identifiers* -> **+** -> *App IDs* -> *App* -> **Explicit** Bundle ID.
-- Capabilities for Phase 1: none extra. Phase 3 adds *Sign in with Apple*; Phase 4 adds *iCloud (CloudKit)* - when you add capabilities you must regenerate the provisioning profile (step 6) and update the secret.
+- Capabilities for Phase 1: none extra. Phase 3 adds *iCloud (CloudKit)* for App Invitations (doc 09) - when you add capabilities you must regenerate the provisioning profile (step 6) and update the secret.
 - The bundle ID in `Config/App.xcconfig` (`FQ_BUNDLE_ID`) must match exactly. It can never be changed after the app is published.
 
 ## 5. Signing certificate - created with OpenSSL on Windows
@@ -53,7 +53,7 @@ The `-certpbe/-keypbe/-macalg` options produce a `.p12` that the macOS `security
 ## 6. Provisioning profile
 developer.apple.com -> *Profiles* -> **+** -> **App Store Connect** (Distribution) -> App ID `com.carolandmartin.familoq` -> select the Apple Distribution certificate -> name **`Familoq AppStore`** -> *Generate* -> download `Familoq_AppStore.mobileprovision`.
 
-Regenerate it when you: renew the certificate, or add capabilities (Sign in with Apple, iCloud). The release workflow reads the profile's name and UUID automatically and checks that it matches the bundle ID.
+Regenerate it when you: renew the certificate, or add capabilities (e.g. iCloud). The release workflow reads the profile's name and UUID automatically and checks that it matches the bundle ID.
 
 Development profiles/devices are **not needed** - you never install directly from a Mac; TestFlight uses the distribution build.
 

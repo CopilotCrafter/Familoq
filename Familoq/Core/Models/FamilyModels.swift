@@ -43,7 +43,7 @@ final class FamilyMember {
     var roleRaw: String = "member"
     var isActive: Bool = true
     /// The person using this device. Phase 3 replaces this with the
-    /// authenticated (Sign in with Apple) user.
+    /// activated iCloud user of this device.
     var isCurrentUser: Bool = false
     var joinedAt: Date = Date()
 

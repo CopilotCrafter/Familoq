@@ -60,7 +60,7 @@ struct RootView: View {
         }
         .animation(.default, value: account.state)
         .task {
-            account.load()
+            await account.load()
             guard !session.isLoaded else { return }
             session.start(context: context)
             if LaunchOptions.seedDemoData, let family = session.family {
@@ -68,7 +68,6 @@ struct RootView: View {
             }
             await refreshRates()
             await account.refreshIfDue()
-            await account.verifyAppleCredentialState()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {

@@ -9,9 +9,8 @@ CURRENT_PROJECT_VERSION = 1
 
 FQ_BUNDLE_ID = com.carolandmartin.familoq
 
-// Invitation service (server/invitation-service). "//" starts a comment in
-// xcconfig files, hence the $() trick inside the URL.
-FQ_INVITE_SERVICE_URL = https:/$()/familoq-api.carolandmartin.com
+// iCloud container: iCloud.<FQ_BUNDLE_ID> (create it at developer.apple.com,
+// see docs/09-invitations-cloudkit.md)
 
 // Defaults for unsigned simulator builds (build / test workflows).
 FQ_DEVELOPMENT_TEAM =

@@ -1,31 +1,14 @@
 import Foundation
-import AuthenticationServices
-import CryptoKit
 import FamiloqCore
 
-/// What the app needs from the invitation service (stubbed in tests).
-protocol InvitationServicing {
-    func redeem(code: String, identityToken: String, nonce: String) async throws -> InvitationServiceClient.Session
-    func restore(identityToken: String, nonce: String) async throws -> InvitationServiceClient.Session
-    func refresh(token: String) async throws -> InvitationServiceClient.Session
-    func requestInvitation(name: String, contact: String, message: String) async throws
-}
-
-extension InvitationServiceClient: InvitationServicing {}
-
-/// Result of a successful Sign in with Apple.
-struct AppleCredential: Equatable {
-    var userID: String
-    var identityToken: String
-    var rawNonce: String
-    var displayName: String?
-}
-
-/// Level 1 access: is this person allowed to use Familoq?
+/// Level 1 access: may this iCloud account use Familoq?
 ///
-///   no stored account  -> onboarding (invitation code / request / restore)
-///   stored account     -> app (works offline); re-checked with the service at
-///                         most once a day - a revoked account is signed out.
+///   not activated      -> onboarding (invitation code / request / about)
+///   activated          -> app; works offline; re-checked at most once a day
+///   administrator      -> activated automatically, sees the Admin screen
+///
+/// Reinstall or new iPhone with the same iCloud account restores access
+/// automatically (the redemption belongs to that iCloud account).
 @MainActor
 final class AccountService: ObservableObject {
     enum State: Equatable {
@@ -38,30 +21,26 @@ final class AccountService: ObservableObject {
     @Published private(set) var isWorking = false
     @Published var errorMessage: String?
 
-    private let service: InvitationServicing
+    let backend: AccessBackend
     private let storage: AccountStorage
     private let now: () -> Date
     private let checkInterval: TimeInterval = 24 * 3600
 
-    init(service: InvitationServicing, storage: AccountStorage, now: @escaping () -> Date = { Date() }) {
-        self.service = service
+    init(backend: AccessBackend, storage: AccountStorage, now: @escaping () -> Date = { Date() }) {
+        self.backend = backend
         self.storage = storage
         self.now = now
     }
 
-    /// Production wiring: URL from Info.plist (FQ_INVITE_SERVICE_URL), Keychain storage.
     static func live() -> AccountService {
-        let urlString = Bundle.main.object(forInfoDictionaryKey: "FQInvitationServiceURL") as? String ?? ""
-        let url = URL(string: urlString) ?? URL(string: "https://invalid.invalid")!
         #if DEBUG
         if UserDefaults.standard.bool(forKey: "demoAccount") {
-            // CI screenshots / simulator demos only - never compiled into release builds.
-            let demo = StoredAccount(appleUserID: "demo", displayName: "Demo", sessionToken: "demo",
-                                     sessionExpiresAt: .distantFuture, activatedAt: Date(), lastCheckedAt: .distantFuture)
-            return AccountService(service: InvitationServiceClient(baseURL: url), storage: InMemoryAccountStorage(demo))
+            // CI screenshots / simulator demos only - never in release builds.
+            let demo = StoredAccount(userRecordName: "demo", isAdmin: false, activatedAt: Date(), lastCheckedAt: .distantFuture)
+            return AccountService(backend: CloudKitAccessBackend.live(), storage: InMemoryAccountStorage(demo))
         }
         #endif
-        return AccountService(service: InvitationServiceClient(baseURL: url), storage: KeychainAccountStorage())
+        return AccountService(backend: CloudKitAccessBackend.live(), storage: KeychainAccountStorage())
     }
 
     var account: StoredAccount? {
@@ -70,38 +49,80 @@ final class AccountService: ObservableObject {
     }
 
     var isActive: Bool { account != nil }
+    var isAdmin: Bool { account?.isAdmin == true }
 
-    func load() {
+    /// Loads the stored activation; if there is none, silently tries to
+    /// restore it from iCloud (reinstall / new iPhone / administrator).
+    func load() async {
         if let stored = storage.load() {
             state = .active(stored)
-        } else {
-            state = .needsInvitation
+            return
         }
+        state = .needsInvitation
+        _ = await restore(silently: true)
     }
 
     // MARK: Onboarding
 
-    /// Enter an App Invitation code + Sign in with Apple.
+    /// Redeem an App Invitation for the signed-in iCloud account.
     @discardableResult
-    func redeem(code: String, credential: AppleCredential) async -> Bool {
+    func redeem(code: String) async -> Bool {
+        errorMessage = nil
         guard InvitationCode.isWellFormed(code) else {
-            errorMessage = InvitationServiceClient.ServiceError.invalidCode.message
+            errorMessage = AccessError.invalidCode.localizedDescription
             return false
         }
-        return await run {
-            try await self.service.redeem(code: code, identityToken: credential.identityToken, nonce: credential.rawNonce)
-        } store: { session in
-            self.makeAccount(from: session, credential: credential)
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            let user = try await backend.currentUserRecordName()
+            if await backend.isAdministrator() {
+                try activate(user: user, isAdmin: true)
+                return true
+            }
+            let hash = InvitationHashing.codeHash(code)
+            switch try await backend.invitationStatus(codeHash: hash, now: now()) {
+            case .notFound: throw AccessError.invitationNotFound
+            case .expired: throw AccessError.expired
+            case .revoked: throw AccessError.revoked
+            case .active: break
+            }
+            switch try await backend.redeem(codeHash: hash, userRecordName: user) {
+            case .redeemed, .alreadyMine: break
+            case .usedBySomeoneElse: throw AccessError.used
+            }
+            if try await backend.isRevoked(userRecordName: user) { throw AccessError.accountRevoked }
+            try activate(user: user, isAdmin: false)
+            return true
+        } catch {
+            errorMessage = (error as? AccessError)?.localizedDescription ?? error.localizedDescription
+            return false
         }
     }
 
-    /// Reinstall / new device: the same Apple ID signs in again, no code needed.
+    /// "Already invited?" - finds an earlier redemption of this iCloud account.
     @discardableResult
-    func restore(credential: AppleCredential) async -> Bool {
-        await run {
-            try await self.service.restore(identityToken: credential.identityToken, nonce: credential.rawNonce)
-        } store: { session in
-            self.makeAccount(from: session, credential: credential)
+    func restore(silently: Bool = false) async -> Bool {
+        if !silently {
+            errorMessage = nil
+            isWorking = true
+        }
+        defer { if !silently { isWorking = false } }
+        do {
+            let user = try await backend.currentUserRecordName()
+            if await backend.isAdministrator() {
+                try activate(user: user, isAdmin: true)
+                return true
+            }
+            guard try await backend.hasRedemption(userRecordName: user) else { throw AccessError.notActivated }
+            if try await backend.isRevoked(userRecordName: user) { throw AccessError.accountRevoked }
+            try activate(user: user, isAdmin: false)
+            return true
+        } catch {
+            if !silently {
+                errorMessage = (error as? AccessError)?.localizedDescription ?? error.localizedDescription
+            }
+            return false
         }
     }
 
@@ -111,109 +132,52 @@ final class AccountService: ObservableObject {
         isWorking = true
         defer { isWorking = false }
         do {
-            try await service.requestInvitation(name: name, contact: contact, message: message)
+            _ = try await backend.currentUserRecordName()
+            try await backend.submitRequest(name: name, contact: contact, message: message)
             return true
         } catch {
-            errorMessage = (error as? InvitationServiceClient.ServiceError)?.message ?? error.localizedDescription
+            errorMessage = (error as? AccessError)?.localizedDescription ?? error.localizedDescription
             return false
         }
     }
 
     // MARK: Ongoing
 
-    /// Re-validates the session at most once a day. Offline -> keeps working.
+    /// At most once a day: is this account still allowed? Offline -> keep working.
     func refreshIfDue(force: Bool = false) async {
-        guard var account = account else { return }
+        guard var account = account, account.userRecordName != "demo" else { return }
         guard force || now().timeIntervalSince(account.lastCheckedAt) >= checkInterval else { return }
         do {
-            let session = try await service.refresh(token: account.sessionToken)
-            account.sessionToken = session.token
-            account.sessionExpiresAt = Date(timeIntervalSince1970: session.expiresAt)
+            let user = try await backend.currentUserRecordName()
+            // Another iCloud account on this iPhone -> needs its own invitation.
+            guard user == account.userRecordName else {
+                signOut()
+                return
+            }
+            if try await backend.isRevoked(userRecordName: user) {
+                signOut()
+                errorMessage = AccessError.accountRevoked.localizedDescription
+                return
+            }
+            account.isAdmin = await backend.isAdministrator()
             account.lastCheckedAt = now()
             try? storage.save(account)
             state = .active(account)
-        } catch InvitationServiceClient.ServiceError.accountRevoked {
+        } catch AccessError.noICloudAccount {
             signOut()
-            errorMessage = InvitationServiceClient.ServiceError.accountRevoked.message
         } catch {
-            // Offline or temporary server problem: stay signed in (offline-first).
+            // Offline or temporary iCloud problem: stay signed in (offline-first).
         }
     }
 
-    /// Called when Apple reports the Apple ID link was revoked in Settings.
     func signOut() {
         storage.delete()
         state = .needsInvitation
     }
 
-    /// Checks with Apple whether the user removed Familoq from "Sign in with Apple".
-    func verifyAppleCredentialState() async {
-        guard let account, account.appleUserID != "demo" else { return }
-        let provider = ASAuthorizationAppleIDProvider()
-        let credentialState: ASAuthorizationAppleIDProvider.CredentialState = await withCheckedContinuation { continuation in
-            provider.getCredentialState(forUserID: account.appleUserID) { state, _ in
-                continuation.resume(returning: state)
-            }
-        }
-        if credentialState == .revoked {
-            signOut()
-        }
-    }
-
-    // MARK: Helpers
-
-    private func makeAccount(from session: InvitationServiceClient.Session, credential: AppleCredential) -> StoredAccount {
-        StoredAccount(
-            appleUserID: credential.userID,
-            displayName: credential.displayName ?? account?.displayName,
-            sessionToken: session.token,
-            sessionExpiresAt: Date(timeIntervalSince1970: session.expiresAt),
-            activatedAt: now(),
-            lastCheckedAt: now()
-        )
-    }
-
-    private func run(_ call: @escaping () async throws -> InvitationServiceClient.Session,
-                     store: @escaping (InvitationServiceClient.Session) -> StoredAccount) async -> Bool {
-        errorMessage = nil
-        isWorking = true
-        defer { isWorking = false }
-        do {
-            let session = try await call()
-            let account = store(session)
-            try storage.save(account)
-            state = .active(account)
-            return true
-        } catch let error as InvitationServiceClient.ServiceError {
-            errorMessage = error.message
-        } catch {
-            errorMessage = "Could not save your sign-in on this iPhone (\(error.localizedDescription))."
-        }
-        return false
-    }
-}
-
-/// Helpers for "Sign in with Apple" with a nonce (prevents replayed tokens).
-enum AppleSignIn {
-    static func randomNonce(length: Int = 32) -> String {
-        let charset = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-._")
-        var generator = SystemRandomNumberGenerator()
-        return String((0..<length).map { _ in charset[Int(generator.next() % UInt64(charset.count))] })
-    }
-
-    /// SHA-256 as lowercase hex - this is what goes into the Apple request and
-    /// what the server compares against the token's nonce claim.
-    static func sha256(_ input: String) -> String {
-        SHA256.hash(data: Data(input.utf8)).map { String(format: "%02x", $0) }.joined()
-    }
-
-    static func credential(from authorization: ASAuthorization, rawNonce: String) -> AppleCredential? {
-        guard let apple = authorization.credential as? ASAuthorizationAppleIDCredential,
-              let tokenData = apple.identityToken,
-              let token = String(data: tokenData, encoding: .utf8) else { return nil }
-        let name = [apple.fullName?.givenName, apple.fullName?.familyName]
-            .compactMap { $0 }
-            .joined(separator: " ")
-        return AppleCredential(userID: apple.user, identityToken: token, rawNonce: rawNonce, displayName: name.isEmpty ? nil : name)
+    private func activate(user: String, isAdmin: Bool) throws {
+        let account = StoredAccount(userRecordName: user, isAdmin: isAdmin, activatedAt: now(), lastCheckedAt: now())
+        try storage.save(account)
+        state = .active(account)
     }
 }

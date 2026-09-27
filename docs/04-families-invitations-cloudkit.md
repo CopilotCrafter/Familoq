@@ -24,32 +24,14 @@ No "Sign up", "Create account" or "Continue as guest". Without a redeemed App In
 
 ## Level 1 - App Invitations
 
-A code must be checked **somewhere the user cannot tamper with**. Options:
+Implemented with the **CloudKit public database** - no own server. Details, record types, permissions and the full setup: **[09-invitations-cloudkit.md](09-invitations-cloudkit.md)**.
 
-### Recommended: tiny invitation service on Cloudflare (free tier)
-You already run `carolandmartin.com` on Cloudflare, so a Cloudflare Worker + D1 (SQLite) fits with no new vendor:
-
-```
-iPhone ── Sign in with Apple ──▶ identity token (signed by Apple)
-iPhone ── POST /redeem {code, identityToken} ──▶ Worker
-   Worker: verify Apple token signature (Apple JWKS)
-           in ONE transaction: code exists? not used? not expired? not revoked?
-           mark used, store hash(Apple user ID)
-           return entitlement token signed by the Worker (ES256)
-iPhone: store entitlement in Keychain, verify signature with the public key
-        compiled into the app -> unlock Familoq
-```
-
-- Stores **no financial data** - only code hashes, status, dates and a hashed Apple user ID.
-- Admin page (protected by Cloudflare Access) to generate, list and revoke codes. Codes use `InvitationCode.generate()` (already in `FamiloqCore`).
-- Re-install / new device: the same Apple ID gets its entitlement re-issued, no new code needed.
-- Revoking a person later: mark the account revoked; the app re-checks the entitlement periodically.
-
-### Zero-extra-service alternative: CloudKit public database
-Invitation records keyed by `SHA-256(code)` in the public database, with the security role set so clients can fetch by record name but not query/list. It works without any server, but redemption is not atomic and the rules are enforced by the client - acceptable for a closed circle, weaker than the Worker. Decide in Phase 3.
+- Identity = the person's iCloud account (no extra login).
+- A code works once: the redemption record name is derived from the code, and CloudKit allows each record name only once.
+- Only the FamiloqAdmin role can create invitations and revocations; you manage them in *Family → Administration*.
 
 ### Important security property
-Even if someone bypassed the Level-1 gate on a jailbroken phone, they would get an **empty app**: family data is only reachable through CloudKit shares (Level 2), which Apple's servers enforce. Level 1 controls *who may use the app*; Level 2 protects *the money data*.
+Even if someone bypassed the Level-1 gate with a modified app, they would get an **empty app**: family data is only reachable through CloudKit shares (Level 2), which Apple's servers enforce. Level 1 controls *who may use the app*; Level 2 protects *the money data*.
 
 ## Level 2 - Families in CloudKit
 
@@ -91,7 +73,7 @@ John's private database
 ## CloudKit configuration steps (Phase 4, all in a browser)
 
 1. developer.apple.com -> *Identifiers* -> **iCloud Containers** -> **+** -> `iCloud.com.carolandmartin.familoq`.
-2. App ID `com.carolandmartin.familoq` -> enable **iCloud** -> *CloudKit* -> assign the container. Also enable **Sign in with Apple** (Phase 3).
+2. App ID `com.carolandmartin.familoq` -> enable **iCloud** -> *CloudKit* -> assign the container (already done for App Invitations, see doc 09).
 3. Regenerate the **provisioning profile** -> update `IOS_PROVISIONING_PROFILE_BASE64`.
 4. Add `Familoq/Familoq.entitlements` (container + `aps-environment` for sync notifications) and reference it in `project.yml`.
 5. **CloudKit Console** (https://icloud.developer.apple.com):

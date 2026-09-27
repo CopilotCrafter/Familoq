@@ -12,7 +12,7 @@ struct FamilySetupView: View {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Welcome\(firstName.map { ", \($0)" } ?? "")!")
+                        Text("Welcome!")
                             .font(.title2.weight(.bold))
                         Text("Your invitation is active. Now set up your family space.")
                             .foregroundStyle(.secondary)
@@ -21,7 +21,7 @@ struct FamilySetupView: View {
                 }
                 Section {
                     NavigationLink {
-                        CreateFamilyView(defaultOwnerName: account.account?.displayName ?? "")
+                        CreateFamilyView(defaultOwnerName: "")
                     } label: {
                         Label {
                             VStack(alignment: .leading) {
@@ -46,10 +46,6 @@ struct FamilySetupView: View {
             }
             .navigationTitle("Your family")
         }
-    }
-
-    private var firstName: String? {
-        account.account?.displayName?.split(separator: " ").first.map(String.init)
     }
 }
 

@@ -80,9 +80,9 @@ final class FamilyAndInvitationTests: XCTestCase {
         }
     }
 
-    /// Same vector is asserted in server/invitation-service/test/worker.test.js,
-    /// so app and server always agree on the code format.
-    func testCheckCharacterMatchesServer() {
+    /// Fixed test vector so the code format can never change by accident
+    /// (codes already sent to people must keep working).
+    func testCheckCharacterIsStable() {
         XCTAssertEqual(InvitationCode.checkCharacter(for: Array("MBF7K92X4QP")), "7")
         XCTAssertTrue(InvitationCode.isWellFormed("MBF7-K92X-4QP7"))
     }

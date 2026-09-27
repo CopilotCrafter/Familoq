@@ -33,5 +33,3 @@ desktop.ini
 !.vscode/extensions.json
 .idea/
 
-node_modules/
-.wrangler/

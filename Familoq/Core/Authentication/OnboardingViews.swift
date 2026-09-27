@@ -1,5 +1,4 @@
 import SwiftUI
-import AuthenticationServices
 import FamiloqCore
 
 /// First screen for anyone without access. There is deliberately NO
@@ -47,7 +46,7 @@ struct OnboardingView: View {
                     NavigationLink {
                         RestoreAccessView()
                     } label: {
-                        Text("Already invited? Sign in again")
+                        Text("Already activated? Restore access")
                             .font(.subheadline)
                     }
                     .padding(.top, 4)
@@ -66,6 +65,9 @@ struct OnboardingView: View {
 
 struct AboutFamiloqView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var account: AccountService
+    @State private var userID: String?
+    @State private var userIDError: String?
 
     var body: some View {
         NavigationStack {
@@ -81,7 +83,29 @@ struct AboutFamiloqView: View {
                 Section("Privacy") {
                     Label("No ads, no tracking, no data selling.", systemImage: "hand.raised")
                     Label("Your financial data stays on your devices and in your own iCloud.", systemImage: "icloud")
-                    Label("Sign in with Apple - your e-mail is not required.", systemImage: "apple.logo")
+                    Label("Uses your iCloud account - no extra password, no e-mail required.", systemImage: "icloud")
+                }
+                Section {
+                    if let userID {
+                        Text(userID)
+                            .font(.caption.monospaced())
+                            .textSelection(.enabled)
+                    } else {
+                        Text(userIDError ?? "Checking iCloud…")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("Your iCloud user ID")
+                } footer: {
+                    Text("Only the Familoq administrator needs this once, to set up the admin role.")
+                }
+            }
+            .task {
+                do {
+                    userID = try await account.backend.currentUserRecordName()
+                } catch {
+                    userIDError = error.localizedDescription
                 }
             }
             .navigationTitle("About Familoq")
@@ -90,40 +114,6 @@ struct AboutFamiloqView: View {
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
             }
         }
-    }
-}
-
-/// Reusable "Sign in with Apple" button that yields an `AppleCredential`.
-struct AppleSignInButton: View {
-    let label: SignInWithAppleButton.Label
-    let onCredential: (AppleCredential) -> Void
-    var onError: ((String) -> Void)? = nil
-
-    @Environment(\.colorScheme) private var colorScheme
-    @State private var rawNonce = AppleSignIn.randomNonce()
-
-    var body: some View {
-        SignInWithAppleButton(label) { request in
-            let nonce = AppleSignIn.randomNonce()
-            rawNonce = nonce
-            request.requestedScopes = [.fullName]
-            request.nonce = AppleSignIn.sha256(nonce)
-        } onCompletion: { result in
-            switch result {
-            case .success(let authorization):
-                if let credential = AppleSignIn.credential(from: authorization, rawNonce: rawNonce) {
-                    onCredential(credential)
-                } else {
-                    onError?("Apple did not return a valid sign-in. Please try again.")
-                }
-            case .failure(let error):
-                if (error as? ASAuthorizationError)?.code != .canceled {
-                    onError?(error.localizedDescription)
-                }
-            }
-        }
-        .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-        .frame(height: 50)
     }
 }
 
@@ -158,18 +148,19 @@ struct EnterInvitationView: View {
                 Text("You received this code from the Familoq administrator. It can be used once.")
             }
 
-            if isWellFormed {
-                Section {
-                    AppleSignInButton(label: .continue) { credential in
-                        Task { await account.redeem(code: code, credential: credential) }
-                    } onError: { message in
-                        account.errorMessage = message
-                    }
-                    .disabled(account.isWorking)
-                    .listRowInsets(EdgeInsets())
-                } footer: {
-                    Text("Sign in with Apple links the invitation to your Apple ID, so you can restore access on a new iPhone. Familoq does not need your e-mail address.")
+            Section {
+                Button {
+                    Task { await account.redeem(code: code) }
+                } label: {
+                    Text("Activate Familoq")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
+                .disabled(!isWellFormed || account.isWorking)
+                .listRowInsets(EdgeInsets())
+            } footer: {
+                Text("The invitation is linked to the iCloud account on this iPhone, so a new iPhone or a reinstall with the same Apple ID restores access automatically.")
             }
 
             if account.isWorking {
@@ -194,25 +185,28 @@ struct RestoreAccessView: View {
     var body: some View {
         Form {
             Section {
-                Text("If you already redeemed an invitation - for example before reinstalling Familoq or on your new iPhone - sign in with the same Apple ID.")
+                Text("If you already activated Familoq - for example before reinstalling or on your previous iPhone - make sure this iPhone is signed in to iCloud with the same Apple ID, then tap Continue.")
             }
             Section {
-                AppleSignInButton(label: .signIn) { credential in
-                    Task { await account.restore(credential: credential) }
-                } onError: { message in
-                    account.errorMessage = message
+                Button {
+                    Task { await account.restore() }
+                } label: {
+                    Text("Continue")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(account.isWorking)
                 .listRowInsets(EdgeInsets())
             }
             if account.isWorking {
-                Section { ProgressView("Signing in…") }
+                Section { ProgressView("Checking iCloud…") }
             }
             if let message = account.errorMessage {
                 Section { Text(message).foregroundStyle(.red) }
             }
         }
-        .navigationTitle("Sign in again")
+        .navigationTitle("Restore access")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { account.errorMessage = nil }
     }
@@ -244,7 +238,7 @@ struct RequestInvitationView: View {
                     TextField("Who you are / who invited you (optional)", text: $message, axis: .vertical)
                         .lineLimit(2...5)
                 } footer: {
-                    Text("Familoq is invite-only. Your request goes to the administrator and is used only to reply to you.")
+                    Text("Familoq is invite-only. Your request goes only to the administrator and is used only to reply to you. Requires iCloud.")
                 }
                 Section {
                     Button("Send request") {

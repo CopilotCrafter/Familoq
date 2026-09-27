@@ -1,29 +1,25 @@
 import Foundation
 import Security
 
-/// Where the account/session is kept on the device.
+/// Where the activation is kept on the device.
 protocol AccountStorage {
     func load() -> StoredAccount?
     func save(_ account: StoredAccount) throws
     func delete()
 }
 
-/// What Familoq remembers about the signed-in person (never financial data).
+/// What Familoq remembers about the person using this iPhone (never financial data).
 struct StoredAccount: Codable, Equatable {
-    /// Stable Apple user identifier (from Sign in with Apple).
-    var appleUserID: String
-    var displayName: String?
-    /// Session token from the invitation service.
-    var sessionToken: String
-    var sessionExpiresAt: Date
+    /// CloudKit user record name of the iCloud account (stable per app and Apple ID).
+    var userRecordName: String
+    var isAdmin: Bool
     var activatedAt: Date
     var lastCheckedAt: Date
 }
 
-/// Keychain-backed storage. Survives app updates; removed on uninstall is
-/// NOT guaranteed by iOS, so reinstall uses Sign in with Apple to restore.
+/// Keychain-backed storage (this device only).
 struct KeychainAccountStorage: AccountStorage {
-    private let service = "com.carolandmartin.familoq.account"
+    private let service = "com.carolandmartin.familoq.access"
     private let key = "current"
 
     private var baseQuery: [String: Any] {
