@@ -41,8 +41,13 @@ private struct FamilySettingsContent: View {
                             session.switchTo(familyID: other.id, context: context)
                         } label: {
                             HStack {
-                                Text(other.name.isEmpty ? "Family" : other.name)
-                                    .foregroundStyle(.primary)
+                                VStack(alignment: .leading) {
+                                    Text(other.name.isEmpty ? "Family" : other.name)
+                                        .foregroundStyle(.primary)
+                                    Text(ownerLine(for: other))
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
                                 Spacer()
                                 if other.id == family.id {
                                     Image(systemName: "checkmark").foregroundStyle(Color.accentColor)
@@ -168,6 +173,14 @@ private struct FamilySettingsContent: View {
             Text("This cannot be undone.")
         }
         .refreshable { await sync.refresh() }
+    }
+
+    /// "Owner: Martin" / "Your own family" - two families can share a name.
+    private func ownerLine(for family: Family) -> String {
+        let fid = family.id
+        let members = (try? context.fetch(FetchDescriptor<FamilyMember>(predicate: #Predicate { $0.familyID == fid }))) ?? []
+        guard let owner = members.first(where: { $0.role == .owner }) else { return "Loading from iCloud…" }
+        return owner.isCurrentUser ? "Your family" : "Owner: \(owner.displayName)"
     }
 
     private func removeFamily() {
