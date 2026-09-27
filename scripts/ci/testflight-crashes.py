@@ -93,6 +93,10 @@ def main():
         annotate("error", "Crash reports", f"No app with bundle ID {BUNDLE_ID}")
         return
     app_id = apps[0]["id"]
+    shots = get(f"/v1/apps/{app_id}/betaFeedbackScreenshotSubmissions?sort=-createdDate&limit=5")["data"]
+    for sub in shots:
+        a = sub.get("attributes", {})
+        annotate("notice", "Feedback", f"{a.get('createdDate')} · {a.get('deviceModel')} iOS {a.get('osVersion')} · {a.get('comment') or '-'}")
     subs = get(f"/v1/apps/{app_id}/betaFeedbackCrashSubmissions?sort=-createdDate&limit={LIMIT}")["data"]
     if not subs:
         annotate("notice", "Crash reports", "No shared TestFlight crash reports yet. After a crash, open Familoq again and tap 'Share' in the TestFlight prompt (or TestFlight app -> Familoq -> Send Beta Feedback).")
