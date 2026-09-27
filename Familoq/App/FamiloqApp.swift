@@ -5,6 +5,7 @@ import SwiftData
 struct FamiloqApp: App {
     @StateObject private var session = AppSession()
     @StateObject private var rateService = ExchangeRateService()
+    @StateObject private var account = AccountService.live()
     private let container: ModelContainer
 
     init() {
@@ -22,6 +23,7 @@ struct FamiloqApp: App {
             RootView()
                 .environmentObject(session)
                 .environmentObject(rateService)
+                .environmentObject(account)
         }
         .modelContainer(container)
     }
@@ -32,28 +34,48 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var session: AppSession
     @EnvironmentObject private var rates: ExchangeRateService
+    @EnvironmentObject private var account: AccountService
 
     var body: some View {
         Group {
-            if session.family != nil {
-                RootTabView()
-            } else if let error = session.startupError {
+            if let error = session.startupError {
                 EmptyStateView(icon: "exclamationmark.triangle", title: "Something went wrong", message: error)
             } else {
-                ProgressView("Loading…")
+                switch account.state {
+                case .checking:
+                    ProgressView("Loading…")
+                case .needsInvitation:
+                    // Level 1 gate: no family data is shown without an App Invitation.
+                    OnboardingView()
+                case .active:
+                    if session.family != nil {
+                        RootTabView()
+                    } else if session.needsFamilySetup {
+                        FamilySetupView()
+                    } else {
+                        ProgressView("Loading…")
+                    }
+                }
             }
         }
+        .animation(.default, value: account.state)
         .task {
-            guard session.family == nil else { return }
+            account.load()
+            guard !session.isLoaded else { return }
             session.start(context: context)
             if LaunchOptions.seedDemoData, let family = session.family {
                 DemoDataSeeder.seedIfEmpty(family: family, member: session.currentMember, context: context)
             }
             await refreshRates()
+            await account.refreshIfDue()
+            await account.verifyAppleCredentialState()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
-                Task { await refreshRates() }
+                Task {
+                    await refreshRates()
+                    await account.refreshIfDue()
+                }
             }
         }
     }

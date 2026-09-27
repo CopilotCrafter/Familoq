@@ -14,7 +14,9 @@ enum BudgetModule: FamiloqModule {
         Expense.self,
         Budget.self,
         MerchantRuleRecord.self,
-        ExchangeRateCacheEntry.self
+        ExchangeRateCacheEntry.self,
+        ReceiptRecord.self,
+        ReceiptItemRecord.self
     ]
 
     static func seedDefaults(familyID: UUID, in context: ModelContext) {

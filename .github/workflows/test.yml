@@ -86,13 +86,18 @@ jobs:
           xcrun simctl install "$UDID" "$APP"
           for TAB in dashboard add scan reports family; do
             xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
-            xcrun simctl launch "$UDID" "$BUNDLE_ID" -seedDemoData YES -initialTab "$TAB"
+            xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoAccount YES -seedDemoData YES -initialTab "$TAB"
             sleep 8
             xcrun simctl io "$UDID" screenshot "build/screenshots/$TAB.png"
           done
+          # Invitation gate as a new user sees it (no demo account)
+          xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
+          xcrun simctl launch "$UDID" "$BUNDLE_ID"
+          sleep 6
+          xcrun simctl io "$UDID" screenshot "build/screenshots/onboarding.png"
           xcrun simctl ui "$UDID" appearance dark
           xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
-          xcrun simctl launch "$UDID" "$BUNDLE_ID" -initialTab dashboard
+          xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoAccount YES -initialTab dashboard
           sleep 6
           xcrun simctl io "$UDID" screenshot "build/screenshots/dashboard-dark.png"
 

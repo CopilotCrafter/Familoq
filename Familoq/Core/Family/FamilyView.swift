@@ -105,15 +105,26 @@ struct MembersView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var session: AppSession
     @Query private var members: [FamilyMember]
+    @Query private var invitations: [FamilyInvitationRecord]
     @State private var newName = ""
+    @State private var inviteNote = ""
+    @State private var lastCreated: FamilyInvitationRecord?
 
     init(family: Family) {
         self.family = family
         let fid = family.id
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid }, sort: \FamilyMember.joinedAt)
+        _invitations = Query(filter: #Predicate<FamilyInvitationRecord> { $0.familyID == fid }, sort: \FamilyInvitationRecord.createdAt, order: .reverse)
     }
 
     private var active: [FamilyMember] { members.filter(\.isActive) }
+    private var canAddMore: Bool { FamilyLimits.canAddMember(activeMemberCount: active.count, maxMembers: family.maxMembers) }
+
+    private var openInvitations: [FamilyInvitationRecord] {
+        invitations.filter {
+            FamilyInvitationRules.status(of: $0.terms, now: Date(), activeMembers: active.count, maxMembers: family.maxMembers) == .valid
+        }
+    }
 
     var body: some View {
         List {
@@ -130,38 +141,114 @@ struct MembersView: View {
                         Text(member.role.displayName).font(.caption).foregroundStyle(.secondary)
                     }
                     .swipeActions {
-                        if session.isOwner && member.role != .owner {
-                            Button("Remove", role: .destructive) {
-                                member.isActive = false
-                                try? context.save()
-                            }
+                        if session.can(.removeMembers) && member.role != .owner {
+                            Button("Remove", role: .destructive) { remove(member) }
                         }
                     }
                 }
             } footer: {
-                Text("Maximum \(family.maxMembers) members per family.")
+                Text("\(active.count) of \(family.maxMembers) members. Owners manage members, settings, categories and budgets; members add and edit their own expenses.")
             }
 
-            if session.isOwner {
-                Section("Add member") {
+            if session.can(.inviteMembers) {
+                Section {
+                    if let created = lastCreated {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(created.code)
+                                .font(.system(.title2, design: .monospaced).weight(.bold))
+                                .textSelection(.enabled)
+                            Text("Valid until \(created.expiresAt.formatted(date: .abbreviated, time: .shortened)) · one person")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            ShareLink(item: shareText(for: created)) {
+                                Label("Share invitation", systemImage: "square.and.arrow.up")
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    TextField("For whom? (optional, e.g. Carol)", text: $inviteNote)
+                    Button {
+                        createInvitation()
+                    } label: {
+                        Label("Create family invitation", systemImage: "person.badge.plus")
+                    }
+                    .disabled(!canAddMore)
+                } header: {
+                    Text("Invite to family")
+                } footer: {
+                    Text(canAddMore
+                         ? "The person also needs their own Familoq invitation. Family invitations are valid for \(FamilyInvitationRules.defaultValidityDays) days and work once. Joining shares data via iCloud (next update)."
+                         : "This family has reached its member limit.")
+                }
+
+                if !openInvitations.isEmpty {
+                    Section("Open family invitations") {
+                        ForEach(openInvitations) { invitation in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(invitation.code).font(.body.monospaced())
+                                    Text("\(invitation.note.isEmpty ? "" : invitation.note + " · ")until \(invitation.expiresAt.formatted(date: .abbreviated, time: .omitted))")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                ShareLink(item: shareText(for: invitation)) { Image(systemName: "square.and.arrow.up") }
+                                    .buttonStyle(.borderless)
+                            }
+                            .swipeActions {
+                                Button("Withdraw", role: .destructive) {
+                                    invitation.isRevoked = true
+                                    try? context.save()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Section {
                     HStack {
                         TextField("Name", text: $newName)
                         Button("Add") { addMember() }
-                            .disabled(newName.trimmingCharacters(in: .whitespaces).isEmpty
-                                      || !FamilyLimits.canAddMember(activeMemberCount: active.count, maxMembers: family.maxMembers))
+                            .disabled(newName.trimmingCharacters(in: .whitespaces).isEmpty || !canAddMore)
                     }
-                    if !FamilyLimits.canAddMember(activeMemberCount: active.count, maxMembers: family.maxMembers) {
-                        Text("This family has reached its member limit.").font(.footnote).foregroundStyle(.red)
-                    }
+                } header: {
+                    Text("Add a name without an account")
+                } footer: {
+                    Text("For tagging expenses of someone who does not use Familoq (e.g. a child).")
                 }
             }
         }
         .navigationTitle("Members")
     }
 
+    private func shareText(for invitation: FamilyInvitationRecord) -> String {
+        "Join our family \"\(family.name)\" in Familoq with this family code: \(invitation.code) (valid until \(invitation.expiresAt.formatted(date: .abbreviated, time: .omitted)))."
+    }
+
+    private func createInvitation() {
+        guard session.can(.inviteMembers), canAddMore else { return }
+        let expires = Calendar.current.date(byAdding: .day, value: FamilyInvitationRules.defaultValidityDays, to: Date()) ?? Date()
+        let invitation = FamilyInvitationRecord(
+            familyID: family.id,
+            code: InvitationCode.generate(),
+            expiresAt: expires,
+            createdByMemberID: session.currentMember?.id,
+            note: inviteNote.trimmingCharacters(in: .whitespaces)
+        )
+        context.insert(invitation)
+        try? context.save()
+        lastCreated = invitation
+        inviteNote = ""
+    }
+
+    private func remove(_ member: FamilyMember) {
+        guard session.can(.removeMembers), member.role != .owner else { return }
+        member.isActive = false
+        try? context.save()
+    }
+
     private func addMember() {
         let name = newName.trimmingCharacters(in: .whitespaces)
-        guard !name.isEmpty, FamilyLimits.canAddMember(activeMemberCount: active.count, maxMembers: family.maxMembers) else { return }
+        guard session.can(.inviteMembers), !name.isEmpty, canAddMore else { return }
         context.insert(FamilyMember(familyID: family.id, displayName: name, role: .member))
         try? context.save()
         newName = ""

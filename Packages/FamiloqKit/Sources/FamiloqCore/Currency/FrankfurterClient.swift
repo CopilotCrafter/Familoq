@@ -3,9 +3,19 @@ import Foundation
 import FoundationNetworking
 #endif
 
-/// Minimal HTTP abstraction so the rate client can be unit-tested offline.
+/// Minimal HTTP abstraction so network clients can be unit-tested offline.
 public protocol HTTPClient {
-    func get(_ url: URL) async throws -> (Data, Int)
+    /// Returns the body and the HTTP status code.
+    func send(_ request: URLRequest) async throws -> (Data, Int)
+}
+
+public extension HTTPClient {
+    func get(_ url: URL) async throws -> (Data, Int) {
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 15
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        return try await send(request)
+    }
 }
 
 public struct URLSessionHTTPClient: HTTPClient {
@@ -15,11 +25,8 @@ public struct URLSessionHTTPClient: HTTPClient {
         self.session = session
     }
 
-    public func get(_ url: URL) async throws -> (Data, Int) {
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 15
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        return try await withCheckedThrowingContinuation { continuation in
+    public func send(_ request: URLRequest) async throws -> (Data, Int) {
+        try await withCheckedThrowingContinuation { continuation in
             let task = session.dataTask(with: request) { data, response, error in
                 if let error = error {
                     continuation.resume(throwing: error)

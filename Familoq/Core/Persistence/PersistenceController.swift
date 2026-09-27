@@ -5,7 +5,7 @@ import SwiftData
 enum PersistenceController {
     /// Shared core models + the models of every enabled module.
     static var models: [any PersistentModel.Type] {
-        var all: [any PersistentModel.Type] = [Family.self, FamilyMember.self]
+        var all: [any PersistentModel.Type] = [Family.self, FamilyMember.self, FamilyInvitationRecord.self]
         for module in FamiloqModules.enabled {
             all.append(contentsOf: module.models)
         }

@@ -163,7 +163,11 @@ struct ExpenseFormView: View {
             Section("Optional") {
                 TextField("Note", text: $note, axis: .vertical)
                     .lineLimit(1...4)
-                receiptPicker
+                if let receiptID = editing?.receiptID {
+                    ReceiptLinkRow(receiptID: receiptID)
+                } else {
+                    receiptPicker
+                }
             }
 
             if let validationMessage {
@@ -418,5 +422,24 @@ struct ExpenseFormView: View {
         context.delete(editing)
         try? context.save()
         dismiss()
+    }
+}
+
+/// Opens the scanned receipt an expense was created from.
+private struct ReceiptLinkRow: View {
+    @Query private var receipts: [ReceiptRecord]
+
+    init(receiptID: UUID) {
+        _receipts = Query(filter: #Predicate<ReceiptRecord> { $0.id == receiptID })
+    }
+
+    var body: some View {
+        if let receipt = receipts.first {
+            NavigationLink {
+                ReceiptDetailView(receipt: receipt)
+            } label: {
+                Label("Scanned receipt (\(receipt.merchant))", systemImage: "doc.text.viewfinder")
+            }
+        }
     }
 }

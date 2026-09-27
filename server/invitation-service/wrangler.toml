@@ -1,0 +1,21 @@
+# Familoq invitation service - deployed by .github/workflows/invitation-service.yml
+# Secrets (TOKEN_SECRET, ADMIN_TOKEN) are set by the workflow from GitHub secrets.
+name = "familoq-invitations"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+# ROUTES_PLACEHOLDER (custom domain inserted by CI when FAMILOQ_API_DOMAIN is set)
+
+[observability]
+enabled = true
+
+[vars]
+# Bundle ID(s) allowed as "aud" in Sign in with Apple tokens (comma separated)
+APPLE_AUDIENCE = "com.carolandmartin.familoq"
+TOKEN_TTL_DAYS = "90"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "familoq-invitations"
+database_id = "00000000-0000-0000-0000-000000000000" # replaced by CI with the real ID
+migrations_dir = "migrations"

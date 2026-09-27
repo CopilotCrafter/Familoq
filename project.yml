@@ -59,7 +59,14 @@ targets:
         # The app only uses HTTPS (standard encryption) -> exempt.
         # Avoids the export-compliance question on every TestFlight upload.
         ITSAppUsesNonExemptEncryption: false
-        # Phase 2 adds: NSCameraUsageDescription
+        NSCameraUsageDescription: Familoq uses the camera to scan receipts. Images are processed on your iPhone.
+        # Invitation service base URL (Config/App.xcconfig -> FQ_INVITE_SERVICE_URL)
+        FQInvitationServiceURL: $(FQ_INVITE_SERVICE_URL)
+    entitlements:
+      path: Familoq/Familoq.entitlements
+      properties:
+        com.apple.developer.applesignin:
+          - Default
     settings:
       base:
         # Identity/signing values come from Config/App.xcconfig and, for

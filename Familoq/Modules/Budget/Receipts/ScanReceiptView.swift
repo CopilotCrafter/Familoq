@@ -1,32 +1,233 @@
 import SwiftUI
+import SwiftData
+import PhotosUI
+import UIKit
+import FamiloqCore
+import FamiloqBudget
 
-/// Phase 2 builds receipt scanning here (VisionKit document camera + Vision
-/// text recognition + item-level grocery categorisation). The grocery
-/// classifier already exists and is tested in the FamiloqBudget package.
+/// Scan tab: camera (VisionKit) or photo import -> on-device OCR -> review.
 struct ScanReceiptView: View {
     @EnvironmentObject private var session: AppSession
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                Image(systemName: "doc.viewfinder")
-                    .font(.system(size: 64))
-                    .foregroundStyle(Color.accentColor)
-                Text("Receipt scanning is coming")
-                    .font(.title3.weight(.semibold))
-                Text("Phase 2 adds on-device OCR: merchant, date & time, total, currency, VAT and individual items - e.g. chicken → Meat & Poultry, bananas → Fruits. You will confirm everything before it is saved, and the receipt's date is used for currency conversion.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                Button {
-                    session.selectedTab = .add
-                } label: {
-                    Label("Add an expense manually", systemImage: "plus.circle.fill")
-                }
-                .buttonStyle(.borderedProminent)
+            if let family = session.family {
+                ScanReceiptContent(family: family)
+            } else {
+                ProgressView()
             }
-            .padding(32)
-            .navigationTitle("Scan")
+        }
+    }
+}
+
+private struct ScanReceiptContent: View {
+    let family: Family
+
+    @EnvironmentObject private var session: AppSession
+    @Query private var categories: [ExpenseCategory]
+    @Query private var subcategories: [ExpenseSubcategory]
+    @Query private var rules: [MerchantRuleRecord]
+    @Query private var recentReceipts: [ReceiptRecord]
+
+    @State private var showScanner = false
+    @State private var photoItem: PhotosPickerItem?
+    @State private var isProcessing = false
+    @State private var errorMessage: String?
+    @State private var draft: ReceiptDraft?
+    @State private var showReview = false
+
+    init(family: Family) {
+        self.family = family
+        let fid = family.id
+        _categories = Query(filter: #Predicate<ExpenseCategory> { $0.familyID == fid }, sort: \ExpenseCategory.sortOrder)
+        _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid }, sort: \ExpenseSubcategory.sortOrder)
+        _rules = Query(filter: #Predicate<MerchantRuleRecord> { $0.familyID == fid })
+        var recent = FetchDescriptor<ReceiptRecord>(predicate: #Predicate<ReceiptRecord> { $0.familyID == fid },
+                                                    sortBy: [SortDescriptor(\ReceiptRecord.createdAt, order: .reverse)])
+        recent.fetchLimit = 10
+        _recentReceipts = Query(recent)
+    }
+
+    var body: some View {
+        List {
+            Section {
+                VStack(spacing: 14) {
+                    Image(systemName: "doc.viewfinder")
+                        .font(.system(size: 48))
+                        .foregroundStyle(Color.accentColor)
+                    Text("Scan a receipt")
+                        .font(.title3.weight(.semibold))
+                    Text("Merchant, date & time, total, currency, VAT and individual items are read on your iPhone. You check everything before it is saved.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+
+                    if DocumentScannerView.isAvailable {
+                        Button {
+                            showScanner = true
+                        } label: {
+                            Label("Scan with camera", systemImage: "camera.fill")
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 4)
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    PhotosPicker(selection: $photoItem, matching: .images) {
+                        Label("Choose a photo", systemImage: "photo.on.rectangle")
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 4)
+                    }
+                    .buttonStyle(.bordered)
+
+                    Button("No receipt? Add manually") { session.selectedTab = .add }
+                        .font(.footnote)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+            }
+
+            if isProcessing {
+                Section { ProgressView("Reading receipt…") }
+            }
+            if let errorMessage {
+                Section { Text(errorMessage).foregroundStyle(.red) }
+            }
+
+            if !recentReceipts.isEmpty {
+                Section("Recent receipts") {
+                    ForEach(recentReceipts) { receipt in
+                        NavigationLink {
+                            ReceiptDetailView(receipt: receipt)
+                        } label: {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(receipt.merchant)
+                                    Text(receipt.date.formatted(date: .abbreviated, time: .shortened))
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Text(receipt.total.currency(receipt.currencyCode)).monospacedDigit()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .navigationTitle("Scan")
+        .fullScreenCover(isPresented: $showScanner) {
+            DocumentScannerView { pages in
+                showScanner = false
+                Task { await process(pages: pages) }
+            } onCancel: {
+                showScanner = false
+            }
+            .ignoresSafeArea()
+        }
+        .onChange(of: photoItem) { _, item in
+            guard let item else { return }
+            Task {
+                defer { photoItem = nil }
+                guard let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) else {
+                    errorMessage = "The photo could not be loaded."
+                    return
+                }
+                await process(pages: [image])
+            }
+        }
+        .navigationDestination(isPresented: $showReview) {
+            if let binding = Binding($draft) {
+                ReceiptReviewView(family: family, draft: binding) {
+                    showReview = false
+                    draft = nil
+                }
+            }
+        }
+    }
+
+    private func process(pages: [UIImage]) async {
+        errorMessage = nil
+        isProcessing = true
+        defer { isProcessing = false }
+        do {
+            let fragments = try await ReceiptOCRService.recognize(pages: pages)
+            let lines = ReceiptLineAssembler.lines(from: fragments)
+            let parsed = ReceiptParser.parse(lines: lines)
+            let imageData = pages.first.flatMap { ReceiptOCRService.storageJPEG(from: $0) }
+            draft = ReceiptDrafting.draft(
+                from: parsed,
+                family: family,
+                lookup: CategoryLookup(categories: categories, subcategories: subcategories),
+                rules: rules,
+                imageData: imageData
+            )
+            showReview = true
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+}
+
+/// Stored receipt with its items (opened from Scan or from an expense).
+struct ReceiptDetailView: View {
+    let receipt: ReceiptRecord
+    @Query private var items: [ReceiptItemRecord]
+    @Query private var categories: [ExpenseCategory]
+    @Query private var subcategories: [ExpenseSubcategory]
+    @State private var showImage = false
+
+    init(receipt: ReceiptRecord) {
+        self.receipt = receipt
+        let rid = receipt.id
+        let fid = receipt.familyID
+        _items = Query(filter: #Predicate<ReceiptItemRecord> { $0.receiptID == rid }, sort: \ReceiptItemRecord.sortOrder)
+        _categories = Query(filter: #Predicate<ExpenseCategory> { $0.familyID == fid })
+        _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid })
+    }
+
+    var body: some View {
+        let lookup = CategoryLookup(categories: categories, subcategories: subcategories)
+        List {
+            Section {
+                LabeledContent("Merchant", value: receipt.merchant)
+                LabeledContent("Date", value: receipt.date.formatted(date: .abbreviated, time: .shortened))
+                LabeledContent("Total", value: receipt.total.currency(receipt.currencyCode))
+                if !receipt.vatSummary.isEmpty {
+                    LabeledContent("VAT", value: receipt.vatSummary)
+                }
+            }
+            if !items.isEmpty {
+                Section("Items") {
+                    ForEach(items) { item in
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(item.name)
+                                Text(lookup.path(categoryID: item.categoryID, subcategoryID: item.subcategoryID))
+                                    .font(.caption).foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Text(item.amount.currency(receipt.currencyCode)).monospacedDigit()
+                        }
+                    }
+                }
+            }
+            if let data = receipt.imageData, let image = UIImage(data: data) {
+                Section("Receipt image") {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 360)
+                        .onTapGesture { showImage = true }
+                }
+            }
+        }
+        .navigationTitle("Receipt")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showImage) {
+            if let data = receipt.imageData, let image = UIImage(data: data) {
+                ScrollView([.vertical, .horizontal]) {
+                    Image(uiImage: image)
+                }
+            }
         }
     }
 }
