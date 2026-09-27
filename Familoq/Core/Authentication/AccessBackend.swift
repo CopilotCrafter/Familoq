@@ -113,3 +113,20 @@ enum InvitationHashing {
             .joined()
     }
 }
+
+/// Used where iCloud cannot work: unit tests (the host app has no iCloud
+/// entitlement) and CI screenshots. Behaves like "not signed in to iCloud".
+struct UnavailableAccessBackend: AccessBackend {
+    func currentUserRecordName() async throws -> String { throw AccessError.noICloudAccount }
+    func isAdministrator() async -> Bool { false }
+    func invitationStatus(codeHash: String, now: Date) async throws -> AppInvitationStatus { throw AccessError.noICloudAccount }
+    func redeem(codeHash: String, userRecordName: String) async throws -> RedemptionOutcome { throw AccessError.noICloudAccount }
+    func hasRedemption(userRecordName: String) async throws -> Bool { throw AccessError.noICloudAccount }
+    func isRevoked(userRecordName: String) async throws -> Bool { throw AccessError.noICloudAccount }
+    func submitRequest(name: String, contact: String, message: String) async throws { throw AccessError.noICloudAccount }
+    func createInvitations(count: Int, validityDays: Int, note: String) async throws -> [String] { throw AccessError.notAdministrator }
+    func adminOverview() async throws -> AdminOverview { throw AccessError.notAdministrator }
+    func revokeInvitation(codeHash: String) async throws { throw AccessError.notAdministrator }
+    func setUserRevoked(_ revoked: Bool, userRecordName: String) async throws { throw AccessError.notAdministrator }
+    func markRequestHandled(id: String) async throws { throw AccessError.notAdministrator }
+}

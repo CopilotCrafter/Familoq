@@ -34,10 +34,17 @@ final class AccountService: ObservableObject {
 
     static func live() -> AccountService {
         #if DEBUG
+        // Unit tests run inside the app without an iCloud entitlement.
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            return AccountService(backend: UnavailableAccessBackend(), storage: InMemoryAccountStorage())
+        }
         if UserDefaults.standard.bool(forKey: "demoAccount") {
             // CI screenshots / simulator demos only - never in release builds.
             let demo = StoredAccount(userRecordName: "demo", isAdmin: false, activatedAt: Date(), lastCheckedAt: .distantFuture)
-            return AccountService(backend: CloudKitAccessBackend.live(), storage: InMemoryAccountStorage(demo))
+            return AccountService(backend: UnavailableAccessBackend(), storage: InMemoryAccountStorage(demo))
+        }
+        if UserDefaults.standard.bool(forKey: "noICloud") {
+            return AccountService(backend: UnavailableAccessBackend(), storage: InMemoryAccountStorage())
         }
         #endif
         return AccountService(backend: CloudKitAccessBackend.live(), storage: KeychainAccountStorage())

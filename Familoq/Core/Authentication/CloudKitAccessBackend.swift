@@ -16,11 +16,15 @@ final class CloudKitAccessBackend: AccessBackend {
         static let request = "FQInvitationRequest"
     }
 
-    private let container: CKContainer
+    private let containerIdentifier: String
+    /// Created on first use: CKContainer terminates the app if the build has
+    /// no iCloud entitlement (unsigned simulator/test builds), so it must
+    /// never be touched just by launching.
+    private lazy var container = CKContainer(identifier: containerIdentifier)
     private var database: CKDatabase { container.publicCloudDatabase }
 
     init(containerIdentifier: String) {
-        container = CKContainer(identifier: containerIdentifier)
+        self.containerIdentifier = containerIdentifier
     }
 
     /// Container from Info.plist (FQCloudKitContainer = iCloud.<bundle id>).
