@@ -1,0 +1,100 @@
+name: Build
+
+# Runs on every push and pull request.
+#   1. core-tests : FamiloqKit logic tests on a cheap Linux runner (fast feedback)
+#   2. ios        : generates the Xcode project, builds the iOS app and runs the
+#                   app tests on an iOS Simulator (macOS runner)
+#
+# Cost control (private repos): docs-only changes are skipped, and a newer push
+# to the same branch cancels the running build.
+
+on:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  core-tests:
+    name: Core logic tests (Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.1
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & test FamiloqKit (money, currency, budgets, categorisation, invitations, isolation)
+        working-directory: Packages/FamiloqKit
+        run: swift test --parallel
+
+  ios:
+    name: iOS build & app tests (macOS)
+    needs: core-tests
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ -n "${{ vars.XCODE_VERSION }}" ]; then
+            sudo xcode-select -s "/Applications/Xcode_${{ vars.XCODE_VERSION }}.app"
+          fi
+          xcodebuild -version
+
+      - name: Generate Xcode project (XcodeGen)
+        run: bash scripts/ci/generate-project.sh
+
+      - name: Resolve Swift packages
+        run: xcodebuild -resolvePackageDependencies -project Familoq.xcodeproj -scheme Familoq
+
+      - name: Build app and run tests on iOS Simulator
+        run: |
+          mkdir -p build
+          UDID=$(bash scripts/ci/pick-simulator.sh)
+          set -o pipefail
+          xcodebuild test \
+            -project Familoq.xcodeproj \
+            -scheme Familoq \
+            -destination "id=$UDID" \
+            -resultBundlePath build/AppTests.xcresult \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee build/xcodebuild.log | grep -E "error:|warning:|Test Case .*(failed)|Executed|\*\* (BUILD|TEST)" || true
+          # Fail the step if xcodebuild failed (grep above is only for readable logs)
+          grep -q "\*\* TEST SUCCEEDED \*\*" build/xcodebuild.log
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Familoq build"
+            echo '```'
+            grep -E "\*\* (BUILD|TEST) (SUCCEEDED|FAILED)|Executed [0-9]+ test" build/xcodebuild.log | tail -5 || echo "no log"
+            echo '```'
+            echo "Errors:"
+            echo '```'
+            grep -E "error:" build/xcodebuild.log | sort -u | head -40 || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload logs and test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-logs
+          path: |
+            build/xcodebuild.log
+            build/AppTests.xcresult
+          retention-days: 7

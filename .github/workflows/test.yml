@@ -1,0 +1,117 @@
+name: Test
+
+# Full test run + simulator screenshots, started manually (Actions tab ->
+# Test -> Run workflow) or on pull requests to main.
+#
+# Produces two artifacts you can open on Windows:
+#   * coverage report (text)
+#   * screenshots of the app running on an iPhone simulator with demo data
+#     -> see the UI without a Mac and before installing via TestFlight.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  core-tests:
+    name: Core logic tests (Linux)
+    runs-on: ubuntu-latest
+    container: swift:6.1
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test FamiloqKit
+        working-directory: Packages/FamiloqKit
+        run: swift test --parallel
+
+  app-tests-and-screenshots:
+    name: App tests, coverage & screenshots (macOS)
+    needs: core-tests
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ -n "${{ vars.XCODE_VERSION }}" ]; then
+            sudo xcode-select -s "/Applications/Xcode_${{ vars.XCODE_VERSION }}.app"
+          fi
+          xcodebuild -version
+
+      - name: Generate Xcode project
+        run: bash scripts/ci/generate-project.sh
+
+      - name: Pick simulator
+        run: echo "UDID=$(bash scripts/ci/pick-simulator.sh)" >> "$GITHUB_ENV"
+
+      - name: Run app tests with coverage
+        run: |
+          mkdir -p build
+          set -o pipefail
+          xcodebuild test \
+            -project Familoq.xcodeproj -scheme Familoq \
+            -destination "id=$UDID" \
+            -derivedDataPath build/DerivedData \
+            -resultBundlePath build/AppTests.xcresult \
+            -enableCodeCoverage YES \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build/xcodebuild.log | grep -E "error:|Test Case .*failed|Executed|\*\* TEST" || true
+          grep -q "\*\* TEST SUCCEEDED \*\*" build/xcodebuild.log
+
+      - name: Coverage report
+        if: always()
+        run: |
+          xcrun xccov view --report --only-targets build/AppTests.xcresult > build/coverage.txt || echo "no coverage" > build/coverage.txt
+          { echo "## Coverage"; echo '```'; cat build/coverage.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Take simulator screenshots with demo data
+        run: |
+          APP=$(find build/DerivedData/Build/Products/Debug-iphonesimulator -maxdepth 1 -name "Familoq.app" | head -1)
+          BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier" "$APP/Info.plist")
+          mkdir -p build/screenshots
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time "9:41" --batteryLevel 100 --cellularBars 4 || true
+          xcrun simctl install "$UDID" "$APP"
+          for TAB in dashboard add scan reports family; do
+            xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
+            xcrun simctl launch "$UDID" "$BUNDLE_ID" -seedDemoData YES -initialTab "$TAB"
+            sleep 8
+            xcrun simctl io "$UDID" screenshot "build/screenshots/$TAB.png"
+          done
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
+          xcrun simctl launch "$UDID" "$BUNDLE_ID" -initialTab dashboard
+          sleep 6
+          xcrun simctl io "$UDID" screenshot "build/screenshots/dashboard-dark.png"
+
+      - name: Upload screenshots & coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: familoq-screenshots-and-coverage
+          path: |
+            build/screenshots
+            build/coverage.txt
+          retention-days: 14
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs
+          path: |
+            build/xcodebuild.log
+            build/AppTests.xcresult
+          retention-days: 7

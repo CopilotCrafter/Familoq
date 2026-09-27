@@ -1,0 +1,112 @@
+name: Familoq
+
+# The Xcode project is GENERATED from this file by XcodeGen on the cloud Mac.
+# Familoq.xcodeproj is not committed (see .gitignore), so you only ever
+# edit this YAML file from Windows - no Xcode needed.
+# Docs: https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md
+
+options:
+  bundleIdPrefix: com.carolandmartin
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+
+# Shared xcconfig (bundle ID, version, signing variables). The release
+# workflow adds Config/Signing.generated.xcconfig (never committed).
+configFiles:
+  Debug: Config/App.xcconfig
+  Release: Config/App.xcconfig
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+
+packages:
+  FamiloqKit:
+    path: Packages/FamiloqKit
+
+targets:
+  Familoq:
+    type: application
+    platform: iOS
+    sources:
+      - path: Familoq
+        excludes:
+          - "**/README.md"
+    dependencies:
+      - package: FamiloqKit
+        product: FamiloqCore
+      - package: FamiloqKit
+        product: FamiloqBudget
+    info:
+      path: Familoq/Info.plist
+      properties:
+        CFBundleDisplayName: Familoq
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIRequiredDeviceCapabilities:
+          - arm64
+        # The app only uses HTTPS (standard encryption) -> exempt.
+        # Avoids the export-compliance question on every TestFlight upload.
+        ITSAppUsesNonExemptEncryption: false
+        # Phase 2 adds: NSCameraUsageDescription
+    settings:
+      base:
+        # Identity/signing values come from Config/App.xcconfig and, for
+        # release builds, the CI-generated Config/Signing.generated.xcconfig.
+        PRODUCT_BUNDLE_IDENTIFIER: $(FQ_BUNDLE_ID)
+        DEVELOPMENT_TEAM: $(FQ_DEVELOPMENT_TEAM)
+        CODE_SIGN_STYLE: $(FQ_CODE_SIGN_STYLE)
+        CODE_SIGN_IDENTITY: $(FQ_CODE_SIGN_IDENTITY)
+        PROVISIONING_PROFILE_SPECIFIER: $(FQ_PROVISIONING_PROFILE)
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        GENERATE_INFOPLIST_FILE: NO
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+
+  FamiloqTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: FamiloqTests
+    dependencies:
+      - target: Familoq
+      - package: FamiloqKit
+        product: FamiloqCore
+      - package: FamiloqKit
+        product: FamiloqBudget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(FQ_BUNDLE_ID).tests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
+
+schemes:
+  Familoq:
+    build:
+      targets:
+        Familoq: all
+        FamiloqTests: [test]
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Familoq
+      targets:
+        - name: FamiloqTests
+    run:
+      config: Debug
+    archive:
+      config: Release

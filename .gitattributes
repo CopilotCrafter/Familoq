@@ -1,0 +1,6 @@
+# Windows checkouts must not turn these into CRLF - the macOS/Linux CI
+# runners would fail on CRLF shell scripts and xcconfig files.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.p12 binary

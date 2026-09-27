@@ -1,0 +1,21 @@
+// App.xcconfig - project-wide build settings (app + tests).
+//
+// Edit FQ_BUNDLE_ID once, to the bundle identifier you register at
+// developer.apple.com > Certificates, IDs & Profiles > Identifiers.
+// Everything signing-related is filled in by CI.
+
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
+
+FQ_BUNDLE_ID = com.carolandmartin.familoq
+
+// Defaults for unsigned simulator builds (build / test workflows).
+FQ_DEVELOPMENT_TEAM =
+FQ_CODE_SIGN_STYLE = Automatic
+FQ_CODE_SIGN_IDENTITY = Apple Development
+FQ_PROVISIONING_PROFILE =
+
+// The release workflow writes Signing.generated.xcconfig (gitignored) with
+// the team ID, "Apple Distribution" identity, profile name and build number.
+// If the file does not exist this optional include is skipped.
+#include? "Signing.generated.xcconfig"

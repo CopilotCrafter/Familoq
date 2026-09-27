@@ -1,0 +1,191 @@
+name: Release to TestFlight
+
+# Archives, signs, exports an .ipa and uploads it to App Store Connect /
+# TestFlight - entirely on a GitHub macOS runner. No local Mac required.
+#
+# Start it: Actions tab -> "Release to TestFlight" -> Run workflow
+#       or: push a tag like v0.1.0
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions),
+# created from Windows as described in docs/02-apple-account-and-signing.md:
+#   APPLE_TEAM_ID                   10-character Team ID
+#   IOS_DIST_CERT_P12_BASE64        Apple Distribution certificate (.p12), base64
+#   IOS_DIST_CERT_PASSWORD          password of that .p12
+#   IOS_PROVISIONING_PROFILE_BASE64 App Store provisioning profile, base64
+#   ASC_KEY_ID                      App Store Connect API key ID
+#   ASC_ISSUER_ID                   App Store Connect API issuer ID
+#   ASC_PRIVATE_KEY                 contents of AuthKey_XXXX.p8
+#   KEYCHAIN_PASSWORD               any random string (temporary keychain)
+#
+# NOTHING secret is ever committed. Files are decoded into $RUNNER_TEMP and
+# deleted at the end of the job.
+
+on:
+  workflow_dispatch:
+    inputs:
+      marketing_version:
+        description: "Version shown to users (e.g. 0.1.0). Empty = value in Config/App.xcconfig"
+        required: false
+        default: ""
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  testflight:
+    name: Archive, sign & upload
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      IOS_DIST_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+      IOS_DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+      IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that all signing secrets exist
+        run: |
+          missing=0
+          for name in APPLE_TEAM_ID IOS_DIST_CERT_P12_BASE64 IOS_DIST_CERT_PASSWORD IOS_PROVISIONING_PROFILE_BASE64 ASC_KEY_ID ASC_ISSUER_ID ASC_PRIVATE_KEY KEYCHAIN_PASSWORD; do
+            if [ -z "${!name}" ]; then echo "::error::Missing secret $name"; missing=1; fi
+          done
+          [ "$missing" = 0 ] || { echo "See docs/02-apple-account-and-signing.md"; exit 1; }
+
+      - name: Select Xcode
+        run: |
+          if [ -n "${{ vars.XCODE_VERSION }}" ]; then
+            sudo xcode-select -s "/Applications/Xcode_${{ vars.XCODE_VERSION }}.app"
+          fi
+          xcodebuild -version
+
+      - name: Generate Xcode project
+        run: bash scripts/ci/generate-project.sh
+
+      - name: Install certificate and provisioning profile
+        run: |
+          CERT_PATH="$RUNNER_TEMP/dist.p12"
+          PROFILE_PATH="$RUNNER_TEMP/profile.mobileprovision"
+          KEYCHAIN_PATH="$RUNNER_TEMP/signing.keychain-db"
+
+          echo -n "$IOS_DIST_CERT_P12_BASE64" | base64 --decode > "$CERT_PATH"
+          echo -n "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$IOS_DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" > /dev/null
+          security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+
+          security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist"
+          PP_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" "$RUNNER_TEMP/profile.plist")
+          PP_NAME=$(/usr/libexec/PlistBuddy -c "Print Name" "$RUNNER_TEMP/profile.plist")
+          PP_APPID=$(/usr/libexec/PlistBuddy -c "Print Entitlements:application-identifier" "$RUNNER_TEMP/profile.plist")
+          for DIR in "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do
+            mkdir -p "$DIR"
+            cp "$PROFILE_PATH" "$DIR/$PP_UUID.mobileprovision"
+          done
+
+          BUNDLE_ID=$(grep -E '^FQ_BUNDLE_ID' Config/App.xcconfig | cut -d= -f2 | xargs)
+          if [ "$PP_APPID" != "$APPLE_TEAM_ID.$BUNDLE_ID" ]; then
+            echo "::error::Profile is for '$PP_APPID' but the app is '$APPLE_TEAM_ID.$BUNDLE_ID'. Check FQ_BUNDLE_ID in Config/App.xcconfig and the profile."
+            exit 1
+          fi
+          echo "Profile: $PP_NAME ($PP_UUID) for $PP_APPID"
+          {
+            echo "PP_NAME=$PP_NAME"
+            echo "BUNDLE_ID=$BUNDLE_ID"
+            echo "KEYCHAIN_PATH=$KEYCHAIN_PATH"
+          } >> "$GITHUB_ENV"
+
+      - name: Write signing settings and build number
+        run: |
+          BUILD_NUMBER=$(( ${{ github.run_number }} + ${{ vars.BUILD_NUMBER_OFFSET || 0 }} ))
+          VERSION="${{ github.event.inputs.marketing_version }}"
+          if [ -z "$VERSION" ] && [[ "$GITHUB_REF" == refs/tags/v* ]]; then VERSION="${GITHUB_REF#refs/tags/v}"; fi
+          {
+            echo "FQ_DEVELOPMENT_TEAM = $APPLE_TEAM_ID"
+            echo "FQ_CODE_SIGN_STYLE = Manual"
+            echo "FQ_CODE_SIGN_IDENTITY = Apple Distribution"
+            echo "FQ_PROVISIONING_PROFILE = $PP_NAME"
+            echo "CURRENT_PROJECT_VERSION = $BUILD_NUMBER"
+            if [ -n "$VERSION" ]; then echo "MARKETING_VERSION = $VERSION"; fi
+          } > Config/Signing.generated.xcconfig
+          cat Config/Signing.generated.xcconfig
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+
+      - name: Archive
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project Familoq.xcodeproj \
+            -scheme Familoq \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$RUNNER_TEMP/Familoq.xcarchive" \
+            2>&1 | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|warning:|\*\* ARCHIVE" || true
+          grep -q "\*\* ARCHIVE SUCCEEDED \*\*" "$RUNNER_TEMP/archive.log"
+
+      - name: Export signed IPA
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>export</string>
+            <key>teamID</key><string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>signingCertificate</key><string>Apple Distribution</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${BUNDLE_ID}</key><string>${PP_NAME}</string>
+            </dict>
+            <key>uploadSymbols</key><true/>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Familoq.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+          ls -la "$RUNNER_TEMP/export"
+
+      - name: Keep IPA as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Familoq-ipa-build-${{ env.BUILD_NUMBER }}
+          path: ${{ runner.temp }}/export/*.ipa
+          retention-days: 14
+
+      - name: Upload to TestFlight
+        run: bash scripts/ci/upload-testflight.sh "$RUNNER_TEMP/export/Familoq.ipa"
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "## Uploaded build $BUILD_NUMBER to App Store Connect" >> "$GITHUB_STEP_SUMMARY"
+          echo "Processing takes ~5-30 min. Then open TestFlight on your iPhone." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Clean up secrets
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/signing.keychain-db" || true
+          rm -f "$RUNNER_TEMP/dist.p12" "$RUNNER_TEMP/profile.mobileprovision" "$RUNNER_TEMP/profile.plist"
+          rm -rf "$HOME/.appstoreconnect" "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
+          rm -f Config/Signing.generated.xcconfig
