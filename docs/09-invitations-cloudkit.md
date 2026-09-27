@@ -110,10 +110,10 @@ Everything is also visible in the CloudKit Console (Production → Records) as a
 1. Installs Familoq from TestFlight (later the App Store).
 2. Is signed in to iCloud on the iPhone (Settings → their name).
 3. **Enter Invitation Code** → types the code → **Activate Familoq**.
-4. **Create our family** (or join one - completes with the Phase 4 update).
+4. **Create our family** - or open the family invitation link from the family's owner (docs/10).
 
 ## Security notes
 - One-time use is enforced by iCloud itself: a second redemption record with the same name is rejected.
 - Only the FamiloqAdmin role can create invitations and revocations; a revoked person cannot remove their revocation.
-- The gate controls who may *use* the app. Family data is protected separately: it stays on the devices and, from Phase 4, in each family's private iCloud zone shared only with its members.
+- The gate controls who may *use* the app. Family data is protected separately: it stays on the devices and in each family's private iCloud zone, shared only with the members the owner invited (docs/10).
 - Cost: included in the Apple Developer Program; the public database quota is far above what invitation records need.

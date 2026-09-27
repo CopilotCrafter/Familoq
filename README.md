@@ -38,7 +38,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 | GitHub Actions - private repo | Free allowance, then pay per minute (macOS is the expensive part) | Builds & tests |
 | XcodeGen, Frankfurter exchange-rate API | Free | Project generation, currency rates |
 | **Apple Developer Program** | **99 USD/year** (charged in local currency) - **unavoidable** | TestFlight, App Store, signing, CloudKit |
-| iCloud / CloudKit (Phase 4) | Included with Apple's developer program; users' data counts against their iCloud storage | Sync & restore |
+| iCloud / CloudKit | Included with Apple's developer program; family data counts against the family owner's iCloud storage | Sync, sharing & restore |
 | Mac | **Not required** | - |
 
 Details and current numbers: [docs/01-no-mac-strategy.md](docs/01-no-mac-strategy.md).
@@ -96,11 +96,11 @@ git push                                  # -> GitHub Actions builds & tests aut
 
 ## Phase 2 - receipts
 - Scan with the VisionKit document camera (multi-page) or import a photo
-- On-device OCR (Vision, German + English); nothing leaves the iPhone
+- On-device OCR (Vision, automatic language detection - receipts from any country); nothing leaves the iPhone
 - Recognises merchant, date & time, total, currency, VAT, items, discounts, quantities, deposit (Pfand)
 - Review screen: correct everything; item-level grocery subcategories or "categorize entire receipt"
 - Receipt image + items stored; expenses grouped per subcategory and linked to the receipt
-- Foreign receipts converted with the ECB rate of the receipt date
+- Foreign receipts: currency detected from codes, symbols, phone prefixes, web addresses and tax names; if unclear, Familoq asks which currency; converted with the ECB rate of the receipt date (whole-amount currencies like JPY, KRW, HUF supported)
 
 ## Phase 3 - invite-only access & families
 - First screen: Enter Invitation Code · Request an Invitation · About - no sign-up, no guest mode
@@ -108,7 +108,7 @@ git push                                  # -> GitHub Actions builds & tests aut
 - Identity = the iCloud account; reinstall / new iPhone restores access automatically; revoked accounts are signed out
 - In-app Administration for you: create codes, revoke codes or people, read invitation requests
 - Create your family (name, your name, base currency); owner/member permissions enforced
-- Family invitation codes (7 days, single use); joining completes with iCloud sync in Phase 4
+- Family sharing through iCloud: invite by Apple Account, join by link, remove/leave, family switcher (docs/10)
 
 ## Phase 1 features
 

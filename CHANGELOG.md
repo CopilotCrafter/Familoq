@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 - Phase 4
+
+### Added
+- iCloud sync with CKSyncEngine: every family in its own CloudKit zone, offline queue, last writer wins, restore after reinstall / on a new iPhone.
+- Shared families: invite by Apple Account e-mail or phone (link works only for that person), join by link, choose your name, withdraw invitations, remove members, leave or delete a family, switch between families.
+- Owner-only settings enforced on the owner's iPhone for changes arriving from iCloud.
+- Receipts from any country: currency detection (ISO codes, symbols, phone prefixes, web addresses, tax names), "Which currency is this receipt in?" when unclear, whole-amount currencies (JPY, KRW, HUF …), year-first dates, multilingual totals, automatic OCR language detection.
+
+### Changed
+- Family invitation codes replaced by iCloud family invitations.
+- CloudKit setup: one extra record type `FQFamilyItem` (docs/10).
+
 ## 0.2.0 - Phases 2 and 3
 
 ### Added
