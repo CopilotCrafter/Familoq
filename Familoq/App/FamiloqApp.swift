@@ -23,12 +23,17 @@ struct FamiloqApp: App {
 
     var body: some Scene {
         WindowGroup {
+            #if SCHEMA_BOOTSTRAP
+            // Special one-time build for the CloudKit schema (docs/11).
+            SchemaBootstrapView()
+            #else
             RootView()
                 .environmentObject(session)
                 .environmentObject(rateService)
                 .environmentObject(account)
                 .environmentObject(sync)
                 .environmentObject(shareInbox)
+            #endif
         }
         .modelContainer(container)
     }
