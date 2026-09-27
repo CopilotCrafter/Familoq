@@ -57,7 +57,7 @@ private struct ScanReceiptContent: View {
                         .foregroundStyle(Color.accentColor)
                     Text("Scan a receipt")
                         .font(.title3.weight(.semibold))
-                    Text("Merchant, date & time, total, currency, VAT and individual items are read on your iPhone. You check everything before it is saved.")
+                    Text("Merchant, date & time, total, currency, VAT and individual items are read on your iPhone - also receipts from abroad. If the currency is unclear, Familoq asks. You check everything before it is saved.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)

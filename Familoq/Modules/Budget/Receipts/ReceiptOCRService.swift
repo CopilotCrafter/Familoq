@@ -36,7 +36,10 @@ enum ReceiptOCRService {
             request.recognitionLevel = .accurate
             // Prices and article abbreviations must not be "corrected".
             request.usesLanguageCorrection = false
-            request.recognitionLanguages = ["de-DE", "en-US"]
+            // Receipts can come from any country: let Vision detect the
+            // script, preferring the iPhone's languages, then common ones.
+            request.automaticallyDetectsLanguage = true
+            request.recognitionLanguages = ReceiptOCRService.preferredLanguages(supported: (try? request.supportedRecognitionLanguages()) ?? [])
             let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
             try handler.perform([request])
             let observations = request.results ?? []
@@ -54,6 +57,22 @@ enum ReceiptOCRService {
                 )
             }
         }.value
+    }
+
+    /// iPhone languages first, then German/English and other supported
+    /// Latin-script languages. Vision's automatic detection handles
+    /// Chinese, Japanese, Korean, Thai, Arabic, Cyrillic … on its own.
+    static func preferredLanguages(supported: [String]) -> [String] {
+        let wanted = Locale.preferredLanguages + ["de-DE", "en-US", "fr-FR", "it-IT", "es-ES", "pt-BR", "nl-NL", "pl-PL", "cs-CZ", "sv-SE", "da-DK", "nb-NO", "tr-TR"]
+        var result: [String] = []
+        for language in wanted {
+            let prefix = String(language.prefix(2))
+            if let match = supported.first(where: { $0 == language }) ?? supported.first(where: { $0.hasPrefix(prefix) }),
+               !result.contains(match) {
+                result.append(match)
+            }
+        }
+        return result.isEmpty ? ["de-DE", "en-US"] : result
     }
 
     /// Smaller JPEG for storage (receipts are kept with the expense).

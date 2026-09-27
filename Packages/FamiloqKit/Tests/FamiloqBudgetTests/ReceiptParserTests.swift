@@ -156,6 +156,67 @@ final class ReceiptParserTests: XCTestCase {
         XCTAssertNil(r.merchant)
     }
 
+    // MARK: Receipts from other countries
+
+    func testJapaneseReceiptWithWholeYenAmounts() {
+        let r = parse("""
+        ローソン 渋谷店
+        2026年09月20日(日) 14:05
+        おにぎり ¥150
+        お茶 ¥140
+        サンドイッチ ¥398
+        合計 ¥688
+        (内消費税等 ¥50)
+        お預り ¥1,000
+        お釣り ¥312
+        """)
+        XCTAssertEqual(r.currencyCode, "JPY")
+        XCTAssertFalse(r.currency.needsConfirmation)
+        XCTAssertEqual(r.total, 688)
+        XCTAssertEqual(r.items.map(\.name), ["おにぎり", "お茶", "サンドイッチ"])
+        XCTAssertEqual(r.items.map(\.amount), [150, 140, 398])
+        XCTAssertTrue(r.itemsMatchTotal)
+        let d = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: r.date!)
+        XCTAssertEqual([d.year, d.month, d.day, d.hour, d.minute], [2026, 9, 20, 14, 5])
+    }
+
+    func testThousandsInWholeAmounts() {
+        let r = parse("Café\nKaffee 1,280円\n合計 1,280円")
+        XCTAssertEqual(r.total, 1280)
+        XCTAssertEqual(r.items.first?.amount, 1280)
+    }
+
+    func testHungarianReceipt() {
+        let r = parse("SPAR\nKenyér 459 Ft\nTej 399 Ft\nÖSSZESEN 858 Ft")
+        XCTAssertEqual(r.currencyCode, "HUF")
+        XCTAssertEqual(r.total, 858)
+        XCTAssertEqual(r.items.map(\.name), ["Kenyér", "Tej"])
+        XCTAssertTrue(r.itemsMatchTotal)
+    }
+
+    func testNorwegianReceipt() {
+        let r = parse("REMA 1000\nBrød 32,90\nMelk 21,50\nTotalt 54,40 kr\nMVA 15% 7,10\nTlf +47 22 00 00 00")
+        XCTAssertEqual(r.currencyCode, "NOK")
+        XCTAssertFalse(r.currency.needsConfirmation)
+        XCTAssertEqual(r.total, dec("54.40"))
+        XCTAssertEqual(r.items.map(\.name), ["Brød", "Melk"])
+    }
+
+    func testDollarReceiptAsksForCurrency() {
+        let r = parse("Joe's Diner\nBurger $12.50\nTotal $12.50")
+        XCTAssertEqual(r.currencyCode, "USD")
+        XCTAssertTrue(r.currency.needsConfirmation)
+        XCTAssertTrue(r.warnings.contains("Please confirm the currency"))
+        XCTAssertEqual(r.items.map(\.name), ["Burger"])
+        XCTAssertEqual(r.total, dec("12.50"))
+    }
+
+    func testUnknownCurrencyAsks() {
+        let r = parse("Shop\nBrot 2,50\nSumme 2,50")
+        XCTAssertNil(r.currencyCode)
+        XCTAssertTrue(r.warnings.contains("Currency not recognised - please choose it"))
+    }
+
     // MARK: Line assembly from OCR fragments
 
     func testFragmentsOnSameRowAreJoined() {
@@ -175,5 +236,19 @@ final class ReceiptParserTests: XCTestCase {
             OCRFragment(text: "Brot 5,00", x: 0.1, y: 0.9, width: 0.5, height: 0.02, page: 0)
         ]
         XCTAssertEqual(ReceiptLineAssembler.lines(from: fragments), ["Brot 5,00", "Summe 5,00"])
+    }
+}
+
+extension ReceiptParserTests {
+    func testChosenCurrencyReparsesWholeAmounts() {
+        // No currency printed: read as decimals first, then as yen once chosen.
+        let lines = ["Shop", "Ramen 1,280", "Total 1,280"]
+        let guessed = ReceiptParser.parse(lines: lines)
+        XCTAssertNil(guessed.currencyCode)
+        let yen = ReceiptParser.parse(lines: lines, currency: "jpy")
+        XCTAssertEqual(yen.currencyCode, "JPY")
+        XCTAssertFalse(yen.currency.needsConfirmation)
+        XCTAssertEqual(yen.total, 1280)
+        XCTAssertEqual(yen.items.first?.amount, 1280)
     }
 }

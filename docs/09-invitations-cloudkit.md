@@ -67,7 +67,6 @@ Names are case-sensitive - type them exactly.
 | `FQRevocation` | `recordName` | Queryable |
 | `FQInvitationLog` | `recordName` | Queryable |
 | `FQInvitationRequest` | `recordName` | Queryable |
-| `Users` | `recordName` | Queryable |
 
 Do **not** add a queryable index to `FQInvitation` - that is what keeps invitations unlistable.
 
@@ -84,14 +83,15 @@ Do **not** add a queryable index to `FQInvitation` - that is what keeps invitati
 | `FQInvitationLog` | - | - | - | Create, Read, Write |
 | `FQInvitationRequest` | - | Create | Read | Read, Write |
 
-("World" = anyone, even without iCloud; "Authenticated" = any signed-in iCloud user; "Creator" = whoever created that record.)
+(In the Console these roles are named `_world` = anyone, `_icloud` = any signed-in iCloud user ("Authenticated" above), `_creator` = whoever created that record. Leave the built-in `Users` type unchanged.)
 
 3. **Deploy to Production**: *Schema* → **Deploy Schema Changes…** → Deploy. TestFlight and App Store builds use the **Production** environment - without this step nothing works.
 
 ### G. Make yourself administrator
 1. Install the new Familoq build from TestFlight and open it once (so iCloud knows your account in Production). On the first screen tap **About Familoq** - copy **Your iCloud user ID** (starts with `_`).
-2. CloudKit Console → environment **Production** → *Data* → **Records** → database **Public** → record type **Users** → **Query Records**.
-3. Click the record whose name equals your iCloud user ID → section **Security Roles** → add **FamiloqAdmin** → Save.
+2. CloudKit Console → environment **Production** → *Data* → **Records** → database **Public** → **Fetch Records** (by record name) → record type **Users** → paste your iCloud user ID → Fetch.
+   (CloudKit does not allow a custom index on `Users`, so use *Fetch*, not *Query*.)
+3. In the record → section **Security Roles** → tick **FamiloqAdmin** (the role may be saved immediately; reopen the record to check).
 4. Back in Familoq: **Already activated? Restore access** → **Continue**. You are in - with your existing data - and *Family → Administration* appears.
 
 ---
