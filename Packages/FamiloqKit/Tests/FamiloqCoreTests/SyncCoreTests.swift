@@ -47,4 +47,59 @@ final class SyncCoreTests: XCTestCase {
         XCTAssertTrue(SyncConflictResolver.serverWins(serverModifiedAt: t, localChangedAt: nil))
         XCTAssertFalse(SyncConflictResolver.serverWins(serverModifiedAt: nil, localChangedAt: t))
     }
+
+    // MARK: Payload
+
+    func testPayloadRoundTripKeepsValuesAndFingerprint() {
+        let date = Date(timeIntervalSince1970: 1_791_000_000.123_456)
+        let id = UUID()
+        var p = SyncPayload()
+        p.set("name", "Martin & Carol")
+        p.set("amount", Int64(123_4500))
+        p.set("base", Int64?.none)
+        p.set("order", 3)
+        p.set("active", true)
+        p.set("category", id)
+        p.set("sub", UUID?.none)
+        p.set("date", date)
+
+        let back = SyncPayload(json: p.jsonString)
+        XCTAssertEqual(back, p)
+        XCTAssertEqual(back?.fingerprint, p.fingerprint)
+        XCTAssertEqual(back?.string("name"), "Martin & Carol")
+        XCTAssertEqual(back?.int64("amount"), 1_234_500)
+        XCTAssertNil(back?.optionalInt64("base"))
+        XCTAssertEqual(back?.int("order"), 3)
+        XCTAssertEqual(back?.bool("active"), true)
+        XCTAssertEqual(back?.uuid("category"), id)
+        XCTAssertNil(back?.uuid("sub"))
+        XCTAssertEqual(back?.date("date"), SyncPayload.roundTripped(date))
+    }
+
+    func testDateSurvivesRepeatedRoundTrips() {
+        let date = Date(timeIntervalSince1970: 1_791_000_000.987_654_3)
+        var a = SyncPayload()
+        a.set("d", date)
+        var b = SyncPayload()
+        b.set("d", a.date("d")!)
+        XCTAssertEqual(a.fingerprint, b.fingerprint, "re-encoding a received date must not look like a change")
+    }
+
+    func testPayloadIsOrderIndependent() {
+        var a = SyncPayload()
+        a.set("x", "1")
+        a.set("y", "2")
+        var b = SyncPayload()
+        b.set("y", "2")
+        b.set("x", "1")
+        XCTAssertEqual(a.jsonString, b.jsonString)
+    }
+
+    func testDefaultsForMissingKeys() {
+        let p = SyncPayload()
+        XCTAssertEqual(p.string("missing", default: "EUR"), "EUR")
+        XCTAssertEqual(p.int("missing", default: 6), 6)
+        XCTAssertTrue(p.bool("missing", default: true))
+        XCTAssertNil(SyncPayload(json: "not json"))
+    }
 }

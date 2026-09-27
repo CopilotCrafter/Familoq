@@ -10,7 +10,7 @@ typealias FamilyRole = MemberRole
 // * Every family-owned record carries `familyID`. All reads go through
 //   `FamilyRepository` / family-filtered @Query, never an unfiltered fetch.
 // * Records reference each other by UUID (no SwiftData relationships).
-//   This keeps CloudKit sync (Phase 4, CKSyncEngine), export/import (Phase 5)
+//   This keeps CloudKit sync (CKSyncEngine, see Core/Sync), export/import (Phase 5)
 //   and family isolation simple and explicit.
 // * Every stored property has a default value and there are no unique
 //   constraints -> the schema stays CloudKit-compatible.
@@ -42,17 +42,21 @@ final class FamilyMember {
     var displayName: String = ""
     var roleRaw: String = "member"
     var isActive: Bool = true
-    /// The person using this device. Phase 3 replaces this with the
-    /// activated iCloud user of this device.
+    /// The person using this iPhone. Local only - worked out from
+    /// `cloudUserRecordName` on every device (never synced).
     var isCurrentUser: Bool = false
     var joinedAt: Date = Date()
+    /// iCloud user record name of the person ("" for names without an
+    /// account, e.g. children). Identifies "me" on each iPhone.
+    var cloudUserRecordName: String = ""
 
-    init(id: UUID = UUID(), familyID: UUID, displayName: String, role: FamilyRole, isCurrentUser: Bool = false) {
+    init(id: UUID = UUID(), familyID: UUID, displayName: String, role: FamilyRole, isCurrentUser: Bool = false, cloudUserRecordName: String = "") {
         self.id = id
         self.familyID = familyID
         self.displayName = displayName
         self.roleRaw = role.rawValue
         self.isCurrentUser = isCurrentUser
+        self.cloudUserRecordName = cloudUserRecordName
     }
 
     var role: FamilyRole {

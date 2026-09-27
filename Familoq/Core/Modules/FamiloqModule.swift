@@ -42,7 +42,8 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
 /// Contract every module implements. Adding a space later means:
 ///   1. create Familoq/Modules/<Space>/ with its models, views and services
 ///   2. add an enum conforming to FamiloqModule
-///   3. register it in `FamiloqModules.enabled`
+///   3. make its family records `SyncableRecord`s and list them in `syncHandlers`
+///   4. register it in `FamiloqModules.enabled`
 /// Every module's records carry `familyID` and are read through
 /// `FamilyRepository`, so family isolation works the same everywhere.
 @MainActor
@@ -52,6 +53,8 @@ protocol FamiloqModule {
     static var models: [any PersistentModel.Type] { get }
     /// Default data for a newly created family.
     static func seedDefaults(familyID: UUID, in context: ModelContext)
+    /// Records shared with the family through iCloud (parents first).
+    static var syncHandlers: [SyncHandler] { get }
 }
 
 @MainActor

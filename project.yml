@@ -60,8 +60,10 @@ targets:
         # Avoids the export-compliance question on every TestFlight upload.
         ITSAppUsesNonExemptEncryption: false
         NSCameraUsageDescription: Familoq uses the camera to scan receipts. Images are processed on your iPhone.
-        # CloudKit container used for App Invitations (and family sync in Phase 4)
+        # CloudKit container: App Invitations (public DB) and family sync (private/shared DB)
         FQCloudKitContainer: iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)
+        # Lets iOS open Familoq for tapped family invitation links (CKShare)
+        CKSharingSupported: true
     entitlements:
       path: Familoq/Familoq.entitlements
       properties:

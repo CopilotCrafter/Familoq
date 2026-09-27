@@ -2,8 +2,9 @@ import Foundation
 import SwiftData
 import FamiloqCore
 
-/// Level 2 invitation into one family, created by the owner.
-/// Stored in the family's data (and, from Phase 4, in the family's iCloud zone).
+/// Family invitation codes of version 0.2 (local only, no longer created).
+/// Since 0.3 family invitations are iCloud shares (Core/Sync/FamilySharing).
+/// The model stays in the schema so existing stores open unchanged.
 @Model
 final class FamilyInvitationRecord {
     var id: UUID = UUID()
