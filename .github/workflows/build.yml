@@ -40,7 +40,15 @@ jobs:
 
       - name: Build & test FamiloqKit (money, currency, budgets, categorisation, invitations, isolation)
         working-directory: Packages/FamiloqKit
-        run: swift test --parallel
+        run: |
+          set -o pipefail
+          if ! swift test --parallel 2>&1 | tee test.log; then
+            # Surface compiler errors / failed assertions as annotations (visible without the raw log)
+            grep -E "error:|failed \(|XCTAssert" test.log | grep -v "^Test Suite" | sort -u | head -10 | while IFS= read -r line; do
+              echo "::error title=FamiloqKit::$line"
+            done
+            exit 1
+          fi
 
   ios:
     name: iOS build & app tests (macOS)
@@ -75,8 +83,13 @@ jobs:
             -resultBundlePath build/AppTests.xcresult \
             CODE_SIGNING_ALLOWED=NO \
             2>&1 | tee build/xcodebuild.log | grep -E "error:|warning:|Test Case .*(failed)|Executed|\*\* (BUILD|TEST)" || true
-          # Fail the step if xcodebuild failed (grep above is only for readable logs)
-          grep -q "\*\* TEST SUCCEEDED \*\*" build/xcodebuild.log
+          # Fail the step if xcodebuild failed; surface errors as annotations
+          if ! grep -q "\*\* TEST SUCCEEDED \*\*" build/xcodebuild.log; then
+            grep -E "error:|failed \(" build/xcodebuild.log | sed 's|.*/Familoq/||' | sort -u | head -10 | while IFS= read -r line; do
+              echo "::error title=iOS build::$line"
+            done
+            exit 1
+          fi
 
       - name: Summary
         if: always()

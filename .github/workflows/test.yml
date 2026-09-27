@@ -33,7 +33,15 @@ jobs:
       - uses: actions/checkout@v5
       - name: Test FamiloqKit
         working-directory: Packages/FamiloqKit
-        run: swift test --parallel
+        run: |
+          set -o pipefail
+          if ! swift test --parallel 2>&1 | tee test.log; then
+            # Surface compiler errors / failed assertions as annotations (visible without the raw log)
+            grep -E "error:|failed \(|XCTAssert" test.log | grep -v "^Test Suite" | sort -u | head -10 | while IFS= read -r line; do
+              echo "::error title=FamiloqKit::$line"
+            done
+            exit 1
+          fi
 
   app-tests-and-screenshots:
     name: App tests, coverage & screenshots (macOS)
