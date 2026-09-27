@@ -30,7 +30,7 @@ jobs:
     container: swift:6.1
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Test FamiloqKit
         working-directory: Packages/FamiloqKit
         run: swift test --parallel
@@ -41,7 +41,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Select Xcode
         run: |
@@ -98,7 +98,7 @@ jobs:
 
       - name: Upload screenshots & coverage
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: familoq-screenshots-and-coverage
           path: |
@@ -108,7 +108,7 @@ jobs:
 
       - name: Upload logs on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-logs
           path: |

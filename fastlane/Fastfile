@@ -1,0 +1,48 @@
+# Fastlane is used ONLY on the CI runner, ONLY for App Store submission
+# (waiting for Apple's build processing + submitting a version for review).
+# Normal TestFlight uploads use scripts/ci/upload-testflight.sh.
+#
+# Called by .github/workflows/release.yml - you never run this on Windows.
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Upload an IPA, wait until Apple has processed it, then submit it for App Store review"
+  lane :submit_to_app_store do |options|
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_PRIVATE_KEY"),
+      in_house: false
+    )
+
+    # 1. Upload and WAIT for processing (a build can only be submitted once processed).
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: options[:ipa],
+      app_identifier: options[:app_identifier],
+      skip_waiting_for_build_processing: false,
+      skip_submission: true,
+      distribute_external: false
+    )
+
+    # 2. Create/select the App Store version, attach this build, submit for review.
+    #    Listing text, screenshots, privacy answers and age rating are maintained
+    #    in App Store Connect (web) - they are required once before the first
+    #    submission (see docs/02-apple-account-and-signing.md, section 9).
+    deliver(
+      api_key: api_key,
+      app_identifier: options[:app_identifier],
+      app_version: options[:version],
+      build_number: options[:build],
+      skip_binary_upload: true,
+      skip_metadata: true,
+      skip_screenshots: true,
+      skip_app_version_update: false,
+      submit_for_review: true,
+      automatic_release: ENV["APP_STORE_AUTO_RELEASE"] == "true",
+      run_precheck_before_submit: false,
+      force: true
+    )
+  end
+end

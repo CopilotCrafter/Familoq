@@ -15,10 +15,11 @@ manual / PR to main ─▶ test.yml
                               screenshots of all 5 tabs (light) + dashboard (dark)
                               artifact: familoq-screenshots-and-coverage
 
-manual / tag v* ─▶ release.yml
+Build green on main / tag v* / manual ─▶ release.yml   (details: 08-automatic-delivery.md)
                               decode secrets -> temporary keychain
                               write Config/Signing.generated.xcconfig
                               archive -> export .ipa -> upload to TestFlight
+                              tag v*: wait for processing -> submit for App Store review
                               artifact: Familoq-ipa-build-N
                               always: delete keychain, keys, profiles
 ```

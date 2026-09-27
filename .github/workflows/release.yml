@@ -1,10 +1,17 @@
-name: Release to TestFlight
+name: Release (TestFlight / App Store)
 
-# Archives, signs, exports an .ipa and uploads it to App Store Connect /
-# TestFlight - entirely on a GitHub macOS runner. No local Mac required.
+# Fully automatic delivery - entirely on GitHub macOS runners, no local Mac.
 #
-# Start it: Actions tab -> "Release to TestFlight" -> Run workflow
-#       or: push a tag like v0.1.0
+#   push to main  -> Build workflow green -> THIS workflow -> TestFlight
+#                    (turn off with repository variable AUTO_TESTFLIGHT = false)
+#   push tag v1.2.3 -> build + TestFlight + wait for Apple processing
+#                    -> submit version 1.2.3 for App Store review
+#                    (only when repository variable APP_STORE_SUBMISSIONS = true)
+#   manual        -> Actions -> "Release (TestFlight / App Store)" -> Run workflow
+#
+# Apple reviews every App Store version (usually ~24 h). After approval the
+# version goes live automatically if variable APP_STORE_AUTO_RELEASE = true,
+# otherwise you press "Release" in App Store Connect.
 #
 # Required repository secrets (Settings -> Secrets and variables -> Actions),
 # created from Windows as described in docs/02-apple-account-and-signing.md:
@@ -17,19 +24,28 @@ name: Release to TestFlight
 #   ASC_PRIVATE_KEY                 contents of AuthKey_XXXX.p8
 #   KEYCHAIN_PASSWORD               any random string (temporary keychain)
 #
+# Until the secrets exist, automatic runs are skipped with a notice (not red).
 # NOTHING secret is ever committed. Files are decoded into $RUNNER_TEMP and
 # deleted at the end of the job.
 
 on:
-  workflow_dispatch:
-    inputs:
-      marketing_version:
-        description: "Version shown to users (e.g. 0.1.0). Empty = value in Config/App.xcconfig"
-        required: false
-        default: ""
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
+    branches: [main]
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      marketing_version:
+        description: "Version shown to users (e.g. 0.2.0). Empty = value in Config/App.xcconfig"
+        required: false
+        default: ""
+      submit_for_review:
+        description: "Also submit this version for App Store review"
+        type: boolean
+        default: false
 
 concurrency:
   group: release
@@ -39,10 +55,17 @@ permissions:
   contents: read
 
 jobs:
-  testflight:
-    name: Archive, sign & upload
-    runs-on: macos-26
-    timeout-minutes: 60
+  preflight:
+    name: Decide what to release
+    runs-on: ubuntu-latest
+    # Automatic runs only after a GREEN Build on main.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && vars.AUTO_TESTFLIGHT != 'false')
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+      submit: ${{ steps.mode.outputs.submit }}
+      version: ${{ steps.mode.outputs.version }}
     env:
       APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       IOS_DIST_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
@@ -53,15 +76,62 @@ jobs:
       ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
       KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
     steps:
-      - uses: actions/checkout@v4
-
       - name: Check that all signing secrets exist
+        id: check
         run: |
-          missing=0
+          missing=""
           for name in APPLE_TEAM_ID IOS_DIST_CERT_P12_BASE64 IOS_DIST_CERT_PASSWORD IOS_PROVISIONING_PROFILE_BASE64 ASC_KEY_ID ASC_ISSUER_ID ASC_PRIVATE_KEY KEYCHAIN_PASSWORD; do
-            if [ -z "${!name}" ]; then echo "::error::Missing secret $name"; missing=1; fi
+            if [ -z "${!name}" ]; then missing="$missing $name"; fi
           done
-          [ "$missing" = 0 ] || { echo "See docs/02-apple-account-and-signing.md"; exit 1; }
+          if [ -z "$missing" ]; then echo "ready=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "::notice::Automatic TestFlight skipped - Apple signing secrets not set yet:$missing (see docs/00-START-HERE.md, section D)"
+            exit 0
+          fi
+          echo "::error::Missing secrets:$missing - see docs/02-apple-account-and-signing.md"
+          exit 1
+
+      - name: Decide mode
+        id: mode
+        run: |
+          SUBMIT=false
+          VERSION="${{ github.event.inputs.marketing_version }}"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/v}"
+            SUBMIT=true
+          fi
+          if [ "${{ github.event.inputs.submit_for_review }}" = "true" ]; then SUBMIT=true; fi
+          if [ "$SUBMIT" = "true" ] && [ "${{ vars.APP_STORE_SUBMISSIONS }}" != "true" ]; then
+            echo "::warning::App Store submission requested but repository variable APP_STORE_SUBMISSIONS is not 'true' - uploading to TestFlight only."
+            SUBMIT=false
+          fi
+          echo "submit=$SUBMIT" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Mode: submit_for_review=$SUBMIT version='${VERSION:-from xcconfig}'"
+
+  testflight:
+    name: Archive, sign & upload
+    needs: preflight
+    if: needs.preflight.outputs.ready == 'true'
+    runs-on: macos-26
+    timeout-minutes: 90
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      IOS_DIST_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+      IOS_DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+      IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      SUBMIT_FOR_REVIEW: ${{ needs.preflight.outputs.submit }}
+      RELEASE_VERSION: ${{ needs.preflight.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # For automatic runs, release exactly the commit that the Build workflow tested.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Select Xcode
         run: |
@@ -114,8 +184,7 @@ jobs:
       - name: Write signing settings and build number
         run: |
           BUILD_NUMBER=$(( ${{ github.run_number }} + ${{ vars.BUILD_NUMBER_OFFSET || 0 }} ))
-          VERSION="${{ github.event.inputs.marketing_version }}"
-          if [ -z "$VERSION" ] && [[ "$GITHUB_REF" == refs/tags/v* ]]; then VERSION="${GITHUB_REF#refs/tags/v}"; fi
+          VERSION="$RELEASE_VERSION"
           {
             echo "FQ_DEVELOPMENT_TEAM = $APPLE_TEAM_ID"
             echo "FQ_CODE_SIGN_STYLE = Manual"
@@ -167,20 +236,40 @@ jobs:
           ls -la "$RUNNER_TEMP/export"
 
       - name: Keep IPA as workflow artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Familoq-ipa-build-${{ env.BUILD_NUMBER }}
           path: ${{ runner.temp }}/export/*.ipa
           retention-days: 14
 
       - name: Upload to TestFlight
+        if: env.SUBMIT_FOR_REVIEW != 'true'
         run: bash scripts/ci/upload-testflight.sh "$RUNNER_TEMP/export/Familoq.ipa"
+
+      - name: Upload, wait for processing and submit for App Store review
+        if: env.SUBMIT_FOR_REVIEW == 'true'
+        env:
+          APP_STORE_AUTO_RELEASE: ${{ vars.APP_STORE_AUTO_RELEASE }}
+        run: |
+          command -v fastlane >/dev/null 2>&1 || HOMEBREW_NO_AUTO_UPDATE=1 brew install fastlane
+          fastlane --version
+          VERSION=$(/usr/libexec/PlistBuddy -c "Print ApplicationProperties:CFBundleShortVersionString" "$RUNNER_TEMP/Familoq.xcarchive/Info.plist")
+          fastlane ios submit_to_app_store \
+            ipa:"$RUNNER_TEMP/export/Familoq.ipa" \
+            app_identifier:"$BUNDLE_ID" \
+            version:"$VERSION" \
+            build:"$BUILD_NUMBER"
 
       - name: Summary
         if: success()
         run: |
-          echo "## Uploaded build $BUILD_NUMBER to App Store Connect" >> "$GITHUB_STEP_SUMMARY"
-          echo "Processing takes ~5-30 min. Then open TestFlight on your iPhone." >> "$GITHUB_STEP_SUMMARY"
+          if [ "$SUBMIT_FOR_REVIEW" = "true" ]; then
+            echo "## Build $BUILD_NUMBER submitted for App Store review" >> "$GITHUB_STEP_SUMMARY"
+            echo "Apple usually reviews within ~24 h. Status: App Store Connect -> Familoq -> Distribution." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Uploaded build $BUILD_NUMBER to TestFlight" >> "$GITHUB_STEP_SUMMARY"
+            echo "Processing takes ~5-30 min. Then open TestFlight on your iPhone." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Clean up secrets
         if: always()

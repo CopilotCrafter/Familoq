@@ -10,6 +10,7 @@ name: Build
 
 on:
   push:
+    branches: ["**"]      # branches only - version tags go straight to the release workflow
     paths-ignore:
       - "docs/**"
       - "**/*.md"
@@ -33,7 +34,7 @@ jobs:
     container: swift:6.1
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build & test FamiloqKit (money, currency, budgets, categorisation, invitations, isolation)
         working-directory: Packages/FamiloqKit
@@ -45,7 +46,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Select Xcode
         run: |
@@ -91,7 +92,7 @@ jobs:
 
       - name: Upload logs and test results on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ios-build-logs
           path: |

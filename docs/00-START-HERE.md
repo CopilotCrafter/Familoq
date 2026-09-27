@@ -85,7 +85,7 @@ Then **delete the local copies** of the `.p12`, `.key` and `.p8` files, or move 
 
 ## E. First build on your iPhone (⏱ ~30-60 min total)
 
-1. GitHub -> **Actions -> Release to TestFlight -> Run workflow** (leave version empty).
+1. GitHub -> **Actions -> Release (TestFlight / App Store) -> Run workflow** (leave version empty). From then on, every green build on `main` goes to TestFlight automatically.
 2. When it is green, App Store Connect -> your app -> **TestFlight**. The build shows *Processing* (5-30 min).
 3. TestFlight -> **Internal Testing -> +** create group "Family", add yourself (your Apple ID must be a user in App Store Connect - the account holder already is).
 4. On the iPhone, open **TestFlight** -> Familoq -> **Install**.

@@ -25,6 +25,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 6. [docs/05-currency.md](docs/05-currency.md) - base currency and conversion rules.
 7. [docs/06-security-test-plan.md](docs/06-security-test-plan.md) - the 12 security scenarios and where each is tested.
 8. [docs/07-roadmap.md](docs/07-roadmap.md) - phases, and how new spaces plug in.
+9. [docs/08-automatic-delivery.md](docs/08-automatic-delivery.md) - push to `main` -> TestFlight; tag `vX.Y.Z` -> App Store review.
 
 ## Costs at a glance
 
@@ -74,6 +75,7 @@ Config/App.xcconfig               bundle ID, version, signing variables
 project.yml                       XcodeGen spec (the .xcodeproj is generated in CI)
 scripts/ci/                       CI helper scripts
 .github/workflows/                build.yml · test.yml · release.yml
+fastlane/Fastfile                 App Store submission (runs on CI only)
 docs/                             everything you need to operate the project
 ```
 
@@ -89,7 +91,7 @@ git push                                  # -> GitHub Actions builds & tests aut
 
 - **Green check** on GitHub = it compiles and all tests pass.
 - **Actions -> Test -> Run workflow** = full tests + iPhone simulator **screenshots** you can download.
-- **Actions -> Release to TestFlight -> Run workflow** = signed build on your iPhone via TestFlight ~15-40 minutes later.
+- **Merge to `main`** = new TestFlight build automatically once Build is green; **tag `vX.Y.Z`** = submitted for App Store review (see doc 08).
 
 ## Phase 1 features
 
