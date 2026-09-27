@@ -88,3 +88,43 @@ final class ReceiptPipelineTests: XCTestCase {
         XCTAssertNotNil(result.draft.imageData)
     }
 }
+
+/// Which language lists Vision accepts together (an iPhone's language
+/// settings decide what Familoq asks for).
+final class VisionLanguageComboTests: XCTestCase {
+    private func run(_ languages: [String], on image: CGImage) -> String {
+        let request = VNRecognizeTextRequest()
+        request.recognitionLevel = .accurate
+        request.usesLanguageCorrection = false
+        request.automaticallyDetectsLanguage = true
+        request.recognitionLanguages = languages
+        do {
+            try VNImageRequestHandler(cgImage: image, options: [:]).perform([request])
+            return "ok (\(request.results?.count ?? 0) texts)"
+        } catch {
+            return "ERROR \(error.localizedDescription)"
+        }
+    }
+
+    func testLanguageCombinations() throws {
+        let size = CGSize(width: 600, height: 200)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: size, format: format).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            ("Bananen 2,20 A" as NSString).draw(at: CGPoint(x: 20, y: 60), withAttributes: [.font: UIFont.systemFont(ofSize: 40)])
+        }.cgImage!
+        let supported = try VNRecognizeTextRequest().supportedRecognitionLanguages()
+        var report: [String] = []
+        for language in supported {
+            report.append("\(language): \(run(["de-DE", "en-US", language], on: image)) / first: \(run([language, "de-DE", "en-US"], on: image))")
+        }
+        report.append("ALL: \(run(supported, on: image))")
+        let familoq = ReceiptOCRService.preferredLanguages(supported: supported)
+        report.append("Familoq list \(familoq): \(run(familoq, on: image))")
+        let failures = report.filter { $0.contains("ERROR") }
+        // Visible as a CI annotation.
+        XCTAssertTrue(failures.isEmpty, "Vision rejected: " + failures.joined(separator: " | "))
+        print(report.joined(separator: "\n"))
+    }
+}
