@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 import SwiftData
 import UIKit
 import Vision
@@ -79,6 +80,68 @@ final class ReceiptPipelineTests: XCTestCase {
         ])
         let result = try await makeDraft(from: image)
         XCTAssertFalse(result.lines.isEmpty)
+    }
+
+    /// The Czech receipt from the crash report (CZK total, paid in EUR),
+    /// through OCR, parser, draft AND the check screen.
+    func testCzechReceiptWithTwoCurrenciesAndCheckScreen() async throws {
+        let image = render([
+            "ASIA CENTER",
+            "Horní Folmava 103",
+            "34532 Česká Kubice",
+            "IČ: 09497901 DIČ: CZ09497901",
+            "Účtenka: P1/26/060769 27.09.2026 15:55:17",
+            "Krevety vannamei 100/200 1kg 1x B 329.00",
+            "Celkem:",
+            "Total:              329.00 CZK",
+            "Placeno:            13.80 EUR",
+            "Vráceno:            20.00",
+            "                    6.20",
+            "Účtoval: Majitel",
+            "Způsob platby: Hotovost",
+            "[Rozpis DPH]",
+            "Sazba Celkem DPH Základ",
+            "B 12% 329.00 35.25 293.75",
+            "Zboží lze vyměnit do 14 dnů s účtenkou."
+        ], size: CGSize(width: 1100, height: 1300))
+        let container = try PersistenceController.makeContainer(inMemory: true)
+        let context = container.mainContext
+        let family = try FamilyBootstrapper.createFamily(named: "Test", ownerName: "Me", in: context)
+        let repo = FamilyRepository(context: context, familyID: family.id)
+        let fragments = try await ReceiptOCRService.recognize(pages: [image])
+        let lines = ReceiptLineAssembler.lines(from: fragments)
+        print("OCR lines:", lines)
+        let parsed = ReceiptParser.parse(lines: lines)
+        var draft = ReceiptDrafting.draft(from: parsed, family: family,
+                                          lookup: CategoryLookup(categories: try repo.categories(), subcategories: try repo.subcategories()),
+                                          rules: try repo.merchantRules(), imageData: ReceiptOCRService.storageJPEG(from: image))
+        print("Currency:", draft.currencyCode, draft.currencyConfirmed, draft.currencyCandidates, "total:", draft.totalText, "items:", draft.items.map(\.name))
+
+        // Render the check screen like the app does.
+        let session = AppSession()
+        session.start(context: context)
+        let binding = Binding(get: { draft }, set: { draft = $0 })
+        let view = NavigationStack {
+            ReceiptReviewView(family: family, draft: binding, onDone: {})
+        }
+        .environmentObject(session)
+        .environmentObject(ExchangeRateService())
+        .modelContainer(container)
+        let host = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        host.view.layoutIfNeeded()
+        try await Task.sleep(for: .milliseconds(500))
+        host.view.layoutIfNeeded()
+
+        // Choose a currency as the user would.
+        let lookup = CategoryLookup(categories: try repo.categories(), subcategories: try repo.subcategories())
+        ReceiptDrafting.applyCurrency("CZK", to: &draft, lookup: lookup)
+        XCTAssertTrue(draft.currencyConfirmed)
+        host.view.layoutIfNeeded()
+        let saved = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context)
+        XCTAssertFalse(saved.isEmpty)
     }
 
     /// Camera-sized photo (12 MP) as the document scanner delivers it.
