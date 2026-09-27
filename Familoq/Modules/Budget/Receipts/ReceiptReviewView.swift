@@ -18,6 +18,8 @@ struct ReceiptReviewView: View {
     @State private var errorMessage: String?
     @State private var showImage = false
     @State private var showDiscard = false
+    /// Item whose category is being chosen (sheet).
+    @State private var categoryPickerItemID: UUID?
 
     init(family: Family, draft: Binding<ReceiptDraft>, onDone: @escaping () -> Void) {
         self.family = family
@@ -74,6 +76,7 @@ struct ReceiptReviewView: View {
             }
 
             Section("Receipt") {
+                let _ = ScanBreadcrumb.set("the check screen - building receipt section")
                 TextField("Merchant", text: $draft.merchant)
                 DatePicker("Date & time", selection: $draft.date, displayedComponents: [.date, .hourAndMinute])
                 HStack {
@@ -137,12 +140,15 @@ struct ReceiptReviewView: View {
 
             if !draft.categorizeWholeReceipt {
                 Section {
+                    let _ = ScanBreadcrumb.set("the check screen - building items (\(draft.items.count))")
                     if draft.items.isEmpty {
                         Text("No items were recognised. Add them below or categorize the entire receipt.")
                             .font(.footnote).foregroundStyle(.secondary)
                     }
                     ForEach($draft.items) { $item in
-                        ReceiptItemEditor(item: $item, lookup: lookup, currencyCode: draft.currencyCode)
+                        ReceiptItemEditor(item: $item, lookup: lookup, currencyCode: draft.currencyCode) {
+                            categoryPickerItemID = item.id
+                        }
                     }
                     .onDelete { draft.items.remove(atOffsets: $0) }
                     Button {
@@ -171,6 +177,22 @@ struct ReceiptReviewView: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") { save() }.fontWeight(.semibold)
+            }
+        }
+        .onAppear { ScanBreadcrumb.set("the check screen - shown (currency \(draft.currencyCode), \(draft.items.count) items)") }
+        .sheet(isPresented: Binding(get: { categoryPickerItemID != nil }, set: { if !$0 { categoryPickerItemID = nil } })) {
+            if let id = categoryPickerItemID, let index = draft.items.firstIndex(where: { $0.id == id }) {
+                CategoryChoiceList(lookup: lookup,
+                                   categoryID: draft.items[index].categoryID,
+                                   subcategoryID: draft.items[index].subcategoryID) { categoryID, subcategoryID in
+                    var updated = draft
+                    updated.items[index].categoryID = categoryID
+                    updated.items[index].subcategoryID = subcategoryID
+                    draft = updated
+                    categoryPickerItemID = nil
+                } onCancel: {
+                    categoryPickerItemID = nil
+                }
             }
         }
         .confirmationDialog("Discard this scan?", isPresented: $showDiscard, titleVisibility: .visible) {
@@ -240,6 +262,7 @@ private struct ReceiptItemEditor: View {
     @Binding var item: ReceiptDraftItem
     let lookup: CategoryLookup
     let currencyCode: String
+    let onPickCategory: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -259,21 +282,8 @@ private struct ReceiptItemEditor: View {
                     .frame(width: 80)
                     .font(.body.monospacedDigit())
             }
-            Menu {
-                ForEach(lookup.activeCategories()) { category in
-                    Menu(category.name) {
-                        Button(category.name) {
-                            item.categoryID = category.id
-                            item.subcategoryID = nil
-                        }
-                        ForEach(lookup.activeSubcategories(of: category.id)) { sub in
-                            Button(sub.name) {
-                                item.categoryID = category.id
-                                item.subcategoryID = sub.id
-                            }
-                        }
-                    }
-                }
+            Button {
+                onPickCategory()
             } label: {
                 HStack(spacing: 4) {
                     if item.confidence > 0 && item.confidence < 0.7 {
@@ -281,9 +291,10 @@ private struct ReceiptItemEditor: View {
                     }
                     Text(lookup.path(categoryID: item.categoryID, subcategoryID: item.subcategoryID))
                         .font(.caption)
-                    Image(systemName: "chevron.up.chevron.down").font(.caption2)
+                    Image(systemName: "chevron.right").font(.caption2)
                 }
             }
+            .buttonStyle(.borderless)
             .disabled(!item.included)
         }
         .opacity(item.included ? 1 : 0.5)
@@ -331,6 +342,53 @@ private struct CurrencyQuestionSection: View {
                 .foregroundStyle(.orange)
         } footer: {
             Text("The receipt does not say clearly. Amounts in other currencies are converted to \(baseCurrency) with the exchange rate of the receipt date.")
+        }
+    }
+}
+
+/// Category + subcategory for one receipt item (plain list; replaces the
+/// nested menus of 0.2/0.3 that are the prime suspect for the iOS 27 crash).
+private struct CategoryChoiceList: View {
+    let lookup: CategoryLookup
+    let categoryID: UUID?
+    let subcategoryID: UUID?
+    let onChoose: (UUID, UUID?) -> Void
+    let onCancel: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(lookup.activeCategories()) { category in
+                    Section(category.name) {
+                        row(title: "\(category.name) (general)", selected: category.id == categoryID && subcategoryID == nil) {
+                            onChoose(category.id, nil)
+                        }
+                        ForEach(lookup.activeSubcategories(of: category.id)) { sub in
+                            row(title: sub.name, selected: sub.id == subcategoryID) {
+                                onChoose(category.id, sub.id)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Category")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", action: onCancel)
+                }
+            }
+        }
+    }
+
+    private func row(title: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title).foregroundStyle(.primary)
+                Spacer()
+                if selected { Image(systemName: "checkmark").foregroundStyle(Color.accentColor) }
+            }
+            .contentShape(Rectangle())
         }
     }
 }
