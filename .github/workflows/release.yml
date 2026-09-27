@@ -145,35 +145,55 @@ jobs:
 
       - name: Install certificate and provisioning profile
         run: |
+          # Every sub-step reports a readable ::error:: so problems are visible
+          # in the run summary without opening the raw log.
+          fail() { echo "::error title=Signing setup::$1"; exit 1; }
           CERT_PATH="$RUNNER_TEMP/dist.p12"
           PROFILE_PATH="$RUNNER_TEMP/profile.mobileprovision"
           KEYCHAIN_PATH="$RUNNER_TEMP/signing.keychain-db"
 
-          echo -n "$IOS_DIST_CERT_P12_BASE64" | base64 --decode > "$CERT_PATH"
-          echo -n "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$PROFILE_PATH"
+          printf '%s' "$IOS_DIST_CERT_P12_BASE64" | tr -d ' \r\n' | base64 --decode > "$CERT_PATH" 2>/dev/null \
+            || fail "IOS_DIST_CERT_P12_BASE64 is not valid base64 - copy it again with the PowerShell command"
+          printf '%s' "$IOS_PROVISIONING_PROFILE_BASE64" | tr -d ' \r\n' | base64 --decode > "$PROFILE_PATH" 2>/dev/null \
+            || fail "IOS_PROVISIONING_PROFILE_BASE64 is not valid base64 - copy it again with the PowerShell command"
+          echo "p12: $(wc -c < "$CERT_PATH") bytes, profile: $(wc -c < "$PROFILE_PATH") bytes"
+          [ "$(wc -c < "$CERT_PATH")" -gt 1000 ] || fail "Decoded .p12 is only $(wc -c < "$CERT_PATH") bytes - IOS_DIST_CERT_P12_BASE64 looks truncated or wrong"
+          [ "$(wc -c < "$PROFILE_PATH")" -gt 1000 ] || fail "Decoded profile is only $(wc -c < "$PROFILE_PATH") bytes - IOS_PROVISIONING_PROFILE_BASE64 looks truncated or wrong"
 
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          OUT=$(openssl pkcs12 -in "$CERT_PATH" -nokeys -passin "pass:$IOS_DIST_CERT_PASSWORD" 2>/dev/null | grep -i "subject" | head -1 || true)
+          if [ -z "$OUT" ]; then
+            OUT=$(openssl pkcs12 -legacy -in "$CERT_PATH" -nokeys -passin "pass:$IOS_DIST_CERT_PASSWORD" 2>/dev/null | grep -i "subject" | head -1 || true)
+          fi
+          [ -n "$OUT" ] || fail "Cannot open the .p12 with IOS_DIST_CERT_PASSWORD - wrong password, or the p12 secret is not the file you created"
+          echo "Certificate: $OUT"
+          echo "$OUT" | grep -q "Apple Distribution" || echo "::warning title=Signing setup::Certificate subject does not mention 'Apple Distribution': $OUT"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" || fail "Could not create temporary keychain"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security import "$CERT_PATH" -P "$IOS_DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          IMPORT=$(security import "$CERT_PATH" -P "$IOS_DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" 2>&1) \
+            || fail "Keychain import of the .p12 failed: $IMPORT"
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" > /dev/null
           security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
-          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+          IDS=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH")
+          echo "$IDS"
+          echo "$IDS" | grep -q "Apple Distribution" || fail "No 'Apple Distribution' signing identity after import. Found: $(echo $IDS)"
 
-          security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist"
+          security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist" 2>/dev/null \
+            || fail "IOS_PROVISIONING_PROFILE_BASE64 is not a valid .mobileprovision file"
           PP_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" "$RUNNER_TEMP/profile.plist")
           PP_NAME=$(/usr/libexec/PlistBuddy -c "Print Name" "$RUNNER_TEMP/profile.plist")
           PP_APPID=$(/usr/libexec/PlistBuddy -c "Print Entitlements:application-identifier" "$RUNNER_TEMP/profile.plist")
+          PP_TEAM=$(/usr/libexec/PlistBuddy -c "Print TeamIdentifier:0" "$RUNNER_TEMP/profile.plist")
           for DIR in "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do
             mkdir -p "$DIR"
             cp "$PROFILE_PATH" "$DIR/$PP_UUID.mobileprovision"
           done
 
+          [ "$PP_TEAM" = "$APPLE_TEAM_ID" ] || fail "APPLE_TEAM_ID is '$APPLE_TEAM_ID' but the profile belongs to team '$PP_TEAM'"
           BUNDLE_ID=$(grep -E '^FQ_BUNDLE_ID' Config/App.xcconfig | cut -d= -f2 | xargs)
-          if [ "$PP_APPID" != "$APPLE_TEAM_ID.$BUNDLE_ID" ]; then
-            echo "::error::Profile is for '$PP_APPID' but the app is '$APPLE_TEAM_ID.$BUNDLE_ID'. Check FQ_BUNDLE_ID in Config/App.xcconfig and the profile."
-            exit 1
-          fi
+          [ "$PP_APPID" = "$APPLE_TEAM_ID.$BUNDLE_ID" ] \
+            || fail "Profile is for '$PP_APPID' but the app is '$APPLE_TEAM_ID.$BUNDLE_ID' - check the App ID / FQ_BUNDLE_ID"
           echo "Profile: $PP_NAME ($PP_UUID) for $PP_APPID"
           {
             echo "PP_NAME=$PP_NAME"
