@@ -35,6 +35,8 @@ private struct ScanReceiptContent: View {
     @State private var errorMessage: String?
     @State private var draft: ReceiptDraft?
     @State private var showReview = false
+    /// Read once when the Scan tab is first created (after a crash).
+    @State private var interruptedStep: String? = ScanBreadcrumb.current
 
     init(family: Family) {
         self.family = family
@@ -50,6 +52,14 @@ private struct ScanReceiptContent: View {
 
     var body: some View {
         List {
+            if let interrupted = interruptedStep {
+                Section {
+                    Label("The last scan stopped during: \(interrupted). Please tell the developer (screenshot).", systemImage: "exclamationmark.triangle.fill")
+                        .font(.footnote)
+                        .foregroundStyle(.orange)
+                        .textSelection(.enabled)
+                }
+            }
             Section {
                 VStack(spacing: 14) {
                     Image(systemName: "doc.viewfinder")
@@ -113,6 +123,10 @@ private struct ScanReceiptContent: View {
                 }
             }
         }
+        .onAppear {
+            // Shown once; a new scan starts with a clean slate.
+            if interruptedStep != nil && !isProcessing && draft == nil { ScanBreadcrumb.clear() }
+        }
         .navigationTitle("Scan")
         .fullScreenCover(isPresented: $showScanner) {
             DocumentScannerView { pages in
@@ -139,6 +153,7 @@ private struct ScanReceiptContent: View {
                 ReceiptReviewView(family: family, draft: binding) {
                     showReview = false
                     draft = nil
+                    ScanBreadcrumb.clear()
                 }
             }
         }
@@ -148,11 +163,17 @@ private struct ScanReceiptContent: View {
         errorMessage = nil
         isProcessing = true
         defer { isProcessing = false }
+        let size = pages.first.map { "\(Int($0.size.width * $0.scale))x\(Int($0.size.height * $0.scale))" } ?? "-"
+        ScanBreadcrumb.set("text recognition (\(pages.count) page(s), \(size))")
         do {
             let fragments = try await ReceiptOCRService.recognize(pages: pages)
+            ScanBreadcrumb.set("line assembly (\(fragments.count) text pieces)")
             let lines = ReceiptLineAssembler.lines(from: fragments)
+            ScanBreadcrumb.set("reading the receipt (\(lines.count) lines)")
             let parsed = ReceiptParser.parse(lines: lines)
+            ScanBreadcrumb.set("storing the image")
             let imageData = pages.first.flatMap { ReceiptOCRService.storageJPEG(from: $0) }
+            ScanBreadcrumb.set("preparing the check screen (currency \(parsed.currencyCode ?? "?"))")
             draft = ReceiptDrafting.draft(
                 from: parsed,
                 family: family,
@@ -160,8 +181,10 @@ private struct ScanReceiptContent: View {
                 rules: rules,
                 imageData: imageData
             )
+            ScanBreadcrumb.set("the check screen (currency \(draft?.currencyCode ?? "?"), \(draft?.items.count ?? 0) items)")
             showReview = true
         } catch {
+            ScanBreadcrumb.clear()
             errorMessage = error.localizedDescription
         }
     }
@@ -229,5 +252,23 @@ struct ReceiptDetailView: View {
                 }
             }
         }
+    }
+}
+
+/// Remembers the step a scan is in. If Familoq is closed by a crash, the
+/// Scan tab shows where it stopped the next time (no crash log needed).
+enum ScanBreadcrumb {
+    private static let key = "scan.breadcrumb"
+
+    static func set(_ step: String) {
+        UserDefaults.standard.set(step, forKey: key)
+    }
+
+    static func clear() {
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+
+    static var current: String? {
+        UserDefaults.standard.string(forKey: key)
     }
 }

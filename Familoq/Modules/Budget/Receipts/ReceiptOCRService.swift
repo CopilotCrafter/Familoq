@@ -39,10 +39,11 @@ enum ReceiptOCRService {
             request.recognitionLevel = .accurate
             // Prices and article abbreviations must not be "corrected".
             request.usesLanguageCorrection = false
-            // Receipts can come from any country: let Vision detect the
-            // script, preferring the iPhone's languages, then common ones.
-            request.automaticallyDetectsLanguage = true
-            request.recognitionLanguages = ReceiptOCRService.preferredLanguages(supported: (try? request.supportedRecognitionLanguages()) ?? [])
+            // Same proven settings as 0.2: German + English models. They read
+            // every Latin-script receipt (Czech, French, …) well enough for
+            // prices, dates and currency codes. Automatic language detection
+            // is off - it is the prime suspect for the 0.3 scan crash.
+            request.recognitionLanguages = ["de-DE", "en-US"]
             let handler = VNImageRequestHandler(cgImage: cgImage, orientation: orientation, options: [:])
             try handler.perform([request])
             let observations = request.results ?? []
