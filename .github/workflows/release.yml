@@ -273,6 +273,13 @@ jobs:
           path: ${{ runner.temp }}/export/*.ipa
           retention-days: 14
 
+      - name: Keep debug symbols (to read crash reports)
+        uses: actions/upload-artifact@v5
+        with:
+          name: Familoq-dSYMs-build-${{ env.BUILD_NUMBER }}
+          path: ${{ runner.temp }}/Familoq.xcarchive/dSYMs
+          retention-days: 90
+
       - name: Upload to TestFlight
         if: env.SUBMIT_FOR_REVIEW != 'true'
         run: bash scripts/ci/upload-testflight.sh "$RUNNER_TEMP/export/Familoq.ipa"

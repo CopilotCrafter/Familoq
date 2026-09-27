@@ -28,7 +28,10 @@ enum ReceiptOCRService {
         return all
     }
 
-    static func recognize(_ image: UIImage, page: Int) async throws -> [OCRFragment] {
+    static func recognize(_ original: UIImage, page: Int) async throws -> [OCRFragment] {
+        // 48 MP photos from the library are far larger than a receipt needs;
+        // text recognition on them uses a lot of memory.
+        let image = downscaled(original, maxDimension: 3000)
         guard let cgImage = image.cgImage else { throw OCRError.unreadableImage }
         let orientation = CGImagePropertyOrientation(image.imageOrientation)
         return try await Task.detached(priority: .userInitiated) {
@@ -59,11 +62,12 @@ enum ReceiptOCRService {
         }.value
     }
 
-    /// iPhone languages first, then German/English and other supported
-    /// Latin-script languages. Vision's automatic detection handles
-    /// Chinese, Japanese, Korean, Thai, Arabic, Cyrillic … on its own.
-    static func preferredLanguages(supported: [String]) -> [String] {
-        let wanted = Locale.preferredLanguages + ["de-DE", "en-US", "fr-FR", "it-IT", "es-ES", "pt-BR", "nl-NL", "pl-PL", "cs-CZ", "sv-SE", "da-DK", "nb-NO", "tr-TR"]
+    /// At most four languages: the iPhone's first two, then German and
+    /// English. Every extra language loads another recognition model, and too
+    /// many at once can exhaust the memory of the scanner on a real iPhone.
+    /// Vision's automatic language detection covers the rest (Czech, Japanese …).
+    static func preferredLanguages(supported: [String], preferred: [String] = Locale.preferredLanguages) -> [String] {
+        let wanted = Array(preferred.prefix(2)) + ["de-DE", "en-US"]
         var result: [String] = []
         for language in wanted {
             let prefix = String(language.prefix(2))
@@ -77,12 +81,25 @@ enum ReceiptOCRService {
 
     /// Smaller JPEG for storage (receipts are kept with the expense).
     static func storageJPEG(from image: UIImage, maxDimension: CGFloat = 1800) -> Data? {
-        let size = image.size
-        let scale = min(1, maxDimension / max(size.width, size.height))
-        let target = CGSize(width: size.width * scale, height: size.height * scale)
-        let renderer = UIGraphicsImageRenderer(size: target)
-        let resized = renderer.image { _ in image.draw(in: CGRect(origin: .zero, size: target)) }
-        return resized.jpegData(compressionQuality: 0.6)
+        downscaled(image, maxDimension: maxDimension).jpegData(compressionQuality: 0.6)
+    }
+
+    /// Resized copy in real pixels (scale 1 - the default renderer would use
+    /// the screen scale and create an image 3x larger than asked for).
+    static func downscaled(_ image: UIImage, maxDimension: CGFloat) -> UIImage {
+        let pixelWidth = image.size.width * image.scale
+        let pixelHeight = image.size.height * image.scale
+        let longest = max(pixelWidth, pixelHeight)
+        guard longest > maxDimension else { return image }
+        let factor = maxDimension / longest
+        let target = CGSize(width: (pixelWidth * factor).rounded(), height: (pixelHeight * factor).rounded())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        return autoreleasepool {
+            UIGraphicsImageRenderer(size: target, format: format).image { _ in
+                image.draw(in: CGRect(origin: .zero, size: target))
+            }
+        }
     }
 }
 
