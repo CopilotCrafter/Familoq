@@ -100,14 +100,29 @@ extension SyncCoordinator {
     }
 
     private func save(_ share: CKShare) async throws -> CKShare {
-        let result = try await container.privateCloudDatabase.modifyRecords(saving: [share], deleting: [])
+        let result: (saveResults: [CKRecord.ID: Result<CKRecord, Error>], deleteResults: [CKRecord.ID: Result<Void, Error>])
+        do {
+            result = try await container.privateCloudDatabase.modifyRecords(saving: [share], deleting: [])
+        } catch {
+            throw Self.explain(error)
+        }
         guard let saveResult = result.saveResults[share.recordID] else { return share }
         switch saveResult {
         case .success(let record):
             return (record as? CKShare) ?? share
         case .failure(let error):
-            throw error
+            throw Self.explain(error)
         }
+    }
+
+    /// CloudKit's own messages are cryptic; name the known setup problem.
+    static func explain(_ error: Error) -> Error {
+        let text = "\(error)"
+        if text.contains("cloudkit.share") || text.contains("production schema") {
+            return NSError(domain: "Familoq", code: 1, userInfo: [NSLocalizedDescriptionKey:
+                "iCloud is not prepared for family invitations yet (record type cloudkit.share is missing in the Production schema). The administrator has to run the one-time CloudKit schema build - see docs/11-cloudkit-share-schema.md."])
+        }
+        return error
     }
 
     // MARK: Joining

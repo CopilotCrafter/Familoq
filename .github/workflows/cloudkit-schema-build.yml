@@ -1,0 +1,151 @@
+name: CloudKit schema build (one-time, Ad Hoc)
+
+# ONE-TIME helper - see docs/11-cloudkit-share-schema.md.
+#
+# CloudKit creates the system record type "cloudkit.share" only when a share
+# is saved in the DEVELOPMENT environment, and TestFlight always talks to
+# PRODUCTION. This workflow builds a special Familoq ("Prepare iCloud schema"
+# screen only) that talks to DEVELOPMENT, signed Ad Hoc for your registered
+# iPhone. You install it once from Windows (iMazing), tap the button, deploy
+# the schema in the CloudKit Console, and reinstall Familoq from TestFlight.
+#
+# Extra secret (besides the release secrets):
+#   IOS_ADHOC_PROFILE_BASE64   Ad Hoc provisioning profile for the app, base64
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adhoc:
+    name: Build Ad Hoc IPA (CloudKit Development)
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      IOS_DIST_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+      IOS_DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+      IOS_ADHOC_PROFILE_BASE64: ${{ secrets.IOS_ADHOC_PROFILE_BASE64 }}
+      KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check secrets
+        run: |
+          for name in APPLE_TEAM_ID IOS_DIST_CERT_P12_BASE64 IOS_DIST_CERT_PASSWORD IOS_ADHOC_PROFILE_BASE64 KEYCHAIN_PASSWORD; do
+            if [ -z "${!name}" ]; then echo "::error title=Missing secret::$name is not set (docs/11-cloudkit-share-schema.md)"; exit 1; fi
+          done
+
+      - name: Generate Xcode project
+        run: bash scripts/ci/generate-project.sh
+
+      - name: Install certificate and Ad Hoc profile
+        run: |
+          fail() { echo "::error title=Signing setup::$1"; exit 1; }
+          CERT_PATH="$RUNNER_TEMP/dist.p12"
+          PROFILE_PATH="$RUNNER_TEMP/adhoc.mobileprovision"
+          KEYCHAIN_PATH="$RUNNER_TEMP/signing.keychain-db"
+          printf '%s' "$IOS_DIST_CERT_P12_BASE64" | tr -d ' \r\n' | base64 --decode > "$CERT_PATH" || fail "IOS_DIST_CERT_P12_BASE64 is not valid base64"
+          printf '%s' "$IOS_ADHOC_PROFILE_BASE64" | tr -d ' \r\n' | base64 --decode > "$PROFILE_PATH" || fail "IOS_ADHOC_PROFILE_BASE64 is not valid base64"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$IOS_DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" \
+            || fail "The .p12 could not be opened with IOS_DIST_CERT_PASSWORD"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" > /dev/null
+          security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
+
+          security cms -D -i "$PROFILE_PATH" > "$RUNNER_TEMP/profile.plist" 2>/dev/null || fail "IOS_ADHOC_PROFILE_BASE64 is not a .mobileprovision file"
+          PP_UUID=$(/usr/libexec/PlistBuddy -c "Print UUID" "$RUNNER_TEMP/profile.plist")
+          PP_NAME=$(/usr/libexec/PlistBuddy -c "Print Name" "$RUNNER_TEMP/profile.plist")
+          PP_APPID=$(/usr/libexec/PlistBuddy -c "Print Entitlements:application-identifier" "$RUNNER_TEMP/profile.plist")
+          /usr/libexec/PlistBuddy -c "Print ProvisionedDevices:0" "$RUNNER_TEMP/profile.plist" >/dev/null 2>&1 \
+            || fail "This profile has no devices - it must be an Ad Hoc profile with your iPhone selected"
+          /usr/libexec/PlistBuddy -c "Print Entitlements:com.apple.developer.icloud-container-environment" "$RUNNER_TEMP/profile.plist" || true
+          for DIR in "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do
+            mkdir -p "$DIR"
+            cp "$PROFILE_PATH" "$DIR/$PP_UUID.mobileprovision"
+          done
+          BUNDLE_ID=$(grep -E '^FQ_BUNDLE_ID' Config/App.xcconfig | cut -d= -f2 | xargs)
+          [ "$PP_APPID" = "$APPLE_TEAM_ID.$BUNDLE_ID" ] || fail "Profile is for '$PP_APPID', expected '$APPLE_TEAM_ID.$BUNDLE_ID'"
+          echo "Profile: $PP_NAME ($PP_UUID), devices:"
+          /usr/libexec/PlistBuddy -c "Print ProvisionedDevices" "$RUNNER_TEMP/profile.plist"
+          { echo "PP_NAME=$PP_NAME"; echo "BUNDLE_ID=$BUNDLE_ID"; } >> "$GITHUB_ENV"
+
+      - name: Write signing settings
+        run: |
+          {
+            echo "FQ_DEVELOPMENT_TEAM = $APPLE_TEAM_ID"
+            echo "FQ_CODE_SIGN_STYLE = Manual"
+            echo "FQ_CODE_SIGN_IDENTITY = Apple Distribution"
+            echo "FQ_PROVISIONING_PROFILE = $PP_NAME"
+            echo "CURRENT_PROJECT_VERSION = 1"
+          } > Config/Signing.generated.xcconfig
+
+      - name: Archive (schema bootstrap mode)
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project Familoq.xcodeproj \
+            -scheme Familoq \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$RUNNER_TEMP/Familoq.xcarchive" \
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS=SCHEMA_BOOTSTRAP \
+            2>&1 | tee "$RUNNER_TEMP/archive.log" | grep -E "error:|\*\* ARCHIVE" || true
+          grep -q "\*\* ARCHIVE SUCCEEDED \*\*" "$RUNNER_TEMP/archive.log"
+
+      - name: Export Ad Hoc IPA for the CloudKit Development environment
+        run: |
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>release-testing</string>
+            <key>teamID</key><string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>signingCertificate</key><string>Apple Distribution</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${BUNDLE_ID}</key><string>${PP_NAME}</string>
+            </dict>
+            <key>iCloudContainerEnvironment</key><string>Development</string>
+            <key>compileBitcode</key><false/>
+            <key>thinning</key><string>&lt;none&gt;</string>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Familoq.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+          ls -la "$RUNNER_TEMP/export"
+          # Prove the IPA talks to the Development environment.
+          cd "$RUNNER_TEMP" && rm -rf check && mkdir check && cd check && unzip -q ../export/*.ipa
+          codesign -d --entitlements :- Payload/*.app 2>/dev/null | tee ent.plist | grep -A1 icloud-container-environment
+          grep -A1 icloud-container-environment ent.plist | grep -q Development \
+            || { echo "::error::IPA is not set to the CloudKit Development environment"; exit 1; }
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v5
+        with:
+          name: Familoq-CloudKit-schema-AdHoc
+          path: ${{ runner.temp }}/export/*.ipa
+          retention-days: 7
+
+      - name: Summary
+        run: |
+          echo "## Ad Hoc IPA ready" >> "$GITHUB_STEP_SUMMARY"
+          echo "Download **Familoq-CloudKit-schema-AdHoc** below, unzip, install the .ipa with iMazing, tap *Prepare iCloud schema* (docs/11)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Clean up secrets
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/signing.keychain-db" || true
+          rm -f "$RUNNER_TEMP/dist.p12" "$RUNNER_TEMP/adhoc.mobileprovision" "$RUNNER_TEMP/profile.plist"
+          rm -rf "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
+          rm -f Config/Signing.generated.xcconfig

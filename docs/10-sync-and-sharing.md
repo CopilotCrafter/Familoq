@@ -44,6 +44,8 @@ Browser only. Same container as the App Invitations (docs/09).
 4. No indexes and no security roles are needed (private and shared databases are protected by iCloud itself; roles only apply to the public database).
 5. *Schema* → **Deploy Schema Changes…** → **Deploy** (to Production). TestFlight uses Production - **without this step sync shows "iCloud rejected the data"**.
 
+**Also once:** family invitations need the system type `cloudkit.share`, which CloudKit only creates from a Development build - follow **docs/11-cloudkit-share-schema.md**.
+
 That's all. No new certificates or profiles: the iCloud capability from docs/09 already covers private and shared databases.
 
 ## Inviting a family member
