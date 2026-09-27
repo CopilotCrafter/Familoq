@@ -164,15 +164,23 @@ jobs:
           if [ -z "$OUT" ]; then
             OUT=$(openssl pkcs12 -legacy -in "$CERT_PATH" -nokeys -passin "pass:$IOS_DIST_CERT_PASSWORD" 2>/dev/null | grep -i "subject" | head -1 || true)
           fi
-          [ -n "$OUT" ] || fail "Cannot open the .p12 with IOS_DIST_CERT_PASSWORD - wrong password, or the p12 secret is not the file you created"
+          if [ -z "$OUT" ]; then
+            echo "::warning title=Signing setup::openssl could not read the .p12 with the given password (openssl $(openssl version)). Trying the macOS keychain import anyway."
+          fi
           echo "Certificate: $OUT"
           echo "$OUT" | grep -q "Apple Distribution" || echo "::warning title=Signing setup::Certificate subject does not mention 'Apple Distribution': $OUT"
 
           security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" || fail "Could not create temporary keychain"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          IMPORT=$(security import "$CERT_PATH" -P "$IOS_DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" 2>&1) \
-            || fail "Keychain import of the .p12 failed: $IMPORT"
+          PW_TRIMMED=$(printf '%s' "$IOS_DIST_CERT_PASSWORD" | tr -d '\r\n' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          if ! IMPORT=$(security import "$CERT_PATH" -P "$IOS_DIST_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" 2>&1); then
+            if [ "$PW_TRIMMED" != "$IOS_DIST_CERT_PASSWORD" ] && IMPORT2=$(security import "$CERT_PATH" -P "$PW_TRIMMED" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" 2>&1); then
+              echo "::warning title=Signing setup::IOS_DIST_CERT_PASSWORD contains extra spaces/new lines - worked after trimming; please re-save the secret without them."
+            else
+              fail "The .p12 could not be opened with IOS_DIST_CERT_PASSWORD ($IMPORT). Either the password secret is not the one used when creating the .p12, or IOS_DIST_CERT_P12_BASE64 is from a different .p12. Verify locally (see docs) and re-save the two secrets."
+            fi
+          fi
           security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" > /dev/null
           security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | tr -d '"')
           IDS=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH")
