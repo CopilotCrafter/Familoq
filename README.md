@@ -10,7 +10,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 
 | | |
 |---|---|
-| **Status** | Phase 1 of 6 - local budgeting app, CI/CD pipeline |
+| **Status** | Phases 1-3 of 6 - budgeting, receipt scanning, invite-only access |
 | **Platform** | iOS 17+ (iPhone) |
 | **Base currency** | EUR by default, switchable per family; foreign expenses converted with the ECB rate of the receipt/entry date |
 | **Privacy** | No ads, no tracking, no analytics, no third-party SDKs |
@@ -26,6 +26,7 @@ Windows PC ──push──▶ GitHub ──▶ GitHub Actions (cloud macOS) ─
 7. [docs/06-security-test-plan.md](docs/06-security-test-plan.md) - the 12 security scenarios and where each is tested.
 8. [docs/07-roadmap.md](docs/07-roadmap.md) - phases, and how new spaces plug in.
 9. [docs/08-automatic-delivery.md](docs/08-automatic-delivery.md) - push to `main` -> TestFlight; tag `vX.Y.Z` -> App Store review.
+10. [docs/09-invitation-service.md](docs/09-invitation-service.md) - App Invitations: Cloudflare setup and admin page.
 
 ## Costs at a glance
 
@@ -74,6 +75,7 @@ Packages/FamiloqKit/              pure-Swift logic, tested on Linux too
 Config/App.xcconfig               bundle ID, version, signing variables
 project.yml                       XcodeGen spec (the .xcodeproj is generated in CI)
 scripts/ci/                       CI helper scripts
+server/invitation-service/        App Invitation service (Cloudflare Worker + D1, tests, admin page)
 .github/workflows/                build.yml · test.yml · release.yml
 fastlane/Fastfile                 App Store submission (runs on CI only)
 docs/                             everything you need to operate the project
@@ -92,6 +94,21 @@ git push                                  # -> GitHub Actions builds & tests aut
 - **Green check** on GitHub = it compiles and all tests pass.
 - **Actions -> Test -> Run workflow** = full tests + iPhone simulator **screenshots** you can download.
 - **Merge to `main`** = new TestFlight build automatically once Build is green; **tag `vX.Y.Z`** = submitted for App Store review (see doc 08).
+
+## Phase 2 - receipts
+- Scan with the VisionKit document camera (multi-page) or import a photo
+- On-device OCR (Vision, German + English); nothing leaves the iPhone
+- Recognises merchant, date & time, total, currency, VAT, items, discounts, quantities, deposit (Pfand)
+- Review screen: correct everything; item-level grocery subcategories or "categorize entire receipt"
+- Receipt image + items stored; expenses grouped per subcategory and linked to the receipt
+- Foreign receipts converted with the ECB rate of the receipt date
+
+## Phase 3 - invite-only access & families
+- First screen: Enter Invitation Code · Request an Invitation · About - no sign-up, no guest mode
+- Sign in with Apple; App Invitations verified by the invitation service (docs 09)
+- Reinstall / new iPhone: sign in again with the same Apple ID; revoked accounts are signed out
+- Create your family (name, your name, base currency); owner/member permissions enforced
+- Family invitation codes (7 days, single use); joining completes with iCloud sync in Phase 4
 
 ## Phase 1 features
 

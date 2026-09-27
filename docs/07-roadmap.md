@@ -16,10 +16,10 @@ Familoq = the family's shared space. Each **space** is a module on a shared core
 
 | Phase | Scope | Status |
 |---|---|---|
-| **1** | SwiftUI project, XcodeGen, CI/CD, SwiftData, categories & subcategories, manual & quick expenses, multi-currency (EUR base), dashboard, budgets, warnings, safe-to-spend, basic reports | **built - verify via CI** |
-| 2 | Receipt scanning (VisionKit document camera), OCR (Vision), receipt parsing (merchant, date & time, total, currency, VAT, items), item-level grocery categorisation (classifier ready), confirmation screen, "categorise entire receipt as Groceries", receipt storage | next |
-| 3 | Sign in with Apple, invitation gate, App Invitation service, family creation, family invitations, membership, authorisation | |
-| 4 | CloudKit family zones + CKSyncEngine, offline queue, conflict handling, restore | |
+| **1** | SwiftUI project, XcodeGen, CI/CD, SwiftData, categories & subcategories, manual & quick expenses, multi-currency (EUR base), dashboard, budgets, warnings, safe-to-spend, basic reports | **done** (TestFlight 0.1.0) |
+| **2** | Receipt scanning (VisionKit document camera + photo import), on-device OCR (Vision), receipt parsing (merchant, date & time, total, currency, VAT, items, discounts, quantities), item-level grocery categorisation, confirmation screen, "categorise entire receipt", receipt storage | **done** (0.2.0) |
+| **3** | Sign in with Apple, invitation gate, App Invitation service (Cloudflare Worker + D1, admin page), restore/revoke, family creation, owner/member permissions, family invitation codes | **done** (0.2.0) - joining another family completes with Phase 4 sync |
+| 4 | CloudKit family zones + CKSyncEngine, offline queue, conflict handling, restore, **joining a family with a family invitation** | next |
 | 5 | Recurring & planned expenses (reserved in safe-to-spend), savings goals, full reports (trends, budget vs actual, custom range), search & filters, JSON/CSV export/import | |
 | 6 | TestFlight external beta, security test run, accessibility, performance, error handling, App Store submission | |
 

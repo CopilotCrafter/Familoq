@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 - Phases 2 and 3
+
+### Added
+- Receipt scanning: VisionKit camera, photo import, on-device Vision OCR, receipt parser (merchant, date & time, total, currency, VAT, items, discounts, quantities), review screen, item-level or whole-receipt categorisation, receipt storage linked to expenses.
+- Invite-only access: onboarding (invitation code, request, restore), Sign in with Apple with nonce, session refresh and revocation.
+- Invitation service (server/invitation-service): Cloudflare Worker + D1, admin page, 20 security tests, automatic deployment.
+- Family setup (create family), owner/member permission checks, family invitation codes.
+- CI: compiler errors and failed tests shown as annotations; onboarding screenshot.
+
 ## 0.1.0 - Phase 1 (2026-09-27)
 
 ### Added
