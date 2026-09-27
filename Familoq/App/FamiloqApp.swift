@@ -100,12 +100,11 @@ struct RootView: View {
         }
         .onChange(of: sync.remoteChangeCount) { _, _ in
             session.refresh(context: context)
+            switchToJoinedFamilyIfArrived()
         }
-        .onChange(of: sync.joinState) { _, state in
-            if case .joined(let familyID) = state {
-                session.refresh(context: context)
-                session.switchTo(familyID: familyID, context: context)
-            }
+        .onChange(of: sync.joinState) { _, _ in
+            session.refresh(context: context)
+            switchToJoinedFamilyIfArrived()
         }
         .onChange(of: shareInbox.pending) { _, _ in
             acceptPendingInvitation()
@@ -121,6 +120,17 @@ struct RootView: View {
                 sync.scanNow()
             }
         }
+    }
+
+    /// After joining, the family's data can arrive a little later than the
+    /// "joined" moment - switch to it as soon as it is on this iPhone.
+    private func switchToJoinedFamilyIfArrived() {
+        guard case .joined(let familyID) = sync.joinState else { return }
+        guard session.families.contains(where: { $0.id == familyID }) else { return }
+        if session.family?.id != familyID {
+            session.switchTo(familyID: familyID, context: context)
+        }
+        sync.joinState = .idle
     }
 
     private func startSyncIfActive() {
