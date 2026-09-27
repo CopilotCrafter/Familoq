@@ -1,0 +1,27 @@
+name: TestFlight crash reports
+
+# Reads the newest crash reports testers shared in TestFlight (App Store
+# Connect API) and shows them as annotations on this run - no Mac needed.
+# Run: Actions -> "TestFlight crash reports" -> Run workflow.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [crash-reports]
+
+permissions:
+  contents: read
+
+jobs:
+  crashes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Fetch crash reports
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+        run: |
+          pip install --quiet "pyjwt[crypto]"
+          python3 scripts/ci/testflight-crashes.py
