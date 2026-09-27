@@ -6,9 +6,39 @@ When you invite someone, Familoq saves an iCloud **share** (`CKShare`). Shares u
 
 > Error saving record … Cannot create new type cloudkit.share in production schema
 
-The fix: run a special Familoq build that talks to **Development** once, then deploy the schema to Production. About 30 minutes, from Windows, done once for the lifetime of the app.
+The fix: save one test share in **Development** once, then deploy the schema to Production. Done once for the lifetime of the app.
 
-## Steps
+## Option 1 (recommended): browser + PowerShell, Apple services only - ~10 minutes
+
+No iPhone, no extra apps. A small script talks to Apple's CloudKit Web Services (`api.apple-cloudkit.com`) as you.
+
+### 1. API token (CloudKit Console)
+https://icloud.developer.apple.com → **CloudKit Database** → container `iCloud.com.carolandmartin.familoq` → left menu **Tokens & Keys** (older console: *API Access*) → **API Tokens** → **+**
+- Name: `schema`
+- Sign-In Callback: **URL Redirect** → `http://localhost`
+- Allowed Origins: **Any domain**
+- **Save** → copy the token (a long hex string).
+
+### 2. Run the script (Windows PowerShell)
+Download `docs/scripts/cloudkit-share-schema.ps1` from GitHub (open the file → *Download raw file*) into `Downloads`, then:
+```powershell
+cd $HOME\Downloads
+powershell -ExecutionPolicy Bypass -File .\cloudkit-share-schema.ps1
+```
+1. Paste the API token.
+2. The browser opens Apple's sign-in → sign in with **your** Apple Account (tick *Keep me signed in* is fine).
+3. The browser then shows "localhost refused to connect" - expected. Copy the **whole address** from the address bar (it contains `ckWebAuthToken=`) and paste it into PowerShell.
+4. You should see four green `OK` lines.
+
+### 3. Deploy
+CloudKit Console → **Development** → *Schema* → *Record Types*: `cloudkit.share` is listed → **Deploy Schema Changes…** → **Deploy**.
+
+### 4. Tidy up and invite
+Delete the `schema` API token (Tokens & Keys → token → Delete). In Familoq: *Family → Members → Invite* again.
+
+## Option 2: special Ad Hoc app build (needs your iPhone's UDID and a tool to install an .ipa)
+
+Use only if Option 1 does not work.
 
 ### A. Your iPhone's UDID (Windows)
 1. Install **iMazing** (https://imazing.com, the free version is enough).
