@@ -37,7 +37,7 @@ struct FamilySetupView: View {
                         Label {
                             VStack(alignment: .leading) {
                                 Text("Join a family").font(.headline)
-                                Text("Someone in your family sent you a family invitation.")
+                                Text("Open the invitation link your family's owner sent you.")
                                     .font(.caption).foregroundStyle(.secondary)
                             }
                         } icon: { Image(systemName: "person.2.fill") }
@@ -52,6 +52,8 @@ struct FamilySetupView: View {
 struct CreateFamilyView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var account: AccountService
+    @EnvironmentObject private var sync: SyncCoordinator
     @State private var familyName = ""
     @State private var ownerName: String
     @State private var baseCurrency = CurrencyInfo.defaultBaseCurrency
@@ -96,56 +98,83 @@ struct CreateFamilyView: View {
                 name: familyName.trimmingCharacters(in: .whitespaces),
                 ownerName: ownerName.trimmingCharacters(in: .whitespaces),
                 baseCurrency: baseCurrency,
+                cloudUserRecordName: account.account?.userRecordName ?? "",
                 context: context
             )
+            sync.scanNow()
         } catch {
             self.error = "Could not create the family: \(error.localizedDescription)"
         }
     }
 }
 
-/// Joining another person's family means receiving THEIR data, which needs
-/// iCloud sharing (Phase 4). The code is validated now; joining completes
-/// automatically once sync ships.
+/// Joining = opening the owner's iCloud invitation link on this iPhone.
 struct JoinFamilyView: View {
-    @State private var code = ""
-    @State private var checked = false
-
-    private var isWellFormed: Bool { InvitationCode.isWellFormed(code) }
+    @EnvironmentObject private var sync: SyncCoordinator
 
     var body: some View {
         Form {
             Section {
-                TextField("XXXX-XXXX-XXXX", text: $code)
-                    .font(.system(.title3, design: .monospaced).weight(.semibold))
-                    .textInputAutocapitalization(.characters)
-                    .autocorrectionDisabled()
-                    .onChange(of: code) { _, newValue in
-                        let formatted = InvitationCode.format(String(InvitationCode.normalize(newValue).prefix(InvitationCode.length)))
-                        if formatted != newValue { code = formatted }
-                        checked = false
-                    }
+                Label("Ask the family's owner to invite you: Family → Members → Invite, with the e-mail address or phone number of your Apple Account.", systemImage: "1.circle.fill")
+                Label("Open the link they send you on this iPhone (Messages, Mail, WhatsApp …).", systemImage: "2.circle.fill")
+                Label("Familoq opens and joins the family. Choose the name your family sees.", systemImage: "3.circle.fill")
             } header: {
-                Text("Family invitation code")
+                Text("How to join")
             } footer: {
-                Text("This is the code from your family's owner - not your personal Familoq invitation.")
+                Text("The family's budget is shared between your iPhones through iCloud. Only people the owner invited can open the link.")
+            }
+            if case .joining = sync.joinState {
+                Section { ProgressView("Joining the family…") }
             }
             Section {
-                Button("Join family") { checked = true }
-                    .disabled(!isWellFormed)
-            }
-            if checked {
-                Section {
-                    Label {
-                        Text("Joining a family shares its budget between your iPhones through iCloud. This arrives with the next Familoq update - keep this code, or ask the owner for a new one then. Until then you can create your own family.")
-                    } icon: {
-                        Image(systemName: "icloud.and.arrow.down").foregroundStyle(Color.accentColor)
-                    }
-                    .font(.subheadline)
+                Button("I opened the link - check again") {
+                    Task { await sync.refresh() }
                 }
+                .disabled(!sync.isRunning)
             }
         }
         .navigationTitle("Join a family")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+/// After joining: the name the family sees for this person.
+struct JoinNameView: View {
+    let family: Family
+    @Environment(\.modelContext) private var context
+    @EnvironmentObject private var session: AppSession
+    @EnvironmentObject private var sync: SyncCoordinator
+    @State private var name = ""
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Welcome to \(family.name.isEmpty ? "the family" : family.name)!")
+                            .font(.title2.weight(.bold))
+                        Text("You joined the family's shared budget.")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 6)
+                }
+                Section {
+                    TextField("Your name", text: $name)
+                        .textContentType(.givenName)
+                } header: {
+                    Text("What should your family call you?")
+                }
+                Section {
+                    Button("Continue") {
+                        let trimmed = name.trimmingCharacters(in: .whitespaces)
+                        sync.addMe(to: family.id, name: trimmed)
+                        session.refresh(context: context)
+                    }
+                    .font(.headline)
+                    .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+            .navigationTitle("Your family")
+        }
     }
 }

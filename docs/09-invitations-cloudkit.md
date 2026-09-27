@@ -67,7 +67,6 @@ Names are case-sensitive - type them exactly.
 | `FQRevocation` | `recordName` | Queryable |
 | `FQInvitationLog` | `recordName` | Queryable |
 | `FQInvitationRequest` | `recordName` | Queryable |
-| `Users` | `recordName` | Queryable |
 
 Do **not** add a queryable index to `FQInvitation` - that is what keeps invitations unlistable.
 
@@ -84,14 +83,15 @@ Do **not** add a queryable index to `FQInvitation` - that is what keeps invitati
 | `FQInvitationLog` | - | - | - | Create, Read, Write |
 | `FQInvitationRequest` | - | Create | Read | Read, Write |
 
-("World" = anyone, even without iCloud; "Authenticated" = any signed-in iCloud user; "Creator" = whoever created that record.)
+(In the Console these roles are named `_world` = anyone, `_icloud` = any signed-in iCloud user ("Authenticated" above), `_creator` = whoever created that record. Leave the built-in `Users` type unchanged.)
 
 3. **Deploy to Production**: *Schema* → **Deploy Schema Changes…** → Deploy. TestFlight and App Store builds use the **Production** environment - without this step nothing works.
 
 ### G. Make yourself administrator
 1. Install the new Familoq build from TestFlight and open it once (so iCloud knows your account in Production). On the first screen tap **About Familoq** - copy **Your iCloud user ID** (starts with `_`).
-2. CloudKit Console → environment **Production** → *Data* → **Records** → database **Public** → record type **Users** → **Query Records**.
-3. Click the record whose name equals your iCloud user ID → section **Security Roles** → add **FamiloqAdmin** → Save.
+2. CloudKit Console → environment **Production** → *Data* → **Records** → database **Public** → **Fetch Records** (by record name) → record type **Users** → paste your iCloud user ID → Fetch.
+   (CloudKit does not allow a custom index on `Users`, so use *Fetch*, not *Query*.)
+3. In the record → section **Security Roles** → tick **FamiloqAdmin** (the role may be saved immediately; reopen the record to check).
 4. Back in Familoq: **Already activated? Restore access** → **Continue**. You are in - with your existing data - and *Family → Administration* appears.
 
 ---
@@ -110,10 +110,10 @@ Everything is also visible in the CloudKit Console (Production → Records) as a
 1. Installs Familoq from TestFlight (later the App Store).
 2. Is signed in to iCloud on the iPhone (Settings → their name).
 3. **Enter Invitation Code** → types the code → **Activate Familoq**.
-4. **Create our family** (or join one - completes with the Phase 4 update).
+4. **Create our family** - or open the family invitation link from the family's owner (docs/10).
 
 ## Security notes
 - One-time use is enforced by iCloud itself: a second redemption record with the same name is rejected.
 - Only the FamiloqAdmin role can create invitations and revocations; a revoked person cannot remove their revocation.
-- The gate controls who may *use* the app. Family data is protected separately: it stays on the devices and, from Phase 4, in each family's private iCloud zone shared only with its members.
+- The gate controls who may *use* the app. Family data is protected separately: it stays on the devices and in each family's private iCloud zone, shared only with the members the owner invited (docs/10).
 - Cost: included in the Apple Developer Program; the public database quota is far above what invitation records need.

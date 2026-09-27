@@ -34,7 +34,11 @@ public struct ParsedReceipt: Equatable, Sendable {
     public var date: Date?
     public var hasTime: Bool
     public var total: Decimal?
+    /// Best guess of the receipt currency (nil = not found). Check
+    /// `currency.needsConfirmation` before trusting it.
     public var currencyCode: String?
+    /// How sure the detection is, and which currencies to offer the user.
+    public var currency: CurrencyDetection
     public var items: [ParsedReceiptItem]
     public var vat: [ParsedVATLine]
     public var rawLines: [String]
@@ -54,6 +58,11 @@ public struct ParsedReceipt: Equatable, Sendable {
         if merchant == nil { result.append("Merchant not recognised") }
         if date == nil { result.append("Date not recognised - today is used") }
         if total == nil { result.append("Total not recognised") }
+        switch currency.confidence {
+        case .certain: break
+        case .likely: result.append("Please confirm the currency")
+        case .unknown: result.append("Currency not recognised - please choose it")
+        }
         if total != nil && !items.isEmpty && !itemsMatchTotal {
             result.append("Items do not add up to the total")
         }
@@ -65,7 +74,8 @@ public struct ParsedReceipt: Equatable, Sendable {
 /// never saves anything - the result is shown to the user for confirmation.
 ///
 /// Tuned for German supermarket receipts (Lidl, Aldi, REWE, Edeka, …) and
-/// generic English receipts:
+/// generic receipts from other countries (currency: `CurrencyDetector`;
+/// whole-number prices for JPY, KRW, HUF, …):
 ///   "Bananen            2,20 A"     -> item
 ///   "2 x 1,29"                      -> quantity for the neighbouring item
 ///   "Rabatt            -0,50"       -> reduces the previous item
@@ -77,8 +87,19 @@ public enum ReceiptParser {
 
     /// Price at the end of a line, optionally followed by currency and a tax
     /// class letter: "2,20 A", "1.234,56 €", "-0,50", "3.49 B *".
+    private static let currencySuffix = #"(?:[€£$¥￥₹₩₺₽₪฿₫₱円원]|EUR|USD|CHF|GBP|JPY|KRW|HUF|SEK|NOK|DKK|PLN|CZK|kr\.?|zł|Kč|Ft|lei|TL|,-|\.-)?"#
     private static let trailingPrice = try! NSRegularExpression(
-        pattern: #"(-?\s?\d{1,5}(?:[.,]\d{3})*[.,]\d{2})\s*(?:€|EUR|USD|\$|CHF|£)?\s*(?:[A-Z0-9]{1,2}\b)?\s*\*?\s*$"#,
+        pattern: #"(-?\s?\d{1,5}(?:[.,]\d{3})*[.,]\d{2})\s*"# + currencySuffix + #"\s*(?:[A-Z0-9]{1,2}\b)?\s*\*?\s*$"#,
+        options: [.caseInsensitive]
+    )
+    /// Whole-amount currencies: a price with decimals that is really one ("1 290,00 Ft").
+    private static let strictDecimalPrice = try! NSRegularExpression(
+        pattern: #"(-?\s?(?:\d{1,3}(?:[.,' ]\d{3})+[.,]\d{2}|\d{1,7}[.,]\d{2}))(?!\d)\s*"# + currencySuffix + #"\s*(?:[A-Z]\b)?\s*\*?\s*$"#,
+        options: [.caseInsensitive]
+    )
+    /// Whole-amount currencies: "¥1,280", "12 990 Ft", "35.000 ₫", "4500원".
+    private static let wholePrice = try! NSRegularExpression(
+        pattern: #"(-?\s?(?:\d{1,3}(?:[.,' ]\d{3})+|\d{1,7}))(?![.,]?\d)\s*"# + currencySuffix + #"\s*(?:[A-Z]\b)?\s*\*?\s*$"#,
         options: [.caseInsensitive]
     )
     private static let anyPrice = try! NSRegularExpression(pattern: #"-?\d{1,5}(?:[.,]\d{3})*[.,]\d{2}"#)
@@ -89,14 +110,25 @@ public enum ReceiptParser {
     private static let percent = try! NSRegularExpression(pattern: #"(\d{1,2}(?:[.,]\d{1,2})?)\s?%"#)
     private static let dateDMY = try! NSRegularExpression(pattern: #"\b(\d{1,2})\.(\d{1,2})\.(\d{2,4})\b"#)
     private static let dateISO = try! NSRegularExpression(pattern: #"\b(20\d{2})-(\d{2})-(\d{2})\b"#)
+    /// Year first: "2026年9月20日", "2026.09.20", "2026/09/20" (Asia, Hungary, …).
+    private static let dateYMD = try! NSRegularExpression(pattern: #"\b(20\d{2})\s?[./年]\s?(\d{1,2})\s?[./月]\s?(\d{1,2})(?:日|\b)"#)
     private static let dateSlash = try! NSRegularExpression(pattern: #"\b(\d{1,2})/(\d{1,2})/(\d{2,4})\b"#)
     private static let time = try! NSRegularExpression(pattern: #"\b([01]?\d|2[0-3]):([0-5]\d)(?::[0-5]\d)?\b"#)
 
     private static let totalKeywords = [
         "zu zahlen", "zu zahlen eur", "summe", "gesamtbetrag", "gesamt", "endbetrag", "betrag",
-        "total", "amount due", "grand total", "balance due"
+        "total", "amount due", "grand total", "balance due",
+        // other languages
+        "totale", "importo", "importe", "a pagar", "à payer", "a payer", "montant", "net à payer",
+        "totaal", "te betalen", "totalt", "att betala", "at betale", "å betale", "yhteensä",
+        "suma", "razem", "do zapłaty", "celkem", "spolu", "összesen", "fizetendő", "toplam",
+        "σύνολο", "итого", "合計", "お会計", "合计", "總計", "总计", "합계", "결제금액"
     ]
-    private static let notTotalKeywords = ["zwischensumme", "subtotal", "sub total", "netto", "mwst", "steuer", "tax"]
+    private static let notTotalKeywords = [
+        "zwischensumme", "subtotal", "sub total", "netto", "mwst", "steuer", "tax",
+        "subtotale", "sous-total", "sous total", "subtotaal", "delsumma", "mellomsum",
+        "小計", "小计", "소계", "消費税", "부가세"
+    ]
 
     /// Lines that are never items.
     private static let skipKeywords = [
@@ -108,22 +140,30 @@ public enum ReceiptParser {
         "terminal", "trace", "genehmigung", "autorisierung", "kundenbeleg", "danke", "thank",
         "www", "http", "tel", "fax", "strasse", "straße", "steuer-nr", "ust-id", "filiale",
         "payback", "punkte", "kassierer", "bediener", "zahlung", "payment", "receipt", "rechnung",
-        "posten", "artikel", "anzahl", "eur/kg", "€/kg"
+        "posten", "artikel", "anzahl", "eur/kg", "€/kg",
+        // other languages
+        "totale", "totaal", "totalt", "razem", "celkem", "összesen", "toplam", "iva", "tva", "btw",
+        "moms", "mva", "gst", "hst", "pst", "cgst", "sgst", "sous-total", "subtotale",
+        "合計", "小計", "合计", "小计", "お釣り", "お預り", "합계", "소계", "부가세"
     ]
 
     // MARK: Parse
 
-    public static func parse(lines rawLines: [String], calendar: Calendar = FamiloqCalendar.make(), now: Date = Date()) -> ParsedReceipt {
+    /// - Parameter currency: the currency the user chose; skips detection
+    ///   (amounts are then read in that currency's style, e.g. whole yen).
+    public static func parse(lines rawLines: [String], calendar: Calendar = FamiloqCalendar.make(), now: Date = Date(), currency forcedCurrency: String? = nil) -> ParsedReceipt {
         let lines = rawLines
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
 
         let (merchant, pattern) = findMerchant(lines)
         let (date, hasTime) = findDate(lines, calendar: calendar, now: now)
-        let currency = findCurrency(lines)
-        let (total, totalIndex) = findTotal(lines)
+        let currency = forcedCurrency.map { CurrencyDetection(code: CurrencyInfo.normalize($0), confidence: .certain, candidates: [CurrencyInfo.normalize($0)]) }
+            ?? CurrencyDetector.detect(lines: lines)
+        let wholeUnits = CurrencyDetector.usesWholeAmounts(currency.code)
+        let (total, totalIndex) = findTotal(lines, wholeUnits: wholeUnits)
         let vat = findVAT(lines)
-        let items = findItems(lines, totalIndex: totalIndex)
+        let items = findItems(lines, totalIndex: totalIndex, wholeUnits: wholeUnits)
 
         return ParsedReceipt(
             merchant: merchant,
@@ -131,7 +171,8 @@ public enum ReceiptParser {
             date: date,
             hasTime: hasTime,
             total: total,
-            currencyCode: currency,
+            currencyCode: currency.code,
+            currency: currency,
             items: items,
             vat: vat,
             rawLines: lines
@@ -185,6 +226,8 @@ public enum ReceiptParser {
                 comps = DateComponents(year: normaliseYear(m[3]), month: Int(m[2]), day: Int(m[1]))
             } else if let m = firstMatch(dateISO, in: line) {
                 comps = DateComponents(year: Int(m[1]), month: Int(m[2]), day: Int(m[3]))
+            } else if let m = firstMatch(dateYMD, in: line) {
+                comps = DateComponents(year: Int(m[1]), month: Int(m[2]), day: Int(m[3]))
             } else if let m = firstMatch(dateSlash, in: line), let a = Int(m[1]), let b = Int(m[2]) {
                 // dd/mm unless impossible (US mm/dd when the second number > 12).
                 comps = b > 12 ? DateComponents(year: normaliseYear(m[3]), month: a, day: b)
@@ -228,41 +271,21 @@ public enum ReceiptParser {
     // MARK: Currency
 
     static func findCurrency(_ lines: [String]) -> String? {
-        let text = " " + lines.joined(separator: " ").uppercased() + " "
-        let markers: [(String, [String])] = [
-            ("EUR", ["EUR", "€"]),
-            ("USD", ["USD", "US$", "$"]),
-            ("GBP", ["GBP", "£"]),
-            ("CHF", [" CHF", "SFR"]),
-            ("CZK", ["CZK", "KČ"]),
-            ("PLN", ["PLN", "ZŁ"]),
-            ("INR", ["INR", "₹", " RS."]),
-            ("SEK", ["SEK"]),
-            ("NOK", ["NOK"]),
-            ("DKK", ["DKK"]),
-            ("HUF", ["HUF", " FT "]),
-            ("TRY", ["TRY", "₺"])
-        ]
-        var best: (code: String, count: Int)?
-        for (code, tokens) in markers {
-            let count = tokens.reduce(0) { $0 + text.components(separatedBy: $1).count - 1 }
-            if count > 0 && (best == nil || count > best!.count) { best = (code, count) }
-        }
-        return best?.code
+        CurrencyDetector.detect(lines: lines).code
     }
 
     // MARK: Total
 
-    static func findTotal(_ lines: [String]) -> (Decimal?, Int?) {
+    static func findTotal(_ lines: [String], wholeUnits: Bool = false) -> (Decimal?, Int?) {
         for (index, line) in lines.enumerated() {
             let lower = line.lowercased()
             guard totalKeywords.contains(where: { hasPhrase($0, in: lower) }),
                   !notTotalKeywords.contains(where: { hasPhrase($0, in: lower) }) else { continue }
-            if let price = trailingPriceValue(line) {
+            if let price = trailingPriceValue(line, wholeUnits: wholeUnits) {
                 return (price, index)
             }
             // Keyword on one line, amount on the next.
-            if index + 1 < lines.count, let price = trailingPriceValue(lines[index + 1]), lines[index + 1].filter(\.isLetter).count <= 4 {
+            if index + 1 < lines.count, let price = trailingPriceValue(lines[index + 1], wholeUnits: wholeUnits), lines[index + 1].filter(\.isLetter).count <= 4 {
                 return (price, index)
             }
         }
@@ -298,7 +321,7 @@ public enum ReceiptParser {
 
     // MARK: Items
 
-    static func findItems(_ lines: [String], totalIndex: Int?) -> [ParsedReceiptItem] {
+    static func findItems(_ lines: [String], totalIndex: Int?, wholeUnits: Bool = false) -> [ParsedReceiptItem] {
         let end = totalIndex ?? lines.count
         var items: [ParsedReceiptItem] = []
         var pendingQuantity: Decimal?
@@ -323,11 +346,13 @@ public enum ReceiptParser {
                 }
             }
 
-            guard let price = trailingPriceValue(line) else { continue }
+            guard let price = trailingPriceValue(line, wholeUnits: wholeUnits) else { continue }
             if skipKeywords.contains(where: { hasPhrase($0, in: lower) }) { continue }
-            if firstMatch(dateDMY, in: line) != nil { continue }
+            if firstMatch(dateDMY, in: line) != nil || firstMatch(dateYMD, in: line) != nil { continue }
+            // Whole-amount receipts: "14:05" would otherwise look like a price of 5.
+            if wholeUnits && firstMatch(time, in: line) != nil { continue }
 
-            let name = itemName(from: line)
+            let name = itemName(from: line, wholeUnits: wholeUnits)
             let isDiscount = price < 0 || ["rabatt", "preisvorteil", "coupon", "discount", "nachlass", "aktion"].contains { lower.contains($0) }
 
             if isDiscount, let last = items.indices.last {
@@ -351,24 +376,38 @@ public enum ReceiptParser {
         return items
     }
 
-    private static func itemName(from line: String) -> String {
-        let range = NSRange(line.startIndex..., in: line)
-        var name = trailingPrice.stringByReplacingMatches(in: line, range: range, withTemplate: "")
+    private static func itemName(from line: String, wholeUnits: Bool) -> String {
+        var name = line
+        if let match = trailingPriceMatch(line, wholeUnits: wholeUnits), let range = name.range(of: match.text, options: .backwards) {
+            name.removeSubrange(range)
+        }
         // Drop leading article numbers / quantities like "1234567 " or "2x ".
         name = name.replacingOccurrences(of: #"^\s*\d{4,}\s+"#, with: "", options: .regularExpression)
         name = name.replacingOccurrences(of: #"^\s*\d+\s*[x×]\s+"#, with: "", options: .regularExpression)
-        return name.trimmingCharacters(in: CharacterSet(charactersIn: " .*-:"))
+        return name.trimmingCharacters(in: CharacterSet(charactersIn: " .*-:€£$¥￥₹₩₺₽₪฿₫₱"))
     }
 
     // MARK: Helpers
 
-    static func trailingPriceValue(_ line: String) -> Decimal? {
-        guard let m = firstMatch(trailingPrice, in: line) else { return nil }
-        return DecimalParser.parse(m[1].replacingOccurrences(of: " ", with: ""))
+    static func trailingPriceValue(_ line: String, wholeUnits: Bool = false) -> Decimal? {
+        trailingPriceMatch(line, wholeUnits: wholeUnits)?.value
+    }
+
+    /// The price at the end of a line and the text it occupies.
+    private static func trailingPriceMatch(_ line: String, wholeUnits: Bool) -> (value: Decimal, text: String)? {
+        let patterns = wholeUnits ? [strictDecimalPrice, wholePrice] : [trailingPrice]
+        for pattern in patterns {
+            guard let m = firstMatch(pattern, in: line) else { continue }
+            let digits = m[1].replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "'", with: "")
+            if let value = DecimalParser.parse(digits) { return (value, m[0]) }
+        }
+        return nil
     }
 
     /// Whole-word / whole-phrase match: "total" matches "TOTAL 12,50" but not "Totalreiniger".
     private static func hasPhrase(_ phrase: String, in lower: String) -> Bool {
+        // Chinese / Japanese / Korean are written without spaces.
+        if phrase.unicodeScalars.contains(where: { $0.value >= 0x2E80 }) { return lower.contains(phrase) }
         let padded = " " + lower.replacingOccurrences(of: #"[^\p{L}\p{N}/-]"#, with: " ", options: .regularExpression) + " "
         let collapsed = padded.replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
         return collapsed.contains(" \(phrase) ")

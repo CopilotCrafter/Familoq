@@ -31,11 +31,34 @@ struct ReceiptReviewView: View {
     private var lookup: CategoryLookup { CategoryLookup(categories: categories, subcategories: subcategories) }
     private var groceriesID: UUID? { categories.first { $0.systemKey == "groceries" }?.id }
 
+    /// Currency problems are shown in the currency question instead.
+    private var otherWarnings: [String] {
+        draft.warnings.filter { !$0.localizedCaseInsensitiveContains("currency") }
+    }
+
+    private func chooseCurrency(_ code: String) {
+        ReceiptDrafting.applyCurrency(code, to: &draft, lookup: lookup)
+    }
+
+    private var currencyBinding: Binding<String> {
+        Binding(get: { draft.currencyCode }, set: { chooseCurrency($0) })
+    }
+
     var body: some View {
         Form {
-            if !draft.warnings.isEmpty {
+            if !draft.currencyConfirmed {
+                CurrencyQuestionSection(
+                    guess: draft.currencyCode,
+                    candidates: draft.currencyCandidates,
+                    baseCurrency: family.baseCurrencyCode,
+                    selection: currencyBinding,
+                    onChoose: chooseCurrency
+                )
+            }
+
+            if !otherWarnings.isEmpty {
                 Section {
-                    ForEach(draft.warnings, id: \.self) { warning in
+                    ForEach(otherWarnings, id: \.self) { warning in
                         Label(warning, systemImage: "exclamationmark.triangle.fill")
                             .foregroundStyle(.orange)
                             .font(.subheadline)
@@ -56,7 +79,7 @@ struct ReceiptReviewView: View {
                         .multilineTextAlignment(.trailing)
                         .font(.body.monospacedDigit().weight(.semibold))
                     NavigationLink {
-                        CurrencyPickerView(selection: $draft.currencyCode)
+                        CurrencyPickerView(selection: currencyBinding)
                     } label: {
                         Text(draft.currencyCode).font(.headline)
                     }
@@ -66,7 +89,9 @@ struct ReceiptReviewView: View {
                     LabeledContent("VAT", value: draft.vatSummary).font(.footnote)
                 }
                 if CurrencyInfo.normalize(draft.currencyCode) != family.baseCurrencyCode {
-                    Text("Converted to \(family.baseCurrencyCode) with the ECB rate of \(draft.date.formatted(date: .abbreviated, time: .omitted)).")
+                    Text(CurrencyInfo.canAutoConvert(from: draft.currencyCode, to: family.baseCurrencyCode)
+                         ? "Converted to \(family.baseCurrencyCode) with the ECB rate of \(draft.date.formatted(date: .abbreviated, time: .omitted))."
+                         : "No automatic rate for \(draft.currencyCode). After saving, open the expense and enter the rate to \(family.baseCurrencyCode).")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 if let data = draft.imageData, let image = UIImage(data: data) {
@@ -184,6 +209,10 @@ struct ReceiptReviewView: View {
 
     private func save() {
         errorMessage = nil
+        guard draft.currencyConfirmed else {
+            errorMessage = "Please choose the currency of this receipt first (top of the screen)."
+            return
+        }
         do {
             let expenses = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context)
             let base = family.baseCurrencyCode
@@ -253,5 +282,52 @@ private struct ReceiptItemEditor: View {
         }
         .opacity(item.included ? 1 : 0.5)
         .padding(.vertical, 2)
+    }
+}
+
+/// "Which currency is this receipt in?" - shown when the receipt shows no
+/// currency, only a shared symbol ("$", "kr", "¥") or two currencies.
+private struct CurrencyQuestionSection: View {
+    let guess: String
+    let candidates: [String]
+    let baseCurrency: String
+    @Binding var selection: String
+    let onChoose: (String) -> Void
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 10) {
+                Label("Which currency is this receipt in?", systemImage: "questionmark.circle.fill")
+                    .font(.headline)
+                    .foregroundStyle(.orange)
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 88), spacing: 8)], alignment: .leading, spacing: 8) {
+                    ForEach(candidates, id: \.self) { code in
+                        Button {
+                            onChoose(code)
+                        } label: {
+                            VStack(spacing: 2) {
+                                Text(code).font(.headline.monospaced())
+                                Text(CurrencyNames.name(for: code))
+                                    .font(.caption2)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.7)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 6)
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(code == guess ? Color.accentColor : Color.secondary)
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+            NavigationLink {
+                CurrencyPickerView(selection: $selection, title: "Receipt currency")
+            } label: {
+                Label("Other currency…", systemImage: "globe")
+            }
+        } footer: {
+            Text("The receipt does not say clearly. Amounts in other currencies are converted to \(baseCurrency) with the exchange rate of the receipt date.")
+        }
     }
 }

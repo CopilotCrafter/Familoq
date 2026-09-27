@@ -52,6 +52,7 @@ John's private database
 - Inside the app, every record also carries `familyID` and all reads go through `FamilyRepository` (defence in depth; tested in `PersistenceTests.testRepositoryIsolatesFamilies`).
 - Joining: owner creates a Family Invitation -> Familoq sends the share link (Messages/Mail) -> the member (who must already have a redeemed App Invitation) accepts -> the zone appears in their shared database.
 - Expiry: the app stores a `FamilyInvitation` record (expiry, max uses) in the zone and the owner can stop sharing at any time.
+- Inviting: the owner adds the person's Apple Account (e-mail/phone) as a private participant - the link only works for that person.
 - Removing a member: owner removes the share participant -> Apple revokes access immediately; the app deletes the local copy on next sync.
 - Member limit (6, configurable): enforced when adding participants (`FamilyLimits`).
 
@@ -60,27 +61,15 @@ John's private database
 - The family's data (including receipt images) counts against the **owner's iCloud storage**. Receipts are stored compressed.
 - **Public database is never used for family data.**
 
-## Sync engine (Phase 4)
+## Sync engine (built in Phase 4 - details and setup in doc 10)
 
-- SwiftData's built-in CloudKit sync supports only the **private** database - it cannot sync **shared** zones (`CKShare`). Familoq therefore keeps **SwiftData as the local, offline-first store** and uses **`CKSyncEngine`** (iOS 17+) to sync the family zone (owner: private DB; members: shared DB).
-- Phase 1 already prepares for this:
-  - `cloudKitDatabase: .none` (no accidental built-in sync),
-  - every model has defaults, no unique constraints, no relationships (IDs instead),
-  - `updatedAt` on records for conflict resolution (last writer wins per record; expenses are rarely edited by two people at once).
+- SwiftData's built-in CloudKit sync supports only the **private** database - it cannot sync **shared** zones (`CKShare`). Familoq therefore keeps **SwiftData as the local, offline-first store** and uses **`CKSyncEngine`** (iOS 17+) to sync each family zone (owner: private DB; members: shared DB).
+- All records are sent as one generic record type `FQFamilyItem` (kind, payload JSON, modifiedAt, asset), so the CloudKit schema never changes when a model or a new space is added.
+- Last writer wins per record; owner-only settings are enforced on the owner's iPhone.
 - Offline: changes are saved locally first and queued; nothing is lost if sync fails.
-- Restore / new device / reinstall: sign in with the same Apple ID -> iCloud -> CKSyncEngine re-downloads the family zone.
-
-## CloudKit configuration steps (Phase 4, all in a browser)
-
-1. developer.apple.com -> *Identifiers* -> **iCloud Containers** -> **+** -> `iCloud.com.carolandmartin.familoq`.
-2. App ID `com.carolandmartin.familoq` -> enable **iCloud** -> *CloudKit* -> assign the container (already done for App Invitations, see doc 09).
-3. Regenerate the **provisioning profile** -> update `IOS_PROVISIONING_PROFILE_BASE64`.
-4. Add `Familoq/Familoq.entitlements` (container + `aps-environment` for sync notifications) and reference it in `project.yml`.
-5. **CloudKit Console** (https://icloud.developer.apple.com):
-   - **Development environment** - schema is created automatically when a Debug/Development build saves records.
-   - **Production environment** - *Deploy Schema Changes* before TestFlight/App Store users need it. **TestFlight builds use the Production environment**, so deploy the schema before the first TestFlight build with sync.
-   - Security roles: no public read/write for family record types.
-6. Test matrix: two Apple IDs (e.g. yours and a test account) -> create two families -> verify neither sees the other's data (security test 8).
+- Restore / new device / reinstall: same Apple Account -> the family zone is downloaded again.
+- No push notifications (no `aps-environment`): the app fetches on launch, foreground, pull-to-refresh and every minute while open.
+- Setup: create `FQFamilyItem` in the CloudKit Console and deploy - see **docs/10-sync-and-sharing.md**.
 
 ## Phase 1 data model (all records carry `familyID`)
 

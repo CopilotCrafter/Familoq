@@ -26,11 +26,11 @@ enum FamilyBootstrapper {
     }
 
     @discardableResult
-    static func createFamily(named name: String, ownerName: String, baseCurrency: String = CurrencyInfo.defaultBaseCurrency, in context: ModelContext) throws -> Family {
+    static func createFamily(named name: String, ownerName: String, baseCurrency: String = CurrencyInfo.defaultBaseCurrency, ownerCloudUserRecordName: String = "", in context: ModelContext) throws -> Family {
         let family = Family(name: name, baseCurrencyCode: baseCurrency, maxMembers: FamilyLimits.defaultMaxMembers)
         context.insert(family)
 
-        let owner = FamilyMember(familyID: family.id, displayName: ownerName, role: .owner, isCurrentUser: true)
+        let owner = FamilyMember(familyID: family.id, displayName: ownerName, role: .owner, isCurrentUser: true, cloudUserRecordName: ownerCloudUserRecordName)
         context.insert(owner)
 
         for module in FamiloqModules.enabled {

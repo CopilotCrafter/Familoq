@@ -9,6 +9,11 @@ struct ReceiptDraft {
     var merchant: String
     var date: Date
     var currencyCode: String
+    /// False until the currency is certain or the user chose it: receipts
+    /// from other countries often show only "$", "kr", "¥" - or nothing.
+    var currencyConfirmed: Bool = true
+    /// Currencies offered first when asking (best guess first).
+    var currencyCandidates: [String] = []
     var totalText: String
     var categorizeWholeReceipt: Bool
     var wholeCategoryID: UUID?
@@ -64,25 +69,12 @@ enum ReceiptDrafting {
     /// Builds the editable draft from OCR results, with category suggestions.
     static func draft(from parsed: ParsedReceipt, family: Family, lookup: CategoryLookup, rules: [MerchantRuleRecord], imageData: Data?, now: Date = Date()) -> ReceiptDraft {
         let groceriesID = lookup.categories.first { $0.systemKey == "groceries" }?.id
-        let groceriesOtherID = lookup.subcategories.first { $0.systemKey == "groceries.other" }?.id
-        func subID(_ key: String?) -> UUID? {
-            guard let key else { return groceriesOtherID }
-            return lookup.subcategories.first { $0.systemKey == key }?.id ?? groceriesOtherID
-        }
 
         let merchant = parsed.merchant ?? ""
         let suggestion = CategorizationService.suggestion(for: merchant, rules: rules)
         let isGroceryMerchant = suggestion == nil || suggestion?.categoryID == groceriesID
 
-        let items = parsed.items.map { item in
-            ReceiptDraftItem(
-                name: item.name,
-                amountText: plain(item.amount),
-                categoryID: groceriesID,
-                subcategoryID: subID(item.suggestedSubcategoryKey),
-                confidence: item.classificationConfidence
-            )
-        }
+        let items = draftItems(from: parsed, lookup: lookup)
 
         let total = parsed.total ?? (parsed.items.isEmpty ? nil : parsed.itemsSum)
         let vat = parsed.vat.map { line in
@@ -93,6 +85,8 @@ enum ReceiptDrafting {
             merchant: merchant,
             date: parsed.date ?? now,
             currencyCode: parsed.currencyCode ?? family.baseCurrencyCode,
+            currencyConfirmed: !parsed.currency.needsConfirmation,
+            currencyCandidates: currencyCandidates(for: parsed.currency, baseCurrency: family.baseCurrencyCode),
             totalText: total.map(plain) ?? "",
             // Item-level only makes sense for grocery-type receipts with items.
             categorizeWholeReceipt: items.isEmpty || !isGroceryMerchant,
@@ -104,6 +98,51 @@ enum ReceiptDrafting {
             vatSummary: vat,
             warnings: parsed.warnings
         )
+    }
+
+    static func draftItems(from parsed: ParsedReceipt, lookup: CategoryLookup) -> [ReceiptDraftItem] {
+        let groceriesID = lookup.categories.first { $0.systemKey == "groceries" }?.id
+        let groceriesOtherID = lookup.subcategories.first { $0.systemKey == "groceries.other" }?.id
+        return parsed.items.map { item in
+            let key = item.suggestedSubcategoryKey
+            return ReceiptDraftItem(
+                name: item.name,
+                amountText: plain(item.amount),
+                categoryID: groceriesID,
+                subcategoryID: key.flatMap { k in lookup.subcategories.first { $0.systemKey == k }?.id } ?? groceriesOtherID,
+                confidence: item.classificationConfidence
+            )
+        }
+    }
+
+    /// Detected candidates first, then the family's base currency, the
+    /// iPhone's region currency and a few common ones.
+    static func currencyCandidates(for detection: CurrencyDetection, baseCurrency: String) -> [String] {
+        var result: [String] = []
+        let regional = Locale.current.currency?.identifier
+        for code in detection.candidates + [baseCurrency, regional].compactMap({ $0 }) + ["EUR", "USD", "GBP", "CHF"] {
+            let c = CurrencyInfo.normalize(code)
+            if CurrencyInfo.isValidCode(c) && !result.contains(c) { result.append(c) }
+        }
+        return Array(result.prefix(6))
+    }
+
+    /// The user chose the currency: confirm it and, when it changes how
+    /// amounts are written (whole yen/forint vs. cents), read the receipt
+    /// text again in that currency's style.
+    static func applyCurrency(_ code: String, to draft: inout ReceiptDraft, lookup: CategoryLookup) {
+        let new = CurrencyInfo.normalize(code)
+        let old = draft.currencyCode
+        draft.currencyCode = new
+        draft.currencyConfirmed = true
+        draft.warnings.removeAll { $0.localizedCaseInsensitiveContains("currency") }
+        guard CurrencyDetector.usesWholeAmounts(new) != CurrencyDetector.usesWholeAmounts(old),
+              !draft.rawText.isEmpty else { return }
+        let reparsed = ReceiptParser.parse(lines: draft.rawText.components(separatedBy: "\n"), currency: new)
+        draft.items = draftItems(from: reparsed, lookup: lookup)
+        if let total = reparsed.total ?? (reparsed.items.isEmpty ? nil : reparsed.itemsSum) {
+            draft.totalText = plain(total)
+        }
     }
 
     private static func plain(_ value: Decimal) -> String {
