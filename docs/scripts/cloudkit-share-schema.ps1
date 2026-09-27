@@ -106,6 +106,8 @@ try {
             record = @{
                 recordType = 'FQFamilyItem'
                 recordName = $recordName
+                # Shared records need a short GUID ("stable URL").
+                createShortGUID = $true
                 fields = @{ kind = @{ value = 'family' }; payload = @{ value = '{}' } }
             }
         })
@@ -113,6 +115,18 @@ try {
     }
     Assert-OK $rec 'Test record saved'
     $changeTag = $rec.records[0].recordChangeTag
+    if (-not $rec.records[0].shortGUID) {
+        # Older behaviour: ask for the short GUID with an update.
+        $upd = Invoke-CK 'POST' 'records/modify' @{
+            operations = @(@{
+                operationType = 'update'
+                record = @{ recordType = 'FQFamilyItem'; recordName = $recordName; recordChangeTag = $changeTag; createShortGUID = $true; fields = @{ kind = @{ value = 'family' } } }
+            })
+            zoneID = @{ zoneName = $zoneName }
+        }
+        Assert-OK $upd 'Test record got a share link'
+        $changeTag = $upd.records[0].recordChangeTag
+    }
 
     # 4. Test share -> creates the record type cloudkit.share
     $share = Invoke-CK 'POST' 'records/modify' @{
@@ -120,6 +134,7 @@ try {
             operationType = 'create'
             record = @{
                 recordType = 'cloudkit.share'
+                createShortGUID = $true
                 fields = @{}
                 forRecord = @{ recordName = $recordName; recordChangeTag = $changeTag }
                 publicPermission = 'NONE'
