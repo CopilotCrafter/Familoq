@@ -37,7 +37,12 @@ struct ReceiptReviewView: View {
     }
 
     private func chooseCurrency(_ code: String) {
-        ReceiptDrafting.applyCurrency(code, to: &draft, lookup: lookup)
+        ScanBreadcrumb.set("the check screen - choosing currency \(code)")
+        // Work on a copy and write it back once (no long write access to the binding).
+        var updated = draft
+        ReceiptDrafting.applyCurrency(code, to: &updated, lookup: lookup)
+        draft = updated
+        ScanBreadcrumb.set("the check screen (currency \(code) chosen, \(updated.items.count) items)")
     }
 
     private var currencyBinding: Binding<String> {
@@ -213,6 +218,7 @@ struct ReceiptReviewView: View {
             errorMessage = "Please choose the currency of this receipt first (top of the screen)."
             return
         }
+        ScanBreadcrumb.set("saving the receipt (\(draft.currencyCode), total \(draft.totalText), \(draft.items.filter(\.included).count) items, whole receipt: \(draft.categorizeWholeReceipt))")
         do {
             let expenses = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context)
             let base = family.baseCurrencyCode
@@ -287,6 +293,7 @@ private struct ReceiptItemEditor: View {
 
 /// "Which currency is this receipt in?" - shown when the receipt shows no
 /// currency, only a shared symbol ("$", "kr", "¥") or two currencies.
+/// Plain list rows (no grid) - the simplest, most robust form layout.
 private struct CurrencyQuestionSection: View {
     let guess: String
     let candidates: [String]
@@ -296,36 +303,32 @@ private struct CurrencyQuestionSection: View {
 
     var body: some View {
         Section {
-            VStack(alignment: .leading, spacing: 10) {
-                Label("Which currency is this receipt in?", systemImage: "questionmark.circle.fill")
-                    .font(.headline)
-                    .foregroundStyle(.orange)
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 88), spacing: 8)], alignment: .leading, spacing: 8) {
-                    ForEach(candidates, id: \.self) { code in
-                        Button {
-                            onChoose(code)
-                        } label: {
-                            VStack(spacing: 2) {
-                                Text(code).font(.headline.monospaced())
-                                Text(CurrencyNames.name(for: code))
-                                    .font(.caption2)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.7)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 6)
+            ForEach(candidates, id: \.self) { code in
+                Button {
+                    onChoose(code)
+                } label: {
+                    HStack {
+                        Text(code)
+                            .font(.body.monospaced().weight(.semibold))
+                            .frame(width: 52, alignment: .leading)
+                        Text(CurrencyNames.name(for: code))
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        if code == guess {
+                            Text("best guess").font(.caption).foregroundStyle(.secondary)
                         }
-                        .buttonStyle(.bordered)
-                        .tint(code == guess ? Color.accentColor : Color.secondary)
                     }
+                    .contentShape(Rectangle())
                 }
             }
-            .padding(.vertical, 4)
             NavigationLink {
                 CurrencyPickerView(selection: $selection, title: "Receipt currency")
             } label: {
                 Label("Other currency…", systemImage: "globe")
             }
+        } header: {
+            Label("Which currency is this receipt in?", systemImage: "questionmark.circle.fill")
+                .foregroundStyle(.orange)
         } footer: {
             Text("The receipt does not say clearly. Amounts in other currencies are converted to \(baseCurrency) with the exchange rate of the receipt date.")
         }

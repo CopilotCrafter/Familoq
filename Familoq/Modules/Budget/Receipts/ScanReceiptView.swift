@@ -149,7 +149,13 @@ private struct ScanReceiptContent: View {
             }
         }
         .navigationDestination(isPresented: $showReview) {
-            if let binding = Binding($draft) {
+            if let current = draft {
+                // Never force-unwraps: while the screen closes, draft is
+                // already nil but SwiftUI may still read the binding once.
+                let binding = Binding<ReceiptDraft>(
+                    get: { draft ?? current },
+                    set: { draft = $0 }
+                )
                 ReceiptReviewView(family: family, draft: binding) {
                     showReview = false
                     draft = nil
