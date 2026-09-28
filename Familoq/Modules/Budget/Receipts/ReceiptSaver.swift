@@ -5,7 +5,7 @@ import FamiloqBudget
 
 /// Editable receipt shown on the confirmation screen. Nothing is saved until
 /// the user taps Save (spec: never auto-save uncertain OCR data).
-struct ReceiptDraft {
+struct ReceiptDraft: Equatable {
     var merchant: String
     var date: Date
     var currencyCode: String
