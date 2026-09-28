@@ -1,6 +1,28 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "\"Familoq in total\" covers all families on this iPhone; the photo lines are for %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Familoq gesamt“ umfasst alle Familien auf diesem iPhone; die Foto-Zeilen gelten für %@."
+          }
+        }
+      }
+    },
+    "\"Make photos smaller\" re-saves large photos in grayscale (receipts stay readable). \"Keep receipt photos\" removes older photos automatically on your iPhone; the receipts stay. Mark a receipt with \"Keep photo\" for warranty or tax.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Fotos verkleinern“ speichert große Fotos in Graustufen neu (Belege bleiben lesbar). „Kassenbon-Fotos behalten“ entfernt ältere Fotos automatisch auf deinem iPhone; die Belege bleiben. Markiere einen Beleg mit „Foto behalten“ für Garantie oder Steuer."
+          }
+        }
+      }
+    },
     "%@ (general)": {
       "extractionState": "manual",
       "localizations": {
@@ -8,6 +30,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ (allgemein)"
+          }
+        }
+      }
+    },
+    "%@ day(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Tag(e)"
           }
         }
       }
@@ -34,6 +67,17 @@
         }
       }
     },
+    "%@ · %lld photo(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld Foto(s)"
+          }
+        }
+      }
+    },
     "%@/day": {
       "extractionState": "manual",
       "localizations": {
@@ -41,6 +85,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@/Tag"
+          }
+        }
+      }
+    },
+    "%lld day(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tag(e)"
           }
         }
       }
@@ -144,6 +199,17 @@
         }
       }
     },
+    "+ %lld training day(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+ %lld Schulungstag(e)"
+          }
+        }
+      }
+    },
     "0,00": {
       "extractionState": "manual",
       "localizations": {
@@ -199,6 +265,17 @@
         }
       }
     },
+    "1 year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Jahr"
+          }
+        }
+      }
+    },
     "15 minutes before": {
       "extractionState": "manual",
       "localizations": {
@@ -221,6 +298,28 @@
         }
       }
     },
+    "2 years": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 Jahre"
+          }
+        }
+      }
+    },
+    "2nd January": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2. Januar"
+          }
+        }
+      }
+    },
     "30 minutes before": {
       "extractionState": "manual",
       "localizations": {
@@ -228,6 +327,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "30 Minuten vorher"
+          }
+        }
+      }
+    },
+    "6 months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 Monate"
           }
         }
       }
@@ -562,6 +672,28 @@
         }
       }
     },
+    "All Saints' Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allerheiligen"
+          }
+        }
+      }
+    },
+    "All apps": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Apps"
+          }
+        }
+      }
+    },
     "All budgets": {
       "extractionState": "manual",
       "localizations": {
@@ -624,6 +756,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mitteilungen erlauben"
+          }
+        }
+      }
+    },
+    "Allowance %@: %@ · used %@ · left %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anspruch %@: %@ · genommen %@ · übrig %@"
           }
         }
       }
@@ -826,6 +969,39 @@
         }
       }
     },
+    "Archive first…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuerst archivieren …"
+          }
+        }
+      }
+    },
+    "Archive photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos archivieren"
+          }
+        }
+      }
+    },
+    "Archive photos (PDF or ZIP)…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos archivieren (PDF oder ZIP) …"
+          }
+        }
+      }
+    },
     "Archived": {
       "extractionState": "manual",
       "localizations": {
@@ -848,6 +1024,28 @@
         }
       }
     },
+    "Armistice Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waffenstillstandstag"
+          }
+        }
+      }
+    },
+    "Ascension Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Christi Himmelfahrt"
+          }
+        }
+      }
+    },
     "Ask the family's owner to invite you: Family → Members → Invite, with the e-mail address or phone number of your Apple Account.": {
       "extractionState": "manual",
       "localizations": {
@@ -855,6 +1053,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bitte die Person, der die Familie gehört, dich einzuladen: Familie → Mitglieder → Einladen, mit der E-Mail-Adresse oder Telefonnummer deines Apple Accounts."
+          }
+        }
+      }
+    },
+    "Assumption Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mariä Himmelfahrt"
           }
         }
       }
@@ -881,6 +1090,39 @@
         }
       }
     },
+    "August Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "August-Bankfeiertag"
+          }
+        }
+      }
+    },
+    "Austria": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Österreich"
+          }
+        }
+      }
+    },
+    "Automatic (App Store: %@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisch (App Store: %@)"
+          }
+        }
+      }
+    },
     "Average of complete months: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -888,6 +1130,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Durchschnitt der vollständigen Monate: %@"
+          }
+        }
+      }
+    },
+    "Baden-Württemberg": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baden-Württemberg"
           }
         }
       }
@@ -914,6 +1167,39 @@
         }
       }
     },
+    "Bastille Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nationalfeiertag (14. Juli)"
+          }
+        }
+      }
+    },
+    "Battle of the Boyne": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlacht am Boyne"
+          }
+        }
+      }
+    },
+    "Bavaria": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bayern"
+          }
+        }
+      }
+    },
     "Beauty": {
       "extractionState": "manual",
       "localizations": {
@@ -921,6 +1207,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kosmetik"
+          }
+        }
+      }
+    },
+    "Belgium": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belgien"
+          }
+        }
+      }
+    },
+    "Berlin": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berlin"
           }
         }
       }
@@ -1002,6 +1310,28 @@
         }
       }
     },
+    "Boxing Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boxing Day"
+          }
+        }
+      }
+    },
+    "Brandenburg": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brandenburg"
+          }
+        }
+      }
+    },
     "Bread & Bakery": {
       "extractionState": "manual",
       "localizations": {
@@ -1020,6 +1350,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Brot, Nudeln & Reis"
+          }
+        }
+      }
+    },
+    "Bremen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bremen"
+          }
+        }
+      }
+    },
+    "Bridge day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brückentag"
           }
         }
       }
@@ -1508,6 +1860,28 @@
         }
       }
     },
+    "Christmas Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Weihnachtstag"
+          }
+        }
+      }
+    },
+    "Christmas Eve": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heiligabend"
+          }
+        }
+      }
+    },
     "Cinema": {
       "extractionState": "manual",
       "localizations": {
@@ -1515,6 +1889,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kino"
+          }
+        }
+      }
+    },
+    "Clean up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufräumen"
           }
         }
       }
@@ -1596,6 +1981,17 @@
         }
       }
     },
+    "Columbus Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Columbus Day"
+          }
+        }
+      }
+    },
     "Coming up": {
       "extractionState": "manual",
       "localizations": {
@@ -1603,6 +1999,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Demnächst"
+          }
+        }
+      }
+    },
+    "Company closure": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betriebsurlaub"
           }
         }
       }
@@ -1625,6 +2032,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verglichen mit dem vorherigen, gleich langen Zeitraum. Kassenbons, die in Unterkategorien aufgeteilt wurden (Milch, Fleisch, Gemüse …), zählen je Artikelgruppe."
+          }
+        }
+      }
+    },
+    "Constitution Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag der Verfassung"
           }
         }
       }
@@ -1662,6 +2080,17 @@
         }
       }
     },
+    "Corpus Christi": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fronleichnam"
+          }
+        }
+      }
+    },
     "Could be better": {
       "extractionState": "manual",
       "localizations": {
@@ -1695,6 +2124,17 @@
         }
       }
     },
+    "Country": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Land"
+          }
+        }
+      }
+    },
     "Courses": {
       "extractionState": "manual",
       "localizations": {
@@ -1713,6 +2153,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "CSV erstellen"
+          }
+        }
+      }
+    },
+    "Create archive": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archiv erstellen"
           }
         }
       }
@@ -1816,6 +2267,17 @@
         }
       }
     },
+    "Czechia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tschechien"
+          }
+        }
+      }
+    },
     "Daily": {
       "extractionState": "manual",
       "localizations": {
@@ -1860,6 +2322,17 @@
         }
       }
     },
+    "Data (%lld entries)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daten (%lld Einträge)"
+          }
+        }
+      }
+    },
     "Date": {
       "extractionState": "manual",
       "localizations": {
@@ -1900,6 +2373,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tag"
+          }
+        }
+      }
+    },
+    "Day of Prayer and Repentance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buß- und Bettag"
+          }
+        }
+      }
+    },
+    "Days on which at least two of you are off - good for trips.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tage, an denen mindestens zwei von euch frei haben - gut für Ausflüge und Reisen."
           }
         }
       }
@@ -2223,6 +2718,39 @@
         }
       }
     },
+    "Early May Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bankfeiertag Anfang Mai"
+          }
+        }
+      }
+    },
+    "Easter Monday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ostermontag"
+          }
+        }
+      }
+    },
+    "Easter Sunday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ostersonntag"
+          }
+        }
+      }
+    },
     "Edit": {
       "extractionState": "manual",
       "localizations": {
@@ -2351,6 +2879,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Endet"
+          }
+        }
+      }
+    },
+    "England & Wales": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "England & Wales"
           }
         }
       }
@@ -2498,6 +3037,17 @@
         }
       }
     },
+    "Entries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einträge"
+          }
+        }
+      }
+    },
     "Entry mode": {
       "extractionState": "manual",
       "localizations": {
@@ -2505,6 +3055,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eingabeart"
+          }
+        }
+      }
+    },
+    "Epiphany": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heilige Drei Könige"
           }
         }
       }
@@ -2641,6 +3202,17 @@
         }
       }
     },
+    "Everything else": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles andere"
+          }
+        }
+      }
+    },
     "Everything is in the cart.": {
       "extractionState": "manual",
       "localizations": {
@@ -2769,6 +3341,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Familoq wächst zum gemeinsamen Ort deiner Familie. Budget, Einkaufsliste, Erinnerungen und Kalender gibt es schon; Reisen und Gesundheit folgen."
+          }
+        }
+      }
+    },
+    "Familoq in total": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq gesamt"
           }
         }
       }
@@ -2971,6 +3554,17 @@
         }
       }
     },
+    "First day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erster Tag"
+          }
+        }
+      }
+    },
     "First due date": {
       "extractionState": "manual",
       "localizations": {
@@ -3044,6 +3638,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Um Ausgaben einer Person zuzuordnen, die Familoq nicht nutzt (z. B. ein Kind)."
+          }
+        }
+      }
+    },
+    "Forever": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für immer"
+          }
+        }
+      }
+    },
+    "Format": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Format"
+          }
+        }
+      }
+    },
+    "France": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frankreich"
+          }
+        }
+      }
+    },
+    "Freedom and Democracy Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag des Kampfes für Freiheit und Demokratie"
           }
         }
       }
@@ -3136,6 +3774,39 @@
         }
       }
     },
+    "Gandhi Jayanti": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gandhi Jayanti"
+          }
+        }
+      }
+    },
+    "German Unity Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag der Deutschen Einheit"
+          }
+        }
+      }
+    },
+    "Germany": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deutschland"
+          }
+        }
+      }
+    },
     "Gifts": {
       "extractionState": "manual",
       "localizations": {
@@ -3180,6 +3851,17 @@
         }
       }
     },
+    "Good Friday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karfreitag"
+          }
+        }
+      }
+    },
     "Groceries": {
       "extractionState": "manual",
       "localizations": {
@@ -3198,6 +3880,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Friseur"
+          }
+        }
+      }
+    },
+    "Half day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halber Tag"
+          }
+        }
+      }
+    },
+    "Hamburg": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamburg"
           }
         }
       }
@@ -3242,6 +3946,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hering"
+          }
+        }
+      }
+    },
+    "Hesse": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hessen"
           }
         }
       }
@@ -3411,6 +4126,28 @@
         }
       }
     },
+    "Immaculate Conception": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mariä Empfängnis"
+          }
+        }
+      }
+    },
+    "In iCloud": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In iCloud"
+          }
+        }
+      }
+    },
     "In the cart (%lld)": {
       "extractionState": "manual",
       "localizations": {
@@ -3455,6 +4192,28 @@
         }
       }
     },
+    "Independence Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unabhängigkeitstag"
+          }
+        }
+      }
+    },
+    "India": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indien"
+          }
+        }
+      }
+    },
     "Inside Familoq, each family is completely separate. Families never see each other's data.": {
       "extractionState": "manual",
       "localizations": {
@@ -3484,6 +4243,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versicherung"
+          }
+        }
+      }
+    },
+    "International Women's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internationaler Frauentag"
           }
         }
       }
@@ -3642,6 +4412,28 @@
         }
       }
     },
+    "Ireland": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Irland"
+          }
+        }
+      }
+    },
+    "Italy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italien"
+          }
+        }
+      }
+    },
     "Item": {
       "extractionState": "manual",
       "localizations": {
@@ -3719,6 +4511,17 @@
         }
       }
     },
+    "Jan Hus Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jan-Hus-Tag"
+          }
+        }
+      }
+    },
     "Join a family": {
       "extractionState": "manual",
       "localizations": {
@@ -3774,6 +4577,72 @@
         }
       }
     },
+    "June Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Juni-Bankfeiertag"
+          }
+        }
+      }
+    },
+    "Juneteenth": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Juneteenth"
+          }
+        }
+      }
+    },
+    "Keep photo (warranty or tax)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto behalten (Garantie oder Steuer)"
+          }
+        }
+      }
+    },
+    "Keep receipt photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kassenbon-Fotos behalten"
+          }
+        }
+      }
+    },
+    "Kept photos are never removed by \"Keep receipt photos\" (Family → Storage). %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behaltene Fotos werden von „Kassenbon-Fotos behalten“ (Familie → Speicher) nie entfernt. %@"
+          }
+        }
+      }
+    },
+    "King's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Königstag"
+          }
+        }
+      }
+    },
     "Known future costs, e.g. car service in November. They are reserved in Safe to spend in their month.": {
       "extractionState": "manual",
       "localizations": {
@@ -3781,6 +4650,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bekannte künftige Kosten, z. B. Inspektion im November. Sie werden in ihrem Monat bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Labor Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Labor Day"
+          }
+        }
+      }
+    },
+    "Labour Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag der Arbeit"
+          }
+        }
+      }
+    },
+    "Largest photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größte Fotos"
           }
         }
       }
@@ -3917,6 +4819,17 @@
         }
       }
     },
+    "Liberation Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag der Befreiung"
+          }
+        }
+      }
+    },
     "Linseed": {
       "extractionState": "manual",
       "localizations": {
@@ -4005,6 +4918,39 @@
         }
       }
     },
+    "Lower Saxony": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niedersachsen"
+          }
+        }
+      }
+    },
+    "Make photos smaller": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos verkleinern"
+          }
+        }
+      }
+    },
+    "Making photos smaller… %lld of %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos werden verkleinert … %lld von %lld"
+          }
+        }
+      }
+    },
     "Manage lists": {
       "extractionState": "manual",
       "localizations": {
@@ -4027,6 +4973,17 @@
         }
       }
     },
+    "Martin Luther King Jr. Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Martin Luther King Jr. Day"
+          }
+        }
+      }
+    },
     "Maximum": {
       "extractionState": "manual",
       "localizations": {
@@ -4034,6 +4991,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Maximum"
+          }
+        }
+      }
+    },
+    "May Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mai-Bankfeiertag"
+          }
+        }
+      }
+    },
+    "Measuring…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird gemessen …"
           }
         }
       }
@@ -4056,6 +5035,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fleisch & Geflügel"
+          }
+        }
+      }
+    },
+    "Mecklenburg-Vorpommern": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mecklenburg-Vorpommern"
           }
         }
       }
@@ -4089,6 +5079,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mitgliedschaften"
+          }
+        }
+      }
+    },
+    "Memorial Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memorial Day"
           }
         }
       }
@@ -4291,6 +5292,17 @@
         }
       }
     },
+    "National Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nationalfeiertag"
+          }
+        }
+      }
+    },
     "Needs iOS 26 or later with Apple Intelligence.": {
       "extractionState": "manual",
       "localizations": {
@@ -4298,6 +5310,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Benötigt iOS 26 oder neuer mit Apple Intelligence."
+          }
+        }
+      }
+    },
+    "Netherlands": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niederlande"
           }
         }
       }
@@ -4320,6 +5343,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neue App-Einladungen"
+          }
+        }
+      }
+    },
+    "New Year's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neujahr"
           }
         }
       }
@@ -4423,6 +5457,17 @@
         }
       }
     },
+    "New time off": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Urlaub"
+          }
+        }
+      }
+    },
     "Next 7 days": {
       "extractionState": "manual",
       "localizations": {
@@ -4430,6 +5475,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nächste 7 Tage"
+          }
+        }
+      }
+    },
+    "Next year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächstes Jahr"
           }
         }
       }
@@ -4654,6 +5710,17 @@
         }
       }
     },
+    "No time off in this period. Tap + to add vacation, a half day, a bridge day, company closure or training.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Urlaub in diesem Zeitraum. Tippe auf +, um Urlaub, einen halben Tag, Brückentag, Betriebsurlaub oder eine Schulung einzutragen."
+          }
+        }
+      }
+    },
     "Non-food": {
       "extractionState": "manual",
       "localizations": {
@@ -4672,6 +5739,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine"
+          }
+        }
+      }
+    },
+    "North Rhine-Westphalia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nordrhein-Westfalen"
+          }
+        }
+      }
+    },
+    "Northern Ireland": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nordirland"
           }
         }
       }
@@ -4716,6 +5805,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nicht festgelegt"
+          }
+        }
+      }
+    },
+    "Not set - nationwide holidays only": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht gewählt - nur bundesweite Feiertage"
+          }
+        }
+      }
+    },
+    "Not taken from the vacation allowance.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geht nicht vom Urlaubsanspruch ab."
           }
         }
       }
@@ -4940,6 +6051,28 @@
         }
       }
     },
+    "October Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oktober-Bankfeiertag"
+          }
+        }
+      }
+    },
+    "Off together": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemeinsam frei"
+          }
+        }
+      }
+    },
     "Offline - changes are sent when you are back online": {
       "extractionState": "manual",
       "localizations": {
@@ -4991,6 +6124,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Am Fälligkeitstag erfasst Familoq sie als Ausgabe. Bis dahin wird sie in ihrem Monat bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "On this iPhone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem iPhone"
           }
         }
       }
@@ -5090,6 +6234,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur die Person, der die Familie gehört, kann das."
+          }
+        }
+      }
+    },
+    "Only the photos are removed - shop, date, items and amounts stay, also in reports. Photos marked \"Keep\" are never removed. This happens on every iPhone of the family and frees space in your iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Fotos werden entfernt - Geschäft, Datum, Artikel und Beträge bleiben, auch in den Berichten. Mit „Behalten“ markierte Fotos werden nie entfernt. Das gilt für alle iPhones der Familie und schafft Platz in deiner iCloud."
           }
         }
       }
@@ -5237,6 +6392,17 @@
         }
       }
     },
+    "PDF (one page per receipt)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF (eine Seite pro Beleg)"
+          }
+        }
+      }
+    },
     "Parking": {
       "extractionState": "manual",
       "localizations": {
@@ -5325,6 +6491,17 @@
         }
       }
     },
+    "Per person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Person"
+          }
+        }
+      }
+    },
     "Period": {
       "extractionState": "manual",
       "localizations": {
@@ -5387,6 +6564,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apotheke"
+          }
+        }
+      }
+    },
+    "Photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos"
+          }
+        }
+      }
+    },
+    "Photos are %@ smaller now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Fotos sind jetzt %@ kleiner."
+          }
+        }
+      }
+    },
+    "Photos by year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos nach Jahr"
+          }
+        }
+      }
+    },
+    "Photos on expenses (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos an Ausgaben (%lld)"
           }
         }
       }
@@ -5479,6 +6700,28 @@
         }
       }
     },
+    "Poland": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polen"
+          }
+        }
+      }
+    },
+    "Presidents' Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presidents' Day"
+          }
+        }
+      }
+    },
     "Previous month": {
       "extractionState": "manual",
       "localizations": {
@@ -5519,6 +6762,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "ÖPNV"
+          }
+        }
+      }
+    },
+    "Public holidays": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feiertage"
+          }
+        }
+      }
+    },
+    "Public holidays are shown in red like Saturday and Sunday and are not counted as vacation days. Calculated on the iPhone - no internet needed. Set on each iPhone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feiertage sind rot wie Samstag und Sonntag und zählen nicht als Urlaubstage. Auf dem iPhone berechnet - ohne Internet. Wird pro iPhone eingestellt."
+          }
+        }
+      }
+    },
+    "Public holidays…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feiertage …"
           }
         }
       }
@@ -5655,6 +6931,17 @@
         }
       }
     },
+    "Receipt photos (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kassenbon-Fotos (%lld)"
+          }
+        }
+      }
+    },
     "Recent": {
       "extractionState": "manual",
       "localizations": {
@@ -5732,6 +7019,17 @@
         }
       }
     },
+    "Reformation Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reformationstag"
+          }
+        }
+      }
+    },
     "Remaining": {
       "extractionState": "manual",
       "localizations": {
@@ -5783,6 +7081,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entfernen"
+          }
+        }
+      }
+    },
+    "Remove %lld photo(s) older than %@ (%@)?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Foto(s) älter als %@ (%@) entfernen?"
+          }
+        }
+      }
+    },
+    "Remove old photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alte Fotos entfernen"
+          }
+        }
+      }
+    },
+    "Removed old photos - %@ freed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alte Fotos entfernt - %@ frei."
           }
         }
       }
@@ -5871,6 +7202,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auswertungen"
+          }
+        }
+      }
+    },
+    "Republic Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag der Republik"
           }
         }
       }
@@ -6029,6 +7371,17 @@
         }
       }
     },
+    "Rhineland-Palatinate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rheinland-Pfalz"
+          }
+        }
+      }
+    },
     "Rice, Pasta & Grains": {
       "extractionState": "manual",
       "localizations": {
@@ -6051,6 +7404,17 @@
         }
       }
     },
+    "Saarland": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saarland"
+          }
+        }
+      }
+    },
     "Safe to spend": {
       "extractionState": "manual",
       "localizations": {
@@ -6058,6 +7422,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sicher ausgeben"
+          }
+        }
+      }
+    },
+    "Saints Cyril and Methodius Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kyrill und Method"
           }
         }
       }
@@ -6106,6 +7481,28 @@
         }
       }
     },
+    "Save or share %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sichern oder teilen"
+          }
+        }
+      }
+    },
+    "Save the file in Files or iCloud Drive (or on a computer) before removing photos from Familoq.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichere die Datei in „Dateien“ oder iCloud Drive (oder auf einem Computer), bevor du Fotos aus Familoq entfernst."
+          }
+        }
+      }
+    },
     "Save together for a holiday, a new car or a rainy-day fund. Familoq shows how much to put aside each month.": {
       "extractionState": "manual",
       "localizations": {
@@ -6135,6 +7532,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sparziele"
+          }
+        }
+      }
+    },
+    "Saxony": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sachsen"
+          }
+        }
+      }
+    },
+    "Saxony-Anhalt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sachsen-Anhalt"
           }
         }
       }
@@ -6216,6 +7635,17 @@
         }
       }
     },
+    "Schleswig-Holstein": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schleswig-Holstein"
+          }
+        }
+      }
+    },
     "School": {
       "extractionState": "manual",
       "localizations": {
@@ -6234,6 +7664,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld von 100 Punkten"
+          }
+        }
+      }
+    },
+    "Scotland": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schottland"
           }
         }
       }
@@ -6289,6 +7730,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kategoriebudgets festlegen"
+          }
+        }
+      }
+    },
+    "Set yearly allowance for %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jahresanspruch für %@ festlegen"
+          }
+        }
+      }
+    },
+    "Share of the basket: half from the money (adjusted for typical prices, so cheap vegetables count fairly against meat) and half from the number of items. Small numbers: change in percentage points against the previous period.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anteil am Einkauf: zur Hälfte aus dem Geld (angepasst an übliche Preise, damit günstiges Gemüse fair gegen Fleisch zählt) und zur Hälfte aus der Anzahl der Artikel. Kleine Zahlen: Veränderung in Prozentpunkten ggü. dem vorherigen Zeitraum."
           }
         }
       }
@@ -6436,6 +7899,17 @@
         }
       }
     },
+    "Spain": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spanien"
+          }
+        }
+      }
+    },
     "Spent": {
       "extractionState": "manual",
       "localizations": {
@@ -6469,6 +7943,61 @@
         }
       }
     },
+    "Spring Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühlings-Bankfeiertag"
+          }
+        }
+      }
+    },
+    "St Andrew's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "St. Andrew's Day"
+          }
+        }
+      }
+    },
+    "St Brigid's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "St. Brigid's Day"
+          }
+        }
+      }
+    },
+    "St Patrick's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "St. Patrick's Day"
+          }
+        }
+      }
+    },
+    "St. Stephen's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2. Weihnachtstag"
+          }
+        }
+      }
+    },
     "Start a savings goal": {
       "extractionState": "manual",
       "localizations": {
@@ -6487,6 +8016,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beginn"
+          }
+        }
+      }
+    },
+    "State / region": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bundesland / Region"
+          }
+        }
+      }
+    },
+    "Statehood Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag der Staatlichkeit"
+          }
+        }
+      }
+    },
+    "Storage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicher"
           }
         }
       }
@@ -6579,6 +8141,17 @@
         }
       }
     },
+    "Summer Bank Holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sommer-Bankfeiertag"
+          }
+        }
+      }
+    },
     "Swap idea: cook a simple meal with vegetables instead of ready meals.": {
       "extractionState": "manual",
       "localizations": {
@@ -6641,6 +8214,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wische, um eine Liste mit ihren Artikeln zu löschen."
+          }
+        }
+      }
+    },
+    "Swiss National Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schweizer Bundesfeiertag"
+          }
+        }
+      }
+    },
+    "Switzerland": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schweiz"
           }
         }
       }
@@ -6744,6 +8339,17 @@
         }
       }
     },
+    "Thanksgiving": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thanksgiving"
+          }
+        }
+      }
+    },
     "The family's budget is shared between your iPhones through iCloud. Only people the owner invited can open the link.": {
       "extractionState": "manual",
       "localizations": {
@@ -6843,6 +8449,17 @@
         }
       }
     },
+    "The photos are already small.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Fotos sind schon klein."
+          }
+        }
+      }
+    },
     "The receipt does not say clearly. Amounts in other currencies are converted to %@ with the exchange rate of the receipt date.": {
       "extractionState": "manual",
       "localizations": {
@@ -6894,6 +8511,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diese Familie hat die maximale Mitgliederzahl erreicht."
+          }
+        }
+      }
+    },
+    "This family is stored in the owner's iCloud - it does not use your iCloud storage.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Familie liegt in der iCloud des Inhabers - dein iCloud-Speicher wird nicht genutzt."
           }
         }
       }
@@ -7041,6 +8669,17 @@
         }
       }
     },
+    "Thuringia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thüringen"
+          }
+        }
+      }
+    },
     "Ticked off the shopping list: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -7059,6 +8698,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uhrzeit"
+          }
+        }
+      }
+    },
+    "Time off": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urlaub"
           }
         }
       }
@@ -7162,6 +8812,17 @@
         }
       }
     },
+    "Total in your iCloud": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamt in deiner iCloud"
+          }
+        }
+      }
+    },
     "Total not recognised": {
       "extractionState": "manual",
       "localizations": {
@@ -7180,6 +8841,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bahn"
+          }
+        }
+      }
+    },
+    "Training": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schulung"
           }
         }
       }
@@ -7283,6 +8955,28 @@
         }
       }
     },
+    "United Kingdom": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vereinigtes Königreich"
+          }
+        }
+      }
+    },
+    "United States": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "USA"
+          }
+        }
+      }
+    },
     "Untitled": {
       "extractionState": "manual",
       "localizations": {
@@ -7371,6 +9065,17 @@
         }
       }
     },
+    "Uses %@ vacation day(s) (weekends and public holidays not counted).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braucht %@ Urlaubstag(e) (Wochenenden und Feiertage zählen nicht)."
+          }
+        }
+      }
+    },
     "Uses your iCloud account - no extra password, no e-mail required.": {
       "extractionState": "manual",
       "localizations": {
@@ -7378,6 +9083,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nutzt deinen iCloud-Account – kein zusätzliches Passwort, keine E-Mail nötig."
+          }
+        }
+      }
+    },
+    "Vacation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urlaub"
+          }
+        }
+      }
+    },
+    "Vacation days per year, e.g. 30. Include days carried over from last year if you like.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urlaubstage pro Jahr, z. B. 30. Resturlaub vom Vorjahr kannst du dazurechnen."
           }
         }
       }
@@ -7422,6 +9149,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sehr ausgewogen"
+          }
+        }
+      }
+    },
+    "Veterans Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veterans Day"
+          }
+        }
+      }
+    },
+    "Victory in Europe Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag des Sieges"
           }
         }
       }
@@ -7499,6 +9248,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wasser, Kaffee & Tee"
+          }
+        }
+      }
+    },
+    "Weekends and public holidays (%@%@) are not counted. Half day = 0.5; training is not taken from the allowance.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochenenden und Feiertage (%@%@) zählen nicht. Halber Tag = 0,5; Schulungen gehen nicht vom Urlaubsanspruch ab."
           }
         }
       }
@@ -7635,6 +9395,28 @@
         }
       }
     },
+    "Whit Monday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pfingstmontag"
+          }
+        }
+      }
+    },
+    "Whit Sunday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pfingstsonntag"
+          }
+        }
+      }
+    },
     "Who": {
       "extractionState": "manual",
       "localizations": {
@@ -7734,6 +9516,28 @@
         }
       }
     },
+    "Worked out from what Familoq has synced; Apple's own figure (iPhone Settings) can differ slightly.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berechnet aus dem, was Familoq synchronisiert hat; Apples eigene Zahl (iPhone-Einstellungen) kann leicht abweichen."
+          }
+        }
+      }
+    },
+    "World Children's Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weltkindertag"
+          }
+        }
+      }
+    },
     "Written on this iPhone - nothing is sent anywhere. It can make mistakes.": {
       "extractionState": "manual",
       "localizations": {
@@ -7763,6 +9567,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "XXXX-XXXX-XXXX"
+          }
+        }
+      }
+    },
+    "Year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jahr"
+          }
+        }
+      }
+    },
+    "Yearly allowance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jahresanspruch"
           }
         }
       }
@@ -7998,6 +9824,17 @@
         }
       }
     },
+    "ZIP (photos)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP (Fotos)"
+          }
+        }
+      }
+    },
     "a variety of vegetables and fruit": {
       "extractionState": "manual",
       "localizations": {
@@ -8104,6 +9941,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "iCloud-Benutzer-ID"
+          }
+        }
+      }
+    },
+    "iOS does not let apps see other apps' storage. iPhone: Settings → General → iPhone Storage. iCloud: Settings → your name → iCloud → Manage Account Storage (Familoq is listed there).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS erlaubt Apps nicht, den Speicher anderer Apps zu sehen. iPhone: Einstellungen → Allgemein → iPhone-Speicher. iCloud: Einstellungen → dein Name → iCloud → Accountspeicher verwalten (dort steht Familoq)."
           }
         }
       }

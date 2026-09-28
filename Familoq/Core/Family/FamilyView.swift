@@ -126,6 +126,11 @@ private struct FamilySettingsContent: View {
                 } label: {
                     Label("Export & backup", systemImage: "square.and.arrow.up.on.square")
                 }
+                NavigationLink {
+                    LazyView(StorageView(family: family))
+                } label: {
+                    Label("Storage", systemImage: "internaldrive")
+                }
             } header: {
                 Text("Your data")
             }

@@ -101,8 +101,18 @@ enum ReceiptOCRService {
     }
 
     /// Smaller JPEG for storage (receipts are kept with the expense).
-    static func storageJPEG(from image: UIImage, maxDimension: CGFloat = 1800) -> Data? {
-        downscaled(image, maxDimension: maxDimension).jpegData(compressionQuality: 0.6)
+    /// Photo kept with a receipt: at most 1,600 px, grayscale, JPEG -
+    /// typically 80-200 KB (receipts are black on white anyway).
+    static func storageJPEG(from image: UIImage, maxDimension: CGFloat = 1600) -> Data? {
+        let small = downscaled(image, maxDimension: maxDimension)
+        guard let cgImage = small.cgImage,
+              let context = CGContext(data: nil, width: cgImage.width, height: cgImage.height, bitsPerComponent: 8, bytesPerRow: 0,
+                                      space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else {
+            return small.jpegData(compressionQuality: 0.55)
+        }
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
+        guard let gray = context.makeImage() else { return small.jpegData(compressionQuality: 0.55) }
+        return UIImage(cgImage: gray, scale: 1, orientation: small.imageOrientation).jpegData(compressionQuality: 0.55)
     }
 
     /// Resized copy in real pixels (scale 1 - the default renderer would use

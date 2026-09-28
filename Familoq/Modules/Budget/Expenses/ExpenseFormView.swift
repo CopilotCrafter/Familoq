@@ -32,6 +32,8 @@ struct ExpenseFormView: View {
     @State private var paymentMethod: PaymentMethod
     @State private var note: String
     @State private var receiptData: Data?
+    @State private var photoChanged = false
+    @State private var keepPhoto: Bool
     @State private var photoItem: PhotosPickerItem?
     @State private var useManualRate: Bool
     @State private var manualRateText: String
@@ -64,6 +66,7 @@ struct ExpenseFormView: View {
             _paymentMethod = State(initialValue: e.paymentMethod)
             _note = State(initialValue: e.note)
             _receiptData = State(initialValue: e.receiptImageData)
+            _keepPhoto = State(initialValue: e.keepPhoto)
             _useManualRate = State(initialValue: e.conversionStatus == .manual)
             _manualRateText = State(initialValue: e.conversionStatus == .manual ? (e.exchangeRateText ?? "") : "")
             _categoryTouched = State(initialValue: true)
@@ -78,6 +81,7 @@ struct ExpenseFormView: View {
             _paymentMethod = State(initialValue: .debitCard)
             _note = State(initialValue: "")
             _receiptData = State(initialValue: nil)
+            _keepPhoto = State(initialValue: false)
             _useManualRate = State(initialValue: false)
             _manualRateText = State(initialValue: "")
             _categoryTouched = State(initialValue: false)
@@ -272,7 +276,11 @@ struct ExpenseFormView: View {
                 Button("Remove", role: .destructive) {
                     receiptData = nil
                     photoItem = nil
+                    photoChanged = true
                 }
+            }
+            Toggle(isOn: $keepPhoto) {
+                Label("Keep photo (warranty or tax)", systemImage: "pin.fill")
             }
         }
     }
@@ -315,12 +323,14 @@ struct ExpenseFormView: View {
 
     private func loadPhoto(_ item: PhotosPickerItem?) async {
         guard let item, let data = try? await item.loadTransferable(type: Data.self) else { return }
-        // Store a compressed JPEG to keep the database and later backups small.
-        if let image = UIImage(data: data), let jpeg = image.jpegData(compressionQuality: 0.6) {
+        // Store a small grayscale JPEG (like scanned receipts) to keep the
+        // database, iCloud and backups small.
+        if let image = UIImage(data: data), let jpeg = ReceiptOCRService.storageJPEG(from: image) {
             receiptData = jpeg
         } else {
             receiptData = data
         }
+        photoChanged = true
     }
 
     private func attemptSave() {
@@ -374,7 +384,11 @@ struct ExpenseFormView: View {
         expense.memberID = memberID
         expense.paymentMethod = paymentMethod
         expense.note = note
-        expense.receiptImageData = receiptData
+        if photoChanged || editing == nil {
+            expense.syncImage = receiptData
+            if editing != nil { expense.photoRevision += 1 }
+        }
+        expense.keepPhoto = receiptData != nil && keepPhoto
         expense.baseCurrencyCode = base
         expense.updatedAt = Date()
 

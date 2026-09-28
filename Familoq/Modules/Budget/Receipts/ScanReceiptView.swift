@@ -244,12 +244,22 @@ struct ReceiptDetailView: View {
                 }
             }
             if let data = receipt.imageData, let image = UIImage(data: data) {
-                Section("Receipt image") {
+                Section {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFit()
                         .frame(maxHeight: 360)
                         .onTapGesture { showImage = true }
+                    Toggle(isOn: Binding(get: { receipt.keepPhoto }, set: { value in
+                        receipt.keepPhoto = value
+                        try? context.save()
+                    })) {
+                        Label("Keep photo (warranty or tax)", systemImage: "pin.fill")
+                    }
+                } header: {
+                    Text("Receipt image")
+                } footer: {
+                    Text("Kept photos are never removed by \"Keep receipt photos\" (Family → Storage). \(PhotoStorage.format(data.count))")
                 }
             }
         }

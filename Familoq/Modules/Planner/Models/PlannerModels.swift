@@ -198,3 +198,64 @@ enum MemberIDList {
         ids.map(\.uuidString).sorted().joined(separator: ",")
     }
 }
+
+/// Time off from work (Urlaub) of one person, days inclusive.
+@Model
+final class LeaveEntry {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var memberID: UUID = UUID()
+    var typeRaw: String = LeaveType.vacation.rawValue
+    var firstDay: Date = Date()
+    var lastDay: Date = Date()
+    var note: String = ""
+    var createdByMemberID: UUID? = nil
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, memberID: UUID, type: LeaveType, firstDay: Date, lastDay: Date) {
+        self.id = id
+        self.familyID = familyID
+        self.memberID = memberID
+        self.typeRaw = type.rawValue
+        self.firstDay = firstDay
+        self.lastDay = lastDay
+    }
+
+    var type: LeaveType {
+        get { LeaveType(rawValue: typeRaw) ?? .vacation }
+        set { typeRaw = newValue.rawValue }
+    }
+
+    var span: LeaveSpan { LeaveSpan(memberID: memberID, type: type, first: firstDay, last: lastDay) }
+}
+
+/// Vacation days a person has per year (e.g. 30).
+@Model
+final class LeaveAllowance {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var memberID: UUID = UUID()
+    var year: Int = 2026
+    /// Tenths of a day (30 days = 300) so half days are exact.
+    var tenthDays: Int = 300
+    var updatedAt: Date = Date()
+
+    init(id: UUID, familyID: UUID, memberID: UUID, year: Int, days: Double) {
+        self.id = id
+        self.familyID = familyID
+        self.memberID = memberID
+        self.year = year
+        self.tenthDays = Int((days * 10).rounded())
+    }
+
+    var days: Double {
+        get { Double(tenthDays) / 10 }
+        set { tenthDays = Int((newValue * 10).rounded()) }
+    }
+
+    /// One allowance per person and year - the same ID on every iPhone.
+    static func allowanceID(familyID: UUID, memberID: UUID, year: Int) -> UUID {
+        DeterministicID.uuid("leave-allowance|\(familyID.uuidString)|\(memberID.uuidString)|\(year)")
+    }
+}

@@ -5,7 +5,7 @@ import FamiloqCore
 import FamiloqPlanner
 
 enum PlannerSegment: String, CaseIterable, Identifiable {
-    case shopping, reminders, calendar
+    case shopping, reminders, calendar, timeOff
 
     var id: String { rawValue }
 
@@ -14,6 +14,7 @@ enum PlannerSegment: String, CaseIterable, Identifiable {
         case .shopping: return "Shopping"
         case .reminders: return "Reminders"
         case .calendar: return "Calendar"
+        case .timeOff: return "Time off"
         }
     }
 
@@ -39,6 +40,7 @@ struct PlannerView: View {
                     case .shopping: ShoppingListScreen(family: family)
                     case .reminders: RemindersScreen(family: family)
                     case .calendar: CalendarScreen(family: family)
+                    case .timeOff: TimeOffScreen(family: family)
                     }
                 }
                 .id(segment)

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0 - Time off, holidays, storage
+
+### Added
+- Calendar: public holidays calculated on the iPhone - country from the App Store account (changeable), optional state (all 16 German states; nationwide holidays when no state is set). Saturday, Sunday and holidays in the same red.
+- Planner → Time off: per person vacation, half day, bridge day, company closure, training; yearly allowance with used/left; days per person for any period (weekends and holidays not counted); "Off together" overlaps; coloured bars per person in the month view.
+- Family → Storage: space used on this iPhone and in your iCloud, photos by year, largest photos; "Make photos smaller"; "Keep receipt photos" (Forever by default, 2 years, 1 year, 6 months); archive a year as PDF or ZIP; "Keep photo" pin for warranty/tax receipts.
+- New receipt photos are stored in grayscale at 1,600 px (about half the size); photos attached to expenses are reduced the same way.
+- Healthy basket counts the number of items too and adjusts for typical prices (cheap vegetables count fairly against meat).
+
+### Fixed
+- Replacing or removing the photo of an expense is now synced to the other iPhones.
+
 ## 0.5.3 - Healthy basket
 
 ### Added

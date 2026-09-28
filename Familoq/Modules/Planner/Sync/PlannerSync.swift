@@ -23,7 +23,15 @@ extension PlannerModule {
             .of(FamilyEvent.self,
                 inFamily: { fid in #Predicate<FamilyEvent> { $0.familyID == fid } },
                 withID: { id in #Predicate<FamilyEvent> { $0.id == id } },
-                make: { id, fid in FamilyEvent(id: id, familyID: fid, title: "", start: Date(), end: Date(), isAllDay: false) })
+                make: { id, fid in FamilyEvent(id: id, familyID: fid, title: "", start: Date(), end: Date(), isAllDay: false) }),
+            .of(LeaveEntry.self,
+                inFamily: { fid in #Predicate<LeaveEntry> { $0.familyID == fid } },
+                withID: { id in #Predicate<LeaveEntry> { $0.id == id } },
+                make: { id, fid in LeaveEntry(id: id, familyID: fid, memberID: UUID(), type: .vacation, firstDay: Date(), lastDay: Date()) }),
+            .of(LeaveAllowance.self,
+                inFamily: { fid in #Predicate<LeaveAllowance> { $0.familyID == fid } },
+                withID: { id in #Predicate<LeaveAllowance> { $0.id == id } },
+                make: { id, fid in LeaveAllowance(id: id, familyID: fid, memberID: UUID(), year: 2026, days: 0) })
         ]
     }
 }
@@ -166,6 +174,56 @@ extension FamilyEvent: SyncableRecord {
         alertMinutes = p.int("alertMinutes", default: -1)
         createdByMemberID = p.uuid("createdByMemberID")
         createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension LeaveEntry: SyncableRecord {
+    static var syncKind: SyncKind { .leave }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("memberID", memberID)
+        p.set("typeRaw", typeRaw)
+        p.set("firstDay", firstDay)
+        p.set("lastDay", lastDay)
+        p.set("note", note)
+        p.set("createdByMemberID", createdByMemberID)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        memberID = p.uuid("memberID") ?? memberID
+        typeRaw = p.string("typeRaw", default: "vacation")
+        firstDay = p.date("firstDay", default: firstDay)
+        lastDay = p.date("lastDay", default: lastDay)
+        note = p.string("note")
+        createdByMemberID = p.uuid("createdByMemberID")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension LeaveAllowance: SyncableRecord {
+    static var syncKind: SyncKind { .leaveAllowance }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("memberID", memberID)
+        p.set("year", year)
+        p.set("tenthDays", tenthDays)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        memberID = p.uuid("memberID") ?? memberID
+        year = p.int("year", default: year)
+        tenthDays = p.int("tenthDays", default: tenthDays)
         updatedAt = p.date("updatedAt", default: updatedAt)
     }
 }

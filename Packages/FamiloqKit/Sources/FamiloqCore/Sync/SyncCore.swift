@@ -29,6 +29,8 @@ public enum SyncKind: String, CaseIterable, Codable, Sendable {
     case reminder
     case event
     case itemRule
+    case leave
+    case leaveAllowance
 
     /// Record name in CloudKit, e.g. "expense-6F1C…".
     public func recordName(for id: UUID) -> String { "\(rawValue)-\(id.uuidString)" }

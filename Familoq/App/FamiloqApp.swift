@@ -91,6 +91,7 @@ struct RootView: View {
             startSyncIfActive()
             bookScheduledExpenses()
             setUpBackgroundRefresh()
+            await HolidaySettings.shared.refreshStoreCountry()
             await PlannerNotifications.reschedule(context: context)
             await refreshRates()
             await account.refreshIfDue()
@@ -184,6 +185,13 @@ struct RootView: View {
         if session.isOwner {
             // Built-in category names in the app language (e.g. German).
             CategoryNameLocalizer.apply(familyID: family.id, context: context)
+            // "Keep receipt photos" (Family → Storage), at most once a day.
+            let key = "photos.retention.lastRun.\(family.id.uuidString)"
+            let last = UserDefaults.standard.object(forKey: key) as? Date ?? .distantPast
+            if PhotoStorage.retention(familyID: family.id) != .forever, Date().timeIntervalSince(last) > 20 * 3600 {
+                UserDefaults.standard.set(Date(), forKey: key)
+                if PhotoStorage.applyRetention(familyID: family.id, context: context) > 0 { sync.scanNow() }
+            }
         }
     }
 
