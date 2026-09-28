@@ -154,7 +154,12 @@ private struct ScanReceiptContent: View {
                 // already nil but SwiftUI may still read the binding once.
                 let binding = Binding<ReceiptDraft>(
                     get: { draft ?? current },
-                    set: { draft = $0 }
+                    set: { newValue in
+                        // Only real changes: iOS 27 text fields write their
+                        // unchanged value back while the screen is built, and
+                        // every write re-built the screen -> endless loop/freeze.
+                        if newValue != draft { draft = newValue }
+                    }
                 )
                 ReceiptReviewView(family: family, draft: binding) {
                     showReview = false
