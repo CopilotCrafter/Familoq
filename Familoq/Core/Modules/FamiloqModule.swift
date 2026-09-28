@@ -3,14 +3,15 @@ import SwiftData
 
 /// Familoq is a family "everything space". Each space is a module that plugs
 /// into the shared core (family, members, invitations, sync, currency).
-/// Only Budget is built today; the others are planned.
+/// Built: Budget, Shopping list, Reminders, Events (the last three live in
+/// the Planner module). Travel and Health are planned.
 enum FamiloqSpace: String, CaseIterable, Identifiable {
     case budget
-    case travel
-    case health
-    case plans
+    case shopping
     case reminders
     case events
+    case travel
+    case health
 
     var id: String { rawValue }
 
@@ -19,7 +20,7 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
         case .budget: return "Budget"
         case .travel: return "Travel"
         case .health: return "Health"
-        case .plans: return "Plans"
+        case .shopping: return "Shopping list"
         case .reminders: return "Reminders"
         case .events: return "Events"
         }
@@ -30,13 +31,13 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
         case .budget: return "chart.pie.fill"
         case .travel: return "airplane.circle.fill"
         case .health: return "heart.circle.fill"
-        case .plans: return "list.bullet.circle.fill"
+        case .shopping: return "cart.circle.fill"
         case .reminders: return "bell.circle.fill"
         case .events: return "calendar.circle.fill"
         }
     }
 
-    var isAvailable: Bool { self == .budget }
+    var isAvailable: Bool { self != .travel && self != .health }
 }
 
 /// Contract every module implements. Adding a space later means:
@@ -60,6 +61,7 @@ protocol FamiloqModule {
 @MainActor
 enum FamiloqModules {
     static let enabled: [any FamiloqModule.Type] = [
-        BudgetModule.self
+        BudgetModule.self,
+        PlannerModule.self
     ]
 }

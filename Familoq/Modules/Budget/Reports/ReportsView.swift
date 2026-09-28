@@ -55,6 +55,9 @@ enum ReportPeriod: String, CaseIterable, Identifiable {
 /// Reports: totals with comparison, trend over 12 months, categories with
 /// drill-down, members, budget vs actual; any period incl. a custom range.
 struct ReportsView: View {
+    /// True when opened from the dashboard (shows a Done button).
+    var showsDone = false
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: AppSession
     @State private var period: ReportPeriod = .thisMonth
     @State private var customFrom = FamiloqCalendar.make().dateInterval(of: .month, for: Date())?.start ?? Date()
@@ -69,6 +72,13 @@ struct ReportsView: View {
                               selection: $period, onEditRange: { showCustomRange = true })
                     .id("\(period.rawValue)-\(range.current.start.timeIntervalSince1970)-\(range.current.end.timeIntervalSince1970)")
                     .navigationTitle("Reports")
+                    .toolbar {
+                        if showsDone {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Done") { dismiss() }
+                            }
+                        }
+                    }
                     .onChange(of: period) { _, newValue in
                         if newValue == .custom { showCustomRange = true }
                     }

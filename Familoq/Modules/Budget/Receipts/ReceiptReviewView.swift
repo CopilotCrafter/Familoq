@@ -243,6 +243,12 @@ struct ReceiptReviewView: View {
         ScanBreadcrumb.set("saving the receipt (\(draft.currencyCode), total \(draft.totalText), \(draft.items.filter(\.included).count) items, whole receipt: \(draft.categorizeWholeReceipt))")
         do {
             let expenses = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context)
+            // Items on the shopping list that are on this receipt are ticked off.
+            let ticked = ShoppingService.tickOff(receiptLines: draft.items.filter(\.included).map(\.name),
+                                                 familyID: family.id, memberID: session.currentMember?.id, context: context)
+            if !ticked.isEmpty {
+                session.notice = String(localized: "Ticked off the shopping list: \(ticked.joined(separator: ", "))")
+            }
             let base = family.baseCurrencyCode
             if expenses.contains(where: { $0.conversionStatus.needsRefresh }) {
                 Task {

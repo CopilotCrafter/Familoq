@@ -1,9 +1,22 @@
 import UIKit
 import CloudKit
+import UserNotifications
 
 /// Receives tapped family invitations (iCloud share links). SwiftUI has no
 /// hook for these, so a small scene delegate forwards them to `ShareInbox`.
-final class FamiloqAppDelegate: NSObject, UIApplicationDelegate {
+final class FamiloqAppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        // Must be registered before launching ends (iOS rule).
+        BackgroundRefresh.register()
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
+    /// Show reminder/event alerts also while Familoq is open.
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        [.banner, .list, .sound]
+    }
+
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
         configuration.delegateClass = FamiloqSceneDelegate.self
