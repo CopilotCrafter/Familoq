@@ -9,13 +9,13 @@ struct BudgetSettingsSection: View {
 
     var body: some View {
         Section("Budget") {
-            NavigationLink { BudgetListView(family: family) } label: {
+            NavigationLink { LazyView(BudgetListView(family: family)) } label: {
                 Label("Budgets", systemImage: "target")
             }
-            NavigationLink { CategoryManagementView(family: family) } label: {
+            NavigationLink { LazyView(CategoryManagementView(family: family)) } label: {
                 Label("Categories", systemImage: "square.grid.2x2")
             }
-            NavigationLink { MerchantRulesView(family: family) } label: {
+            NavigationLink { LazyView(MerchantRulesView(family: family)) } label: {
                 Label("Merchant rules", systemImage: "wand.and.stars")
             }
         }
@@ -111,7 +111,7 @@ struct CategoryManagementView: View {
             Section {
                 ForEach(categories.filter { !$0.isArchived }) { category in
                     NavigationLink {
-                        CategoryEditorView(category: category)
+                        LazyView(CategoryEditorView(category: category, subcategories: subcategories))
                     } label: {
                         HStack {
                             CategoryIcon(icon: category.icon, colorHex: category.colorHex, size: 28)
@@ -149,13 +149,25 @@ struct CategoryManagementView: View {
     }
 }
 
+/// Edits one category. Owns its state (no @Query, no live model binding while
+/// typing) - on iOS 27 a pushed screen with its own query re-created itself
+/// endlessly and crashed (same pattern as the receipt check screen).
 struct CategoryEditorView: View {
-    @Bindable var category: ExpenseCategory
+    let category: ExpenseCategory
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var session: AppSession
-    @Query private var subcategories: [ExpenseSubcategory]
+    @State private var name: String
+    @State private var icon: String
+    @State private var subs: [SubDraft]
     @State private var newSubName = ""
+
+    struct SubDraft: Identifiable, Equatable {
+        let id: UUID
+        var name: String
+        var sortOrder: Int
+        var isArchived: Bool
+    }
 
     private static let iconChoices = [
         "tag.fill", "cart.fill", "car.fill", "house.fill", "fork.knife", "bag.fill", "airplane", "cross.case.fill",
@@ -163,38 +175,44 @@ struct CategoryEditorView: View {
         "gift.fill", "pawprint.fill", "figure.run", "gamecontroller.fill", "wrench.and.screwdriver.fill", "heart.fill"
     ]
 
-    init(category: ExpenseCategory) {
+    init(category: ExpenseCategory, subcategories: [ExpenseSubcategory]) {
         self.category = category
-        let cid = category.id
-        _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.categoryID == cid }, sort: \ExpenseSubcategory.sortOrder)
+        _name = State(initialValue: category.name)
+        _icon = State(initialValue: category.icon)
+        _subs = State(initialValue: subcategories
+            .filter { $0.categoryID == category.id }
+            .sorted { $0.sortOrder < $1.sortOrder }
+            .map { SubDraft(id: $0.id, name: $0.name, sortOrder: $0.sortOrder, isArchived: $0.isArchived) })
     }
 
     var body: some View {
         Form {
             Section("Name") {
-                TextField("Name", text: $category.name)
+                TextField("Name", text: $name)
             }
             Section("Icon") {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 10) {
-                    ForEach(Self.iconChoices, id: \.self) { icon in
-                        Button {
-                            category.icon = icon
-                        } label: {
-                            CategoryIcon(icon: icon, colorHex: category.icon == icon ? category.colorHex : "#B0BEC5", size: 38)
+                ForEach(Array(stride(from: 0, to: Self.iconChoices.count, by: 5)), id: \.self) { start in
+                    HStack {
+                        ForEach(Self.iconChoices[start..<min(start + 5, Self.iconChoices.count)], id: \.self) { choice in
+                            Button {
+                                icon = choice
+                            } label: {
+                                CategoryIcon(icon: choice, colorHex: icon == choice ? category.colorHex : "#B0BEC5", size: 38)
+                            }
+                            .buttonStyle(.plain)
+                            .frame(maxWidth: .infinity)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
             Section("Subcategories") {
-                ForEach(subcategories.filter { !$0.isArchived }) { sub in
-                    SubcategoryNameField(subcategory: sub)
-                        .swipeActions {
-                            Button("Archive", role: .destructive) {
-                                sub.isArchived = true
-                                try? context.save()
+                ForEach($subs) { $sub in
+                    if !sub.isArchived {
+                        TextField("Name", text: $sub.name)
+                            .swipeActions {
+                                Button("Archive", role: .destructive) { sub.isArchived = true }
                             }
-                        }
+                    }
                 }
                 HStack {
                     TextField("New subcategory", text: $newSubName)
@@ -204,35 +222,50 @@ struct CategoryEditorView: View {
             }
             Section {
                 Button("Archive category", role: .destructive) {
-                    category.isArchived = true
-                    try? context.save()
+                    commit(archiveCategory: true)
                     dismiss()
                 }
             }
         }
         .disabled(!session.isOwner)
-        .navigationTitle(category.name)
-        .onDisappear {
-            category.updatedAt = Date()
-            try? context.save()
-        }
+        .navigationTitle(Text(verbatim: name))
+        .onDisappear { commit(archiveCategory: false) }
     }
 
     private func addSub() {
-        let name = newSubName.trimmingCharacters(in: .whitespaces)
-        guard session.can(.manageCategories), !name.isEmpty else { return }
-        let order = (subcategories.map(\.sortOrder).max() ?? 0) + 1
-        context.insert(ExpenseSubcategory(familyID: category.familyID, categoryID: category.id, name: name, sortOrder: order))
-        try? context.save()
+        let trimmed = newSubName.trimmingCharacters(in: .whitespaces)
+        guard session.can(.manageCategories), !trimmed.isEmpty else { return }
+        let order = (subs.map(\.sortOrder).max() ?? 0) + 1
+        subs.append(SubDraft(id: UUID(), name: trimmed, sortOrder: order, isArchived: false))
         newSubName = ""
     }
-}
 
-private struct SubcategoryNameField: View {
-    @Bindable var subcategory: ExpenseSubcategory
+    /// Writes the edits to SwiftData once, when leaving the screen.
+    private func commit(archiveCategory: Bool) {
+        guard session.can(.manageCategories) else { return }
+        var changed = false
+        let trimmedName = name.trimmingCharacters(in: .whitespaces)
+        if !trimmedName.isEmpty, trimmedName != category.name { category.name = trimmedName; changed = true }
+        if icon != category.icon { category.icon = icon; changed = true }
+        if archiveCategory, !category.isArchived { category.isArchived = true; changed = true }
 
-    var body: some View {
-        TextField("Name", text: $subcategory.name)
+        let cid = category.id
+        let existing = (try? context.fetch(FetchDescriptor<ExpenseSubcategory>(predicate: #Predicate { $0.categoryID == cid }))) ?? []
+        let byID = Dictionary(existing.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
+        for draft in subs {
+            let subName = draft.name.trimmingCharacters(in: .whitespaces)
+            if let model = byID[draft.id] {
+                if !subName.isEmpty, model.name != subName { model.name = subName; model.updatedAt = Date(); changed = true }
+                if model.isArchived != draft.isArchived { model.isArchived = draft.isArchived; model.updatedAt = Date(); changed = true }
+            } else if !subName.isEmpty, !draft.isArchived {
+                context.insert(ExpenseSubcategory(id: draft.id, familyID: category.familyID, categoryID: cid, name: subName, sortOrder: draft.sortOrder))
+                changed = true
+            }
+        }
+        if changed {
+            category.updatedAt = Date()
+            try? context.save()
+        }
     }
 }
 

@@ -76,7 +76,7 @@ private struct FamilySettingsContent: View {
 
             Section {
                 NavigationLink {
-                    MembersView(family: family)
+                    LazyView(MembersView(family: family))
                 } label: {
                     LabeledContent("Members", value: "\(members.count) of \(family.maxMembers)")
                 }
@@ -110,7 +110,7 @@ private struct FamilySettingsContent: View {
 
             Section {
                 NavigationLink {
-                    ExportBackupView(family: family)
+                    LazyView(ExportBackupView(family: family))
                 } label: {
                     Label("Export & backup", systemImage: "square.and.arrow.up.on.square")
                 }

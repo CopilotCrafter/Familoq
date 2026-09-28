@@ -33,7 +33,7 @@ struct SavingsGoalsView: View {
             Section {
                 ForEach(active) { goal in
                     NavigationLink {
-                        SavingsGoalDetailView(family: family, goal: goal)
+                        LazyView(SavingsGoalDetailView(family: family, goal: goal))
                     } label: {
                         SavingsGoalRow(goal: goal, saved: saved(goal), currency: family.baseCurrencyCode)
                     }
@@ -48,7 +48,7 @@ struct SavingsGoalsView: View {
                 Section("Archived") {
                     ForEach(archived) { goal in
                         NavigationLink {
-                            SavingsGoalDetailView(family: family, goal: goal)
+                            LazyView(SavingsGoalDetailView(family: family, goal: goal))
                         } label: {
                             SavingsGoalRow(goal: goal, saved: saved(goal), currency: family.baseCurrencyCode)
                         }
