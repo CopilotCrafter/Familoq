@@ -48,6 +48,18 @@ extension BudgetModule {
                     item.id = id
                     return item
                 }),
+            .of(ScheduledExpense.self,
+                inFamily: { fid in #Predicate<ScheduledExpense> { $0.familyID == fid } },
+                withID: { id in #Predicate<ScheduledExpense> { $0.id == id } },
+                make: { id, fid in ScheduledExpense(id: id, familyID: fid, title: "", amount: 0, currencyCode: "EUR", frequency: .monthly, startDate: Date()) }),
+            .of(SavingsGoal.self,
+                inFamily: { fid in #Predicate<SavingsGoal> { $0.familyID == fid } },
+                withID: { id in #Predicate<SavingsGoal> { $0.id == id } },
+                make: { id, fid in SavingsGoal(id: id, familyID: fid, name: "", target: 0, deadline: nil) }),
+            .of(SavingsContribution.self,
+                inFamily: { fid in #Predicate<SavingsContribution> { $0.familyID == fid } },
+                withID: { id in #Predicate<SavingsContribution> { $0.id == id } },
+                make: { id, fid in SavingsContribution(id: id, familyID: fid, goalID: UUID(), amount: 0, date: Date(), memberID: nil) }),
             .of(Expense.self, hasImage: true,
                 inFamily: { fid in #Predicate<Expense> { $0.familyID == fid } },
                 withID: { id in #Predicate<Expense> { $0.id == id } },
@@ -290,5 +302,102 @@ extension Expense: SyncableRecord {
     var syncImage: Data? {
         get { receiptImageData }
         set { receiptImageData = newValue }
+    }
+}
+
+extension ScheduledExpense: SyncableRecord {
+    static var syncKind: SyncKind { .scheduled }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("title", title)
+        p.set("amountValue", amountValue)
+        p.set("currencyCode", currencyCode)
+        p.set("categoryID", categoryID)
+        p.set("subcategoryID", subcategoryID)
+        p.set("memberID", memberID)
+        p.set("paymentMethodRaw", paymentMethodRaw)
+        p.set("note", note)
+        p.set("frequencyRaw", frequencyRaw)
+        p.set("startDate", startDate)
+        p.set("endDate", endDate)
+        p.set("bookedThrough", bookedThrough)
+        p.set("isActive", isActive)
+        p.set("createdByMemberID", createdByMemberID)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        title = p.string("title")
+        amountValue = p.int64("amountValue")
+        currencyCode = p.string("currencyCode", default: "EUR")
+        categoryID = p.uuid("categoryID")
+        subcategoryID = p.uuid("subcategoryID")
+        memberID = p.uuid("memberID")
+        paymentMethodRaw = p.string("paymentMethodRaw", default: "bankTransfer")
+        note = p.string("note")
+        frequencyRaw = p.string("frequencyRaw", default: "monthly")
+        startDate = p.date("startDate", default: startDate)
+        endDate = p.date("endDate")
+        bookedThrough = p.date("bookedThrough")
+        isActive = p.bool("isActive", default: true)
+        createdByMemberID = p.uuid("createdByMemberID")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension SavingsGoal: SyncableRecord {
+    static var syncKind: SyncKind { .goal }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("name", name)
+        p.set("icon", icon)
+        p.set("targetValue", targetValue)
+        p.set("deadline", deadline)
+        p.set("reserveInSafeToSpend", reserveInSafeToSpend)
+        p.set("isArchived", isArchived)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        name = p.string("name")
+        icon = p.string("icon", default: "star.fill")
+        targetValue = p.int64("targetValue")
+        deadline = p.date("deadline")
+        reserveInSafeToSpend = p.bool("reserveInSafeToSpend", default: true)
+        isArchived = p.bool("isArchived")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension SavingsContribution: SyncableRecord {
+    static var syncKind: SyncKind { .contribution }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("goalID", goalID)
+        p.set("amountValue", amountValue)
+        p.set("date", date)
+        p.set("memberID", memberID)
+        p.set("note", note)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        goalID = p.uuid("goalID") ?? goalID
+        amountValue = p.int64("amountValue")
+        date = p.date("date", default: date)
+        memberID = p.uuid("memberID")
+        note = p.string("note")
     }
 }

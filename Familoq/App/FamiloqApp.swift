@@ -88,6 +88,7 @@ struct RootView: View {
                 DemoDataSeeder.seedIfEmpty(family: family, member: session.currentMember, context: context)
             }
             startSyncIfActive()
+            bookScheduledExpenses()
             await refreshRates()
             await account.refreshIfDue()
         }
@@ -113,6 +114,7 @@ struct RootView: View {
             if phase == .active {
                 Task {
                     await sync.refresh()
+                    bookScheduledExpenses()
                     await refreshRates()
                     await account.refreshIfDue()
                 }
@@ -149,6 +151,12 @@ struct RootView: View {
         guard account.isActive, sync.isRunning, let metadata = shareInbox.pending else { return }
         shareInbox.pending = nil
         Task { await sync.accept(metadata) }
+    }
+
+    /// Recurring/planned expenses that are due become real expenses.
+    private func bookScheduledExpenses() {
+        guard account.isActive, let family = session.family else { return }
+        PlanningService.bookDue(familyID: family.id, baseCurrency: family.baseCurrencyCode, context: context)
     }
 
     private func refreshRates() async {

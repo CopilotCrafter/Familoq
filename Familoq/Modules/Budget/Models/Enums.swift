@@ -35,10 +35,21 @@ enum PaymentMethod: String, CaseIterable, Identifiable {
     }
 }
 
-enum EntryMethod: String {
+enum EntryMethod: String, CaseIterable {
     case manual
     case quick
     case receipt
+    /// Booked automatically from a recurring or planned expense.
+    case scheduled
+
+    var displayName: String {
+        switch self {
+        case .manual: return "Entered"
+        case .quick: return "Quick entry"
+        case .receipt: return "Scanned receipt"
+        case .scheduled: return "Recurring / planned"
+        }
+    }
 }
 
 extension ConversionStatus {

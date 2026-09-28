@@ -26,6 +26,10 @@ private struct DashboardContent: View {
     @Query private var categories: [ExpenseCategory]
     @Query private var subcategories: [ExpenseSubcategory]
     @Query private var budgets: [Budget]
+    @Query private var schedules: [ScheduledExpense]
+    @Query private var goals: [SavingsGoal]
+    @Query private var contributions: [SavingsContribution]
+    @Environment(\.modelContext) private var context
 
     @State private var showSafeToSpendExplanation = false
     @State private var editingExpense: Expense?
@@ -57,6 +61,15 @@ private struct DashboardContent: View {
         _categories = Query(filter: #Predicate<ExpenseCategory> { $0.familyID == fid }, sort: \ExpenseCategory.sortOrder)
         _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid }, sort: \ExpenseSubcategory.sortOrder)
         _budgets = Query(filter: #Predicate<Budget> { $0.familyID == fid && $0.isActive == true })
+        _schedules = Query(filter: #Predicate<ScheduledExpense> { $0.familyID == fid && $0.isActive == true })
+        _goals = Query(filter: #Predicate<SavingsGoal> { $0.familyID == fid && $0.isArchived == false }, sort: \SavingsGoal.createdAt)
+        _contributions = Query(filter: #Predicate<SavingsContribution> { $0.familyID == fid })
+    }
+
+    /// Recurring/planned bills still due this month + savings still to put aside.
+    private var committed: (bills: Decimal, savings: Decimal) {
+        PlanningService.committedForRestOfMonth(schedules: schedules, goals: goals, contributions: contributions,
+                                                baseCurrency: currency, now: now, monthEnd: month.end, context: context, calendar: calendar)
     }
 
     private var lookup: CategoryLookup {
@@ -137,10 +150,47 @@ private struct DashboardContent: View {
                 }
             }
 
-            Section("Upcoming") {
-                Label("Recurring and planned expenses arrive in Phase 5 and will be reserved in Safe to spend automatically.", systemImage: "calendar.badge.clock")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+            Section {
+                let upcoming = PlanningService.upcoming(schedules, now: now, until: now.addingTimeInterval(30 * 86_400), calendar: calendar)
+                if upcoming.isEmpty {
+                    Text("Rent, insurance, subscriptions, a planned car service … add them once and they are booked automatically and reserved in Safe to spend.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                } else {
+                    ForEach(upcoming.prefix(5)) { item in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(item.schedule.title)
+                                Text(item.date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Text(item.schedule.amount.currency(item.schedule.currencyCode))
+                                .monospacedDigit()
+                        }
+                    }
+                }
+                NavigationLink {
+                    ScheduledExpensesView(family: family)
+                } label: {
+                    Label("Recurring & planned", systemImage: "calendar.badge.clock")
+                }
+            } header: {
+                Text("Upcoming (30 days)")
+            }
+
+            Section {
+                ForEach(goals.prefix(3)) { goal in
+                    SavingsGoalRow(goal: goal, saved: contributions.filter { $0.goalID == goal.id }.reduce(Decimal(0)) { $0 + $1.amount }, currency: currency)
+                }
+                NavigationLink {
+                    SavingsGoalsView(family: family)
+                } label: {
+                    Label(goals.isEmpty ? "Start a savings goal" : "All savings goals", systemImage: "star.circle")
+                }
+            } header: {
+                Text("Savings goals")
             }
         }
         .navigationTitle(month.start.formatted(.dateTime.month(.wide).year()))
@@ -149,7 +199,9 @@ private struct DashboardContent: View {
         }
         .sheet(isPresented: $showSafeToSpendExplanation) {
             if let result = safeToSpend(summary: summary), let budget = overallMonthlyBudget {
-                SafeToSpendExplanationView(result: result, budget: budget.amount, spent: summary.total, currencyCode: currency)
+                let parts = committed
+                SafeToSpendExplanationView(result: result, budget: budget.amount, spent: summary.total, currencyCode: currency,
+                                           bills: parts.bills, savings: parts.savings)
             }
         }
         .sheet(item: $editingExpense) { expense in
@@ -159,7 +211,7 @@ private struct DashboardContent: View {
         }
     }
 
-    @Environment(\.modelContext) private var modelContextForRefresh
+    private var modelContextForRefresh: ModelContext { context }
 
     // MARK: Header
 
@@ -237,8 +289,8 @@ private struct DashboardContent: View {
 
     private func safeToSpend(summary: SpendingSummary) -> SafeToSpendResult? {
         guard let budget = overallMonthlyBudget else { return nil }
-        // Phase 5 adds upcoming recurring/planned expenses here.
-        let input = SafeToSpendInput(budget: budget.amount, spent: summary.total, upcomingCommitted: 0, today: now, periodEnd: month.end)
+        let parts = committed
+        let input = SafeToSpendInput(budget: budget.amount, spent: summary.total, upcomingCommitted: parts.bills + parts.savings, today: now, periodEnd: month.end)
         return SafeToSpendCalculator.calculate(input, calendar: calendar, currencyCode: currency)
     }
 }
@@ -248,6 +300,8 @@ struct SafeToSpendExplanationView: View {
     let budget: Decimal
     let spent: Decimal
     let currencyCode: String
+    var bills: Decimal = 0
+    var savings: Decimal = 0
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -257,7 +311,8 @@ struct SafeToSpendExplanationView: View {
                     row("Monthly budget", budget)
                     row("− Spent so far", spent)
                     row("= Remaining", result.remaining, bold: true)
-                    row("− Upcoming bills (recurring & planned)", result.upcomingCommitted)
+                    row("− Bills still due (recurring & planned)", bills)
+                    row("− Savings still to put aside", savings)
                     row("= Available", result.available, bold: true)
                     HStack {
                         Text("÷ Days left (including today)")
