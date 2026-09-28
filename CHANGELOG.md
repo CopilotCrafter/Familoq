@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 - Phase 5
+
+### Added
+- Recurring expenses (weekly, every 2 weeks, monthly, quarterly, yearly) and planned one-offs: booked automatically on the due date for the whole family (no duplicates across iPhones), upcoming dates reserved in Safe to spend, "Upcoming (30 days)" on the dashboard.
+- Savings goals with target, deadline, monthly amount needed, add/take out money, history; optional reservation in Safe to spend.
+- Expense search (every word, amounts like "12,50") and filters: period, categories, members, amount range, how it was entered, other currencies; filtered total.
+- Reports: this year, last 12 months, custom range; 12-month trend chart with average; spending per member; budget vs actual.
+- Export & backup: CSV for Excel/Numbers (German Excel format when the iPhone uses a decimal comma), full family backup file (optionally with receipt photos), restore into the family (other families untouched).
+- German language: whole app follows the iPhone's language; built-in category names are renamed to German by the family's owner.
+
+### Fixed (0.3.x builds)
+- Receipt check screen froze on iOS 27 (screen now owns its data and opens full screen).
+
 ## 0.3.0 - Phase 4
 
 ### Added

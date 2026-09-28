@@ -20,7 +20,7 @@ Familoq = the family's shared space. Each **space** is a module on a shared core
 | **2** | Receipt scanning (VisionKit document camera + photo import), on-device OCR (Vision), receipt parsing (merchant, date & time, total, currency, VAT, items, discounts, quantities), item-level grocery categorisation, confirmation screen, "categorise entire receipt", receipt storage | **done** (0.2.0) |
 | **3** | Invitation gate, App Invitations in the CloudKit public database, in-app Administration, iCloud identity, restore/revoke, family creation, owner/member permissions | **done** (0.2.0) |
 | **4** | CloudKit family zones + CKSyncEngine, offline queue, last-writer-wins, restore after reinstall, family invitations by Apple Account (CKShare), join / leave / remove / delete, family switcher; receipts from any country (currency detection, asks when unclear) | **done** (0.3.0) - see docs/10 |
-| 5 | Recurring & planned expenses (reserved in safe-to-spend), savings goals, full reports (trends, budget vs actual, custom range), search & filters, JSON/CSV export/import | |
+| **5** | Recurring & planned expenses (booked automatically, reserved in Safe to spend), savings goals, search & filters, reports (year, 12 months, custom range, trend, per member, budget vs actual), CSV export, family backup & restore, German language | **done** (0.4.0) - see docs/12 |
 | 6 | TestFlight external beta, security test run, accessibility, performance, error handling, App Store submission | |
 
 Each phase follows: implement -> build -> test -> fix -> commit -> explain -> how to test from Windows/iPhone.
