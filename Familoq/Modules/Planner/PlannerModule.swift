@@ -53,7 +53,12 @@ enum ShoppingService {
     /// amount instead of a second line. Returns the item.
     @discardableResult
     static func add(_ text: String, listID: UUID, familyID: UUID, memberID: UUID?, context: ModelContext) -> ShoppingItem? {
-        let entry = ShoppingEntryParser.parse(text)
+        add(entry: ShoppingEntryParser.parse(text), listID: listID, familyID: familyID, memberID: memberID, context: context)
+    }
+
+    /// Adds an already split entry (name + amount), e.g. from a recipe.
+    @discardableResult
+    static func add(entry: ShoppingEntry, listID: UUID, familyID: UUID, memberID: UUID?, context: ModelContext) -> ShoppingItem? {
         guard !entry.name.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
         let key = ShoppingEntryParser.key(entry.name)
         let lid = listID

@@ -13,7 +13,7 @@ struct FamiloqApp: App {
 
     init() {
         do {
-            container = try PersistenceController.makeContainer()
+            container = try PersistenceController.shared()
         } catch {
             // A broken local store is unrecoverable at this point; crash
             // reports reach TestFlight so we learn about it.

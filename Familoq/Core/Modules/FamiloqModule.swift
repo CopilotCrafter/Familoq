@@ -37,7 +37,7 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
         }
     }
 
-    var isAvailable: Bool { self != .travel && self != .health }
+    var isAvailable: Bool { self != .health }
 }
 
 /// Contract every module implements. Adding a space later means:

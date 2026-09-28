@@ -1,0 +1,94 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Add a family reminder in ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge in ${applicationName} eine Familien-Erinnerung hinzu"
+          }
+        }
+      }
+    },
+    "Add an expense to ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge eine Ausgabe zu ${applicationName} hinzu"
+          }
+        }
+      }
+    },
+    "Add something to my ${applicationName} list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setze etwas auf meine ${applicationName} Liste"
+          }
+        }
+      }
+    },
+    "Add to the shopping list in ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge in ${applicationName} etwas zur Einkaufsliste hinzu"
+          }
+        }
+      }
+    },
+    "How much did we spend in ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie viel haben wir in ${applicationName} ausgegeben"
+          }
+        }
+      }
+    },
+    "Log an expense in ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trage in ${applicationName} eine Ausgabe ein"
+          }
+        }
+      }
+    },
+    "Remind the family in ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnere die Familie in ${applicationName}"
+          }
+        }
+      }
+    },
+    "What did we spend this month in ${applicationName}": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was haben wir diesen Monat in ${applicationName} ausgegeben"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
