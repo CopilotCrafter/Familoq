@@ -142,7 +142,7 @@ private struct ReportContent: View {
         List {
             Section {
                 Picker("Period", selection: $selection) {
-                    ForEach(ReportPeriod.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(ReportPeriod.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
                 .pickerStyle(.menu)
                 if period == .custom {

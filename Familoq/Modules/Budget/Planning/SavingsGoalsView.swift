@@ -152,9 +152,9 @@ struct SavingsGoalDetailView: View {
                     .disabled(saved <= 0)
                 }
             } footer: {
-                Text(goal.reserveInSafeToSpend
+                Text(LocalizedStringKey(goal.reserveInSafeToSpend
                      ? "The monthly amount is reserved in Safe to spend until it is saved."
-                     : "Not reserved in Safe to spend.")
+                     : "Not reserved in Safe to spend."))
             }
 
             Section("History") {
@@ -275,7 +275,7 @@ struct SavingsGoalForm: View {
                 Text("With a deadline Familoq works out how much to put aside each month. Reserved amounts lower Safe to spend until they are saved.")
             }
             if let message {
-                Section { Text(message).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(message)).foregroundStyle(.red) }
             }
         }
         .navigationTitle(editing == nil ? "New savings goal" : "Edit goal")

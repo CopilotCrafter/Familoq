@@ -197,7 +197,7 @@ struct ExpenseFilterView: View {
         Form {
             Section("Period") {
                 Picker("Period", selection: $period) {
-                    ForEach(FilterPeriod.allCases) { Text($0.title).tag($0) }
+                    ForEach(FilterPeriod.allCases) { Text(LocalizedStringKey($0.title)).tag($0) }
                 }
                 if period == .custom {
                     DatePicker("From", selection: $customFrom, displayedComponents: [.date])
@@ -294,7 +294,7 @@ struct ExpenseFilterView: View {
         Button(action: action) {
             HStack {
                 if let icon { Image(systemName: icon).foregroundStyle(.secondary).frame(width: 24) }
-                Text(title).foregroundStyle(.primary)
+                Text(LocalizedStringKey(title)).foregroundStyle(.primary)
                 Spacer()
                 if isOn { Image(systemName: "checkmark").foregroundStyle(Color.accentColor) }
             }

@@ -100,7 +100,7 @@ private struct ScanReceiptContent: View {
                 Section { ProgressView("Reading receipt…") }
             }
             if let errorMessage {
-                Section { Text(errorMessage).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(errorMessage)).foregroundStyle(.red) }
             }
 
             if !recentReceipts.isEmpty {

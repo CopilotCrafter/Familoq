@@ -157,6 +157,10 @@ struct RootView: View {
     private func bookScheduledExpenses() {
         guard account.isActive, let family = session.family else { return }
         PlanningService.bookDue(familyID: family.id, baseCurrency: family.baseCurrencyCode, context: context)
+        if session.isOwner {
+            // Built-in category names in the app language (e.g. German).
+            CategoryNameLocalizer.apply(familyID: family.id, context: context)
+        }
     }
 
     private func refreshRates() async {
@@ -207,7 +211,7 @@ private struct JoinProgressOverlay: View {
                 .alert("Could not join", isPresented: .constant(true)) {
                     Button("OK") { sync.joinState = .idle }
                 } message: {
-                    Text(message)
+                    Text(LocalizedStringKey(message))
                 }
         default:
             EmptyView()

@@ -80,7 +80,7 @@ struct CreateFamilyView: View {
                 Text("Budgets and totals use this currency. Expenses in other currencies are converted automatically. You can change it later.")
             }
             if let error {
-                Section { Text(error).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(error)).foregroundStyle(.red) }
             }
             Section {
                 Button("Create family") { create() }

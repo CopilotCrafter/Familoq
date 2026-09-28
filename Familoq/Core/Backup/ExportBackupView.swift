@@ -42,7 +42,7 @@ struct ExportBackupView: View {
         Form {
             Section {
                 Picker("Period", selection: $csvPeriod) {
-                    ForEach(FilterPeriod.allCases.filter { $0 != .custom }) { Text($0.title).tag($0) }
+                    ForEach(FilterPeriod.allCases.filter { $0 != .custom }) { Text(LocalizedStringKey($0.title)).tag($0) }
                 }
                 .onChange(of: csvPeriod) { _, _ in csvURL = nil }
                 if let csvURL {
@@ -96,7 +96,7 @@ struct ExportBackupView: View {
             }
 
             if let message {
-                Section { Text(message) }
+                Section { Text(LocalizedStringKey(message)) }
             }
         }
         .navigationTitle("Export & backup")

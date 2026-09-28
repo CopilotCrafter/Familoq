@@ -1,0 +1,5891 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ of %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ von %@"
+          }
+        }
+      }
+    },
+    "%@ over budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ über Budget"
+          }
+        }
+      }
+    },
+    "%@/day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@/Tag"
+          }
+        }
+      }
+    },
+    "%lld expense(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Ausgabe(n)"
+          }
+        }
+      }
+    },
+    "%lld foreign-currency expense(s) are waiting for an exchange rate and are not in the totals yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Ausgabe(n) in Fremdwährung warten auf einen Wechselkurs und sind noch nicht in den Summen."
+          }
+        }
+      }
+    },
+    "%lld foreign-currency expense(s) are waiting for an exchange rate.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Ausgabe(n) in Fremdwährung warten auf einen Wechselkurs."
+          }
+        }
+      }
+    },
+    "%lld of %lld members. Owners manage members, settings, categories and budgets; members add and edit their own expenses.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld von %lld Mitgliedern. Inhaber verwalten Mitglieder, Einstellungen, Kategorien und Budgets; Mitglieder erfassen und bearbeiten ihre eigenen Ausgaben."
+          }
+        }
+      }
+    },
+    "%lld%% used": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld %% verbraucht"
+          }
+        }
+      }
+    },
+    "(you)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(du)"
+          }
+        }
+      }
+    },
+    "0,00": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0,00"
+          }
+        }
+      }
+    },
+    "= Available": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "= Verfügbar"
+          }
+        }
+      }
+    },
+    "= Remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "= Übrig"
+          }
+        }
+      }
+    },
+    "= Safe to spend per day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "= Sicher ausgeben pro Tag"
+          }
+        }
+      }
+    },
+    "A family owner invites their own members.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Person, der die Familie gehört, lädt ihre Mitglieder selbst ein."
+          }
+        }
+      }
+    },
+    "About": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        }
+      }
+    },
+    "About %@ per month.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwa %@ pro Monat."
+          }
+        }
+      }
+    },
+    "About Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über Familoq"
+          }
+        }
+      }
+    },
+    "Access to Familoq has been turned off for this iCloud account.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Zugang zu Familoq wurde für diesen iCloud-Account deaktiviert."
+          }
+        }
+      }
+    },
+    "Activate Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq aktivieren"
+          }
+        }
+      }
+    },
+    "Activated accounts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivierte Accounts"
+          }
+        }
+      }
+    },
+    "Active": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        }
+      }
+    },
+    "Activities": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivitäten"
+          }
+        }
+      }
+    },
+    "Add": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen"
+          }
+        }
+      }
+    },
+    "Add a name without an account": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Namen ohne Account hinzufügen"
+          }
+        }
+      }
+    },
+    "Add budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget hinzufügen"
+          }
+        }
+      }
+    },
+    "Add expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabe hinzufügen"
+          }
+        }
+      }
+    },
+    "Add item": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position hinzufügen"
+          }
+        }
+      }
+    },
+    "Add money": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geld hinzufügen"
+          }
+        }
+      }
+    },
+    "Add planned expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Ausgabe hinzufügen"
+          }
+        }
+      }
+    },
+    "Add recurring expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrende Ausgabe hinzufügen"
+          }
+        }
+      }
+    },
+    "Adds the backup's records to this family; records that already exist are replaced by the backup's version. Other families are never changed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügt die Daten der Sicherung dieser Familie hinzu; bereits vorhandene Einträge werden durch die Version aus der Sicherung ersetzt. Andere Familien werden nie verändert."
+          }
+        }
+      }
+    },
+    "Administration": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwaltung"
+          }
+        }
+      }
+    },
+    "All budgets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Budgets"
+          }
+        }
+      }
+    },
+    "All savings goals": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Sparziele"
+          }
+        }
+      }
+    },
+    "All totals, budgets and reports use the base currency. Default is EUR. Expenses keep their original currency and amount.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Summen, Budgets und Auswertungen verwenden die Basiswährung. Standard ist EUR. Ausgaben behalten ihre ursprüngliche Währung und ihren Betrag."
+          }
+        }
+      }
+    },
+    "Already activated? Restore access": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schon aktiviert? Zugang wiederherstellen"
+          }
+        }
+      }
+    },
+    "Always categorize this merchant this way?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Händler immer so kategorisieren?"
+          }
+        }
+      }
+    },
+    "Always use %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immer %@ verwenden"
+          }
+        }
+      }
+    },
+    "Amount": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betrag"
+          }
+        }
+      }
+    },
+    "Any time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beliebiger Zeitraum"
+          }
+        }
+      }
+    },
+    "Apple Account e-mail or phone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mail oder Telefonnummer des Apple Accounts"
+          }
+        }
+      }
+    },
+    "Archive": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivieren"
+          }
+        }
+      }
+    },
+    "Archive category": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategorie archivieren"
+          }
+        }
+      }
+    },
+    "Archived": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archiviert"
+          }
+        }
+      }
+    },
+    "Archived categories keep their past expenses but are hidden when adding new ones.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivierte Kategorien behalten ihre bisherigen Ausgaben, werden aber beim Erfassen neuer Ausgaben ausgeblendet."
+          }
+        }
+      }
+    },
+    "Ask the family's owner to invite you: Family → Members → Invite, with the e-mail address or phone number of your Apple Account.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte die Person, der die Familie gehört, dich einzuladen: Familie → Mitglieder → Einladen, mit der E-Mail-Adresse oder Telefonnummer deines Apple Accounts."
+          }
+        }
+      }
+    },
+    "Attach receipt photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belegfoto anhängen"
+          }
+        }
+      }
+    },
+    "Average of complete months: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchschnitt der vollständigen Monate: %@"
+          }
+        }
+      }
+    },
+    "Bank transfer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überweisung"
+          }
+        }
+      }
+    },
+    "Base currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basiswährung"
+          }
+        }
+      }
+    },
+    "Beauty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosmetik"
+          }
+        }
+      }
+    },
+    "Beverages": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Getränke"
+          }
+        }
+      }
+    },
+    "Books": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bücher"
+          }
+        }
+      }
+    },
+    "Bread & Bakery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brot & Backwaren"
+          }
+        }
+      }
+    },
+    "Budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget"
+          }
+        }
+      }
+    },
+    "Budget exceeded": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget überschritten"
+          }
+        }
+      }
+    },
+    "Budget fully used": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget ausgeschöpft"
+          }
+        }
+      }
+    },
+    "Budget vs actual": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget vs. tatsächlich"
+          }
+        }
+      }
+    },
+    "Budgets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budgets"
+          }
+        }
+      }
+    },
+    "Budgets and totals use this currency. Expenses in other currencies are converted automatically. You can change it later.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budgets und Summen verwenden diese Währung. Ausgaben in anderen Währungen werden automatisch umgerechnet. Du kannst sie später ändern."
+          }
+        }
+      }
+    },
+    "Budgets are converted with today's ECB rate (rounded). Every expense is recalculated with the rate of its own date. Requires an internet connection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budgets werden mit dem heutigen EZB-Kurs umgerechnet (gerundet). Jede Ausgabe wird mit dem Kurs ihres eigenen Datums neu berechnet. Benötigt eine Internetverbindung."
+          }
+        }
+      }
+    },
+    "Budgets this month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budgets diesen Monat"
+          }
+        }
+      }
+    },
+    "By category": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Kategorie"
+          }
+        }
+      }
+    },
+    "By member": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach Mitglied"
+          }
+        }
+      }
+    },
+    "Café": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Café"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        }
+      }
+    },
+    "Canned & Packaged Food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konserven & Fertigprodukte"
+          }
+        }
+      }
+    },
+    "Car": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto"
+          }
+        }
+      }
+    },
+    "Car Insurance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kfz-Versicherung"
+          }
+        }
+      }
+    },
+    "Car Maintenance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autowartung"
+          }
+        }
+      }
+    },
+    "Car Rental": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mietwagen"
+          }
+        }
+      }
+    },
+    "Car Wash": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autowäsche"
+          }
+        }
+      }
+    },
+    "Cash": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bar"
+          }
+        }
+      }
+    },
+    "Categories": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategorien"
+          }
+        }
+      }
+    },
+    "Categorize entire receipt as Groceries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzen Beleg als Lebensmittel einordnen"
+          }
+        }
+      }
+    },
+    "Categorize entire receipt as one category": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzen Beleg einer Kategorie zuordnen"
+          }
+        }
+      }
+    },
+    "Category": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategorie"
+          }
+        }
+      }
+    },
+    "Category budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategoriebudget"
+          }
+        }
+      }
+    },
+    "Category budgets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategoriebudgets"
+          }
+        }
+      }
+    },
+    "Change": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ändern"
+          }
+        }
+      }
+    },
+    "Check receipt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beleg prüfen"
+          }
+        }
+      }
+    },
+    "Checking iCloud…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud wird geprüft …"
+          }
+        }
+      }
+    },
+    "Checking invitation…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladung wird geprüft …"
+          }
+        }
+      }
+    },
+    "Choose a category.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle eine Kategorie."
+          }
+        }
+      }
+    },
+    "Choose a photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto auswählen"
+          }
+        }
+      }
+    },
+    "Choose a subcategory.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle eine Unterkategorie."
+          }
+        }
+      }
+    },
+    "Choose a valid currency.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle eine gültige Währung."
+          }
+        }
+      }
+    },
+    "Choose…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswählen …"
+          }
+        }
+      }
+    },
+    "Cinema": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kino"
+          }
+        }
+      }
+    },
+    "Cleaning Products": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reinigungsmittel"
+          }
+        }
+      }
+    },
+    "Clear filters": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter zurücksetzen"
+          }
+        }
+      }
+    },
+    "Clothing": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleidung"
+          }
+        }
+      }
+    },
+    "Cloud Storage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cloud-Speicher"
+          }
+        }
+      }
+    },
+    "Codes: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes: %lld"
+          }
+        }
+      }
+    },
+    "Coffee & Tea": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaffee & Tee"
+          }
+        }
+      }
+    },
+    "Continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiter"
+          }
+        }
+      }
+    },
+    "Converted": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umgerechnet"
+          }
+        }
+      }
+    },
+    "Converted to %@ with the ECB reference rate of the expense date (previous business day on weekends/holidays). Works offline - the rate is filled in when you're back online.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umgerechnet in %@ mit dem EZB-Referenzkurs des Ausgabedatums (am Wochenende/Feiertag der vorherige Geschäftstag). Funktioniert offline – der Kurs wird ergänzt, sobald du wieder online bist."
+          }
+        }
+      }
+    },
+    "Could not change currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Währung konnte nicht geändert werden"
+          }
+        }
+      }
+    },
+    "Could not join": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beitritt nicht möglich"
+          }
+        }
+      }
+    },
+    "Courses": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurse"
+          }
+        }
+      }
+    },
+    "Create CSV": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV erstellen"
+          }
+        }
+      }
+    },
+    "Create backup": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherung erstellen"
+          }
+        }
+      }
+    },
+    "Create family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie anlegen"
+          }
+        }
+      }
+    },
+    "Create invitation codes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungscodes erstellen"
+          }
+        }
+      }
+    },
+    "Create our family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unsere Familie anlegen"
+          }
+        }
+      }
+    },
+    "Credit card": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kreditkarte"
+          }
+        }
+      }
+    },
+    "Currency not recognised - please choose it": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Währung nicht erkannt – bitte auswählen"
+          }
+        }
+      }
+    },
+    "Current value": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktueller Wert"
+          }
+        }
+      }
+    },
+    "Custom": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benutzerdefiniert"
+          }
+        }
+      }
+    },
+    "Custom range": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigener Zeitraum"
+          }
+        }
+      }
+    },
+    "Daily": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Täglich"
+          }
+        }
+      }
+    },
+    "Daily amounts are rounded down so you never overshoot. Only converted amounts in %@ are included; foreign-currency expenses waiting for an exchange rate are counted once converted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tagesbeträge werden abgerundet, damit du nie darüber liegst. Nur umgerechnete Beträge in %@ zählen; Ausgaben in Fremdwährung, die auf einen Kurs warten, zählen nach der Umrechnung."
+          }
+        }
+      }
+    },
+    "Dashboard": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersicht"
+          }
+        }
+      }
+    },
+    "Date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum"
+          }
+        }
+      }
+    },
+    "Date & time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum & Uhrzeit"
+          }
+        }
+      }
+    },
+    "Date not recognised - today is used": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum nicht erkannt – heute wird verwendet"
+          }
+        }
+      }
+    },
+    "Deadline": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zieldatum"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Delete expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabe löschen"
+          }
+        }
+      }
+    },
+    "Delete family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie löschen"
+          }
+        }
+      }
+    },
+    "Delete this expense?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Ausgabe löschen?"
+          }
+        }
+      }
+    },
+    "Delete this family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Familie löschen"
+          }
+        }
+      }
+    },
+    "Deleted category": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelöschte Kategorie"
+          }
+        }
+      }
+    },
+    "Deletes the family's budget, expenses and receipts for every member, on all devices and in iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löscht Budget, Ausgaben und Belege der Familie für alle Mitglieder, auf allen Geräten und in iCloud."
+          }
+        }
+      }
+    },
+    "Delivery": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieferdienst"
+          }
+        }
+      }
+    },
+    "Dental": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahnarzt"
+          }
+        }
+      }
+    },
+    "Detailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausführlich"
+          }
+        }
+      }
+    },
+    "Details": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        }
+      }
+    },
+    "Discard": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwerfen"
+          }
+        }
+      }
+    },
+    "Discard this scan?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Scan verwerfen?"
+          }
+        }
+      }
+    },
+    "Doctor": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arzt"
+          }
+        }
+      }
+    },
+    "Done": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        }
+      }
+    },
+    "Due on": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig am"
+          }
+        }
+      }
+    },
+    "E-mail or phone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mail oder Telefon"
+          }
+        }
+      }
+    },
+    "Each code activates Familoq for one iCloud account. Codes are shown only now - only a fingerprint is stored.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Code aktiviert Familoq für einen iCloud-Account. Codes werden nur jetzt angezeigt – gespeichert wird nur ein Fingerabdruck."
+          }
+        }
+      }
+    },
+    "Each due date is added as an expense automatically (for the whole family). Upcoming dates this month are reserved in Safe to spend.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeder Fälligkeitstermin wird automatisch als Ausgabe erfasst (für die ganze Familie). Kommende Termine in diesem Monat werden bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Each family's data is kept separate.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Daten jeder Familie bleiben getrennt."
+          }
+        }
+      }
+    },
+    "Edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabe bearbeiten"
+          }
+        }
+      }
+    },
+    "Edit goal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ziel bearbeiten"
+          }
+        }
+      }
+    },
+    "Education": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildung"
+          }
+        }
+      }
+    },
+    "Eggs": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eier"
+          }
+        }
+      }
+    },
+    "Electricity": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strom"
+          }
+        }
+      }
+    },
+    "Electronics": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elektronik"
+          }
+        }
+      }
+    },
+    "Emergency Fund": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notgroschen"
+          }
+        }
+      }
+    },
+    "Ends": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endet"
+          }
+        }
+      }
+    },
+    "Enter Invitation Code": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungscode eingeben"
+          }
+        }
+      }
+    },
+    "Enter a name.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib einen Namen ein."
+          }
+        }
+      }
+    },
+    "Enter a valid exchange rate, e.g. 0,92.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib einen gültigen Wechselkurs ein, z. B. 0,92."
+          }
+        }
+      }
+    },
+    "Enter an amount greater than zero.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib einen Betrag größer als null ein."
+          }
+        }
+      }
+    },
+    "Enter exchange rate manually": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wechselkurs manuell eingeben"
+          }
+        }
+      }
+    },
+    "Enter the amount.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib den Betrag ein."
+          }
+        }
+      }
+    },
+    "Enter the e-mail address or phone number of the person's Apple Account, then send them the link. Only people you invited can open it. They also need their own Familoq invitation to use the app.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib die E-Mail-Adresse oder Telefonnummer des Apple Accounts der Person ein und schicke ihr dann den Link. Nur eingeladene Personen können ihn öffnen. Für die App braucht sie außerdem eine eigene Familoq-Einladung."
+          }
+        }
+      }
+    },
+    "Enter the receipt total.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib die Belegsumme ein."
+          }
+        }
+      }
+    },
+    "Enter the target amount.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib den Zielbetrag ein."
+          }
+        }
+      }
+    },
+    "Enter what it is for.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gib ein, wofür es ist."
+          }
+        }
+      }
+    },
+    "Entered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingegeben"
+          }
+        }
+      }
+    },
+    "Entered as": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erfasst als"
+          }
+        }
+      }
+    },
+    "Entertainment": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freizeit"
+          }
+        }
+      }
+    },
+    "Entry mode": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingabeart"
+          }
+        }
+      }
+    },
+    "Estimated - will update": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschätzt – wird aktualisiert"
+          }
+        }
+      }
+    },
+    "Events": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termine"
+          }
+        }
+      }
+    },
+    "Every 2 weeks": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle 2 Wochen"
+          }
+        }
+      }
+    },
+    "Every 3 months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle 3 Monate"
+          }
+        }
+      }
+    },
+    "Every month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Monat"
+          }
+        }
+      }
+    },
+    "Every week": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Woche"
+          }
+        }
+      }
+    },
+    "Every year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jedes Jahr"
+          }
+        }
+      }
+    },
+    "Everything of this family - expenses, receipts, categories, budgets, recurring expenses, savings goals, members - in one file. Save it in Files or iCloud Drive. Photos make the file much larger. Your data is already kept in iCloud; this is an extra copy you control.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles dieser Familie – Ausgaben, Belege, Kategorien, Budgets, wiederkehrende Ausgaben, Sparziele, Mitglieder – in einer Datei. Speichere sie in „Dateien“ oder iCloud Drive. Fotos machen die Datei deutlich größer. Deine Daten liegen bereits in iCloud; dies ist eine zusätzliche Kopie in deiner Hand."
+          }
+        }
+      }
+    },
+    "Exchange-rate lookups send only currency codes and a date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wechselkursabfragen senden nur Währungscodes und ein Datum"
+          }
+        }
+      }
+    },
+    "Excluded": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgeschlossen"
+          }
+        }
+      }
+    },
+    "Expenses": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgaben"
+          }
+        }
+      }
+    },
+    "Expenses for Excel / Numbers": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgaben für Excel / Numbers"
+          }
+        }
+      }
+    },
+    "Expired": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgelaufen"
+          }
+        }
+      }
+    },
+    "Export & backup": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export & Sicherung"
+          }
+        }
+      }
+    },
+    "Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq"
+          }
+        }
+      }
+    },
+    "Familoq grows into your family's shared space. Budget is available now; travel, health, plans, reminders and events will follow.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq wächst zum gemeinsamen Bereich deiner Familie. Budget gibt es schon; Reisen, Gesundheit, Pläne, Erinnerungen und Termine folgen."
+          }
+        }
+      }
+    },
+    "Familoq is a private, invite-only space for families - starting with a shared budget: expenses, receipts, budgets and reports.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq ist ein privater Bereich für Familien, nur mit Einladung – zuerst mit einem gemeinsamen Budget: Ausgaben, Belege, Budgets und Auswertungen."
+          }
+        }
+      }
+    },
+    "Familoq is invite-only. Your request goes only to the administrator and is used only to reply to you. Requires iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq gibt es nur mit Einladung. Deine Anfrage geht nur an die Administration und wird nur für die Antwort an dich verwendet. Benötigt iCloud."
+          }
+        }
+      }
+    },
+    "Familoq opens and joins the family. Choose the name your family sees.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq öffnet sich und tritt der Familie bei. Wähle den Namen, den deine Familie sieht."
+          }
+        }
+      }
+    },
+    "Familoq spaces": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq-Bereiche"
+          }
+        }
+      }
+    },
+    "Family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie"
+          }
+        }
+      }
+    },
+    "Family / not assigned": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie / nicht zugeordnet"
+          }
+        }
+      }
+    },
+    "Family budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familienbudget"
+          }
+        }
+      }
+    },
+    "Family data: this iPhone + your family's private iCloud area": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familiendaten: dieses iPhone + der private iCloud-Bereich deiner Familie"
+          }
+        }
+      }
+    },
+    "Family member": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familienmitglied"
+          }
+        }
+      }
+    },
+    "Family name": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familienname"
+          }
+        }
+      }
+    },
+    "Family name, e.g. Martin & Carol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name der Familie, z. B. Martin & Carol"
+          }
+        }
+      }
+    },
+    "Fast Food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fast Food"
+          }
+        }
+      }
+    },
+    "Faster: one expense for the whole receipt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schneller: eine Ausgabe für den ganzen Beleg."
+          }
+        }
+      }
+    },
+    "Filters": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter"
+          }
+        }
+      }
+    },
+    "First due date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erste Fälligkeit"
+          }
+        }
+      }
+    },
+    "Fish & Seafood": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fisch & Meeresfrüchte"
+          }
+        }
+      }
+    },
+    "Flights": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flüge"
+          }
+        }
+      }
+    },
+    "For tagging expenses of someone who does not use Familoq (e.g. a child).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um Ausgaben einer Person zuzuordnen, die Familoq nicht nutzt (z. B. ein Kind)."
+          }
+        }
+      }
+    },
+    "From": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von"
+          }
+        }
+      }
+    },
+    "Frozen Food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiefkühlkost"
+          }
+        }
+      }
+    },
+    "Fruits": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obst"
+          }
+        }
+      }
+    },
+    "Fuel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kraftstoff"
+          }
+        }
+      }
+    },
+    "Full backup": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollständige Sicherung"
+          }
+        }
+      }
+    },
+    "Future expenses at “%@” will be suggested in this category.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Künftige Ausgaben bei „%@“ werden in dieser Kategorie vorgeschlagen."
+          }
+        }
+      }
+    },
+    "Games": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spiele"
+          }
+        }
+      }
+    },
+    "Gifts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschenke"
+          }
+        }
+      }
+    },
+    "Girocard / Debit card": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Girocard / Debitkarte"
+          }
+        }
+      }
+    },
+    "Goal reached 🎉": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ziel erreicht 🎉"
+          }
+        }
+      }
+    },
+    "Groceries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebensmittel"
+          }
+        }
+      }
+    },
+    "Hairdresser": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Friseur"
+          }
+        }
+      }
+    },
+    "Health": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheit"
+          }
+        }
+      }
+    },
+    "Heating": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heizung"
+          }
+        }
+      }
+    },
+    "History": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf"
+          }
+        }
+      }
+    },
+    "Hobbies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hobbys"
+          }
+        }
+      }
+    },
+    "Home": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohnung"
+          }
+        }
+      }
+    },
+    "Home & Furniture": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohnen & Möbel"
+          }
+        }
+      }
+    },
+    "Hotels": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hotels"
+          }
+        }
+      }
+    },
+    "Household": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haushalt"
+          }
+        }
+      }
+    },
+    "Household Supplies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haushaltsbedarf"
+          }
+        }
+      }
+    },
+    "Housing & Utilities": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohnen & Nebenkosten"
+          }
+        }
+      }
+    },
+    "How access works": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So funktioniert der Zugang"
+          }
+        }
+      }
+    },
+    "How it is calculated": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So wird gerechnet"
+          }
+        }
+      }
+    },
+    "How to join": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So trittst du bei"
+          }
+        }
+      }
+    },
+    "I opened the link - check again": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ich habe den Link geöffnet – erneut prüfen"
+          }
+        }
+      }
+    },
+    "Icon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Symbol"
+          }
+        }
+      }
+    },
+    "If you already activated Familoq - for example before reinstalling or on your previous iPhone - make sure this iPhone is signed in to iCloud with the same Apple ID, then tap Continue.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn du Familoq schon aktiviert hast – z. B. vor einer Neuinstallation oder auf deinem vorherigen iPhone –, stelle sicher, dass dieses iPhone mit derselben Apple-ID bei iCloud angemeldet ist, und tippe auf „Weiter“."
+          }
+        }
+      }
+    },
+    "Include at least one item with an amount, or categorize the entire receipt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nimm mindestens eine Position mit Betrag auf oder ordne den ganzen Beleg zu."
+          }
+        }
+      }
+    },
+    "Include receipt photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belegfotos einschließen"
+          }
+        }
+      }
+    },
+    "Included": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enthalten"
+          }
+        }
+      }
+    },
+    "Inside Familoq, each family is completely separate. Families never see each other's data.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Familoq ist jede Familie vollständig getrennt. Familien sehen nie die Daten anderer Familien."
+          }
+        }
+      }
+    },
+    "Insurance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versicherung"
+          }
+        }
+      }
+    },
+    "Internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
+          }
+        }
+      }
+    },
+    "Investments": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geldanlage"
+          }
+        }
+      }
+    },
+    "Invitation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladung"
+          }
+        }
+      }
+    },
+    "Invitation code": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungscode"
+          }
+        }
+      }
+    },
+    "Invitation requests": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungsanfragen"
+          }
+        }
+      }
+    },
+    "Invitations": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungen"
+          }
+        }
+      }
+    },
+    "Invitations & accounts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladungen & Accounts"
+          }
+        }
+      }
+    },
+    "Invite": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladen"
+          }
+        }
+      }
+    },
+    "Invite family members with their Apple Account. Everyone sees the same budget, synced through iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lade Familienmitglieder mit ihrem Apple Account ein. Alle sehen dasselbe Budget, synchronisiert über iCloud."
+          }
+        }
+      }
+    },
+    "Invite to family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Familie einladen"
+          }
+        }
+      }
+    },
+    "Invited": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingeladen"
+          }
+        }
+      }
+    },
+    "Invited person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingeladene Person"
+          }
+        }
+      }
+    },
+    "Inviting needs iCloud. Check that you are signed in to iCloud and online.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Einladen wird iCloud benötigt. Prüfe, ob du bei iCloud angemeldet und online bist."
+          }
+        }
+      }
+    },
+    "Item": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position"
+          }
+        }
+      }
+    },
+    "Item level: each item gets its own subcategory - e.g. chicken → Meat & Poultry, bananas → Fruits.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positionsgenau: Jede Position bekommt ihre eigene Unterkategorie – z. B. Hähnchen → Fleisch & Geflügel, Bananen → Obst."
+          }
+        }
+      }
+    },
+    "Items": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positionen"
+          }
+        }
+      }
+    },
+    "Items (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positionen (%lld)"
+          }
+        }
+      }
+    },
+    "Items do not add up to the total": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positionen ergeben nicht die Summe"
+          }
+        }
+      }
+    },
+    "Items match the total %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positionen ergeben die Summe %@"
+          }
+        }
+      }
+    },
+    "Items: %@ · Total: %@ · Difference %@ will be added to the largest group so your expenses match what you paid.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Positionen: %@ · Summe: %@ · Die Differenz %@ wird der größten Gruppe zugeschlagen, damit deine Ausgaben dem bezahlten Betrag entsprechen."
+          }
+        }
+      }
+    },
+    "Join a family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einer Familie beitreten"
+          }
+        }
+      }
+    },
+    "Join our family \"%@\" in Familoq: open this link on your iPhone (Familoq must be installed and activated).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tritt unserer Familie „%@“ in Familoq bei: Öffne diesen Link auf deinem iPhone (Familoq muss installiert und aktiviert sein)."
+          }
+        }
+      }
+    },
+    "Join our family in Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tritt unserer Familie in Familoq bei"
+          }
+        }
+      }
+    },
+    "Joined": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beigetreten"
+          }
+        }
+      }
+    },
+    "Joining the family…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie wird beigetreten …"
+          }
+        }
+      }
+    },
+    "Known future costs, e.g. car service in November. They are reserved in Safe to spend in their month.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekannte künftige Kosten, z. B. Inspektion im November. Sie werden in ihrem Monat bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Last 12 months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte 12 Monate"
+          }
+        }
+      }
+    },
+    "Last 3 months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte 3 Monate"
+          }
+        }
+      }
+    },
+    "Last due date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Fälligkeit"
+          }
+        }
+      }
+    },
+    "Last month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Monat"
+          }
+        }
+      }
+    },
+    "Leave family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie verlassen"
+          }
+        }
+      }
+    },
+    "Leave this family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Familie verlassen"
+          }
+        }
+      }
+    },
+    "Loading from iCloud…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird aus iCloud geladen …"
+          }
+        }
+      }
+    },
+    "Loading…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird geladen …"
+          }
+        }
+      }
+    },
+    "Looking for your family in iCloud…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Familie wird in iCloud gesucht …"
+          }
+        }
+      }
+    },
+    "Manual rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manueller Kurs"
+          }
+        }
+      }
+    },
+    "Maximum": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum"
+          }
+        }
+      }
+    },
+    "Meat & Poultry": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fleisch & Geflügel"
+          }
+        }
+      }
+    },
+    "Member": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitglied"
+          }
+        }
+      }
+    },
+    "Members": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitglieder"
+          }
+        }
+      }
+    },
+    "Memberships": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitgliedschaften"
+          }
+        }
+      }
+    },
+    "Merchant": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Händler"
+          }
+        }
+      }
+    },
+    "Merchant (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Händler (optional)"
+          }
+        }
+      }
+    },
+    "Merchant / description": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Händler / Beschreibung"
+          }
+        }
+      }
+    },
+    "Merchant not recognised": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Händler nicht erkannt"
+          }
+        }
+      }
+    },
+    "Merchant rules": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Händlerregeln"
+          }
+        }
+      }
+    },
+    "Merchant, date & time, total, currency, VAT and individual items are read on your iPhone - also receipts from abroad. If the currency is unclear, Familoq asks. You check everything before it is saved.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Händler, Datum & Uhrzeit, Summe, Währung, MwSt. und einzelne Positionen werden auf deinem iPhone gelesen – auch Belege aus dem Ausland. Ist die Währung unklar, fragt Familoq nach. Du prüfst alles, bevor es gespeichert wird."
+          }
+        }
+      }
+    },
+    "Milk & Dairy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milch & Milchprodukte"
+          }
+        }
+      }
+    },
+    "Minimum": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimum"
+          }
+        }
+      }
+    },
+    "Missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehlt"
+          }
+        }
+      }
+    },
+    "Mobile": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Handy"
+          }
+        }
+      }
+    },
+    "Monthly": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monatlich"
+          }
+        }
+      }
+    },
+    "Monthly budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monatsbudget"
+          }
+        }
+      }
+    },
+    "More": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr"
+          }
+        }
+      }
+    },
+    "Name": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "Name, e.g. Holiday 2027": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. Urlaub 2027"
+          }
+        }
+      }
+    },
+    "New App Invitations": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue App-Einladungen"
+          }
+        }
+      }
+    },
+    "New budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Budget"
+          }
+        }
+      }
+    },
+    "New category": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Kategorie"
+          }
+        }
+      }
+    },
+    "New codes - share them now": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Codes – jetzt teilen"
+          }
+        }
+      }
+    },
+    "New expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Ausgabe"
+          }
+        }
+      }
+    },
+    "New savings goal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Sparziel"
+          }
+        }
+      }
+    },
+    "New subcategory": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Unterkategorie"
+          }
+        }
+      }
+    },
+    "Next 7 days": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste 7 Tage"
+          }
+        }
+      }
+    },
+    "No Apple Account was found for this address. Use the e-mail address or phone number of their Apple Account.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diese Adresse wurde kein Apple Account gefunden. Verwende die E-Mail-Adresse oder Telefonnummer des Apple Accounts."
+          }
+        }
+      }
+    },
+    "No activated accounts yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine aktivierten Accounts."
+          }
+        }
+      }
+    },
+    "No ads, no tracking, no analytics": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Werbung, kein Tracking, keine Analyse"
+          }
+        }
+      }
+    },
+    "No ads, no tracking, no data selling.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Werbung, kein Tracking, kein Datenverkauf."
+          }
+        }
+      }
+    },
+    "No automatic rate - enter rate manually": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein automatischer Kurs – Kurs manuell eingeben"
+          }
+        }
+      }
+    },
+    "No connection to iCloud. Check your internet connection and try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Verbindung zu iCloud. Prüfe deine Internetverbindung und versuche es erneut."
+          }
+        }
+      }
+    },
+    "No expenses yet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Ausgaben"
+          }
+        }
+      }
+    },
+    "No expenses yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Ausgaben."
+          }
+        }
+      }
+    },
+    "No family budget yet. A monthly family budget enables Safe to spend.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch kein Familienbudget. Ein monatliches Familienbudget aktiviert „Sicher ausgeben“."
+          }
+        }
+      }
+    },
+    "No invitations yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Einladungen."
+          }
+        }
+      }
+    },
+    "No items were recognised. Add them below or categorize the entire receipt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es wurden keine Positionen erkannt. Füge sie unten hinzu oder ordne den ganzen Beleg zu."
+          }
+        }
+      }
+    },
+    "No open requests.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine offenen Anfragen."
+          }
+        }
+      }
+    },
+    "No receipt? Add manually": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Beleg? Manuell erfassen"
+          }
+        }
+      }
+    },
+    "No savings goals yet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Sparziele"
+          }
+        }
+      }
+    },
+    "No spending": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Ausgaben"
+          }
+        }
+      }
+    },
+    "No spending in the previous period": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Ausgaben im Vorzeitraum"
+          }
+        }
+      }
+    },
+    "No subcategory": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Unterkategorie"
+          }
+        }
+      }
+    },
+    "No text was found. Try again with better light and the whole receipt in view.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Text gefunden. Versuche es mit besserem Licht und dem ganzen Beleg im Bild."
+          }
+        }
+      }
+    },
+    "None": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine"
+          }
+        }
+      }
+    },
+    "Not reserved in Safe to spend.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Not set": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht festgelegt"
+          }
+        }
+      }
+    },
+    "Note": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz"
+          }
+        }
+      }
+    },
+    "Note (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz (optional)"
+          }
+        }
+      }
+    },
+    "Note, e.g. John & Sarah": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz, z. B. Jonas & Sara"
+          }
+        }
+      }
+    },
+    "Nothing found": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts gefunden"
+          }
+        }
+      }
+    },
+    "Nothing recorded for this period.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diesen Zeitraum nichts erfasst."
+          }
+        }
+      }
+    },
+    "Nothing saved yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nichts gespart."
+          }
+        }
+      }
+    },
+    "OK": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
+    "Offline - changes are sent when you are back online": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline – Änderungen werden gesendet, sobald du wieder online bist"
+          }
+        }
+      }
+    },
+    "On the due date Familoq adds it as an expense. Until then it is reserved in Safe to spend for its month.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Am Fälligkeitstag erfasst Familoq sie als Ausgabe. Bis dahin wird sie in ihrem Monat bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Once (planned)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmalig (geplant)"
+          }
+        }
+      }
+    },
+    "One row per expense with category, original amount and currency, amount in %@, exchange rate, member and note. Opens directly in Excel (also German Excel).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Zeile pro Ausgabe mit Kategorie, Originalbetrag und -währung, Betrag in %@, Wechselkurs, Mitglied und Notiz. Öffnet sich direkt in Excel (auch im deutschen Excel)."
+          }
+        }
+      }
+    },
+    "Only other currencies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur andere Währungen"
+          }
+        }
+      }
+    },
+    "Only the Familoq administrator can do this.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Familoq-Administration kann das."
+          }
+        }
+      }
+    },
+    "Only the Familoq administrator needs this once, to set up the admin role.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Familoq-Administration braucht das einmalig zum Einrichten der Admin-Rolle."
+          }
+        }
+      }
+    },
+    "Only the family owner can change budgets.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Person, der die Familie gehört, kann Budgets ändern."
+          }
+        }
+      }
+    },
+    "Only the family owner can do this.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die Person, der die Familie gehört, kann das."
+          }
+        }
+      }
+    },
+    "Only this time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur dieses Mal"
+          }
+        }
+      }
+    },
+    "Open": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen"
+          }
+        }
+      }
+    },
+    "Open the invitation link your family's owner sent you.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne den Einladungslink, den du bekommen hast."
+          }
+        }
+      }
+    },
+    "Open the link they send you on this iPhone (Messages, Mail, WhatsApp …).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne den Link, den du bekommst, auf diesem iPhone (Nachrichten, Mail, WhatsApp …)."
+          }
+        }
+      }
+    },
+    "Optional": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional"
+          }
+        }
+      }
+    },
+    "Other": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonstiges"
+          }
+        }
+      }
+    },
+    "Other Groceries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonstige Lebensmittel"
+          }
+        }
+      }
+    },
+    "Other currency…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Währung …"
+          }
+        }
+      }
+    },
+    "Over budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über Budget"
+          }
+        }
+      }
+    },
+    "Owner": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhaber"
+          }
+        }
+      }
+    },
+    "Parking": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parken"
+          }
+        }
+      }
+    },
+    "Paused or done": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausiert oder erledigt"
+          }
+        }
+      }
+    },
+    "PayPal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PayPal"
+          }
+        }
+      }
+    },
+    "Payment": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlung"
+          }
+        }
+      }
+    },
+    "Payment method": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlungsart"
+          }
+        }
+      }
+    },
+    "Pending": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausstehend"
+          }
+        }
+      }
+    },
+    "People": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personen"
+          }
+        }
+      }
+    },
+    "Period": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitraum"
+          }
+        }
+      }
+    },
+    "Personal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persönlich"
+          }
+        }
+      }
+    },
+    "Personal Care": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Körperpflege"
+          }
+        }
+      }
+    },
+    "Pet Supplies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tierbedarf"
+          }
+        }
+      }
+    },
+    "Pharmacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apotheke"
+          }
+        }
+      }
+    },
+    "Planned": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplant"
+          }
+        }
+      }
+    },
+    "Planned expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Ausgabe"
+          }
+        }
+      }
+    },
+    "Plans": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pläne"
+          }
+        }
+      }
+    },
+    "Please check these fields.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte prüfe diese Felder."
+          }
+        }
+      }
+    },
+    "Please choose the currency of this receipt first (top of the screen).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte wähle zuerst die Währung dieses Belegs (oben auf dem Bildschirm)."
+          }
+        }
+      }
+    },
+    "Please confirm the currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte bestätige die Währung"
+          }
+        }
+      }
+    },
+    "Please sign in to iCloud (Settings → your name) and try again. Familoq uses iCloud to keep your family's data private and in sync.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte melde dich bei iCloud an (Einstellungen → dein Name) und versuche es erneut. Familoq nutzt iCloud, um die Daten deiner Familie privat und synchron zu halten."
+          }
+        }
+      }
+    },
+    "Previous month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vormonat"
+          }
+        }
+      }
+    },
+    "Privacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz"
+          }
+        }
+      }
+    },
+    "Public Transport": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ÖPNV"
+          }
+        }
+      }
+    },
+    "Quick": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schnell"
+          }
+        }
+      }
+    },
+    "Quick entry": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schnellerfassung"
+          }
+        }
+      }
+    },
+    "Rate needed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurs benötigt"
+          }
+        }
+      }
+    },
+    "Reach it by": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreichen bis"
+          }
+        }
+      }
+    },
+    "Reading receipt…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beleg wird gelesen …"
+          }
+        }
+      }
+    },
+    "Recalculating…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird neu berechnet …"
+          }
+        }
+      }
+    },
+    "Receipt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beleg"
+          }
+        }
+      }
+    },
+    "Receipt currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belegwährung"
+          }
+        }
+      }
+    },
+    "Receipt image": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belegbild"
+          }
+        }
+      }
+    },
+    "Recent": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuletzt"
+          }
+        }
+      }
+    },
+    "Recent expenses": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Ausgaben"
+          }
+        }
+      }
+    },
+    "Recent receipts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Belege"
+          }
+        }
+      }
+    },
+    "Recurring": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrend"
+          }
+        }
+      }
+    },
+    "Recurring & planned": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrend & geplant"
+          }
+        }
+      }
+    },
+    "Recurring / planned": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrend / geplant"
+          }
+        }
+      }
+    },
+    "Recurring expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrende Ausgabe"
+          }
+        }
+      }
+    },
+    "Remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übrig"
+          }
+        }
+      }
+    },
+    "Reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerungen"
+          }
+        }
+      }
+    },
+    "Remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen"
+          }
+        }
+      }
+    },
+    "Removes the family from your iPhone. The owner can invite you again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt die Familie von deinem iPhone. Du kannst erneut eingeladen werden."
+          }
+        }
+      }
+    },
+    "Rent": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miete"
+          }
+        }
+      }
+    },
+    "Rent, insurance, phone, subscriptions … enter them once and Familoq books them on the due date.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miete, Versicherung, Handy, Abos … einmal eingeben, Familoq bucht sie am Fälligkeitstag."
+          }
+        }
+      }
+    },
+    "Rent, insurance, subscriptions, a planned car service … add them once and they are booked automatically and reserved in Safe to spend.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miete, Versicherung, Abos, eine geplante Inspektion … einmal eingeben – sie werden automatisch gebucht und bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Repeats": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholung"
+          }
+        }
+      }
+    },
+    "Replace receipt photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belegfoto ersetzen"
+          }
+        }
+      }
+    },
+    "Reports": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswertungen"
+          }
+        }
+      }
+    },
+    "Request an Invitation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladung anfragen"
+          }
+        }
+      }
+    },
+    "Request an invitation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einladung anfragen"
+          }
+        }
+      }
+    },
+    "Request sent. You will receive an invitation code if your request is approved.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anfrage gesendet. Du bekommst einen Einladungscode, wenn deine Anfrage angenommen wird."
+          }
+        }
+      }
+    },
+    "Reserve in Safe to spend": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei „Sicher ausgeben“ zurücklegen"
+          }
+        }
+      }
+    },
+    "Reset all filters": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Filter zurücksetzen"
+          }
+        }
+      }
+    },
+    "Restaurant": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurant"
+          }
+        }
+      }
+    },
+    "Restaurants & Food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurants & Essen"
+          }
+        }
+      }
+    },
+    "Restore": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederherstellen"
+          }
+        }
+      }
+    },
+    "Restore access": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugang wiederherstellen"
+          }
+        }
+      }
+    },
+    "Restore from backup…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus Sicherung wiederherstellen …"
+          }
+        }
+      }
+    },
+    "Restore into %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@ wiederherstellen"
+          }
+        }
+      }
+    },
+    "Revoke": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widerrufen"
+          }
+        }
+      }
+    },
+    "Revoked": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widerrufen"
+          }
+        }
+      }
+    },
+    "Revoking locks Familoq on that person's iPhone at its next daily check. Their family data is not deleted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Widerrufen sperrt Familoq auf dem iPhone dieser Person bei der nächsten täglichen Prüfung. Ihre Familiendaten werden nicht gelöscht."
+          }
+        }
+      }
+    },
+    "Rice, Pasta & Grains": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reis, Nudeln & Getreide"
+          }
+        }
+      }
+    },
+    "Role": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rolle"
+          }
+        }
+      }
+    },
+    "Safe to spend": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicher ausgeben"
+          }
+        }
+      }
+    },
+    "Save": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichern"
+          }
+        }
+      }
+    },
+    "Save backup file": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherungsdatei speichern"
+          }
+        }
+      }
+    },
+    "Save together for a holiday, a new car or a rainy-day fund. Familoq shows how much to put aside each month.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spart gemeinsam für einen Urlaub, ein neues Auto oder einen Notgroschen. Familoq zeigt, wie viel ihr jeden Monat zurücklegen solltet."
+          }
+        }
+      }
+    },
+    "Savings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sparen"
+          }
+        }
+      }
+    },
+    "Savings goals": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sparziele"
+          }
+        }
+      }
+    },
+    "Scan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scannen"
+          }
+        }
+      }
+    },
+    "Scan a receipt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beleg scannen"
+          }
+        }
+      }
+    },
+    "Scan with camera": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Kamera scannen"
+          }
+        }
+      }
+    },
+    "Scanned receipt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gescannter Beleg"
+          }
+        }
+      }
+    },
+    "Scanned receipt (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gescannter Beleg (%@)"
+          }
+        }
+      }
+    },
+    "School": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schule"
+          }
+        }
+      }
+    },
+    "See all": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        }
+      }
+    },
+    "Send request": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anfrage senden"
+          }
+        }
+      }
+    },
+    "Set a monthly family budget to see Safe to spend": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege ein monatliches Familienbudget fest, um „Sicher ausgeben“ zu sehen"
+          }
+        }
+      }
+    },
+    "Set category budgets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategoriebudgets festlegen"
+          }
+        }
+      }
+    },
+    "Share or save CSV (%lld expenses)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV teilen oder sichern (%lld Ausgaben)"
+          }
+        }
+      }
+    },
+    "Shopping": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einkaufen"
+          }
+        }
+      }
+    },
+    "Show built-in rules (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingebaute Regeln anzeigen (%lld)"
+          }
+        }
+      }
+    },
+    "Snacks & Sweets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snacks & Süßes"
+          }
+        }
+      }
+    },
+    "Software": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Software"
+          }
+        }
+      }
+    },
+    "Something went wrong": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas ist schiefgelaufen"
+          }
+        }
+      }
+    },
+    "Spent": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgegeben"
+          }
+        }
+      }
+    },
+    "Spices, Sauces & Condiments": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gewürze, Soßen & Würzmittel"
+          }
+        }
+      }
+    },
+    "Start a savings goal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sparziel anlegen"
+          }
+        }
+      }
+    },
+    "Streaming": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Streaming"
+          }
+        }
+      }
+    },
+    "Subcategories": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterkategorien"
+          }
+        }
+      }
+    },
+    "Subcategory": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterkategorie"
+          }
+        }
+      }
+    },
+    "Subcategory (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterkategorie (optional)"
+          }
+        }
+      }
+    },
+    "Subcategory budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterkategoriebudget"
+          }
+        }
+      }
+    },
+    "Subcategory budgets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterkategoriebudgets"
+          }
+        }
+      }
+    },
+    "Subscriptions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abos"
+          }
+        }
+      }
+    },
+    "Suggested from merchant: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschlag anhand des Händlers: %@"
+          }
+        }
+      }
+    },
+    "Symbol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Symbol"
+          }
+        }
+      }
+    },
+    "Sync off (demo)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisierung aus (Demo)"
+          }
+        }
+      }
+    },
+    "Sync starts after activation": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisierung startet nach der Aktivierung"
+          }
+        }
+      }
+    },
+    "Syncing…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird synchronisiert …"
+          }
+        }
+      }
+    },
+    "Take out": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entnehmen"
+          }
+        }
+      }
+    },
+    "Takeaway": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Mitnehmen"
+          }
+        }
+      }
+    },
+    "Target amount": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zielbetrag"
+          }
+        }
+      }
+    },
+    "The family's budget is shared between your iPhones through iCloud. Only people the owner invited can open the link.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Familienbudget wird über iCloud zwischen euren iPhones geteilt. Nur eingeladene Personen können den Link öffnen."
+          }
+        }
+      }
+    },
+    "The iCloud user ID is only needed once, when the administrator role is assigned in the CloudKit Console.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die iCloud-Benutzer-ID wird nur einmal benötigt, wenn die Administrationsrolle in der CloudKit Console vergeben wird."
+          }
+        }
+      }
+    },
+    "The image could not be read.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Bild konnte nicht gelesen werden."
+          }
+        }
+      }
+    },
+    "The invitation is linked to the iCloud account on this iPhone, so a new iPhone or a reinstall with the same Apple ID restores access automatically.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einladung ist mit dem iCloud-Account auf diesem iPhone verknüpft – ein neues iPhone oder eine Neuinstallation mit derselben Apple-ID stellt den Zugang automatisch wieder her."
+          }
+        }
+      }
+    },
+    "The last scan stopped during: %@. Please tell the developer (screenshot).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der letzte Scan brach ab bei: %@. Bitte dem Entwickler mitteilen (Screenshot)."
+          }
+        }
+      }
+    },
+    "The monthly amount is reserved in Safe to spend until it is saved.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Monatsbetrag wird bei „Sicher ausgeben“ zurückgelegt, bis er gespart ist."
+          }
+        }
+      }
+    },
+    "The photo could not be loaded.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Foto konnte nicht geladen werden."
+          }
+        }
+      }
+    },
+    "The receipt does not say clearly. Amounts in other currencies are converted to %@ with the exchange rate of the receipt date.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Beleg ist nicht eindeutig. Beträge in anderen Währungen werden mit dem Kurs vom Belegdatum in %@ umgerechnet."
+          }
+        }
+      }
+    },
+    "This backup was made by a newer Familoq. Please update Familoq first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Sicherung stammt von einer neueren Familoq-Version. Bitte aktualisiere Familoq zuerst."
+          }
+        }
+      }
+    },
+    "This cannot be undone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das kann nicht rückgängig gemacht werden."
+          }
+        }
+      }
+    },
+    "This code has a typo - please check it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Code enthält einen Tippfehler – bitte prüfen."
+          }
+        }
+      }
+    },
+    "This family has reached its member limit.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Familie hat die maximale Mitgliederzahl erreicht."
+          }
+        }
+      }
+    },
+    "This iCloud account has not been activated yet. Please enter your invitation code.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser iCloud-Account ist noch nicht aktiviert. Bitte gib deinen Einladungscode ein."
+          }
+        }
+      }
+    },
+    "This invitation code does not exist.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Einladungscode gibt es nicht."
+          }
+        }
+      }
+    },
+    "This invitation code has a typo. Please check it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Einladungscode enthält einen Tippfehler. Bitte prüfen."
+          }
+        }
+      }
+    },
+    "This invitation has already been used.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einladung wurde bereits verwendet."
+          }
+        }
+      }
+    },
+    "This invitation has expired. Please ask for a new one.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einladung ist abgelaufen. Bitte frag nach einer neuen."
+          }
+        }
+      }
+    },
+    "This invitation is no longer valid.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einladung ist nicht mehr gültig."
+          }
+        }
+      }
+    },
+    "This is an invitation to your own family.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist eine Einladung in deine eigene Familie."
+          }
+        }
+      }
+    },
+    "This is not a Familoq backup file.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das ist keine Familoq-Sicherungsdatei."
+          }
+        }
+      }
+    },
+    "This month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Monat"
+          }
+        }
+      }
+    },
+    "This record belongs to a different family.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Eintrag gehört zu einer anderen Familie."
+          }
+        }
+      }
+    },
+    "This week": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Woche"
+          }
+        }
+      }
+    },
+    "This year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Jahr"
+          }
+        }
+      }
+    },
+    "To": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis"
+          }
+        }
+      }
+    },
+    "Today": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
+          }
+        }
+      }
+    },
+    "Tolls": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maut"
+          }
+        }
+      }
+    },
+    "Total": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summe"
+          }
+        }
+      }
+    },
+    "Total not recognised": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summe nicht erkannt"
+          }
+        }
+      }
+    },
+    "Train": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bahn"
+          }
+        }
+      }
+    },
+    "Transport": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkehr"
+          }
+        }
+      }
+    },
+    "Travel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reisen"
+          }
+        }
+      }
+    },
+    "Travel Food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essen unterwegs"
+          }
+        }
+      }
+    },
+    "Try a different search or fewer filters.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versuche eine andere Suche oder weniger Filter."
+          }
+        }
+      }
+    },
+    "Uncategorized": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Kategorie"
+          }
+        }
+      }
+    },
+    "Untitled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Titel"
+          }
+        }
+      }
+    },
+    "Up to date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktuell"
+          }
+        }
+      }
+    },
+    "Up to date · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktuell · %@"
+          }
+        }
+      }
+    },
+    "Upcoming (30 days)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demnächst (30 Tage)"
+          }
+        }
+      }
+    },
+    "Use the Add tab to record your first expense - receipts are optional.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erfasse deine erste Ausgabe im Tab „Hinzufügen“ – Belege sind optional."
+          }
+        }
+      }
+    },
+    "Use the rate from your bank or card statement. It will never be overwritten.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwende den Kurs aus deinem Bank- oder Kartenauszug. Er wird nie überschrieben."
+          }
+        }
+      }
+    },
+    "Used": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwendet"
+          }
+        }
+      }
+    },
+    "Uses your iCloud account - no extra password, no e-mail required.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzt deinen iCloud-Account – kein zusätzliches Passwort, keine E-Mail nötig."
+          }
+        }
+      }
+    },
+    "Valid for %lld days": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tage gültig"
+          }
+        }
+      }
+    },
+    "Vegetables": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemüse"
+          }
+        }
+      }
+    },
+    "Version": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
+          }
+        }
+      }
+    },
+    "View scanned receipt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gescannten Beleg ansehen"
+          }
+        }
+      }
+    },
+    "Waiting for exchange rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartet auf Wechselkurs"
+          }
+        }
+      }
+    },
+    "Warnings appear at 75 %%, 90 %% and 100 %%. Budgets are in %@; foreign-currency expenses are converted automatically.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warnungen erscheinen bei 75 %%, 90 %% und 100 %%. Budgets sind in %@; Ausgaben in Fremdwährung werden automatisch umgerechnet."
+          }
+        }
+      }
+    },
+    "Water": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wasser"
+          }
+        }
+      }
+    },
+    "Weekly": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wöchentlich"
+          }
+        }
+      }
+    },
+    "Welcome to %@!": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Willkommen bei %@!"
+          }
+        }
+      }
+    },
+    "Welcome!": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Willkommen!"
+          }
+        }
+      }
+    },
+    "What should your family call you?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie soll deine Familie dich nennen?"
+          }
+        }
+      }
+    },
+    "What, e.g. Car service": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wofür, z. B. Inspektion"
+          }
+        }
+      }
+    },
+    "What, e.g. Rent": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wofür, z. B. Miete"
+          }
+        }
+      }
+    },
+    "When you change a suggested category, Familoq asks whether to remember it. Your rules appear here.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn du eine vorgeschlagene Kategorie änderst, fragt Familoq, ob es sich das merken soll. Deine Regeln erscheinen hier."
+          }
+        }
+      }
+    },
+    "Which currency is this receipt in?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In welcher Währung ist dieser Beleg?"
+          }
+        }
+      }
+    },
+    "Who & how": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer & wie"
+          }
+        }
+      }
+    },
+    "Who you are / who invited you (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer du bist / wer dich eingeladen hat (optional)"
+          }
+        }
+      }
+    },
+    "With a deadline Familoq works out how much to put aside each month. Reserved amounts lower Safe to spend until they are saved.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Zieldatum berechnet Familoq, wie viel ihr jeden Monat zurücklegen solltet. Zurückgelegte Beträge verringern „Sicher ausgeben“, bis sie gespart sind."
+          }
+        }
+      }
+    },
+    "Withdraw": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurückziehen"
+          }
+        }
+      }
+    },
+    "XXXX-XXXX-XXXX": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XXXX-XXXX-XXXX"
+          }
+        }
+      }
+    },
+    "You are %@ over budget for this month.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du liegst diesen Monat %@ über dem Budget."
+          }
+        }
+      }
+    },
+    "You are a member of this family. The owner manages members, categories and budgets.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist Mitglied dieser Familie. Die Person, der sie gehört, verwaltet Mitglieder, Kategorien und Budgets."
+          }
+        }
+      }
+    },
+    "You are the Familoq administrator.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist die Familoq-Administration."
+          }
+        }
+      }
+    },
+    "You become the owner and can invite up to 5 more members.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Familie gehört dann dir und du kannst bis zu 5 weitere Mitglieder einladen."
+          }
+        }
+      }
+    },
+    "You joined the family's shared budget.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du bist dem gemeinsamen Budget der Familie beigetreten."
+          }
+        }
+      }
+    },
+    "You need a personal invitation code to use Familoq.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Familoq brauchst du einen persönlichen Einladungscode."
+          }
+        }
+      }
+    },
+    "You received this code from the Familoq administrator. It can be used once.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Code hast du von der Familoq-Administration bekommen. Er kann einmal verwendet werden."
+          }
+        }
+      }
+    },
+    "Your data": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Daten"
+          }
+        }
+      }
+    },
+    "Your families": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Familien"
+          }
+        }
+      }
+    },
+    "Your family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Familie"
+          }
+        }
+      }
+    },
+    "Your family's data is stored in your own iCloud and shared only with the members you invited. Familoq has no server of its own.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Daten deiner Familie liegen in deiner eigenen iCloud und werden nur mit den Mitgliedern geteilt, die du eingeladen hast. Familoq hat keinen eigenen Server."
+          }
+        }
+      }
+    },
+    "Your family's private space": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der private Bereich deiner Familie"
+          }
+        }
+      }
+    },
+    "Your financial data stays on your devices and in your own iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Finanzdaten bleiben auf deinen Geräten und in deiner eigenen iCloud."
+          }
+        }
+      }
+    },
+    "Your iCloud user ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine iCloud-Benutzer-ID"
+          }
+        }
+      }
+    },
+    "Your invitation is active. Now set up your family space.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Einladung ist aktiv. Richte jetzt den Bereich deiner Familie ein."
+          }
+        }
+      }
+    },
+    "Your name": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Name"
+          }
+        }
+      }
+    },
+    "Your rules": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Regeln"
+          }
+        }
+      }
+    },
+    "Your rules always win over built-in rules. Categorisation runs fully on the device - no AI service is used.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Regeln haben immer Vorrang vor den eingebauten. Die Kategorisierung läuft vollständig auf dem Gerät – ohne KI-Dienst."
+          }
+        }
+      }
+    },
+    "best guess": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wahrscheinlich"
+          }
+        }
+      }
+    },
+    "e.g. Groceries › Meat & Poultry €120 per month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "z. B. Lebensmittel › Fleisch & Geflügel 120 € pro Monat"
+          }
+        }
+      }
+    },
+    "e.g. Groceries €600 per month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "z. B. Lebensmittel 600 € pro Monat"
+          }
+        }
+      }
+    },
+    "iCloud": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud"
+          }
+        }
+      }
+    },
+    "iCloud sync is not active. Check that you are signed in to iCloud and online.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die iCloud-Synchronisierung ist nicht aktiv. Prüfe, ob du bei iCloud angemeldet und online bist."
+          }
+        }
+      }
+    },
+    "iCloud user ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud-Benutzer-ID"
+          }
+        }
+      }
+    },
+    "÷ Days left (including today)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "÷ Verbleibende Tage (inkl. heute)"
+          }
+        }
+      }
+    },
+    "− Bills still due (recurring & planned)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "− Noch fällige Rechnungen (wiederkehrend & geplant)"
+          }
+        }
+      }
+    },
+    "− Savings still to put aside": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "− Noch zurückzulegendes Sparen"
+          }
+        }
+      }
+    },
+    "− Spent so far": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "− Bisher ausgegeben"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

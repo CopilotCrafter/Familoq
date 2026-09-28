@@ -150,12 +150,12 @@ struct ExpenseFormView: View {
                 Picker("Family member", selection: $memberID) {
                     Text("Not set").tag(UUID?.none)
                     ForEach(members.filter(\.isActive)) { member in
-                        Text(member.displayName).tag(Optional(member.id))
+                        Text(LocalizedStringKey(member.displayName)).tag(Optional(member.id))
                     }
                 }
                 Picker("Payment method", selection: $paymentMethod) {
                     ForEach(PaymentMethod.allCases) { method in
-                        Label(method.displayName, systemImage: method.icon).tag(method)
+                        Label(LocalizedStringKey(method.displayName), systemImage: method.icon).tag(method)
                     }
                 }
             }
@@ -172,7 +172,7 @@ struct ExpenseFormView: View {
 
             if let validationMessage {
                 Section {
-                    Text(validationMessage).foregroundStyle(.red)
+                    Text(LocalizedStringKey(validationMessage)).foregroundStyle(.red)
                 }
             }
 

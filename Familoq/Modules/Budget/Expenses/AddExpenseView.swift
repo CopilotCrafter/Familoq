@@ -21,7 +21,7 @@ struct AddExpenseView: View {
             if let family = session.family {
                 VStack(spacing: 0) {
                     Picker("Entry mode", selection: $mode) {
-                        ForEach(Mode.allCases) { Text($0.rawValue).tag($0) }
+                        ForEach(Mode.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                     }
                     .pickerStyle(.segmented)
                     .padding(.horizontal)
@@ -60,7 +60,7 @@ struct SavedToast: View {
     let message: String
 
     var body: some View {
-        Label(message, systemImage: "checkmark.circle.fill")
+        Label(LocalizedStringKey(message), systemImage: "checkmark.circle.fill")
             .font(.subheadline.weight(.semibold))
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
@@ -284,7 +284,7 @@ struct QuickExpenseView: View {
     private func chip(title: String, icon: String?, selected: Bool) -> some View {
         HStack(spacing: 4) {
             if let icon { Image(systemName: icon).font(.caption) }
-            Text(title).font(.subheadline).lineLimit(1)
+            Text(LocalizedStringKey(title)).font(.subheadline).lineLimit(1)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 7)

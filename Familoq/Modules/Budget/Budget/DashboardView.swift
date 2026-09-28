@@ -237,7 +237,7 @@ private struct DashboardContent: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Safe to spend")
                                 .font(.subheadline.weight(.medium))
-                            Text(result.isOverBudget ? "Budget exceeded" : "\(result.weeklyAmount.currencyShort(currency)) this week")
+                            Text(LocalizedStringKey(result.isOverBudget ? "Budget exceeded" : "\(result.weeklyAmount.currencyShort(currency)) this week"))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -280,7 +280,7 @@ private struct DashboardContent: View {
             Text(value)
                 .font(.system(size: 30, weight: .bold, design: .rounded).monospacedDigit())
                 .foregroundStyle(color)
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
@@ -346,7 +346,7 @@ struct SafeToSpendExplanationView: View {
 
     private func row(_ title: String, _ value: Decimal, bold: Bool = false) -> some View {
         HStack {
-            Text(title)
+            Text(LocalizedStringKey(title))
             Spacer()
             Text(value.currency(currencyCode)).monospacedDigit()
         }

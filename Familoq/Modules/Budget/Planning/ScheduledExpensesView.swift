@@ -103,7 +103,7 @@ struct ScheduledExpensesView: View {
                 let category = lookup.category(schedule.categoryID)
                 CategoryIcon(icon: category?.icon ?? "calendar", colorHex: category?.colorHex ?? "#9E9E9E", size: 32)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(schedule.title.isEmpty ? "Untitled" : schedule.title)
+                    Text(schedule.title.isEmpty ? String(localized: "Untitled") : schedule.title)
                         .foregroundStyle(.primary)
                     Text(subtitle(schedule))
                         .font(.caption)
@@ -208,7 +208,7 @@ struct ScheduledExpenseForm: View {
 
             Section {
                 Picker("Repeats", selection: $frequency) {
-                    ForEach(RecurrenceFrequency.allCases, id: \.self) { Text($0.displayName).tag($0) }
+                    ForEach(RecurrenceFrequency.allCases, id: \.self) { Text(LocalizedStringKey($0.displayName)).tag($0) }
                 }
                 DatePicker(isPlanned ? "Due on" : "First due date", selection: $startDate, displayedComponents: [.date])
                 if !isPlanned {
@@ -218,9 +218,9 @@ struct ScheduledExpenseForm: View {
                     }
                 }
             } footer: {
-                Text(isPlanned
+                Text(LocalizedStringKey(isPlanned
                      ? "On the due date Familoq adds it as an expense. Until then it is reserved in Safe to spend for its month."
-                     : "Each due date is added as an expense automatically (for the whole family). Upcoming dates this month are reserved in Safe to spend.")
+                     : "Each due date is added as an expense automatically (for the whole family). Upcoming dates this month are reserved in Safe to spend."))
             }
 
             Section("Category") {
@@ -237,10 +237,10 @@ struct ScheduledExpenseForm: View {
             Section("More") {
                 Picker("Member", selection: $memberID) {
                     Text("Family").tag(UUID?.none)
-                    ForEach(members) { Text($0.displayName).tag(Optional($0.id)) }
+                    ForEach(members) { Text(LocalizedStringKey($0.displayName)).tag(Optional($0.id)) }
                 }
                 Picker("Payment", selection: $paymentMethod) {
-                    ForEach(PaymentMethod.allCases) { Text($0.displayName).tag($0) }
+                    ForEach(PaymentMethod.allCases) { Text(LocalizedStringKey($0.displayName)).tag($0) }
                 }
                 TextField("Note", text: $note)
                 if editing != nil {
@@ -249,7 +249,7 @@ struct ScheduledExpenseForm: View {
             }
 
             if let message {
-                Section { Text(message).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(message)).foregroundStyle(.red) }
             }
         }
         .navigationTitle(editing == nil ? (planned ? "Planned expense" : "Recurring expense") : "Edit")

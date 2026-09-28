@@ -41,9 +41,9 @@ struct BudgetListView: View {
         List {
             ForEach(BudgetScope.allCases, id: \.self) { scope in
                 let items = progress.filter { $0.budget.scope == scope }
-                Section(sectionTitle(scope)) {
+                Section(LocalizedStringKey(sectionTitle(scope))) {
                     if items.isEmpty {
-                        Text(emptyText(scope)).font(.footnote).foregroundStyle(.secondary)
+                        Text(LocalizedStringKey(emptyText(scope))).font(.footnote).foregroundStyle(.secondary)
                     }
                     ForEach(items) { item in
                         Button {
@@ -51,7 +51,7 @@ struct BudgetListView: View {
                         } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 BudgetProgressRow(progress: item, currencyCode: family.baseCurrencyCode)
-                                Text(item.budget.period.displayName)
+                                Text(LocalizedStringKey(item.budget.period.displayName))
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
@@ -145,7 +145,7 @@ struct BudgetEditorView: View {
     var body: some View {
         Form {
             Picker("Period", selection: $period) {
-                ForEach(BudgetPeriod.allCases, id: \.self) { Text($0.displayName).tag($0) }
+                ForEach(BudgetPeriod.allCases, id: \.self) { Text(LocalizedStringKey($0.displayName)).tag($0) }
             }
             .pickerStyle(.segmented)
 
@@ -170,7 +170,7 @@ struct BudgetEditorView: View {
             }
 
             if let error {
-                Text(error).foregroundStyle(.red)
+                Text(LocalizedStringKey(error)).foregroundStyle(.red)
             }
         }
         .navigationTitle(target.budget == nil ? "New budget" : "Edit budget")

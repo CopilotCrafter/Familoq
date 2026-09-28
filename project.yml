@@ -45,6 +45,11 @@ targets:
       path: Familoq/Info.plist
       properties:
         CFBundleDisplayName: Familoq
+        CFBundleDevelopmentRegion: en
+        # English and German (Localizable.xcstrings); follows the iPhone's language
+        CFBundleLocalizations:
+          - en
+          - de
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSRequiresIPhoneOS: true

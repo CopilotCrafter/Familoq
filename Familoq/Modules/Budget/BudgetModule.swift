@@ -35,7 +35,7 @@ enum BudgetModule: FamiloqModule {
             let category = ExpenseCategory(
                 familyID: familyID,
                 systemKey: def.key,
-                name: def.name,
+                name: CategoryNameLocalizer.localized(def.name),
                 icon: def.icon,
                 colorHex: def.colorHex,
                 sortOrder: categoryIndex
@@ -47,7 +47,7 @@ enum BudgetModule: FamiloqModule {
                     familyID: familyID,
                     categoryID: category.id,
                     systemKey: subDef.key,
-                    name: subDef.name,
+                    name: CategoryNameLocalizer.localized(subDef.name),
                     sortOrder: subIndex
                 )
                 context.insert(sub)

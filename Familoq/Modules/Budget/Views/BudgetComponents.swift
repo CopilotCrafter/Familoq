@@ -21,7 +21,7 @@ struct BudgetProgressRow: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 10) {
                 CategoryIcon(icon: progress.icon, colorHex: progress.colorHex, size: 28)
-                Text(progress.title)
+                Text(LocalizedStringKey(progress.title))
                     .font(.subheadline.weight(.medium))
                     .lineLimit(1)
                 Spacer()
@@ -32,7 +32,7 @@ struct BudgetProgressRow: View {
             ProgressView(value: min(progress.status.fractionUsed, 1))
                 .tint(progress.status.level.tint)
             if let message = warningText {
-                Text(message)
+                Text(LocalizedStringKey(message))
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(progress.status.level.tint)
             }

@@ -148,3 +148,13 @@ final class BackupAndExportTests: XCTestCase {
         XCTAssertFalse(filter.matches(expense.facts(lookup: lookup), baseCurrency: "EUR"))
     }
 }
+
+final class LocalizationTests: XCTestCase {
+    func testGermanTranslationsAreBundled() throws {
+        let path = try XCTUnwrap(Bundle.main.path(forResource: "de", ofType: "lproj"), "de.lproj missing - String Catalog not compiled")
+        let german = try XCTUnwrap(Bundle(path: path))
+        XCTAssertEqual(german.localizedString(forKey: "Safe to spend", value: nil, table: nil), "Sicher ausgeben")
+        XCTAssertEqual(german.localizedString(forKey: "Groceries", value: nil, table: nil), "Lebensmittel")
+        XCTAssertEqual(german.localizedString(forKey: "%lld expense(s)", value: nil, table: nil), "%lld Ausgabe(n)")
+    }
+}
