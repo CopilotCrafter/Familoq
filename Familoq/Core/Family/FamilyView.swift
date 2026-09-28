@@ -109,6 +109,16 @@ private struct FamilySettingsContent: View {
             }
 
             Section {
+                NavigationLink {
+                    ExportBackupView(family: family)
+                } label: {
+                    Label("Export & backup", systemImage: "square.and.arrow.up.on.square")
+                }
+            } header: {
+                Text("Your data")
+            }
+
+            Section {
                 SyncStatusRow()
             } header: {
                 Text("iCloud")
