@@ -91,7 +91,7 @@ struct AboutFamiloqView: View {
                             .font(.caption.monospaced())
                             .textSelection(.enabled)
                     } else {
-                        Text(userIDError ?? "Checking iCloud…")
+                        Text(LocalizedStringKey(userIDError ?? "Checking iCloud…"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -167,7 +167,7 @@ struct EnterInvitationView: View {
                 Section { ProgressView("Checking invitation…") }
             }
             if let message = account.errorMessage {
-                Section { Text(message).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(message)).foregroundStyle(.red) }
             }
         }
         .navigationTitle("Invitation")
@@ -203,7 +203,7 @@ struct RestoreAccessView: View {
                 Section { ProgressView("Checking iCloud…") }
             }
             if let message = account.errorMessage {
-                Section { Text(message).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(message)).foregroundStyle(.red) }
             }
         }
         .navigationTitle("Restore access")
@@ -253,7 +253,7 @@ struct RequestInvitationView: View {
                     .disabled(name.trimmingCharacters(in: .whitespaces).count < 2 || contact.trimmingCharacters(in: .whitespaces).count < 3 || account.isWorking)
                 }
                 if let error = account.errorMessage {
-                    Section { Text(error).foregroundStyle(.red) }
+                    Section { Text(LocalizedStringKey(error)).foregroundStyle(.red) }
                 }
             }
         }

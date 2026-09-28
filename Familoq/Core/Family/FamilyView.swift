@@ -42,7 +42,7 @@ private struct FamilySettingsContent: View {
                         } label: {
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(other.name.isEmpty ? "Family" : other.name)
+                                    Text(other.name.isEmpty ? String(localized: "Family") : other.name)
                                         .foregroundStyle(.primary)
                                     Text(ownerLine(for: other))
                                         .font(.caption)
@@ -83,9 +83,9 @@ private struct FamilySettingsContent: View {
             } header: {
                 Text("People")
             } footer: {
-                Text(session.isOwner
+                Text(LocalizedStringKey(session.isOwner
                      ? "Invite family members with their Apple Account. Everyone sees the same budget, synced through iCloud."
-                     : "You are a member of this family. The owner manages members, categories and budgets.")
+                     : "You are a member of this family. The owner manages members, categories and budgets."))
             }
 
             BudgetSettingsSection(family: family)
@@ -95,9 +95,9 @@ private struct FamilySettingsContent: View {
                     HStack {
                         Image(systemName: space.icon)
                             .foregroundStyle(space.isAvailable ? Color.accentColor : Color.secondary)
-                        Text(space.title)
+                        Text(LocalizedStringKey(space.title))
                         Spacer()
-                        Text(space.isAvailable ? "Active" : "Planned")
+                        Text(LocalizedStringKey(space.isAvailable ? "Active" : "Planned"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -106,6 +106,16 @@ private struct FamilySettingsContent: View {
                 Text("Familoq spaces")
             } footer: {
                 Text("Familoq grows into your family's shared space. Budget is available now; travel, health, plans, reminders and events will follow.")
+            }
+
+            Section {
+                NavigationLink {
+                    ExportBackupView(family: family)
+                } label: {
+                    Label("Export & backup", systemImage: "square.and.arrow.up.on.square")
+                }
+            } header: {
+                Text("Your data")
             }
 
             Section {
@@ -142,9 +152,9 @@ private struct FamilySettingsContent: View {
                     confirmRemoval = true
                 }
             } footer: {
-                Text(session.isOwner
+                Text(LocalizedStringKey(session.isOwner
                      ? "Deletes the family's budget, expenses and receipts for every member, on all devices and in iCloud."
-                     : "Removes the family from your iPhone. The owner can invite you again.")
+                     : "Removes the family from your iPhone. The owner can invite you again."))
             }
 
             Section {
@@ -224,7 +234,7 @@ private struct SyncStatusRow: View {
         case .offline:
             Label("Offline - changes are sent when you are back online", systemImage: "icloud.slash")
         case .problem(let message):
-            Label(message, systemImage: "exclamationmark.icloud")
+            Label(LocalizedStringKey(message), systemImage: "exclamationmark.icloud")
                 .foregroundStyle(.orange)
         }
     }
@@ -266,12 +276,12 @@ struct MembersView: View {
                     HStack {
                         Image(systemName: member.role == .owner ? "crown.fill" : (member.cloudUserRecordName.isEmpty ? "person" : "person.fill"))
                             .foregroundStyle(member.role == .owner ? Color.yellow : Color.secondary)
-                        Text(member.displayName)
+                        Text(LocalizedStringKey(member.displayName))
                         if member.isCurrentUser {
                             Text("(you)").foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Text(member.role.displayName).font(.caption).foregroundStyle(.secondary)
+                        Text(LocalizedStringKey(member.role.displayName)).font(.caption).foregroundStyle(.secondary)
                     }
                     .swipeActions {
                         if session.can(.removeMembers) && member.role != .owner {
@@ -312,7 +322,7 @@ struct MembersView: View {
             }
 
             if let errorMessage {
-                Section { Text(errorMessage).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(errorMessage)).foregroundStyle(.red) }
             }
         }
         .navigationTitle("Members")
@@ -356,9 +366,9 @@ struct MembersView: View {
         } header: {
             Text("Invite to family")
         } footer: {
-            Text(canAddMore
+            Text(LocalizedStringKey(canAddMore
                  ? "Enter the e-mail address or phone number of the person's Apple Account, then send them the link. Only people you invited can open it. They also need their own Familoq invitation to use the app."
-                 : "This family has reached its member limit.")
+                 : "This family has reached its member limit."))
         }
     }
 
@@ -435,7 +445,7 @@ private struct ParticipantRow: View {
                 .foregroundStyle(participant.acceptanceStatus == .accepted ? Color.green : Color.orange)
             Text(name)
             Spacer()
-            Text(participant.acceptanceStatus == .accepted ? "Joined" : "Invited")
+            Text(LocalizedStringKey(participant.acceptanceStatus == .accepted ? "Joined" : "Invited"))
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

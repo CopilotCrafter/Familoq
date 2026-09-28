@@ -185,7 +185,7 @@ struct AdminView: View {
             }
 
             if let error = model.errorMessage {
-                Section { Text(error).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(error)).foregroundStyle(.red) }
             }
         }
         .navigationTitle("Administration")

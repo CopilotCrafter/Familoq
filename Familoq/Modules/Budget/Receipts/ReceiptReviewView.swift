@@ -66,7 +66,7 @@ struct ReceiptReviewView: View {
             if !otherWarnings.isEmpty {
                 Section {
                     ForEach(otherWarnings, id: \.self) { warning in
-                        Label(warning, systemImage: "exclamationmark.triangle.fill")
+                        Label(LocalizedStringKey(warning), systemImage: "exclamationmark.triangle.fill")
                             .foregroundStyle(.orange)
                             .font(.subheadline)
                     }
@@ -97,9 +97,9 @@ struct ReceiptReviewView: View {
                     LabeledContent("VAT", value: draft.vatSummary).font(.footnote)
                 }
                 if CurrencyInfo.normalize(draft.currencyCode) != family.baseCurrencyCode {
-                    Text(CurrencyInfo.canAutoConvert(from: draft.currencyCode, to: family.baseCurrencyCode)
+                    Text(LocalizedStringKey(CurrencyInfo.canAutoConvert(from: draft.currencyCode, to: family.baseCurrencyCode)
                          ? "Converted to \(family.baseCurrencyCode) with the ECB rate of \(draft.date.formatted(date: .abbreviated, time: .omitted))."
-                         : "No automatic rate for \(draft.currencyCode). After saving, open the expense and enter the rate to \(family.baseCurrencyCode).")
+                         : "No automatic rate for \(draft.currencyCode). After saving, open the expense and enter the rate to \(family.baseCurrencyCode)."))
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 if let data = draft.imageData, let image = UIImage(data: data) {
@@ -133,9 +133,9 @@ struct ReceiptReviewView: View {
                     }
                 }
             } footer: {
-                Text(draft.categorizeWholeReceipt
+                Text(LocalizedStringKey(draft.categorizeWholeReceipt
                      ? "Faster: one expense for the whole receipt."
-                     : "Item level: each item gets its own subcategory - e.g. chicken → Meat & Poultry, bananas → Fruits.")
+                     : "Item level: each item gets its own subcategory - e.g. chicken → Meat & Poultry, bananas → Fruits."))
             }
 
             if !draft.categorizeWholeReceipt {
@@ -165,7 +165,7 @@ struct ReceiptReviewView: View {
             }
 
             if let errorMessage {
-                Section { Text(errorMessage).foregroundStyle(.red) }
+                Section { Text(LocalizedStringKey(errorMessage)).foregroundStyle(.red) }
             }
         }
         .navigationTitle("Check receipt")
@@ -384,7 +384,7 @@ private struct CategoryChoiceList: View {
     private func row(title: String, selected: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack {
-                Text(title).foregroundStyle(.primary)
+                Text(LocalizedStringKey(title)).foregroundStyle(.primary)
                 Spacer()
                 if selected { Image(systemName: "checkmark").foregroundStyle(Color.accentColor) }
             }

@@ -9,46 +9,83 @@ enum ReportPeriod: String, CaseIterable, Identifiable {
     case thisWeek = "This week"
     case thisMonth = "This month"
     case previousMonth = "Previous month"
+    case thisYear = "This year"
+    case last12Months = "Last 12 months"
+    case custom = "Custom range"
 
     var id: String { rawValue }
 
-    func interval(now: Date, calendar: Calendar) -> DateInterval {
+    /// Current interval and the one to compare with (same length, just before).
+    func intervals(now: Date, calendar: Calendar, customFrom: Date, customTo: Date) -> (current: DateInterval, previous: DateInterval) {
+        func month(_ date: Date) -> DateInterval { BudgetPeriod.monthly.interval(containing: date, calendar: calendar) }
         switch self {
-        case .today: return BudgetPeriod.daily.interval(containing: now, calendar: calendar)
-        case .thisWeek: return BudgetPeriod.weekly.interval(containing: now, calendar: calendar)
-        case .thisMonth: return BudgetPeriod.monthly.interval(containing: now, calendar: calendar)
+        case .today:
+            let current = BudgetPeriod.daily.interval(containing: now, calendar: calendar)
+            return (current, BudgetPeriod.daily.interval(containing: current.start.addingTimeInterval(-3600), calendar: calendar))
+        case .thisWeek:
+            let current = BudgetPeriod.weekly.interval(containing: now, calendar: calendar)
+            return (current, BudgetPeriod.weekly.interval(containing: current.start.addingTimeInterval(-3600), calendar: calendar))
+        case .thisMonth:
+            let current = month(now)
+            return (current, month(current.start.addingTimeInterval(-3600)))
         case .previousMonth:
-            let thisMonth = BudgetPeriod.monthly.interval(containing: now, calendar: calendar)
-            let dayBefore = thisMonth.start.addingTimeInterval(-3600)
-            return BudgetPeriod.monthly.interval(containing: dayBefore, calendar: calendar)
+            let current = month(month(now).start.addingTimeInterval(-3600))
+            return (current, month(current.start.addingTimeInterval(-3600)))
+        case .thisYear:
+            let current = calendar.dateInterval(of: .year, for: now) ?? month(now)
+            let previous = calendar.dateInterval(of: .year, for: current.start.addingTimeInterval(-3600)) ?? current
+            return (current, previous)
+        case .last12Months:
+            let end = month(now).end
+            let start = calendar.date(byAdding: .month, value: -12, to: end) ?? end
+            let previousStart = calendar.date(byAdding: .month, value: -12, to: start) ?? start
+            return (DateInterval(start: start, end: end), DateInterval(start: previousStart, end: start))
+        case .custom:
+            let start = calendar.startOfDay(for: min(customFrom, customTo))
+            let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: max(customFrom, customTo))) ?? start
+            let length = end.timeIntervalSince(start)
+            return (DateInterval(start: start, end: end), DateInterval(start: start.addingTimeInterval(-length), end: start))
         }
     }
 
-    /// The period to compare against (same length, immediately before).
-    func previousInterval(now: Date, calendar: Calendar) -> DateInterval {
-        let current = interval(now: now, calendar: calendar)
-        let justBefore = current.start.addingTimeInterval(-3600)
-        switch self {
-        case .today: return BudgetPeriod.daily.interval(containing: justBefore, calendar: calendar)
-        case .thisWeek: return BudgetPeriod.weekly.interval(containing: justBefore, calendar: calendar)
-        case .thisMonth, .previousMonth: return BudgetPeriod.monthly.interval(containing: justBefore, calendar: calendar)
-        }
-    }
+    /// Monthly budgets can be compared directly.
+    var isSingleMonth: Bool { self == .thisMonth || self == .previousMonth }
 }
 
-/// Phase 1 reports: category breakdown with drill-down to subcategories and
-/// comparison with the previous period. Trends, budget-vs-actual history and
-/// custom ranges arrive in Phase 5.
+/// Reports: totals with comparison, trend over 12 months, categories with
+/// drill-down, members, budget vs actual; any period incl. a custom range.
 struct ReportsView: View {
     @EnvironmentObject private var session: AppSession
     @State private var period: ReportPeriod = .thisMonth
+    @State private var customFrom = FamiloqCalendar.make().dateInterval(of: .month, for: Date())?.start ?? Date()
+    @State private var customTo = Date()
+    @State private var showCustomRange = false
 
     var body: some View {
         NavigationStack {
             if let family = session.family {
-                ReportContent(family: family, period: period, selection: $period)
-                    .id(period)
+                let range = period.intervals(now: Date(), calendar: FamiloqCalendar.make(), customFrom: customFrom, customTo: customTo)
+                ReportContent(family: family, period: period, current: range.current, previous: range.previous,
+                              selection: $period, onEditRange: { showCustomRange = true })
+                    .id("\(period.rawValue)-\(range.current.start.timeIntervalSince1970)-\(range.current.end.timeIntervalSince1970)")
                     .navigationTitle("Reports")
+                    .onChange(of: period) { _, newValue in
+                        if newValue == .custom { showCustomRange = true }
+                    }
+                    .sheet(isPresented: $showCustomRange) {
+                        NavigationStack {
+                            Form {
+                                DatePicker("From", selection: $customFrom, displayedComponents: [.date])
+                                DatePicker("To", selection: $customTo, in: customFrom..., displayedComponents: [.date])
+                            }
+                            .navigationTitle("Custom range")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .confirmationAction) { Button("Done") { showCustomRange = false } }
+                            }
+                        }
+                        .presentationDetents([.medium])
+                    }
             } else {
                 ProgressView()
             }
@@ -59,27 +96,37 @@ struct ReportsView: View {
 private struct ReportContent: View {
     let family: Family
     let period: ReportPeriod
+    let current: DateInterval
     @Binding var selection: ReportPeriod
+    let onEditRange: () -> Void
 
     @Query private var expenses: [Expense]
     @Query private var previousExpenses: [Expense]
+    @Query private var trendExpenses: [Expense]
     @Query private var categories: [ExpenseCategory]
     @Query private var subcategories: [ExpenseSubcategory]
+    @Query private var members: [FamilyMember]
+    @Query private var budgets: [Budget]
 
-    init(family: Family, period: ReportPeriod, selection: Binding<ReportPeriod>) {
+    init(family: Family, period: ReportPeriod, current: DateInterval, previous: DateInterval,
+         selection: Binding<ReportPeriod>, onEditRange: @escaping () -> Void) {
         self.family = family
         self.period = period
+        self.current = current
+        self.onEditRange = onEditRange
         _selection = selection
         let calendar = FamiloqCalendar.make()
-        let now = Date()
-        let current = period.interval(now: now, calendar: calendar)
-        let previous = period.previousInterval(now: now, calendar: calendar)
         let fid = family.id
         let cs = current.start, ce = current.end, ps = previous.start, pe = previous.end
+        let trendEnd = BudgetPeriod.monthly.interval(containing: Date(), calendar: calendar).end
+        let trendStart = calendar.date(byAdding: .month, value: -12, to: trendEnd) ?? trendEnd
         _expenses = Query(filter: #Predicate<Expense> { $0.familyID == fid && $0.date >= cs && $0.date < ce }, sort: \Expense.date, order: .reverse)
         _previousExpenses = Query(filter: #Predicate<Expense> { $0.familyID == fid && $0.date >= ps && $0.date < pe })
+        _trendExpenses = Query(filter: #Predicate<Expense> { $0.familyID == fid && $0.date >= trendStart && $0.date < trendEnd })
         _categories = Query(filter: #Predicate<ExpenseCategory> { $0.familyID == fid }, sort: \ExpenseCategory.sortOrder)
         _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid }, sort: \ExpenseSubcategory.sortOrder)
+        _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid }, sort: \FamilyMember.joinedAt)
+        _budgets = Query(filter: #Predicate<Budget> { $0.familyID == fid && $0.isActive == true })
     }
 
     private var lookup: CategoryLookup { CategoryLookup(categories: categories, subcategories: subcategories) }
@@ -89,12 +136,22 @@ private struct ReportContent: View {
         let summary = SpendingSummary(expenses: expenses)
         let previous = SpendingSummary(expenses: previousExpenses)
         let rows = categoryRows(summary: summary)
+        let trend = SpendingTrends.monthlyTotals(
+            entries: trendExpenses.compactMap { e in e.baseAmount.map { (date: e.date, amount: $0) } },
+            months: 12, endingAt: Date(), calendar: FamiloqCalendar.make())
         List {
             Section {
                 Picker("Period", selection: $selection) {
-                    ForEach(ReportPeriod.allCases) { Text($0.rawValue).tag($0) }
+                    ForEach(ReportPeriod.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                 }
                 .pickerStyle(.menu)
+                if period == .custom {
+                    Button {
+                        onEditRange()
+                    } label: {
+                        Text("\(current.start.formatted(date: .abbreviated, time: .omitted)) – \(current.end.addingTimeInterval(-1).formatted(date: .abbreviated, time: .omitted))")
+                    }
+                }
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(summary.total.currency(currency))
@@ -102,6 +159,28 @@ private struct ReportContent: View {
                     comparisonText(current: summary.total, previous: previous.total)
                 }
                 .padding(.vertical, 4)
+            }
+
+            Section {
+                Chart(trend) { month in
+                    BarMark(
+                        x: .value("Month", month.monthStart, unit: .month),
+                        y: .value("Spent", month.total.doubleValue)
+                    )
+                    .foregroundStyle(month.monthStart >= current.start && month.monthStart < current.end ? Color.accentColor : Color.accentColor.opacity(0.35))
+                }
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .month, count: 2)) { _ in
+                        AxisValueLabel(format: .dateTime.month(.narrow))
+                    }
+                }
+                .frame(height: 160)
+                .accessibilityHidden(true)
+                Text("Average of complete months: \(SpendingTrends.averageOfCompleteMonths(trend).currency(currency))")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("Last 12 months")
             }
 
             if rows.isEmpty {
@@ -143,6 +222,35 @@ private struct ReportContent: View {
                         }
                     }
                 }
+
+                let memberRows = memberTotals()
+                if memberRows.count > 1 {
+                    Section("By member") {
+                        ForEach(memberRows) { row in
+                            HStack {
+                                Text(row.name)
+                                Spacer()
+                                Text(row.amount.currency(currency)).monospacedDigit()
+                                Text(percentText(row.amount, of: summary.total))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .frame(width: 44, alignment: .trailing)
+                            }
+                        }
+                    }
+                }
+
+                if period.isSingleMonth {
+                    let monthly = budgets.filter { $0.period == .monthly && $0.scope != .overall }
+                    if !monthly.isEmpty {
+                        Section("Budget vs actual") {
+                            ForEach(BudgetProgressBuilder.progress(budgets: monthly, expenses: expenses, lookup: lookup,
+                                                                   now: current.start.addingTimeInterval(3600), calendar: FamiloqCalendar.make())) { item in
+                                BudgetProgressRow(progress: item, currencyCode: currency)
+                            }
+                        }
+                    }
+                }
             }
 
             if summary.unconvertedCount > 0 {
@@ -153,6 +261,18 @@ private struct ReportContent: View {
                 }
             }
         }
+    }
+
+    private func memberTotals() -> [MemberTotal] {
+        var totals: [UUID?: Decimal] = [:]
+        for expense in expenses {
+            guard let amount = expense.baseAmount else { continue }
+            totals[expense.memberID, default: 0] += amount
+        }
+        return totals.map { id, amount in
+            MemberTotal(name: id.flatMap { mid in members.first { $0.id == mid }?.displayName } ?? "Family / not assigned", amount: amount)
+        }
+        .sorted { $0.amount > $1.amount }
     }
 
     private func categoryRows(summary: SpendingSummary) -> [CategoryRow] {
@@ -185,6 +305,12 @@ private struct ReportContent: View {
         guard total > 0 else { return "" }
         return String(format: "%.0f %%", (amount / total * 100).doubleValue)
     }
+}
+
+struct MemberTotal: Identifiable {
+    let name: String
+    let amount: Decimal
+    var id: String { name }
 }
 
 struct CategoryRow: Identifiable {
