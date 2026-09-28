@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.2 - Better receipt filing
+
+### Added
+- Familoq learns: change an item's category on the check screen and the same item is filed that way on the next receipt, for the whole family (green seal icon). Learned items: Family → Merchant rules.
+- Apple Intelligence (iOS 26+, on the iPhone) files receipt items the built-in keywords don't know (sparkles icon).
+- Edit a saved receipt: Scan → receipt → Edit (items, amounts, categories, total); its expenses are updated.
+
+### Fixed
+- Photos taken at an angle: prices no longer slip to the next item (the tilt of the text lines is measured and removed).
+- More German receipt words: Blätterteig, Pudd., Direktsaft (not grapes), Knotenbeutel, Landmilch, Ministeaks, Teebeutel, …
+- "2,672 kg x 1,99 EUR/kg" lines are read as the weight of the item above.
+
 ## 0.5.1 - Deeper reports
 
 ### Added

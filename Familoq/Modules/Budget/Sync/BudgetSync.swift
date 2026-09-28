@@ -24,6 +24,10 @@ extension BudgetModule {
                     rule.id = id
                     return rule
                 }),
+            .of(ItemCategoryRule.self,
+                inFamily: { fid in #Predicate<ItemCategoryRule> { $0.familyID == fid } },
+                withID: { id in #Predicate<ItemCategoryRule> { $0.id == id } },
+                make: { id, fid in ItemCategoryRule(id: id, familyID: fid, key: "", displayName: "", categoryID: UUID(), subcategoryID: nil) }),
             .of(Budget.self,
                 inFamily: { fid in #Predicate<Budget> { $0.familyID == fid } },
                 withID: { id in #Predicate<Budget> { $0.id == id } },
@@ -399,5 +403,30 @@ extension SavingsContribution: SyncableRecord {
         date = p.date("date", default: date)
         memberID = p.uuid("memberID")
         note = p.string("note")
+    }
+}
+
+extension ItemCategoryRule: SyncableRecord {
+    static var syncKind: SyncKind { .itemRule }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("key", key)
+        p.set("displayName", displayName)
+        p.set("categoryID", categoryID)
+        p.set("subcategoryID", subcategoryID)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        key = p.string("key")
+        displayName = p.string("displayName")
+        categoryID = p.uuid("categoryID") ?? categoryID
+        subcategoryID = p.uuid("subcategoryID")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
     }
 }

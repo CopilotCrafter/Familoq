@@ -716,6 +716,17 @@
         }
       }
     },
+    "Apple Intelligence is sorting unknown items…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence ordnet unbekannte Artikel zu …"
+          }
+        }
+      }
+    },
     "Apple Intelligence is still getting ready (downloading). Try again later.": {
       "extractionState": "manual",
       "localizations": {
@@ -723,6 +734,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apple Intelligence wird noch vorbereitet (Download). Versuche es später erneut."
+          }
+        }
+      }
+    },
+    "Apple Intelligence sorted %lld unknown item(s) - please check them.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence hat %lld unbekannte(n) Artikel zugeordnet - bitte prüfen."
           }
         }
       }
@@ -1240,6 +1262,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ändern"
+          }
+        }
+      }
+    },
+    "Change a category and Familoq remembers it for the next receipt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ändere eine Kategorie und Familoq merkt sie sich für den nächsten Kassenbon."
           }
         }
       }
@@ -2091,6 +2124,17 @@
         }
       }
     },
+    "Edit receipt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beleg bearbeiten"
+          }
+        }
+      }
+    },
     "Education": {
       "extractionState": "manual",
       "localizations": {
@@ -2725,6 +2769,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schneller: eine Ausgabe für den ganzen Beleg."
+          }
+        }
+      }
+    },
+    "Filed like last time (you corrected these before).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie beim letzten Mal zugeordnet (von dir korrigiert)."
           }
         }
       }
@@ -3561,6 +3616,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Später"
+          }
+        }
+      }
+    },
+    "Learned receipt items (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelernte Kassenbon-Artikel (%lld)"
           }
         }
       }
@@ -6887,6 +6953,17 @@
         }
       }
     },
+    "When you change the category of a receipt item on the check screen, Familoq remembers it for the next receipt. Learned items appear here.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn du auf dem Prüfbildschirm die Kategorie eines Artikels änderst, merkt sich Familoq das für den nächsten Kassenbon. Gelernte Artikel erscheinen hier."
+          }
+        }
+      }
+    },
     "Which currency is this receipt in?": {
       "extractionState": "manual",
       "localizations": {
@@ -7345,6 +7422,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "÷ Verbleibende Tage (inkl. heute)"
+          }
+        }
+      }
+    },
+    "→ %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "→ %@"
           }
         }
       }

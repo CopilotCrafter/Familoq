@@ -333,7 +333,9 @@ public enum ReceiptParser {
             // "2 x 1,29" - belongs to the neighbouring item.
             if let q = firstMatch(quantityLine, in: line) {
                 // Letters left after removing the quantity expression = an item name.
-                let rest = line.replacingOccurrences(of: q[0], with: "")
+                // "2,672 kg x 1,99 EUR/kg": units are not a name.
+                let rest = line.replacingOccurrences(of: q[0], with: "").lowercased()
+                    .replacingOccurrences(of: #"eur|€|/|kg|stk|st\b"#, with: "", options: .regularExpression)
                 let hasName = rest.filter(\.isLetter).count > 2
                 if !hasName {
                     let quantity = DecimalParser.parse(q[1])

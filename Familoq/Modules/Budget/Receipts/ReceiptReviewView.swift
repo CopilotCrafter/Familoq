@@ -13,6 +13,8 @@ struct ReceiptReviewView: View {
     /// Categories are handed in (no @Query here - a query inside a
     /// presented screen is re-created whenever its parent is rebuilt).
     let lookup: CategoryLookup
+    /// A saved receipt being edited (nil = new scan).
+    let editing: ReceiptRecord?
     let onDone: () -> Void
 
     @Environment(\.modelContext) private var context
@@ -23,11 +25,15 @@ struct ReceiptReviewView: View {
     @State private var showDiscard = false
     /// Item whose category is being chosen (sheet).
     @State private var categoryPickerItemID: UUID?
+    /// Apple Intelligence filing unknown items: nil = not tried yet.
+    @State private var aiSorted: Int?
+    @State private var aiWorking = false
 
-    init(family: Family, draft: ReceiptDraft, lookup: CategoryLookup, onDone: @escaping () -> Void) {
+    init(family: Family, draft: ReceiptDraft, lookup: CategoryLookup, editing: ReceiptRecord? = nil, onDone: @escaping () -> Void) {
         self.family = family
         _draft = State(initialValue: draft)
         self.lookup = lookup
+        self.editing = editing
         self.onDone = onDone
     }
 
@@ -160,7 +166,10 @@ struct ReceiptReviewView: View {
                 } header: {
                     Text("Items (\(draft.items.filter(\.included).count))")
                 } footer: {
-                    differenceFooter
+                    VStack(alignment: .leading, spacing: 6) {
+                        differenceFooter
+                        itemSourceLegend
+                    }
                 }
             }
 
@@ -168,18 +177,23 @@ struct ReceiptReviewView: View {
                 Section { Text(LocalizedStringKey(errorMessage)).foregroundStyle(.red) }
             }
         }
-        .navigationTitle("Check receipt")
+        .navigationTitle(editing == nil ? LocalizedStringKey("Check receipt") : LocalizedStringKey("Edit receipt"))
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Discard") { showDiscard = true }
+                if editing == nil {
+                    Button("Discard") { showDiscard = true }
+                } else {
+                    Button("Cancel") { onDone() }
+                }
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button("Save") { save() }.fontWeight(.semibold)
             }
         }
         .onAppear { ScanBreadcrumb.set("the check screen - shown (currency \(draft.currencyCode), \(draft.items.count) items)") }
+        .task { await sortUnknownItems() }
         .sheet(isPresented: Binding(get: { categoryPickerItemID != nil }, set: { if !$0 { categoryPickerItemID = nil } })) {
             if let id = categoryPickerItemID, let index = draft.items.firstIndex(where: { $0.id == id }) {
                 CategoryChoiceList(lookup: lookup,
@@ -206,6 +220,55 @@ struct ReceiptReviewView: View {
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    private var itemSourceLegend: some View {
+        if aiWorking {
+            Label("Apple Intelligence is sorting unknown items…", systemImage: "sparkles")
+        } else if let aiSorted, aiSorted > 0 {
+            Label("Apple Intelligence sorted \(aiSorted) unknown item(s) - please check them.", systemImage: "sparkles")
+        }
+        if draft.items.contains(where: { $0.source == .learned }) {
+            Label("Filed like last time (you corrected these before).", systemImage: "checkmark.seal.fill")
+        }
+        if !draft.items.isEmpty {
+            Text("Change a category and Familoq remembers it for the next receipt.")
+        }
+    }
+
+    /// Items the keywords did not know are filed by Apple Intelligence
+    /// (on this iPhone) - only where the user has not chosen yet.
+    private func sortUnknownItems() async {
+        guard aiSorted == nil, !aiWorking, case .available = AppleIntelligence.state else { return }
+        let unknown = draft.items.filter { $0.source == .unknown && $0.isUntouched && $0.name.filter(\.isLetter).count >= 3 }.prefix(30)
+        guard !unknown.isEmpty else { aiSorted = 0; return }
+        var targets: [String: ItemTarget] = [:]
+        for category in lookup.activeCategories() {
+            let subs = lookup.activeSubcategories(of: category.id)
+            if subs.isEmpty { targets[category.name] = ItemTarget(categoryID: category.id, subcategoryID: nil) }
+            for sub in subs {
+                targets["\(category.name) > \(sub.name)"] = ItemTarget(categoryID: category.id, subcategoryID: sub.id)
+            }
+        }
+        aiWorking = true
+        defer { aiWorking = false }
+        let answers = (try? await AppleIntelligence.classifyItems(unknown.map(\.name), choices: targets.keys.sorted())) ?? [:]
+        var updated = draft
+        var count = 0
+        for (offset, item) in unknown.enumerated() {
+            guard let choice = answers[offset], let target = targets[choice],
+                  let index = updated.items.firstIndex(where: { $0.id == item.id }),
+                  updated.items[index].isUntouched else { continue }
+            updated.items[index].categoryID = target.categoryID
+            updated.items[index].subcategoryID = target.subcategoryID
+            updated.items[index].suggestedCategoryID = target.categoryID
+            updated.items[index].suggestedSubcategoryID = target.subcategoryID
+            updated.items[index].source = .appleIntelligence
+            count += 1
+        }
+        if count > 0 { draft = updated }
+        aiSorted = count
     }
 
     @ViewBuilder
@@ -242,10 +305,11 @@ struct ReceiptReviewView: View {
         }
         ScanBreadcrumb.set("saving the receipt (\(draft.currencyCode), total \(draft.totalText), \(draft.items.filter(\.included).count) items, whole receipt: \(draft.categorizeWholeReceipt))")
         do {
-            let expenses = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context)
+            let expenses = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context,
+                                                 replacing: editing)
             // Items on the shopping list that are on this receipt are ticked off.
-            let ticked = ShoppingService.tickOff(receiptLines: draft.items.filter(\.included).map(\.name),
-                                                 familyID: family.id, memberID: session.currentMember?.id, context: context)
+            let ticked = editing != nil ? [] : ShoppingService.tickOff(receiptLines: draft.items.filter(\.included).map(\.name),
+                                                                       familyID: family.id, memberID: session.currentMember?.id, context: context)
             if !ticked.isEmpty {
                 session.notice = String(localized: "Ticked off the shopping list: \(ticked.joined(separator: ", "))")
             }
@@ -292,8 +356,19 @@ private struct ReceiptItemEditor: View {
                 onPickCategory()
             } label: {
                 HStack(spacing: 4) {
-                    if item.confidence > 0 && item.confidence < 0.7 {
-                        Image(systemName: "questionmark.circle").foregroundStyle(.orange)
+                    if item.isUntouched {
+                        switch item.source {
+                        case .learned:
+                            Image(systemName: "checkmark.seal.fill").foregroundStyle(.green)
+                        case .appleIntelligence:
+                            Image(systemName: "sparkles").foregroundStyle(.purple)
+                        case .unknown:
+                            Image(systemName: "questionmark.circle").foregroundStyle(.orange)
+                        case .keyword:
+                            if item.confidence < 0.7 {
+                                Image(systemName: "questionmark.circle").foregroundStyle(.orange)
+                            }
+                        }
                     }
                     Text(lookup.path(categoryID: item.categoryID, subcategoryID: item.subcategoryID))
                         .font(.caption)
