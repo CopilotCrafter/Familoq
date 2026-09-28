@@ -23,6 +23,8 @@ struct ReceiptDraft: Equatable {
     var rawText: String
     var vatSummary: String
     var warnings: [String]
+    /// Items the family filed themselves before (ItemRuleKey -> category).
+    var learned: [String: ItemTarget] = [:]
 
     var total: Decimal? { DecimalParser.parse(totalText) }
 
@@ -54,7 +56,17 @@ struct ReceiptDraft: Equatable {
     }
 }
 
+struct ItemTarget: Equatable {
+    var categoryID: UUID?
+    var subcategoryID: UUID?
+}
+
 struct ReceiptDraftItem: Identifiable, Equatable {
+    /// Where the suggested category came from (shown as a small icon).
+    enum Source: Equatable {
+        case keyword, learned, appleIntelligence, unknown
+    }
+
     let id = UUID()
     var name: String
     var amountText: String
@@ -63,8 +75,15 @@ struct ReceiptDraftItem: Identifiable, Equatable {
     var included = true
     /// How sure the classifier was (0 = not recognised).
     var confidence: Double = 0
+    var source: Source = .unknown
+    /// What Familoq suggested - a different choice on Save is remembered.
+    var suggestedCategoryID: UUID?
+    var suggestedSubcategoryID: UUID?
 
     var amount: Decimal? { DecimalParser.parse(amountText) }
+
+    /// The user has not changed the suggestion.
+    var isUntouched: Bool { categoryID == suggestedCategoryID && subcategoryID == suggestedSubcategoryID }
 }
 
 enum ReceiptSaveError: LocalizedError {
@@ -84,14 +103,16 @@ enum ReceiptSaveError: LocalizedError {
 @MainActor
 enum ReceiptDrafting {
     /// Builds the editable draft from OCR results, with category suggestions.
-    static func draft(from parsed: ParsedReceipt, family: Family, lookup: CategoryLookup, rules: [MerchantRuleRecord], imageData: Data?, now: Date = Date()) -> ReceiptDraft {
+    static func draft(from parsed: ParsedReceipt, family: Family, lookup: CategoryLookup, rules: [MerchantRuleRecord], imageData: Data?,
+                      itemRules: [ItemCategoryRule] = [], now: Date = Date()) -> ReceiptDraft {
         let groceriesID = lookup.categories.first { $0.systemKey == "groceries" }?.id
 
         let merchant = parsed.merchant ?? ""
         let suggestion = CategorizationService.suggestion(for: merchant, rules: rules)
         let isGroceryMerchant = suggestion == nil || suggestion?.categoryID == groceriesID
 
-        let items = draftItems(from: parsed, lookup: lookup)
+        let learned = learnedTargets(itemRules)
+        let items = draftItems(from: parsed, lookup: lookup, learned: learned)
 
         let total = parsed.total ?? (parsed.items.isEmpty ? nil : parsed.itemsSum)
         let vat = parsed.vat.map { line in
@@ -115,23 +136,74 @@ enum ReceiptDrafting {
             imageData: imageData,
             rawText: parsed.rawLines.joined(separator: "\n"),
             vatSummary: vat,
-            warnings: parsed.warnings
+            warnings: parsed.warnings,
+            learned: learned
         )
     }
 
-    static func draftItems(from parsed: ParsedReceipt, lookup: CategoryLookup) -> [ReceiptDraftItem] {
+    static func learnedTargets(_ rules: [ItemCategoryRule]) -> [String: ItemTarget] {
+        Dictionary(rules.map { ($0.key, ItemTarget(categoryID: $0.categoryID, subcategoryID: $0.subcategoryID)) },
+                   uniquingKeysWith: { a, _ in a })
+    }
+
+    /// Order: what the family taught Familoq, then the built-in keywords,
+    /// then "Other groceries" (Apple Intelligence may fill that in later).
+    static func draftItems(from parsed: ParsedReceipt, lookup: CategoryLookup, learned: [String: ItemTarget] = [:]) -> [ReceiptDraftItem] {
         let groceriesID = lookup.categories.first { $0.systemKey == "groceries" }?.id
         let groceriesOtherID = lookup.subcategories.first { $0.systemKey == "groceries.other" }?.id
         return parsed.items.map { item in
+            if let target = learned[ItemRuleKey.make(item.name)],
+               lookup.category(target.categoryID) != nil {
+                return ReceiptDraftItem(
+                    name: item.name, amountText: plain(item.amount),
+                    categoryID: target.categoryID, subcategoryID: target.subcategoryID,
+                    confidence: 1, source: .learned,
+                    suggestedCategoryID: target.categoryID, suggestedSubcategoryID: target.subcategoryID)
+            }
             let key = item.suggestedSubcategoryKey
+            let subID = key.flatMap { k in lookup.subcategories.first { $0.systemKey == k }?.id } ?? groceriesOtherID
             return ReceiptDraftItem(
                 name: item.name,
                 amountText: plain(item.amount),
                 categoryID: groceriesID,
-                subcategoryID: key.flatMap { k in lookup.subcategories.first { $0.systemKey == k }?.id } ?? groceriesOtherID,
-                confidence: item.classificationConfidence
+                subcategoryID: subID,
+                confidence: item.classificationConfidence,
+                source: key == nil ? .unknown : .keyword,
+                suggestedCategoryID: groceriesID,
+                suggestedSubcategoryID: subID
             )
         }
+    }
+
+    /// Edit a saved receipt: the check screen filled from what was stored.
+    static func draft(editing receipt: ReceiptRecord, items: [ReceiptItemRecord], lookup: CategoryLookup, itemRules: [ItemCategoryRule] = []) -> ReceiptDraft {
+        let real = items.filter { $0.name != ReceiptSaver.differenceItemName }.sorted { $0.sortOrder < $1.sortOrder }
+        let targets = Set(real.map { "\($0.categoryID?.uuidString ?? "-")|\($0.subcategoryID?.uuidString ?? "-")" })
+        // One category for everything = it was saved as a whole receipt.
+        let whole = targets.count <= 1
+        let first = real.first
+        return ReceiptDraft(
+            merchant: receipt.merchant,
+            date: receipt.date,
+            currencyCode: receipt.currencyCode,
+            currencyConfirmed: true,
+            currencyCandidates: [],
+            totalText: plain(receipt.total),
+            categorizeWholeReceipt: whole,
+            wholeCategoryID: first?.categoryID ?? lookup.categories.first { $0.systemKey == "groceries" }?.id,
+            wholeSubcategoryID: first?.subcategoryID,
+            items: real.map { item in
+                ReceiptDraftItem(name: item.name, amountText: plain(item.amount),
+                                 categoryID: item.categoryID, subcategoryID: item.subcategoryID,
+                                 confidence: 1, source: .keyword,
+                                 suggestedCategoryID: item.categoryID, suggestedSubcategoryID: item.subcategoryID)
+            },
+            imageData: receipt.imageData,
+            rawText: receipt.rawText,
+            vatSummary: receipt.vatSummary,
+            warnings: [],
+            learned: learnedTargets(itemRules)
+        )
     }
 
     /// Detected candidates first, then the family's base currency, the
@@ -158,7 +230,7 @@ enum ReceiptDrafting {
         guard CurrencyDetector.usesWholeAmounts(new) != CurrencyDetector.usesWholeAmounts(old),
               !draft.rawText.isEmpty else { return }
         let reparsed = ReceiptParser.parse(lines: draft.rawText.components(separatedBy: "\n"), currency: new)
-        draft.items = draftItems(from: reparsed, lookup: lookup)
+        draft.items = draftItems(from: reparsed, lookup: lookup, learned: draft.learned)
         if let total = reparsed.total ?? (reparsed.items.isEmpty ? nil : reparsed.itemsSum) {
             draft.totalText = plain(total)
         }
@@ -175,18 +247,52 @@ enum ReceiptSaver {
     /// expense per (category, subcategory) group - e.g. "Lidl · Fruits €4.40".
     /// Any difference between items and total is added to the largest group,
     /// so the expenses always add up to what was actually paid.
+    static let differenceItemName = "Difference to receipt total"
+
+    /// - Parameter replacing: a saved receipt being edited - its items and
+    ///   expenses are replaced (the person it was booked for stays).
     @discardableResult
-    static func save(_ draft: ReceiptDraft, family: Family, member: FamilyMember?, lookup: CategoryLookup, context: ModelContext) throws -> [Expense] {
+    static func save(_ draft: ReceiptDraft, family: Family, member: FamilyMember?, lookup: CategoryLookup, context: ModelContext,
+                     replacing existing: ReceiptRecord? = nil) throws -> [Expense] {
         guard let total = draft.total, total > 0 else { throw ReceiptSaveError.missingTotal }
         let merchant = draft.merchant.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Receipt" : draft.merchant.trimmingCharacters(in: .whitespacesAndNewlines)
         let currency = CurrencyInfo.normalize(draft.currencyCode)
         let repository = FamilyRepository(context: context, familyID: family.id)
 
-        let receipt = ReceiptRecord(familyID: family.id, merchant: merchant, date: draft.date, total: total, currencyCode: currency)
-        receipt.imageData = draft.imageData
-        receipt.rawText = draft.rawText
-        receipt.vatSummary = draft.vatSummary
-        receipt.createdByMemberID = member?.id
+        let receipt: ReceiptRecord
+        /// Editing: expenses of the receipt, reused where the group still exists.
+        var reusable: [Expense] = []
+        var bookedFor: UUID? = member?.id
+        var createdBy: UUID? = member?.id
+        if let existing {
+            // Validate everything before deleting anything.
+            if !draft.categorizeWholeReceipt {
+                let included = draft.items.filter { $0.included && ($0.amount ?? 0) != 0 }
+                guard !included.isEmpty else { throw ReceiptSaveError.noItems }
+                guard included.allSatisfy({ $0.categoryID != nil }) else { throw ReceiptSaveError.missingCategory }
+            } else if draft.wholeCategoryID == nil {
+                throw ReceiptSaveError.missingCategory
+            }
+            receipt = existing
+            let rid = existing.id
+            let oldExpenses = try context.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.receiptID == rid }))
+            bookedFor = oldExpenses.first?.memberID ?? bookedFor
+            createdBy = oldExpenses.first?.createdByMemberID ?? existing.createdByMemberID ?? createdBy
+            reusable = oldExpenses
+            for item in try context.fetch(FetchDescriptor<ReceiptItemRecord>(predicate: #Predicate { $0.receiptID == rid })) {
+                context.delete(item)
+            }
+            receipt.merchant = merchant
+            receipt.date = draft.date
+            receipt.totalValue = FixedPoint.storage(from: total)
+            receipt.currencyCode = currency
+        } else {
+            receipt = ReceiptRecord(familyID: family.id, merchant: merchant, date: draft.date, total: total, currencyCode: currency)
+            receipt.imageData = draft.imageData
+            receipt.rawText = draft.rawText
+            receipt.vatSummary = draft.vatSummary
+            receipt.createdByMemberID = member?.id
+        }
 
         struct Group {
             var categoryID: UUID
@@ -223,23 +329,39 @@ enum ReceiptSaver {
             if difference != 0, let largest = groups.indices.max(by: { groups[$0].amount < groups[$1].amount }),
                groups[largest].amount + difference > 0 {
                 groups[largest].amount += difference
-                itemRecords.append(ReceiptItemRecord(familyID: family.id, receiptID: receipt.id, name: "Difference to receipt total", amount: difference,
+                itemRecords.append(ReceiptItemRecord(familyID: family.id, receiptID: receipt.id, name: differenceItemName, amount: difference,
                                                      categoryID: groups[largest].categoryID, subcategoryID: groups[largest].subcategoryID,
                                                      sortOrder: itemRecords.count))
             }
         }
 
-        context.insert(receipt)
+        if existing == nil { context.insert(receipt) }
         itemRecords.forEach { context.insert($0) }
+        if !draft.categorizeWholeReceipt {
+            learn(from: draft.items, familyID: family.id, context: context)
+        }
 
         var expenses: [Expense] = []
         for group in groups where group.amount > 0 {
+            if let index = reusable.firstIndex(where: { $0.categoryID == group.categoryID && $0.subcategoryID == group.subcategoryID }) {
+                let expense = reusable.remove(at: index)
+                expense.amount = group.amount
+                expense.currencyCode = currency
+                expense.baseCurrencyCode = family.baseCurrencyCode
+                expense.merchant = merchant
+                expense.date = draft.date
+                expense.note = summary(of: group.names)
+                expense.resetConversion()
+                expense.updatedAt = Date()
+                expenses.append(expense)
+                continue
+            }
             let expense = Expense(familyID: family.id, amount: group.amount, currencyCode: currency,
                                   baseCurrencyCode: family.baseCurrencyCode, merchant: merchant, date: draft.date)
             expense.categoryID = group.categoryID
             expense.subcategoryID = group.subcategoryID
-            expense.memberID = member?.id
-            expense.createdByMemberID = member?.id
+            expense.memberID = bookedFor
+            expense.createdByMemberID = createdBy
             expense.entryMethod = .receipt
             expense.receiptID = receipt.id
             expense.note = summary(of: group.names)
@@ -247,8 +369,31 @@ enum ReceiptSaver {
             try repository.insert(expense)
             expenses.append(expense)
         }
+        for leftover in reusable { context.delete(leftover) }
         try context.save()
         return expenses
+    }
+
+    /// Every item the user filed differently from the suggestion is
+    /// remembered for the whole family (next receipt: filed the same way).
+    static func learn(from items: [ReceiptDraftItem], familyID: UUID, context: ModelContext) {
+        for item in items where item.included && !item.isUntouched {
+            guard let categoryID = item.categoryID else { continue }
+            let key = ItemRuleKey.make(item.name)
+            guard key.count >= 3 else { continue }
+            let id = ItemCategoryRule.ruleID(familyID: familyID, key: key)
+            var descriptor = FetchDescriptor<ItemCategoryRule>(predicate: #Predicate { $0.id == id })
+            descriptor.fetchLimit = 1
+            if let rule = try? context.fetch(descriptor).first {
+                rule.categoryID = categoryID
+                rule.subcategoryID = item.subcategoryID
+                rule.displayName = item.name
+                rule.updatedAt = Date()
+            } else {
+                context.insert(ItemCategoryRule(id: id, familyID: familyID, key: key, displayName: item.name,
+                                                categoryID: categoryID, subcategoryID: item.subcategoryID))
+            }
+        }
     }
 
     private static func summary(of names: [String]) -> String {

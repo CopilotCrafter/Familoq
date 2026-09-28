@@ -50,6 +50,7 @@ enum ReceiptOCRService {
             return observations.compactMap { observation -> OCRFragment? in
                 guard let candidate = observation.topCandidates(1).first else { return nil }
                 let box = observation.boundingBox // normalised, origin bottom-left
+                let slope = ReceiptOCRService.lineSlope(of: candidate, observation: observation)
                 return OCRFragment(
                     text: candidate.string,
                     x: Double(box.minX),
@@ -57,10 +58,29 @@ enum ReceiptOCRService {
                     width: Double(box.width),
                     height: Double(box.height),
                     confidence: Double(candidate.confidence),
-                    page: page
+                    page: page,
+                    slope: slope
                 )
             }
         }.value
+    }
+
+    /// How much a text line falls per unit to the right (top-left origin).
+    /// Measured between the first and the last characters, which works even
+    /// when the observation box itself is axis-aligned.
+    static func lineSlope(of candidate: VNRecognizedText, observation: VNRecognizedTextObservation) -> Double {
+        let text = candidate.string
+        if text.count >= 8 {
+            let head = text.startIndex..<text.index(text.startIndex, offsetBy: 2)
+            let tail = text.index(text.endIndex, offsetBy: -2)..<text.endIndex
+            if let first = try? candidate.boundingBox(for: head)?.boundingBox,
+               let last = try? candidate.boundingBox(for: tail)?.boundingBox {
+                let dx = Double(last.midX - first.midX)
+                if dx > 0.02 { return -Double(last.midY - first.midY) / dx }
+            }
+        }
+        let dx = Double(observation.topRight.x - observation.topLeft.x)
+        return dx > 0.01 ? -Double(observation.topRight.y - observation.topLeft.y) / dx : 0
     }
 
     /// At most four languages: the iPhone's first two, then German and

@@ -276,6 +276,7 @@ struct MerchantRulesView: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var session: AppSession
     @Query private var rules: [MerchantRuleRecord]
+    @Query private var itemRules: [ItemCategoryRule]
     @Query private var categories: [ExpenseCategory]
     @Query private var subcategories: [ExpenseSubcategory]
     @State private var showBuiltIn = false
@@ -284,6 +285,7 @@ struct MerchantRulesView: View {
         self.family = family
         let fid = family.id
         _rules = Query(filter: #Predicate<MerchantRuleRecord> { $0.familyID == fid }, sort: \MerchantRuleRecord.pattern)
+        _itemRules = Query(filter: #Predicate<ItemCategoryRule> { $0.familyID == fid }, sort: \ItemCategoryRule.key)
         _categories = Query(filter: #Predicate<ExpenseCategory> { $0.familyID == fid })
         _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid })
     }
@@ -312,6 +314,30 @@ struct MerchantRulesView: View {
                 }
             } header: {
                 Text("Your rules")
+            }
+
+            Section {
+                if itemRules.isEmpty {
+                    Text("When you change the category of a receipt item on the check screen, Familoq remembers it for the next receipt. Learned items appear here.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                ForEach(itemRules) { rule in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(verbatim: rule.displayName.isEmpty ? rule.key : rule.displayName)
+                        Text("→ \(lookup.path(categoryID: rule.categoryID, subcategoryID: rule.subcategoryID))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .swipeActions {
+                        Button("Delete", role: .destructive) {
+                            context.delete(rule)
+                            try? context.save()
+                        }
+                    }
+                }
+            } header: {
+                Text("Learned receipt items (\(itemRules.count))")
             }
 
             Section {

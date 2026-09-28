@@ -24,6 +24,7 @@ private struct ScanReceiptContent: View {
     let family: Family
 
     @EnvironmentObject private var session: AppSession
+    @Environment(\.modelContext) private var context
     @Query private var categories: [ExpenseCategory]
     @Query private var subcategories: [ExpenseSubcategory]
     @Query private var rules: [MerchantRuleRecord]
@@ -174,12 +175,15 @@ private struct ScanReceiptContent: View {
             let imageData = pages.first.flatMap { ReceiptOCRService.storageJPEG(from: $0) }
             ScanBreadcrumb.set("preparing the check screen (currency \(parsed.currencyCode ?? "?"))")
             let lookup = CategoryLookup(categories: categories, subcategories: subcategories)
+            let fid = family.id
+            let itemRules = (try? context.fetch(FetchDescriptor<ItemCategoryRule>(predicate: #Predicate { $0.familyID == fid }))) ?? []
             let newDraft = ReceiptDrafting.draft(
                 from: parsed,
                 family: family,
                 lookup: lookup,
                 rules: rules,
-                imageData: imageData
+                imageData: imageData,
+                itemRules: itemRules
             )
             ScanBreadcrumb.set("the check screen (currency \(newDraft.currencyCode), \(newDraft.items.count) items)")
             review = ReviewRequest(draft: newDraft, lookup: lookup)
@@ -193,12 +197,18 @@ private struct ScanReceiptContent: View {
 /// Stored receipt with its items (opened from Scan or from an expense).
 struct ReceiptDetailView: View {
     let receipt: ReceiptRecord
+    /// Off when opened from an expense that the edit could replace.
+    var allowsEditing = true
     @Query private var items: [ReceiptItemRecord]
     @Query private var categories: [ExpenseCategory]
     @Query private var subcategories: [ExpenseSubcategory]
+    @Environment(\.modelContext) private var context
+    @EnvironmentObject private var session: AppSession
     @State private var showImage = false
+    @State private var editRequest: ReviewRequest?
 
-    init(receipt: ReceiptRecord) {
+    init(receipt: ReceiptRecord, allowsEditing: Bool = true) {
+        self.allowsEditing = allowsEditing
         self.receipt = receipt
         let rid = receipt.id
         let fid = receipt.familyID
@@ -245,6 +255,22 @@ struct ReceiptDetailView: View {
         }
         .navigationTitle("Receipt")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            if allowsEditing && canEdit {
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Edit") { startEditing(lookup: lookup) }
+                }
+            }
+        }
+        .fullScreenCover(item: $editRequest) { request in
+            NavigationStack {
+                if let family = session.family {
+                    ReceiptReviewView(family: family, draft: request.draft, lookup: request.lookup, editing: receipt) {
+                        editRequest = nil
+                    }
+                }
+            }
+        }
         .sheet(isPresented: $showImage) {
             if let data = receipt.imageData, let image = UIImage(data: data) {
                 ScrollView([.vertical, .horizontal]) {
@@ -252,6 +278,21 @@ struct ReceiptDetailView: View {
                 }
             }
         }
+    }
+}
+
+extension ReceiptDetailView {
+    /// Owner, anyone allowed to edit everyone's expenses, or who saved it.
+    var canEdit: Bool {
+        guard let membership = session.membership else { return false }
+        return membership.has(.allExpenses) || receipt.createdByMemberID == session.currentMember?.id
+    }
+
+    func startEditing(lookup: CategoryLookup) {
+        let fid = receipt.familyID
+        let itemRules = (try? context.fetch(FetchDescriptor<ItemCategoryRule>(predicate: #Predicate { $0.familyID == fid }))) ?? []
+        editRequest = ReviewRequest(draft: ReceiptDrafting.draft(editing: receipt, items: items, lookup: lookup, itemRules: itemRules),
+                                    lookup: lookup)
     }
 }
 

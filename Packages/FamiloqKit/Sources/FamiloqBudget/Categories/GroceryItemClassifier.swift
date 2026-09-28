@@ -23,6 +23,7 @@ public struct GroceryClassification: Equatable, Sendable {
 public enum GroceryItemClassifier {
     static let keywordsBySubcategory: [String: [String]] = [
         "groceries.meat": [
+            "minist", "ministeak", "ministeaks", "geschnetzeltes", "cevapcici", "frikadelle", "nuggets",
             "hahnchen", "hähnchen", "haehn", "hahn", "huhn", "chicken", "pute", "puten", "truthahn", "turkey",
             "rind", "rinder", "beef", "schwein", "pork", "hack", "hackfleisch", "mince", "steak", "schnitzel",
             "wurst", "bratwurst", "wiener", "salami", "schinken", "ham", "speck", "bacon", "leberkas", "leberkäse",
@@ -33,6 +34,7 @@ public enum GroceryItemClassifier {
             "forelle", "trout", "kabeljau", "cod", "hering", "matjes", "seelachs", "muschel", "scampi", "sardine"
         ],
         "groceries.dairy": [
+            "pudding", "pudd", "protein pudd", "dessert", "milchreis", "grießpudding", "sahnepudding", "rahm", "landmilch", "vollmilch", "hafermilch", "haferdrink", "sojadrink",
             "milch", "milk", "h milch", "joghurt", "jogurt", "yoghurt", "yogurt", "kase", "käse", "cheese", "gouda",
             "emmentaler", "mozzarella", "feta", "butter", "quark", "sahne", "cream", "schmand", "creme fraiche",
             "skyr", "kefir", "buttermilch", "frischkase", "frischkäse", "parmesan", "camembert", "ayran"
@@ -48,6 +50,7 @@ public enum GroceryItemClassifier {
             "sellerie", "radieschen", "ingwer", "ginger", "avocado", "rucola", "kurbis", "kürbis", "okra", "bohnen gruen"
         ],
         "groceries.fruits": [
+            "nektarine", "nektarinen", "mandarinen", "clementinen", "aprikose", "feige", "datteln",
             "banane", "bananen", "banana", "apfel", "apfel ", "äpfel", "apple", "birne", "birnen", "pear",
             "orange", "orangen", "zitrone", "zitronen", "lemon", "limette", "trauben", "weintraube", "weintrauben",
             "grape", "beere", "beeren", "erdbeere", "erdbeeren", "strawberr", "heidelbeere", "himbeere", "mango",
@@ -55,6 +58,7 @@ public enum GroceryItemClassifier {
             "mandarine", "clementine", "granatapfel", "papaya"
         ],
         "groceries.bakery": [
+            "blatterteig", "blätterteig", "pizzateig", "hefeteig", "mürbeteig", "murbeteig", "tortilla", "wraps", "knackebrot", "knäckebrot", "zwieback",
             "brot", "bread", "brotchen", "brötchen", "semmel", "toast", "toastbrot", "croissant", "brezel", "breze",
             "baguette", "vollkornbrot", "kuchen", "cake", "gebäck", "gebaeck", "backwaren", "laugen", "bagel", "muffin"
         ],
@@ -73,12 +77,14 @@ public enum GroceryItemClassifier {
             "nutella", "erdnusse", "erdnüsse", "nuss", "nusse", "popcorn", "salzstangen", "cracker", "milka", "ritter sport"
         ],
         "groceries.beverages": [
+            "direktsaft", "direktsa", "fruchtsaft", "traubensaft", "kombucha", "sirup",
             "wasser", "water", "mineralwasser", "sprudel", "saft", "juice", "orangensaft", "apfelsaft",
             "multivitaminsaft", "cola", "fanta", "sprite", "limo",
             "limonade", "bier", "beer", "wein", "wine", "sekt", "schorle", "eistee", "energy", "red bull", "smoothie",
             "pfand"
         ],
         "groceries.coffee": [
+            "teebeutel", "fruchttee", "krautertee", "kräutertee",
             "kaffee", "coffee", "espresso", "cappuccino", "tee", "tea", "kakao", "cocoa", "kaffeepads", "kapseln",
             "bohnenkaffee", "chai"
         ],
@@ -93,6 +99,7 @@ public enum GroceryItemClassifier {
             "fischstabchen", "fischstäbchen", "rahmspinat"
         ],
         "groceries.household": [
+            "knotenbeutel", "obstbeutel", "tragetasche", "tragetüte", "papiertüte", "beutel",
             "toilettenpapier", "klopapier", "toilet paper", "kuchenrolle", "küchenrolle", "taschentucher",
             "taschentücher", "tissues", "mullbeutel", "müllbeutel", "alufolie", "frischhaltefolie", "backpapier",
             "servietten", "batterien", "gluhbirne", "kerzen", "zewa", "tempo"

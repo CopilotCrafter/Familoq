@@ -188,3 +188,34 @@ final class ExchangeRateCacheEntry {
         return ExchangeRate(base: baseCode, quote: quoteCode, rate: value, rateDateKey: rateDateKey, source: source)
     }
 }
+
+/// How the family files a receipt item, learned from their corrections on
+/// the check screen ("Blätterteig" -> Bread & Bakery). Used before the
+/// built-in keywords on the next receipt.
+@Model
+final class ItemCategoryRule {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    /// ItemRuleKey, e.g. "blatterteig".
+    var key: String = ""
+    /// The item as it was printed, for display.
+    var displayName: String = ""
+    var categoryID: UUID = UUID()
+    var subcategoryID: UUID? = nil
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID, familyID: UUID, key: String, displayName: String, categoryID: UUID, subcategoryID: UUID?) {
+        self.id = id
+        self.familyID = familyID
+        self.key = key
+        self.displayName = displayName
+        self.categoryID = categoryID
+        self.subcategoryID = subcategoryID
+    }
+
+    /// One rule per item and family - the same ID on every iPhone.
+    static func ruleID(familyID: UUID, key: String) -> UUID {
+        DeterministicID.uuid("itemrule|\(familyID.uuidString)|\(key)")
+    }
+}

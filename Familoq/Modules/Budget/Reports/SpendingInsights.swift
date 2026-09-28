@@ -60,6 +60,50 @@ enum AppleIntelligence {
     }
 }
 
+extension AppleIntelligence {
+    /// Files receipt lines the built-in keywords did not recognise.
+    /// Returns item index -> one of `choices` (exactly as given).
+    static func classifyItems(_ items: [String], choices: [String]) async throws -> [Int: String] {
+        #if canImport(FoundationModels)
+        if #available(iOS 26.0, *) {
+            let session = LanguageModelSession(instructions: """
+                You sort lines from a supermarket receipt (often abbreviated German, e.g. "Hähn." = chicken, \
+                "Pudd." = pudding, "Pfand" = bottle deposit) into a family's budget categories. \
+                For every numbered item answer with exactly one line "number: category", copying the category \
+                exactly from the list. Use the closest match; nothing else in the answer.
+                """)
+            let list = choices.joined(separator: "\n")
+            let numbered = items.enumerated().map { "\($0.offset + 1): \($0.element)" }.joined(separator: "\n")
+            let response = try await session.respond(to: "Categories:\n\(list)\n\nItems:\n\(numbered)")
+            return parseClassification(response.content, itemCount: items.count, choices: choices)
+        }
+        #endif
+        return [:]
+    }
+
+    /// "3: Groceries > Milk & Dairy" -> [2: "Groceries > Milk & Dairy"].
+    /// Also accepts only the subcategory name if it is unique.
+    static func parseClassification(_ text: String, itemCount: Int, choices: [String]) -> [Int: String] {
+        var result: [Int: String] = [:]
+        let lowered = Dictionary(choices.map { ($0.lowercased(), $0) }, uniquingKeysWith: { a, _ in a })
+        for rawLine in text.split(whereSeparator: \.isNewline) {
+            let line = rawLine.trimmingCharacters(in: CharacterSet(charactersIn: " -*•\t"))
+            guard let colon = line.firstIndex(where: { $0 == ":" || $0 == "." || $0 == ")" }),
+                  let number = Int(line[..<colon].trimmingCharacters(in: .whitespaces)),
+                  (1...itemCount).contains(number) else { continue }
+            let answer = line[line.index(after: colon)...].trimmingCharacters(in: CharacterSet(charactersIn: " \"'."))
+            let key = answer.lowercased()
+            if let exact = lowered[key] {
+                result[number - 1] = exact
+            } else {
+                let matches = choices.filter { $0.lowercased().hasSuffix("> " + key) }
+                if matches.count == 1 { result[number - 1] = matches[0] }
+            }
+        }
+        return result
+    }
+}
+
 /// "Insights" at the top of Reports: built-in facts, plus an optional
 /// Apple Intelligence explanation on request.
 struct SpendingInsightsSection: View {
