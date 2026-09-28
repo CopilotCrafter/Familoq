@@ -93,7 +93,7 @@ jobs:
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl status_bar "$UDID" override --time "9:41" --batteryLevel 100 --cellularBars 4 || true
           xcrun simctl install "$UDID" "$APP"
-          for TAB in dashboard add scan reports family; do
+          for TAB in dashboard add scan planner family; do
             xcrun simctl terminate "$UDID" "$BUNDLE_ID" || true
             xcrun simctl launch "$UDID" "$BUNDLE_ID" -demoAccount YES -seedDemoData YES -initialTab "$TAB"
             sleep 8

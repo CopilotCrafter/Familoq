@@ -4,7 +4,7 @@ import FamiloqCore
 import FamiloqBudget
 
 enum AppTab: String, Hashable {
-    case dashboard, add, scan, reports, family
+    case dashboard, add, scan, planner, family
 }
 
 /// Who is using the app and which family is active.
@@ -16,6 +16,8 @@ final class AppSession: ObservableObject {
     @Published private(set) var families: [Family] = []
     @Published var startupError: String?
     @Published var selectedTab: AppTab = .dashboard
+    /// Short message shown at the top for a few seconds.
+    @Published var notice: String?
     /// True once local data was checked (family may still be nil -> setup).
     @Published private(set) var isLoaded = false
 

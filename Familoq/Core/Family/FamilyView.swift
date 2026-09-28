@@ -93,6 +93,16 @@ private struct FamilySettingsContent: View {
             BudgetSettingsSection(family: family)
 
             Section {
+                NavigationLink {
+                    LazyView(NotificationSettingsView())
+                } label: {
+                    Label("Notifications", systemImage: "bell.badge")
+                }
+            } header: {
+                Text("Planner")
+            }
+
+            Section {
                 ForEach(FamiloqSpace.allCases) { space in
                     HStack {
                         Image(systemName: space.icon)
@@ -107,7 +117,7 @@ private struct FamilySettingsContent: View {
             } header: {
                 Text("Familoq spaces")
             } footer: {
-                Text("Familoq grows into your family's shared space. Budget is available now; travel, health, plans, reminders and events will follow.")
+                Text("Familoq grows into your family's shared space. Budget, shopping list, reminders and calendar are available now; travel and health will follow.")
             }
 
             Section {

@@ -86,9 +86,12 @@ struct RootView: View {
             session.start(context: context)
             if LaunchOptions.seedDemoData, let family = session.family {
                 DemoDataSeeder.seedIfEmpty(family: family, member: session.currentMember, context: context)
+                PlannerDemoData.seedIfEmpty(family: family, member: session.currentMember, context: context)
             }
             startSyncIfActive()
             bookScheduledExpenses()
+            setUpBackgroundRefresh()
+            await PlannerNotifications.reschedule(context: context)
             await refreshRates()
             await account.refreshIfDue()
         }
@@ -102,6 +105,7 @@ struct RootView: View {
         .onChange(of: sync.remoteChangeCount) { _, _ in
             session.refresh(context: context)
             switchToJoinedFamilyIfArrived()
+            Task { await PlannerNotifications.reschedule(context: context) }
         }
         .onChange(of: sync.joinState) { _, _ in
             session.refresh(context: context)
@@ -115,11 +119,14 @@ struct RootView: View {
                 Task {
                     await sync.refresh()
                     bookScheduledExpenses()
+                    await PlannerNotifications.reschedule(context: context)
                     await refreshRates()
                     await account.refreshIfDue()
                 }
             } else if phase == .background {
                 sync.scanNow()
+                BackgroundRefresh.schedule()
+                Task { await PlannerNotifications.reschedule(context: context) }
             }
         }
     }
@@ -153,6 +160,23 @@ struct RootView: View {
         Task { await sync.accept(metadata) }
     }
 
+    /// What iOS runs when it wakes Familoq in the background.
+    private func setUpBackgroundRefresh() {
+        let sync = sync
+        let context = context
+        let account = account
+        let session = session
+        BackgroundRefresh.work = {
+            guard account.isActive, sync.isRunning else { return }
+            await sync.refresh()
+            if let family = session.family {
+                PlanningService.bookDue(familyID: family.id, baseCurrency: family.baseCurrencyCode, context: context)
+            }
+            await PlannerNotifications.reschedule(context: context)
+        }
+        BackgroundRefresh.schedule()
+    }
+
     /// Recurring/planned expenses that are due become real expenses.
     private func bookScheduledExpenses() {
         guard account.isActive, let family = session.family else { return }
@@ -183,13 +207,23 @@ struct RootTabView: View {
             ScanReceiptView()
                 .tabItem { Label("Scan", systemImage: "doc.viewfinder") }
                 .tag(AppTab.scan)
-            ReportsView()
-                .tabItem { Label("Reports", systemImage: "chart.bar.xaxis") }
-                .tag(AppTab.reports)
+            PlannerView()
+                .tabItem { Label("Planner", systemImage: "checklist") }
+                .tag(AppTab.planner)
             FamilyView()
                 .tabItem { Label("Family", systemImage: "person.2.fill") }
                 .tag(AppTab.family)
         }
+        .overlay(alignment: .top) {
+            if let notice = session.notice {
+                NoticeBanner(text: notice)
+                    .task(id: notice) {
+                        try? await Task.sleep(for: .seconds(4))
+                        withAnimation { session.notice = nil }
+                    }
+            }
+        }
+        .animation(.spring, value: session.notice)
     }
 }
 

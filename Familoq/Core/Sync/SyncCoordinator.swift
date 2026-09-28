@@ -119,8 +119,59 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
             await fetchNow()
             timeout.cancel()
             initialFetchDone = true
+            await catchUpNewKindsIfNeeded()
         }
         startLoop()
+    }
+
+    // MARK: - Catch-up after an update
+
+    /// Raised whenever a new SyncKind is added (2 = Planner in 0.5.0).
+    private static let kindsVersion = 2
+    /// Kinds added with `kindsVersion`.
+    private static let newKinds: Set<SyncKind> = [.shoppingList, .shoppingItem, .reminder, .event]
+
+    /// An older app version skips record kinds it does not know, and its
+    /// change tokens move past them. After updating, fetch those kinds once
+    /// from every family zone (e.g. Carol's shopping list when Martin
+    /// updated first).
+    private func catchUpNewKindsIfNeeded() async {
+        let key = "sync.kindsVersion"
+        let defaults = UserDefaults.standard
+        guard defaults.integer(forKey: key) < Self.kindsVersion, let context else { return }
+        let zones = (try? context.fetch(FetchDescriptor<SyncZoneRecord>())) ?? []
+        var complete = true
+        var applied = 0
+        for zone in zones {
+            let database = zone.isShared ? ckContainer.sharedCloudDatabase : ckContainer.privateCloudDatabase
+            guard let engine = zone.isShared ? sharedEngine : privateEngine else { complete = false; continue }
+            var token: CKServerChangeToken?
+            var moreComing = true
+            while moreComing {
+                do {
+                    let changes = try await database.recordZoneChanges(inZoneWith: recordZoneID(of: zone), since: token)
+                    for (_, result) in changes.modificationResultsByID {
+                        guard case .success(let modification) = result,
+                              let parsed = SyncKind.parse(recordName: modification.record.recordID.recordName),
+                              Self.newKinds.contains(parsed.0) else { continue }
+                        applyRemote(modification.record, isShared: zone.isShared, engine: engine)
+                        applied += 1
+                    }
+                    token = changes.changeToken
+                    moreComing = changes.moreComing
+                } catch let error as CKError where error.code == .zoneNotFound || error.code == .userDeletedZone {
+                    moreComing = false
+                } catch {
+                    complete = false
+                    moreComing = false
+                }
+            }
+        }
+        if applied > 0 {
+            try? context.save()
+            remoteChangeCount += 1
+        }
+        if complete { defaults.set(Self.kindsVersion, forKey: key) }
     }
 
     /// Stops syncing (iCloud account signed out or changed).

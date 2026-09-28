@@ -34,6 +34,17 @@
         }
       }
     },
+    "%lld days": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tage"
+          }
+        }
+      }
+    },
     "%lld expense(s)": {
       "extractionState": "manual",
       "localizations": {
@@ -63,6 +74,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld Ausgabe(n) in Fremdwährung warten auf einen Wechselkurs."
+          }
+        }
+      }
+    },
+    "%lld item(s) on the shopping list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Artikel auf der Einkaufsliste"
           }
         }
       }
@@ -118,6 +140,83 @@
           "stringUnit": {
             "state": "translated",
             "value": "0,00"
+          }
+        }
+      }
+    },
+    "1 day before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Tag vorher"
+          }
+        }
+      }
+    },
+    "1 day before (9:00)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Tag vorher (9:00)"
+          }
+        }
+      }
+    },
+    "1 hour before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Stunde vorher"
+          }
+        }
+      }
+    },
+    "1 week before (9:00)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 Woche vorher (9:00)"
+          }
+        }
+      }
+    },
+    "15 minutes before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 Minuten vorher"
+          }
+        }
+      }
+    },
+    "2 hours before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 Stunden vorher"
+          }
+        }
+      }
+    },
+    "30 minutes before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 Minuten vorher"
           }
         }
       }
@@ -287,6 +386,17 @@
         }
       }
     },
+    "Add event": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin hinzufügen"
+          }
+        }
+      }
+    },
     "Add expense": {
       "extractionState": "manual",
       "localizations": {
@@ -342,6 +452,17 @@
         }
       }
     },
+    "Add, e.g. 2x Milk": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen, z. B. 2x Milch"
+          }
+        }
+      }
+    },
     "Adds the backup's records to this family; records that already exist are replaced by the backup's version. Other families are never changed.": {
       "extractionState": "manual",
       "localizations": {
@@ -364,6 +485,39 @@
         }
       }
     },
+    "Alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinweis"
+          }
+        }
+      }
+    },
+    "Alerts are prepared on this iPhone from the family's data. iOS also checks for new family entries in the background now and then, so they can alert you without opening Familoq.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Hinweise werden auf diesem iPhone aus den Familiendaten vorbereitet. iOS sieht ab und zu auch im Hintergrund nach neuen Einträgen, damit sie dich erreichen, ohne dass du Familoq öffnest."
+          }
+        }
+      }
+    },
+    "Alerts go to the chosen people's iPhones. Everyone in the family sees the event.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinweise gehen an die iPhones der gewählten Personen. Alle in der Familie sehen den Termin."
+          }
+        }
+      }
+    },
     "All budgets": {
       "extractionState": "manual",
       "localizations": {
@@ -371,6 +525,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle Budgets"
+          }
+        }
+      }
+    },
+    "All day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganztägig"
+          }
+        }
+      }
+    },
+    "All repeats are deleted.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Wiederholungen werden gelöscht."
           }
         }
       }
@@ -393,6 +569,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alle Summen, Budgets und Auswertungen verwenden die Basiswährung. Standard ist EUR. Ausgaben behalten ihre ursprüngliche Währung und ihren Betrag."
+          }
+        }
+      }
+    },
+    "Allow notifications": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen erlauben"
           }
         }
       }
@@ -463,6 +650,17 @@
         }
       }
     },
+    "Amount, e.g. 2 or 500 g": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menge, z. B. 2 oder 500 g"
+          }
+        }
+      }
+    },
     "Any time": {
       "extractionState": "manual",
       "localizations": {
@@ -481,6 +679,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "E-Mail oder Telefonnummer des Apple Accounts"
+          }
+        }
+      }
+    },
+    "Appointment": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arzt & Behörden"
           }
         }
       }
@@ -536,6 +745,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bitte die Person, der die Familie gehört, dich einzuladen: Familie → Mitglieder → Einladen, mit der E-Mail-Adresse oder Telefonnummer deines Apple Accounts."
+          }
+        }
+      }
+    },
+    "At start": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Beginn"
           }
         }
       }
@@ -602,6 +822,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Getränke"
+          }
+        }
+      }
+    },
+    "Bills due tomorrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgen fällige Rechnungen"
+          }
+        }
+      }
+    },
+    "Birthday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geburtstag"
           }
         }
       }
@@ -745,6 +987,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Café"
+          }
+        }
+      }
+    },
+    "Calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalender"
+          }
+        }
+      }
+    },
+    "Calendar alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalender-Hinweise"
           }
         }
       }
@@ -925,6 +1189,17 @@
         }
       }
     },
+    "Changes apply to every repeat.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Änderungen gelten für alle Wiederholungen."
+          }
+        }
+      }
+    },
     "Check receipt": {
       "extractionState": "manual",
       "localizations": {
@@ -1035,6 +1310,17 @@
         }
       }
     },
+    "Clear bought items": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gekaufte entfernen"
+          }
+        }
+      }
+    },
     "Clear filters": {
       "extractionState": "manual",
       "localizations": {
@@ -1086,6 +1372,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kaffee & Tee"
+          }
+        }
+      }
+    },
+    "Coming up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demnächst"
           }
         }
       }
@@ -1332,6 +1629,17 @@
         }
       }
     },
+    "Day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag"
+          }
+        }
+      }
+    },
     "Deadline": {
       "extractionState": "manual",
       "localizations": {
@@ -1350,6 +1658,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Löschen"
+          }
+        }
+      }
+    },
+    "Delete event": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin löschen"
           }
         }
       }
@@ -1376,6 +1695,28 @@
         }
       }
     },
+    "Delete reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung löschen"
+          }
+        }
+      }
+    },
+    "Delete this event?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Termin löschen?"
+          }
+        }
+      }
+    },
     "Delete this expense?": {
       "extractionState": "manual",
       "localizations": {
@@ -1394,6 +1735,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diese Familie löschen"
+          }
+        }
+      }
+    },
+    "Delete this reminder?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Erinnerung löschen?"
           }
         }
       }
@@ -1508,6 +1860,39 @@
         }
       }
     },
+    "Done (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erledigt (%lld)"
+          }
+        }
+      }
+    },
+    "Done by %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erledigt von %@"
+          }
+        }
+      }
+    },
+    "Due date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fälligkeitsdatum"
+          }
+        }
+      }
+    },
     "Due on": {
       "extractionState": "manual",
       "localizations": {
@@ -1515,6 +1900,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fällig am"
+          }
+        }
+      }
+    },
+    "Due tomorrow: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgen fällig: %@"
           }
         }
       }
@@ -1849,6 +2245,17 @@
         }
       }
     },
+    "Event": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin"
+          }
+        }
+      }
+    },
     "Events": {
       "extractionState": "manual",
       "localizations": {
@@ -1882,6 +2289,17 @@
         }
       }
     },
+    "Every day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeden Tag"
+          }
+        }
+      }
+    },
     "Every month": {
       "extractionState": "manual",
       "localizations": {
@@ -1911,6 +2329,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jedes Jahr"
+          }
+        }
+      }
+    },
+    "Everyone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        }
+      }
+    },
+    "Everyone's reminders": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerungen aller"
+          }
+        }
+      }
+    },
+    "Everything is in the cart.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles ist im Wagen."
           }
         }
       }
@@ -2010,6 +2461,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Familoq wächst zum gemeinsamen Bereich deiner Familie. Budget gibt es schon; Reisen, Gesundheit, Pläne, Erinnerungen und Termine folgen."
+          }
+        }
+      }
+    },
+    "Familoq grows into your family's shared space. Budget, shopping list, reminders and calendar are available now; travel and health will follow.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq wächst zum gemeinsamen Ort deiner Familie. Budget, Einkaufsliste, Erinnerungen und Kalender gibt es schon; Reisen und Gesundheit folgen."
           }
         }
       }
@@ -2146,6 +2608,17 @@
         }
       }
     },
+    "Family reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familien-Erinnerung"
+          }
+        }
+      }
+    },
     "Fast Food": {
       "extractionState": "manual",
       "localizations": {
@@ -2208,6 +2681,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Flüge"
+          }
+        }
+      }
+    },
+    "For": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für"
           }
         }
       }
@@ -2377,6 +2861,17 @@
         }
       }
     },
+    "Hide": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausblenden"
+          }
+        }
+      }
+    },
     "History": {
       "extractionState": "manual",
       "localizations": {
@@ -2527,6 +3022,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wenn du Familoq schon aktiviert hast – z. B. vor einer Neuinstallation oder auf deinem vorherigen iPhone –, stelle sicher, dass dieses iPhone mit derselben Apple-ID bei iCloud angemeldet ist, und tippe auf „Weiter“."
+          }
+        }
+      }
+    },
+    "In the cart (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Wagen (%lld)"
           }
         }
       }
@@ -2905,6 +3411,17 @@
         }
       }
     },
+    "Last day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Tag"
+          }
+        }
+      }
+    },
     "Last due date": {
       "extractionState": "manual",
       "localizations": {
@@ -2923,6 +3440,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Letzter Monat"
+          }
+        }
+      }
+    },
+    "Later": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Später"
           }
         }
       }
@@ -2949,6 +3477,39 @@
         }
       }
     },
+    "List": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste"
+          }
+        }
+      }
+    },
+    "List: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste: %@"
+          }
+        }
+      }
+    },
+    "Lists": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listen"
+          }
+        }
+      }
+    },
     "Loading from iCloud…": {
       "extractionState": "manual",
       "localizations": {
@@ -2971,6 +3532,17 @@
         }
       }
     },
+    "Location": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort"
+          }
+        }
+      }
+    },
     "Looking for your family in iCloud…": {
       "extractionState": "manual",
       "localizations": {
@@ -2978,6 +3550,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deine Familie wird in iCloud gesucht …"
+          }
+        }
+      }
+    },
+    "Manage lists": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listen verwalten"
           }
         }
       }
@@ -3213,6 +3796,17 @@
         }
       }
     },
+    "Never": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie"
+          }
+        }
+      }
+    },
     "New App Invitations": {
       "extractionState": "manual",
       "localizations": {
@@ -3257,6 +3851,17 @@
         }
       }
     },
+    "New event": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Termin"
+          }
+        }
+      }
+    },
     "New expense": {
       "extractionState": "manual",
       "localizations": {
@@ -3264,6 +3869,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Neue Ausgabe"
+          }
+        }
+      }
+    },
+    "New list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Liste"
+          }
+        }
+      }
+    },
+    "New reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Erinnerung"
           }
         }
       }
@@ -3367,6 +3994,17 @@
         }
       }
     },
+    "No date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Datum"
+          }
+        }
+      }
+    },
     "No expenses yet": {
       "extractionState": "manual",
       "localizations": {
@@ -3418,6 +4056,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Es wurden keine Positionen erkannt. Füge sie unten hinzu oder ordne den ganzen Beleg zu."
+          }
+        }
+      }
+    },
+    "No open reminders. Add chores, appointments to book or things not to forget - for yourself, someone else or the whole family.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine offenen Erinnerungen. Trag Aufgaben, Termine zum Vereinbaren oder Dinge ein, die nicht vergessen werden dürfen - für dich, jemand anderen oder die ganze Familie."
           }
         }
       }
@@ -3565,6 +4214,28 @@
         }
       }
     },
+    "Note, e.g. brand": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz, z. B. Marke"
+          }
+        }
+      }
+    },
+    "Notes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen"
+          }
+        }
+      }
+    },
     "Nothing found": {
       "extractionState": "manual",
       "localizations": {
@@ -3572,6 +4243,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nichts gefunden"
+          }
+        }
+      }
+    },
+    "Nothing planned today": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute nichts geplant"
+          }
+        }
+      }
+    },
+    "Nothing planned.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nichts geplant."
           }
         }
       }
@@ -3598,6 +4291,83 @@
         }
       }
     },
+    "Notification at 9:00 on the day.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilung um 9:00 am Tag."
+          }
+        }
+      }
+    },
+    "Notification at the due time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilung zur fälligen Uhrzeit."
+          }
+        }
+      }
+    },
+    "Notifications": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen"
+          }
+        }
+      }
+    },
+    "Notifications are allowed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen sind erlaubt"
+          }
+        }
+      }
+    },
+    "Notifications are turned off for Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen sind für Familoq ausgeschaltet"
+          }
+        }
+      }
+    },
+    "Notify": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benachrichtigen"
+          }
+        }
+      }
+    },
+    "Notify me about": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benachrichtige mich über"
+          }
+        }
+      }
+    },
     "OK": {
       "extractionState": "manual",
       "localizations": {
@@ -3616,6 +4386,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offline – Änderungen werden gesendet, sobald du wieder online bist"
+          }
+        }
+      }
+    },
+    "On the day (9:00)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Am Tag (9:00)"
           }
         }
       }
@@ -3653,6 +4434,17 @@
         }
       }
     },
+    "Only mine": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur meine"
+          }
+        }
+      }
+    },
     "Only other currencies": {
       "extractionState": "manual",
       "localizations": {
@@ -3682,6 +4474,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nur die Familoq-Administration braucht das einmalig zum Einrichten der Admin-Rolle."
+          }
+        }
+      }
+    },
+    "Only the chosen people are notified. Anyone in the family can tick it off.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die gewählten Personen werden benachrichtigt. Jeder in der Familie kann abhaken."
           }
         }
       }
@@ -3726,6 +4529,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offen"
+          }
+        }
+      }
+    },
+    "Open iPhone Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-Einstellungen öffnen"
           }
         }
       }
@@ -3803,6 +4617,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Über Budget"
+          }
+        }
+      }
+    },
+    "Overdue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überfällig"
           }
         }
       }
@@ -3968,6 +4793,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geplante Ausgabe"
+          }
+        }
+      }
+    },
+    "Planner": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planer"
           }
         }
       }
@@ -4247,6 +5083,17 @@
         }
       }
     },
+    "Reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung"
+          }
+        }
+      }
+    },
     "Reminders": {
       "extractionState": "manual",
       "localizations": {
@@ -4254,6 +5101,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Erinnerungen"
+          }
+        }
+      }
+    },
+    "Reminders for me": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerungen für mich"
           }
         }
       }
@@ -4309,6 +5167,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Miete, Versicherung, Abos, eine geplante Inspektion … einmal eingeben – sie werden automatisch gebucht und bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Repeat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederholen"
           }
         }
       }
@@ -4654,6 +5523,17 @@
         }
       }
     },
+    "Section": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abteilung"
+          }
+        }
+      }
+    },
     "See all": {
       "extractionState": "manual",
       "localizations": {
@@ -4716,6 +5596,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einkaufen"
+          }
+        }
+      }
+    },
+    "Shopping list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einkaufsliste"
+          }
+        }
+      }
+    },
+    "Show": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anzeigen"
           }
         }
       }
@@ -4808,6 +5710,17 @@
         }
       }
     },
+    "Starts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beginn"
+          }
+        }
+      }
+    },
     "Streaming": {
       "extractionState": "manual",
       "localizations": {
@@ -4892,6 +5805,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vorschlag anhand des Händlers: %@"
+          }
+        }
+      }
+    },
+    "Swipe to delete a list together with its items.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wische, um eine Liste mit ihren Artikeln zu löschen."
           }
         }
       }
@@ -5024,6 +5948,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der letzte Scan brach ab bei: %@. Bitte dem Entwickler mitteilen (Screenshot)."
+          }
+        }
+      }
+    },
+    "The list is empty. Add what the family needs - everyone sees it at once. Items on a scanned receipt are ticked off automatically.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Liste ist leer. Trag ein, was die Familie braucht - alle sehen es sofort. Was auf einem gescannten Kassenbon steht, wird automatisch abgehakt."
           }
         }
       }
@@ -5248,6 +6183,39 @@
         }
       }
     },
+    "Ticked off the shopping list: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von der Einkaufsliste abgehakt: %@"
+          }
+        }
+      }
+    },
+    "Time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhrzeit"
+          }
+        }
+      }
+    },
+    "Title": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
+          }
+        }
+      }
+    },
     "To": {
       "extractionState": "manual",
       "localizations": {
@@ -5277,6 +6245,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Maut"
+          }
+        }
+      }
+    },
+    "Tomorrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morgen"
           }
         }
       }
@@ -5347,6 +6326,17 @@
         }
       }
     },
+    "Trip": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reise"
+          }
+        }
+      }
+    },
     "Try a different search or fewer filters.": {
       "extractionState": "manual",
       "localizations": {
@@ -5354,6 +6344,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versuche eine andere Suche oder weniger Filter."
+          }
+        }
+      }
+    },
+    "Type": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Art"
           }
         }
       }
@@ -5578,6 +6579,17 @@
         }
       }
     },
+    "What needs doing?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was ist zu tun?"
+          }
+        }
+      }
+    },
     "What should your family call you?": {
       "extractionState": "manual",
       "localizations": {
@@ -5633,6 +6645,17 @@
         }
       }
     },
+    "Who": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer"
+          }
+        }
+      }
+    },
     "Who & how": {
       "extractionState": "manual",
       "localizations": {
@@ -5651,6 +6674,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wer du bist / wer dich eingeladen hat (optional)"
+          }
+        }
+      }
+    },
+    "Whole family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganze Familie"
+          }
+        }
+      }
+    },
+    "Whose birthday?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wessen Geburtstag?"
           }
         }
       }
@@ -5684,6 +6729,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "XXXX-XXXX-XXXX"
+          }
+        }
+      }
+    },
+    "Yesterday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestern"
           }
         }
       }
@@ -5897,6 +6953,17 @@
         }
       }
     },
+    "added by %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hinzugefügt von %@"
+          }
+        }
+      }
+    },
     "best guess": {
       "extractionState": "manual",
       "localizations": {
@@ -5904,6 +6971,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "wahrscheinlich"
+          }
+        }
+      }
+    },
+    "bought by %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gekauft von %@"
+          }
+        }
+      }
+    },
+    "e.g. Drugstore": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "z. B. Drogerie"
           }
         }
       }

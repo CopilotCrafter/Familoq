@@ -32,6 +32,7 @@ private struct DashboardContent: View {
     @Environment(\.modelContext) private var context
 
     @State private var showSafeToSpendExplanation = false
+    @State private var showReports = false
     @State private var editingExpense: Expense?
 
     private let now: Date
@@ -100,6 +101,8 @@ private struct DashboardContent: View {
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
             }
+
+            FamilyTodaySection(family: family)
 
             if summary.unconvertedCount > 0 {
                 Section {
@@ -194,6 +197,18 @@ private struct DashboardContent: View {
             }
         }
         .navigationTitle(month.start.formatted(.dateTime.month(.wide).year()))
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showReports = true
+                } label: {
+                    Label("Reports", systemImage: "chart.bar.xaxis")
+                }
+            }
+        }
+        .sheet(isPresented: $showReports) {
+            ReportsView(showsDone: true)
+        }
         .refreshable {
             await rates.refreshPending(familyID: family.id, baseCurrency: family.baseCurrencyCode, context: modelContextForRefresh)
         }

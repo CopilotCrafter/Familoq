@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 - Planner
+
+### Added
+- Planner tab with a shared shopping list (amounts like "2x Milk", supermarket sections, Buy again, several lists), family reminders (due date/time, repeats, for whom, overdue/today/upcoming) and a family calendar (month view, all-day and multi-day events, birthdays, repeats, participants, alerts).
+- Scanning a receipt ticks the bought items off the shopping list.
+- Local notifications for reminders, events and bills due tomorrow (Family → Notifications); background refresh so alerts also arrive when Familoq is closed. No new certificate or capability needed.
+- Dashboard "Today" section; Reports now open from the dashboard's chart button.
+- After updating, Planner entries made on another iPhone before the update are fetched once.
+
+
 ## 0.4.1
 
 ### Added

@@ -6,6 +6,8 @@
 //                  family roles/access rules, invitation codes, text/calendar
 //   FamiloqBudget  the Budget space: categories, merchant rules, grocery item
 //                  classifier, budgets, warnings, safe-to-spend
+//   FamiloqPlanner shopping list, family reminders, family calendar and the
+//                  notification plan (which alerts each iPhone schedules)
 //
 // Future spaces (FamiloqTravel, FamiloqHealth, FamiloqPlans, ...) become new
 // library targets here that depend on FamiloqCore.
@@ -25,12 +27,15 @@ let package = Package(
     ],
     products: [
         .library(name: "FamiloqCore", targets: ["FamiloqCore"]),
-        .library(name: "FamiloqBudget", targets: ["FamiloqBudget"])
+        .library(name: "FamiloqBudget", targets: ["FamiloqBudget"]),
+        .library(name: "FamiloqPlanner", targets: ["FamiloqPlanner"])
     ],
     targets: [
         .target(name: "FamiloqCore"),
         .target(name: "FamiloqBudget", dependencies: ["FamiloqCore"]),
         .testTarget(name: "FamiloqCoreTests", dependencies: ["FamiloqCore"]),
-        .testTarget(name: "FamiloqBudgetTests", dependencies: ["FamiloqBudget", "FamiloqCore"])
+        .target(name: "FamiloqPlanner", dependencies: ["FamiloqCore", "FamiloqBudget"]),
+        .testTarget(name: "FamiloqBudgetTests", dependencies: ["FamiloqBudget", "FamiloqCore"]),
+        .testTarget(name: "FamiloqPlannerTests", dependencies: ["FamiloqPlanner", "FamiloqBudget", "FamiloqCore"])
     ]
 )
