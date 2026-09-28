@@ -146,7 +146,7 @@ public enum EventCalendar {
 /// What each iPhone schedules as local notifications. Pure logic: the app
 /// turns these into texts and UNNotificationRequests.
 public struct PlannedAlert: Equatable, Sendable {
-    public enum Kind: String, Sendable { case reminder, event, bill }
+    public enum Kind: String, Sendable { case reminder, event, bill, deadline }
     public let kind: Kind
     /// Stable identifier, e.g. "fq.e.<uuid>.<epoch>".
     public let id: String
@@ -184,6 +184,15 @@ public enum NotificationPlanner {
         public init(id: String, date: Date) { self.id = id; self.date = date }
     }
 
+    /// Contract cancellation deadlines, warranty ends: 9:00 on each of the
+    /// given days before (0 = on the day itself).
+    public struct Deadline: Sendable {
+        public var id: String
+        public var date: Date
+        public var daysBefore: [Int]
+        public init(id: String, date: Date, daysBefore: [Int]) { self.id = id; self.date = date; self.daysBefore = daysBefore }
+    }
+
     /// Everyone (no one chosen) or me among the chosen people.
     static func concernsMe(_ people: Set<UUID>, me: Set<UUID>) -> Bool {
         people.isEmpty || !people.isDisjoint(with: me)
@@ -192,7 +201,7 @@ public enum NotificationPlanner {
     /// - Parameters:
     ///   - me: the current user's member IDs (one per family on this iPhone)
     ///   - limit: iOS keeps at most 64 pending notifications per app
-    public static func plan(reminders: [Reminder], events: [Event], bills: [Bill], me: Set<UUID>,
+    public static func plan(reminders: [Reminder], events: [Event], bills: [Bill], deadlines: [Deadline] = [], me: Set<UUID>,
                             now: Date, calendar: Calendar, horizonDays: Int = 35, morningHour: Int = 9,
                             eveningHour: Int = 18, limit: Int = 60) -> [PlannedAlert] {
         var alerts: [PlannedAlert] = []
@@ -231,6 +240,15 @@ public enum NotificationPlanner {
             let fire = at(eveningHour, on: dayBefore)
             guard fire > now, fire <= horizon else { continue }
             alerts.append(PlannedAlert(kind: .bill, id: "fq.b.\(bill.id)", sourceID: bill.id, fireDate: fire, date: bill.date))
+        }
+
+        for deadline in deadlines {
+            for days in Set(deadline.daysBefore) {
+                guard let day = calendar.date(byAdding: .day, value: -days, to: deadline.date) else { continue }
+                let fire = at(morningHour, on: day)
+                guard fire > now, fire <= horizon else { continue }
+                alerts.append(PlannedAlert(kind: .deadline, id: "fq.d.\(deadline.id).\(days)", sourceID: deadline.id, fireDate: fire, date: deadline.date))
+            }
         }
 
         return Array(alerts.sorted { $0.fireDate != $1.fireDate ? $0.fireDate < $1.fireDate : $0.id < $1.id }.prefix(limit))
