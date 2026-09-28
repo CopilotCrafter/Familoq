@@ -64,14 +64,14 @@ private struct FamilySettingsContent: View {
 
             Section("Family") {
                 TextField("Family name", text: $family.name)
-                    .disabled(!session.isOwner)
+                    .disabled(!session.can(.manageSettings))
                     .onSubmit { try? context.save() }
                 NavigationLink {
                     BaseCurrencySettingsView(family: family)
                 } label: {
                     LabeledContent("Base currency", value: "\(family.baseCurrencyCode) - \(CurrencyNames.name(for: family.baseCurrencyCode))")
                 }
-                .disabled(!session.isOwner)
+                .disabled(!session.can(.manageSettings))
             }
 
             Section {
@@ -84,8 +84,10 @@ private struct FamilySettingsContent: View {
                 Text("People")
             } footer: {
                 Text(LocalizedStringKey(session.isOwner
-                     ? "Invite family members with their Apple Account. Everyone sees the same budget, synced through iCloud."
-                     : "You are a member of this family. The owner manages members, categories and budgets."))
+                     ? "Invite family members with their Apple Account. Everyone sees the same budget, synced through iCloud. Tap a member to allow them to manage budgets, categories or settings."
+                     : ((session.currentMember?.grants.isEmpty ?? true)
+                        ? "You are a member of this family. The owner manages members, categories and budgets."
+                        : "You are a member of this family. The owner also allowed you to manage some settings - see Members.")))
             }
 
             BudgetSettingsSection(family: family)
@@ -254,6 +256,7 @@ struct MembersView: View {
     @State private var isWorking = false
     @State private var errorMessage: String?
     @State private var justInvited: String?
+    @State private var editing: MemberEditTarget?
 
     init(family: Family) {
         self.family = family
@@ -273,16 +276,37 @@ struct MembersView: View {
         List {
             Section {
                 ForEach(active) { member in
-                    HStack {
-                        Image(systemName: member.role == .owner ? "crown.fill" : (member.cloudUserRecordName.isEmpty ? "person" : "person.fill"))
-                            .foregroundStyle(member.role == .owner ? Color.yellow : Color.secondary)
-                        Text(LocalizedStringKey(member.displayName))
-                        if member.isCurrentUser {
-                            Text("(you)").foregroundStyle(.secondary)
+                    Button {
+                        if canEdit(member) {
+                            editing = MemberEditTarget(member: member, iCloudName: iCloudName(of: member))
                         }
-                        Spacer()
-                        Text(LocalizedStringKey(member.role.displayName)).font(.caption).foregroundStyle(.secondary)
+                    } label: {
+                        HStack {
+                            Image(systemName: member.role == .owner ? "crown.fill" : (member.cloudUserRecordName.isEmpty ? "person" : "person.fill"))
+                                .foregroundStyle(member.role == .owner ? Color.yellow : Color.secondary)
+                            VStack(alignment: .leading, spacing: 2) {
+                                HStack(spacing: 4) {
+                                    Text(verbatim: member.displayName.isEmpty ? "-" : member.displayName)
+                                        .foregroundStyle(.primary)
+                                    if member.isCurrentUser {
+                                        Text("(you)").foregroundStyle(.secondary)
+                                    }
+                                }
+                                if member.role != .owner, !member.grants.isEmpty {
+                                    Text(verbatim: member.grants.sorted { $0.rawValue < $1.rawValue }
+                                        .map { String(localized: String.LocalizationValue($0.title)) }.joined(separator: " · "))
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            Spacer()
+                            Text(LocalizedStringKey(member.role.displayName)).font(.caption).foregroundStyle(.secondary)
+                            if canEdit(member) {
+                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(.tertiary)
+                            }
+                        }
                     }
+                    .buttonStyle(.plain)
                     .swipeActions {
                         if session.can(.removeMembers) && member.role != .owner {
                             Button("Remove", role: .destructive) { remove(member) }
@@ -290,7 +314,7 @@ struct MembersView: View {
                     }
                 }
             } footer: {
-                Text("\(active.count) of \(family.maxMembers) members. Owners manage members, settings, categories and budgets; members add and edit their own expenses.")
+                Text("\(active.count) of \(family.maxMembers) members. Members add and edit their own expenses; the owner can allow a member more (tap the member). Tap your own name to change it.")
             }
 
             if session.can(.inviteMembers) {
@@ -326,6 +350,11 @@ struct MembersView: View {
             }
         }
         .navigationTitle("Members")
+        .sheet(item: $editing) { target in
+            MemberEditSheet(target: target, canGrant: session.isOwner) { name, grants in
+                save(target: target, name: name, grants: grants)
+            }
+        }
         .task { await loadShare() }
         .refreshable {
             await sync.refresh()
@@ -373,12 +402,59 @@ struct MembersView: View {
     }
 
     private func loadShare() async {
-        guard session.isOwner, sync.isRunning else { return }
+        guard sync.isRunning else { return }
         do {
             share = try await sync.existingShare(familyID: family.id)
         } catch {
             // Offline: the list of invitations just stays empty.
         }
+        replacePlaceholderName()
+    }
+
+    /// Owner edits everyone; a member only their own name.
+    private func canEdit(_ member: FamilyMember) -> Bool {
+        session.isOwner || member.isCurrentUser
+    }
+
+    /// Name of the person's Apple Account, as iCloud shows it to the family
+    /// (only known once the family is shared - no extra permission needed).
+    private func iCloudName(of member: FamilyMember) -> String? {
+        guard let share else { return nil }
+        let participant: CKShare.Participant?
+        if member.isCurrentUser {
+            participant = share.currentUserParticipant
+        } else if member.role == .owner {
+            participant = share.owner
+        } else if !member.cloudUserRecordName.isEmpty {
+            participant = share.participants.first { $0.userIdentity.userRecordID?.recordName == member.cloudUserRecordName }
+        } else {
+            participant = nil
+        }
+        guard let components = participant?.userIdentity.nameComponents else { return nil }
+        let name = PersonNameComponentsFormatter.localizedString(from: components, style: .default)
+            .trimmingCharacters(in: .whitespaces)
+        return name.isEmpty ? nil : name
+    }
+
+    /// Older versions named the owner "Me". Use the iCloud name instead.
+    private func replacePlaceholderName() {
+        guard let me = active.first(where: \.isCurrentUser) else { return }
+        let placeholders = ["", "me", "ich"]
+        guard placeholders.contains(me.displayName.trimmingCharacters(in: .whitespaces).lowercased()),
+              let name = iCloudName(of: me) else { return }
+        me.displayName = name
+        try? context.save()
+        sync.scanNow()
+    }
+
+    private func save(target: MemberEditTarget, name: String, grants: Set<FamilyGrant>) {
+        guard let member = members.first(where: { $0.id == target.id }), canEdit(member) else { return }
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        if !trimmed.isEmpty { member.displayName = trimmed }
+        if session.isOwner, member.role != .owner { member.grants = grants }
+        try? context.save()
+        session.reloadCurrentMember(context: context)
+        sync.scanNow()
     }
 
     private func invite() async {
@@ -423,6 +499,95 @@ struct MembersView: View {
         context.insert(FamilyMember(familyID: family.id, displayName: name, role: .member))
         try? context.save()
         newName = ""
+    }
+}
+
+struct MemberEditTarget: Identifiable {
+    let id: UUID
+    let name: String
+    let isOwner: Bool
+    let hasAccount: Bool
+    let isCurrentUser: Bool
+    let grants: Set<FamilyGrant>
+    let iCloudName: String?
+
+    init(member: FamilyMember, iCloudName: String?) {
+        id = member.id
+        name = member.displayName
+        isOwner = member.role == .owner
+        hasAccount = !member.cloudUserRecordName.isEmpty
+        isCurrentUser = member.isCurrentUser
+        grants = member.grants
+        self.iCloudName = iCloudName
+    }
+}
+
+/// Rename a person and (owner only) choose what a member may manage.
+/// Owns its state and writes back once on Save.
+private struct MemberEditSheet: View {
+    let target: MemberEditTarget
+    let canGrant: Bool
+    let onSave: (String, Set<FamilyGrant>) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var name: String
+    @State private var grants: Set<FamilyGrant>
+
+    init(target: MemberEditTarget, canGrant: Bool, onSave: @escaping (String, Set<FamilyGrant>) -> Void) {
+        self.target = target
+        self.canGrant = canGrant
+        self.onSave = onSave
+        _name = State(initialValue: target.name)
+        _grants = State(initialValue: target.grants)
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Name", text: $name)
+                        .textContentType(.name)
+                    if let iCloudName = target.iCloudName, iCloudName != name {
+                        Button {
+                            name = iCloudName
+                        } label: {
+                            Label("Use iCloud name: \(iCloudName)", systemImage: "person.crop.circle")
+                        }
+                    }
+                } header: {
+                    Text("Name")
+                } footer: {
+                    Text("Shown to everyone in the family.")
+                }
+
+                if !target.isOwner && target.hasAccount {
+                    Section {
+                        ForEach(FamilyGrant.allCases, id: \.self) { grant in
+                            Toggle(LocalizedStringKey(grant.title), isOn: Binding(
+                                get: { grants.contains(grant) },
+                                set: { on in if on { grants.insert(grant) } else { grants.remove(grant) } }))
+                        }
+                        .disabled(!canGrant)
+                    } header: {
+                        Text(canGrant ? "Allowed to manage" : "The owner allowed you to manage")
+                    } footer: {
+                        Text("Always: adding expenses and editing their own. Inviting and removing people stays with the owner.")
+                    }
+                }
+            }
+            .navigationTitle(target.isCurrentUser ? "Your name" : "Member")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        onSave(name, grants)
+                        dismiss()
+                    }
+                    .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
 }
 

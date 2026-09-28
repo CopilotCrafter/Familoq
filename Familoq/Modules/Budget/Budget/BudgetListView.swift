@@ -47,7 +47,7 @@ struct BudgetListView: View {
                     }
                     ForEach(items) { item in
                         Button {
-                            if session.isOwner { editor = BudgetEditorTarget(budget: item.budget, scope: scope) }
+                            if session.can(.manageBudgets) { editor = BudgetEditorTarget(budget: item.budget, scope: scope) }
                         } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 BudgetProgressRow(progress: item, currencyCode: family.baseCurrencyCode)
@@ -58,7 +58,7 @@ struct BudgetListView: View {
                         }
                         .buttonStyle(.plain)
                         .swipeActions {
-                            if session.isOwner {
+                            if session.can(.manageBudgets) {
                                 Button(role: .destructive) {
                                     context.delete(item.budget)
                                     try? context.save()
@@ -76,7 +76,7 @@ struct BudgetListView: View {
         }
         .navigationTitle("Budgets")
         .toolbar {
-            if session.isOwner {
+            if session.can(.manageBudgets) {
                 ToolbarItem(placement: .primaryAction) {
                     Menu {
                         Button("Family budget") { editor = BudgetEditorTarget(budget: nil, scope: .overall) }

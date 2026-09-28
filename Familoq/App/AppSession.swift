@@ -24,7 +24,7 @@ final class AppSession: ObservableObject {
     /// Authorisation context used by `AccessPolicy`.
     var membership: MembershipContext? {
         guard let family, let member = currentMember else { return nil }
-        return MembershipContext(familyID: family.id, memberID: member.id, role: member.role, isActive: member.isActive)
+        return MembershipContext(familyID: family.id, memberID: member.id, role: member.role, isActive: member.isActive, grants: member.grants)
     }
 
     var isOwner: Bool { membership?.role == .owner }
@@ -114,17 +114,25 @@ final class AppSession: ObservableObject {
         return all.first
     }
 
-    /// Owner-only actions (spec: invite/remove members, settings, categories, budgets).
+    /// Inviting/removing people is owner-only (only the owner can change the
+    /// iCloud share). Budgets, categories and settings: owner, or a member the
+    /// owner gave that right to.
     func can(_ permission: FamilyPermission) -> Bool {
-        guard let role = membership?.role, membership?.isActive == true else { return false }
+        guard let membership, membership.isActive else { return false }
         switch permission {
-        case .inviteMembers: return role.canInviteMembers
-        case .removeMembers: return role.canRemoveMembers
-        case .manageSettings: return role.canManageSettings
-        case .manageCategories: return role.canManageCategories
-        case .manageBudgets: return role.canManageBudgets
-        case .addExpenses: return role.canAddExpenses
+        case .inviteMembers: return membership.role.canInviteMembers
+        case .removeMembers: return membership.role.canRemoveMembers
+        case .manageSettings: return membership.has(.familySettings)
+        case .manageCategories: return membership.has(.categories)
+        case .manageBudgets: return membership.has(.budgets)
+        case .addExpenses: return membership.role.canAddExpenses
         }
+    }
+
+    /// Re-reads the current member (e.g. after the owner changed my rights).
+    func reloadCurrentMember(context: ModelContext) {
+        guard let family else { return }
+        currentMember = try? FamilyRepository(context: context, familyID: family.id).currentMember()
     }
 
     func canEdit(_ expense: Expense) -> Bool {

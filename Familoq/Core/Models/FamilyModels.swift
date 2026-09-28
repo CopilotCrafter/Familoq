@@ -49,6 +49,8 @@ final class FamilyMember {
     /// iCloud user record name of the person ("" for names without an
     /// account, e.g. children). Identifies "me" on each iPhone.
     var cloudUserRecordName: String = ""
+    /// Extra rights the owner gave this member (FamilyGrant, comma-separated).
+    var permissionsRaw: String = ""
 
     init(id: UUID = UUID(), familyID: UUID, displayName: String, role: FamilyRole, isCurrentUser: Bool = false, cloudUserRecordName: String = "") {
         self.id = id
@@ -62,5 +64,10 @@ final class FamilyMember {
     var role: FamilyRole {
         get { FamilyRole(rawValue: roleRaw) ?? .member }
         set { roleRaw = newValue.rawValue }
+    }
+
+    var grants: Set<FamilyGrant> {
+        get { FamilyGrant.parse(permissionsRaw) }
+        set { permissionsRaw = FamilyGrant.encode(newValue) }
     }
 }

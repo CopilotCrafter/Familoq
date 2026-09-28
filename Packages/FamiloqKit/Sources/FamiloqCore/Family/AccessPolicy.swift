@@ -17,18 +17,57 @@ public enum MemberRole: String, Codable, CaseIterable, Sendable {
     public var canViewFamilyData: Bool { true }
 }
 
+/// Extra rights the owner can give a single member. The owner always has all.
+/// Stored on the member as a comma-separated list (`FamilyGrant.encode`).
+public enum FamilyGrant: String, CaseIterable, Codable, Sendable, Hashable {
+    /// Create and change budgets.
+    case budgets
+    /// Categories, subcategories and merchant rules.
+    case categories
+    /// Family name and base currency.
+    case familySettings
+    /// Edit and delete expenses added by anyone (not just their own).
+    case allExpenses
+
+    public var title: String {
+        switch self {
+        case .budgets: return "Budgets"
+        case .categories: return "Categories & merchant rules"
+        case .familySettings: return "Family name & base currency"
+        case .allExpenses: return "Edit everyone's expenses"
+        }
+    }
+
+    public static func parse(_ raw: String) -> Set<FamilyGrant> {
+        Set(raw.split(separator: ",").compactMap { FamilyGrant(rawValue: $0.trimmingCharacters(in: .whitespaces)) })
+    }
+
+    /// Stable order, so the same set always gives the same text (sync fingerprints).
+    public static func encode(_ grants: Set<FamilyGrant>) -> String {
+        allCases.filter(grants.contains).map(\.rawValue).joined(separator: ",")
+    }
+}
+
 /// Who is asking, and for which family.
 public struct MembershipContext: Equatable, Sendable {
     public let familyID: UUID
     public let memberID: UUID
     public let role: MemberRole
     public let isActive: Bool
+    public let grants: Set<FamilyGrant>
 
-    public init(familyID: UUID, memberID: UUID, role: MemberRole, isActive: Bool = true) {
+    public init(familyID: UUID, memberID: UUID, role: MemberRole, isActive: Bool = true, grants: Set<FamilyGrant> = []) {
         self.familyID = familyID
         self.memberID = memberID
         self.role = role
         self.isActive = isActive
+        self.grants = grants
+    }
+
+    /// Owner: everything. Member: only what the owner granted.
+    public func has(_ grant: FamilyGrant) -> Bool {
+        guard isActive else { return false }
+        return role == .owner || grants.contains(grant)
     }
 }
 
@@ -56,13 +95,13 @@ public enum AccessPolicy {
     /// Owners may edit every expense of their family; members only their own.
     public static func canEditExpense(recordFamilyID: UUID, createdByMemberID: UUID?, context: MembershipContext?) -> Bool {
         guard let context = context, canRead(recordFamilyID: recordFamilyID, context: context) else { return false }
-        if context.role == .owner { return true }
+        if context.has(.allExpenses) { return true }
         return createdByMemberID == context.memberID
     }
 
     public static func canManageFamily(familyID: UUID, context: MembershipContext?) -> Bool {
         guard let context = context, canRead(recordFamilyID: familyID, context: context) else { return false }
-        return context.role.canManageSettings
+        return context.has(.familySettings)
     }
 
     /// Filters any collection down to rows the caller may see.

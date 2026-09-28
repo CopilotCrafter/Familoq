@@ -126,7 +126,7 @@ struct CategoryManagementView: View {
                 Text("Archived categories keep their past expenses but are hidden when adding new ones.")
             }
 
-            if session.isOwner {
+            if session.can(.manageCategories) {
                 Section("New category") {
                     HStack {
                         TextField("Name", text: $newCategoryName)
@@ -227,7 +227,7 @@ struct CategoryEditorView: View {
                 }
             }
         }
-        .disabled(!session.isOwner)
+        .disabled(!session.can(.manageCategories))
         .navigationTitle(Text(verbatim: name))
         .onDisappear { commit(archiveCategory: false) }
     }
@@ -302,7 +302,7 @@ struct MerchantRulesView: View {
                 ForEach(userRules) { rule in
                     ruleRow(rule, lookup: lookup)
                         .swipeActions {
-                            if session.isOwner {
+                            if session.can(.manageCategories) {
                                 Button("Delete", role: .destructive) {
                                     context.delete(rule)
                                     try? context.save()
