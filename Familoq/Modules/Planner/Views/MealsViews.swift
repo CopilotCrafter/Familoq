@@ -403,11 +403,11 @@ extension AppleIntelligence {
         #if canImport(FoundationModels)
         if #available(iOS 26.0, *) {
             let session = LanguageModelSession(instructions: """
-                You suggest simple, balanced family dinners. Write in \\(answerLanguage). Answer with exactly five lines, \\
-                each "Dish name: ingredient, ingredient, …" with amounts for four people (e.g. "500 g minced beef"). \\
+                You suggest simple, balanced family dinners. Write in \(answerLanguage). Answer with exactly five lines, \
+                each "Dish name: ingredient, ingredient, …" with amounts for four people (e.g. "500 g minced beef"). \
                 Prefer vegetables, pulses, wholegrain and fish once a week. No other text, no calories, no diets.
                 """)
-            let prompt = knownRecipes.isEmpty ? "Suggest five dinners." : "Suggest five dinners that are different from: \\(knownRecipes)."
+            let prompt = knownRecipes.isEmpty ? "Suggest five dinners." : "Suggest five dinners that are different from: \(knownRecipes)."
             let response = try await session.respond(to: prompt)
             return response.content
         }

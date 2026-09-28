@@ -742,8 +742,11 @@ struct TripExpenseForm: View {
             context.insert(expense)
         }
         let name = what.trimmingCharacters(in: .whitespaces)
-        let changedMoney = expense.amount != amount || expense.currencyCode != CurrencyInfo.normalize(currencyCode)
-            || !PlannerDates.calendar.isDate(expense.date, inSameDayAs: date) || target.expense == nil
+        let newCode: String = CurrencyInfo.normalize(currencyCode)
+        var changedMoney: Bool = target.expense == nil
+        if expense.amount != amount { changedMoney = true }
+        if expense.currencyCode != newCode { changedMoney = true }
+        if !PlannerDates.calendar.isDate(expense.date, inSameDayAs: date) { changedMoney = true }
         expense.merchant = name.isEmpty ? trip.name : name
         expense.amount = amount
         expense.currencyCode = CurrencyInfo.normalize(currencyCode)
