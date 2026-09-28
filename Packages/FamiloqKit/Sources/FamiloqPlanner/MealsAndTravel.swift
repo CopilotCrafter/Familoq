@@ -107,17 +107,29 @@ public enum TripSettlement {
 
     /// Few transfers: the biggest debtor pays the biggest creditor first.
     public static func transfers(_ balances: [String: Decimal]) -> [TripTransfer] {
-        var debtors = balances.filter { $0.value < Decimal(string: "-0.004")! }.map { ($0.key, -$0.value) }.sorted { $0.1 > $1.1 || ($0.1 == $1.1 && $0.0 < $1.0) }
-        var creditors = balances.filter { $0.value > Decimal(string: "0.004")! }.map { ($0.key, $0.value) }.sorted { $0.1 > $1.1 || ($0.1 == $1.1 && $0.0 < $1.0) }
+        let epsilon = Decimal(string: "0.004") ?? 0
+        typealias Entry = (key: String, amount: Decimal)
+        let order: (Entry, Entry) -> Bool = { a, b in
+            if a.amount != b.amount { return a.amount > b.amount }
+            return a.key < b.key
+        }
+        var debtors: [Entry] = []
+        var creditors: [Entry] = []
+        for (key, value) in balances {
+            if value < -epsilon { debtors.append((key: key, amount: -value)) }
+            if value > epsilon { creditors.append((key: key, amount: value)) }
+        }
+        debtors.sort(by: order)
+        creditors.sort(by: order)
         var result: [TripTransfer] = []
         var d = 0, c = 0
         while d < debtors.count, c < creditors.count {
-            let amount = min(debtors[d].1, creditors[c].1).rounded(scale: 2)
-            if amount > 0 { result.append(TripTransfer(from: debtors[d].0, to: creditors[c].0, amount: amount)) }
-            debtors[d].1 -= amount
-            creditors[c].1 -= amount
-            if debtors[d].1 <= Decimal(string: "0.004")! { d += 1 }
-            if creditors[c].1 <= Decimal(string: "0.004")! { c += 1 }
+            let amount = min(debtors[d].amount, creditors[c].amount).rounded(scale: 2)
+            if amount > 0 { result.append(TripTransfer(from: debtors[d].key, to: creditors[c].key, amount: amount)) }
+            debtors[d].amount -= amount
+            creditors[c].amount -= amount
+            if debtors[d].amount <= epsilon { d += 1 }
+            if creditors[c].amount <= epsilon { c += 1 }
         }
         return result
     }

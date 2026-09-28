@@ -647,7 +647,9 @@ struct TripExpenseForm: View {
         _amountText = State(initialValue: e.map { "\($0.amount)" } ?? "")
         _currencyCode = State(initialValue: e?.currencyCode ?? trip.currencyCode)
         let today = Date()
-        let suggested = today < trip.startDate ? trip.startDate : (today > (PlannerDates.calendar.date(byAdding: .day, value: 1, to: trip.endDate) ?? trip.endDate) ? trip.endDate : today)
+        let lastMoment: Date = PlannerDates.calendar.date(byAdding: .day, value: 1, to: trip.endDate) ?? trip.endDate
+        var suggested: Date = today
+        if today < trip.startDate { suggested = trip.startDate } else if today > lastMoment { suggested = trip.endDate }
         _date = State(initialValue: e?.date ?? suggested)
         _categoryID = State(initialValue: e?.categoryID ?? lookup.categories.first { $0.systemKey == "travel" }?.id)
         let keys = trip.participantKeys
