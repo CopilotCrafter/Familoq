@@ -288,7 +288,7 @@ enum ReceiptSaver {
             receipt.currencyCode = currency
         } else {
             receipt = ReceiptRecord(familyID: family.id, merchant: merchant, date: draft.date, total: total, currencyCode: currency)
-            receipt.imageData = draft.imageData
+            receipt.syncImage = draft.imageData
             receipt.rawText = draft.rawText
             receipt.vatSummary = draft.vatSummary
             receipt.createdByMemberID = member?.id

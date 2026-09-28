@@ -96,12 +96,15 @@ public struct FoodPurchase: Sendable {
     /// Stored subcategory, e.g. "groceries.dairy" (nil for custom ones).
     public var subcategoryKey: String?
     public var date: Date
+    /// How many were bought (a line "2 x" = 2); 1 when unknown.
+    public var count: Int
 
-    public init(name: String, amount: Decimal, subcategoryKey: String?, date: Date) {
+    public init(name: String, amount: Decimal, subcategoryKey: String?, date: Date, count: Int = 1) {
         self.name = name
         self.amount = amount
         self.subcategoryKey = subcategoryKey
         self.date = date
+        self.count = max(1, count)
     }
 }
 
@@ -219,7 +222,11 @@ public struct FoodBalanceReport: Sendable {
     }
 
     public let foodTotal: Decimal
+    /// Money per group (base currency).
     public let amounts: [FoodGroup: Decimal]
+    /// Share of the basket per food group (0...1): half from the money
+    /// (adjusted for typical prices) and half from the number of items.
+    public let weights: [FoodGroup: Double]
     public let purchaseCount: Int
     /// Different fruit and vegetables bought.
     public let freshVariety: Int
@@ -229,7 +236,11 @@ public struct FoodBalanceReport: Sendable {
     /// The biggest less-healthy purchases, grouped by name.
     public let lessHealthyItems: [Item]
 
-    public func share(_ group: FoodGroup) -> Double {
+    /// Share of the basket (price-adjusted money and number of items).
+    public func share(_ group: FoodGroup) -> Double { weights[group] ?? 0 }
+
+    /// Share of the money only.
+    public func moneyShare(_ group: FoodGroup) -> Double {
         guard foodTotal > 0 else { return 0 }
         return NSDecimalNumber(decimal: (amounts[group] ?? 0) / foodTotal).doubleValue
     }
@@ -247,8 +258,17 @@ public enum FoodBalance {
     public static let minimumTotal: Decimal = 15
     public static let minimumPurchases = 5
 
+    /// How much more a group typically costs than vegetables. Dividing the
+    /// money by it lets 2 € of carrots count about as much as 5 € of meat.
+    public static let typicalPriceFactor: [FoodGroup: Double] = [
+        .vegetables: 1, .fruits: 1, .wholeGrains: 1, .grains: 1, .legumesNuts: 1.3, .dairy: 1.2, .eggs: 1.2,
+        .meat: 2.5, .fish: 2.8, .processedMeat: 2.2, .sweetsSnacks: 1.2, .sugaryDrinks: 0.8, .alcohol: 2,
+        .readyMeals: 1.6, .drinks: 0.8, .fatsCondiments: 1.5, .other: 1.2
+    ]
+
     public static func report(_ purchases: [FoodPurchase]) -> FoodBalanceReport {
         var amounts: [FoodGroup: Decimal] = [:]
+        var counts: [FoodGroup: Int] = [:]
         var fresh = Set<String>()
         var lessHealthy: [String: (String, Decimal, FoodGroup)] = [:]
         var foodCount = 0
@@ -256,7 +276,8 @@ public enum FoodBalance {
             let group = FoodGroupClassifier.group(name: purchase.name, subcategoryKey: purchase.subcategoryKey)
             amounts[group, default: 0] += purchase.amount
             guard group.isFood else { continue }
-            foodCount += 1
+            foodCount += purchase.count
+            counts[group, default: 0] += purchase.count
             let key = ItemRuleKey.make(purchase.name)
             if group == .vegetables || group == .fruits, !key.isEmpty {
                 fresh.insert(key.split(separator: " ").first.map(String.init) ?? key)
@@ -268,10 +289,22 @@ public enum FoodBalance {
         }
         let foodTotal = amounts.filter { $0.key.isFood }.values.reduce(0, +)
 
+        // Basket weights: 50 % price-adjusted money, 50 % number of items.
+        var adjusted: [FoodGroup: Double] = [:]
+        for (group, amount) in amounts where group.isFood {
+            adjusted[group] = NSDecimalNumber(decimal: amount).doubleValue / (typicalPriceFactor[group] ?? 1)
+        }
+        let adjustedTotal = adjusted.values.reduce(0, +)
+        let countTotal = Double(counts.values.reduce(0, +))
+        var weights: [FoodGroup: Double] = [:]
+        for group in FoodGroup.allCases where group.isFood {
+            let money = adjustedTotal > 0 ? (adjusted[group] ?? 0) / adjustedTotal : 0
+            let items = countTotal > 0 ? Double(counts[group] ?? 0) / countTotal : 0
+            let weight = 0.5 * money + 0.5 * items
+            if weight > 0 { weights[group] = weight }
+        }
         func share(_ groups: [FoodGroup]) -> Double {
-            guard foodTotal > 0 else { return 0 }
-            let sum = groups.compactMap { amounts[$0] }.reduce(Decimal(0), +)
-            return NSDecimalNumber(decimal: sum / foodTotal).doubleValue
+            groups.compactMap { weights[$0] }.reduce(0, +)
         }
         func has(_ group: FoodGroup) -> Bool { (amounts[group] ?? 0) > 0 }
 
@@ -305,7 +338,7 @@ public enum FoodBalance {
         let items = lessHealthy.values
             .map { FoodBalanceReport.Item(name: $0.0, amount: $0.1, group: $0.2) }
             .sorted { $0.amount != $1.amount ? $0.amount > $1.amount : $0.name < $1.name }
-        return FoodBalanceReport(foodTotal: foodTotal, amounts: amounts, purchaseCount: foodCount, freshVariety: fresh.count,
+        return FoodBalanceReport(foodTotal: foodTotal, amounts: amounts, weights: weights, purchaseCount: foodCount, freshVariety: fresh.count,
                                  score: score, nutrients: nutrients, lessHealthyItems: Array(items.prefix(8)))
     }
 

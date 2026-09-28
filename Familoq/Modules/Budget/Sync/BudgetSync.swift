@@ -202,10 +202,15 @@ extension ReceiptRecord: SyncableRecord {
         p.set("vatSummary", vatSummary)
         p.set("createdAt", createdAt)
         p.set("createdByMemberID", createdByMemberID)
+        // Only when set, so records from before 0.6 keep their fingerprint.
+        if keepPhoto { p.set("keepPhoto", true) }
+        if photoRevision > 0 { p.set("photoRevision", photoRevision) }
         return p
     }
 
     func applySyncPayload(_ p: SyncPayload) {
+        keepPhoto = p.bool("keepPhoto")
+        photoRevision = p.int("photoRevision")
         merchant = p.string("merchant")
         date = p.date("date", default: date)
         totalValue = p.int64("totalValue")
@@ -218,7 +223,10 @@ extension ReceiptRecord: SyncableRecord {
 
     var syncImage: Data? {
         get { imageData }
-        set { imageData = newValue }
+        set {
+            imageData = newValue
+            photoBytes = newValue.map(\.count) ?? -1
+        }
     }
 }
 
@@ -277,10 +285,14 @@ extension Expense: SyncableRecord {
         p.set("receiptID", receiptID)
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
+        if keepPhoto { p.set("keepPhoto", true) }
+        if photoRevision > 0 { p.set("photoRevision", photoRevision) }
         return p
     }
 
     func applySyncPayload(_ p: SyncPayload) {
+        keepPhoto = p.bool("keepPhoto")
+        photoRevision = p.int("photoRevision")
         amountValue = p.int64("amountValue")
         currencyCode = p.string("currencyCode", default: "EUR")
         baseAmountValue = p.optionalInt64("baseAmountValue")
@@ -305,7 +317,10 @@ extension Expense: SyncableRecord {
 
     var syncImage: Data? {
         get { receiptImageData }
-        set { receiptImageData = newValue }
+        set {
+            receiptImageData = newValue
+            photoBytes = newValue.map(\.count) ?? -1
+        }
     }
 }
 

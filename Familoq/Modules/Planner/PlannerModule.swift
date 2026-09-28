@@ -12,7 +12,9 @@ enum PlannerModule: FamiloqModule {
         ShoppingList.self,
         ShoppingItem.self,
         FamilyReminder.self,
-        FamilyEvent.self
+        FamilyEvent.self,
+        LeaveEntry.self,
+        LeaveAllowance.self
     ]
 
     /// The first shopping list is created when it is first needed

@@ -10,9 +10,13 @@ struct CalendarScreen: View {
     @Query private var events: [FamilyEvent]
     @Query private var reminders: [FamilyReminder]
     @Query private var members: [FamilyMember]
+    @Query private var leaves: [LeaveEntry]
+    @ObservedObject private var holidaySettings = HolidaySettings.shared
     @State private var month: Date
     @State private var selectedDay: Date
     @State private var editing: EventEditTarget?
+    @State private var leaveEditing: LeaveEditTarget?
+    @State private var showSettings = false
 
     init(family: Family) {
         self.family = family
@@ -20,6 +24,7 @@ struct CalendarScreen: View {
         _events = Query(filter: #Predicate<FamilyEvent> { $0.familyID == fid }, sort: \FamilyEvent.start)
         _reminders = Query(filter: #Predicate<FamilyReminder> { $0.familyID == fid && $0.isDone == false })
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid }, sort: \FamilyMember.joinedAt)
+        _leaves = Query(filter: #Predicate<LeaveEntry> { $0.familyID == fid }, sort: \LeaveEntry.firstDay)
         let today = PlannerDates.calendar.startOfDay(for: Date())
         _month = State(initialValue: today)
         _selectedDay = State(initialValue: today)
@@ -42,15 +47,39 @@ struct CalendarScreen: View {
         let upcoming = EventCalendar.occurrences(of: specs, in: DateInterval(start: upcomingStart, end: upcomingEnd), calendar: calendar)
             .filter { $0.start >= upcomingStart }
             .prefix(12)
+        let holidayNames = holidaySettings.holidays(around: month, calendar: calendar)
+        let leaveColors = leaveColors(in: monthInterval, calendar: calendar)
+        let dayHoliday = holidayNames[calendar.startOfDay(for: selectedDay)]
+        let dayLeaves = leaves.filter { calendar.startOfDay(for: $0.firstDay) <= selectedDay && calendar.startOfDay(for: $0.lastDay) >= selectedDay }
+        let nextHolidays = holidayNames.filter { $0.key >= calendar.startOfDay(for: Date()) }.sorted { $0.key < $1.key }.prefix(3)
 
         List {
             Section {
-                MonthGrid(month: $month, selectedDay: $selectedDay, marked: marked, calendar: calendar)
+                MonthGrid(month: $month, selectedDay: $selectedDay, marked: marked, holidays: Set(holidayNames.keys),
+                          leaveColors: leaveColors, calendar: calendar)
                     .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
             }
 
             Section {
-                if dayOccurrences.isEmpty && dayReminders.isEmpty {
+                if let dayHoliday {
+                    Label(LocalizedStringKey(dayHoliday), systemImage: "flag.fill")
+                        .foregroundStyle(CalendarColors.holidayRed)
+                }
+                ForEach(dayLeaves) { leave in
+                    Button {
+                        leaveEditing = LeaveEditTarget(entry: leave, day: nil)
+                    } label: {
+                        HStack(spacing: 12) {
+                            CategoryIcon(icon: leave.type.icon, colorHex: MemberColors.hex(for: leave.memberID, members: members), size: 30)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(verbatim: names.name(leave.memberID) ?? "-").foregroundStyle(.primary)
+                                Text(LocalizedStringKey(leave.type.title)).font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                }
+                if dayOccurrences.isEmpty && dayReminders.isEmpty && dayHoliday == nil && dayLeaves.isEmpty {
                     Text("Nothing planned.").foregroundStyle(.secondary)
                 }
                 ForEach(dayOccurrences) { occurrence in
@@ -77,6 +106,27 @@ struct CalendarScreen: View {
                 Text(verbatim: selectedDay.formatted(.dateTime.weekday(.wide).day().month(.wide)))
             }
 
+            if !nextHolidays.isEmpty {
+                Section {
+                    ForEach(nextHolidays.map { HolidayRow(date: $0.key, name: $0.value) }) { holiday in
+                        HStack {
+                            Text(LocalizedStringKey(holiday.name)).foregroundStyle(CalendarColors.holidayRed)
+                            Spacer()
+                            Text(verbatim: PlannerDates.dueText(holiday.date, hasTime: false)).font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
+                } header: {
+                    Text("Public holidays")
+                } footer: {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Text(verbatim: holidaySettings.countryName + (holidaySettings.stateName.map { " · " + $0 } ?? ""))
+                            .font(.caption)
+                    }
+                }
+            }
+
             if !upcoming.isEmpty {
                 Section("Coming up") {
                     ForEach(Array(upcoming)) { occurrence in
@@ -98,8 +148,23 @@ struct CalendarScreen: View {
                 }
             }
             ToolbarItem(placement: .primaryAction) {
-                Button {
-                    editing = EventEditTarget(event: nil, day: selectedDay)
+                Menu {
+                    Button {
+                        editing = EventEditTarget(event: nil, day: selectedDay)
+                    } label: {
+                        Label("Event", systemImage: "calendar.badge.plus")
+                    }
+                    Button {
+                        leaveEditing = LeaveEditTarget(entry: nil, day: selectedDay)
+                    } label: {
+                        Label("Time off", systemImage: "sun.max.fill")
+                    }
+                    Divider()
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Label("Public holidays…", systemImage: "flag")
+                    }
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -108,6 +173,30 @@ struct CalendarScreen: View {
         .sheet(item: $editing) { target in
             EventForm(family: family, target: target, members: members)
         }
+        .sheet(item: $leaveEditing) { target in
+            LeaveForm(family: family, target: target, members: members)
+        }
+        .sheet(isPresented: $showSettings) {
+            HolidaySettingsSheet()
+        }
+    }
+
+    private struct HolidayRow: Identifiable {
+        let date: Date
+        let name: String
+        var id: Date { date }
+    }
+
+    /// Day -> colours of the people off work (one entry per person).
+    private func leaveColors(in interval: DateInterval, calendar: Calendar) -> [Date: [String]] {
+        var result: [Date: [String]] = [:]
+        for leave in leaves {
+            let hex = MemberColors.hex(for: leave.memberID, members: members)
+            for day in TimeOffCalculator.days(of: leave.span, calendar: calendar) where interval.contains(day) {
+                if !(result[day] ?? []).contains(hex) { result[day, default: []].append(hex) }
+            }
+        }
+        return result
     }
 
     private func eventRow(_ event: FamilyEvent, occurrence: EventOccurrence, names: MemberNames, showDate: Bool) -> some View {
@@ -155,6 +244,10 @@ private struct MonthGrid: View {
     @Binding var month: Date
     @Binding var selectedDay: Date
     let marked: Set<Date>
+    /// Public holidays (start of day) - red like Saturday and Sunday.
+    var holidays: Set<Date> = []
+    /// Colours of the people off work that day.
+    var leaveColors: [Date: [String]] = [:]
     let calendar: Calendar
 
     var body: some View {
@@ -173,8 +266,12 @@ private struct MonthGrid: View {
             }
             .padding(.horizontal, 8)
             HStack(spacing: 0) {
-                ForEach(Array(symbols.enumerated()), id: \.offset) { _, symbol in
-                    Text(verbatim: symbol).font(.caption2).foregroundStyle(.secondary).frame(maxWidth: .infinity)
+                ForEach(Array(symbols.enumerated()), id: \.offset) { index, symbol in
+                    // Weekday number (1 = Sunday, 7 = Saturday) of this column.
+                    let weekday = (calendar.firstWeekday - 1 + index) % 7 + 1
+                    Text(verbatim: symbol).font(.caption2)
+                        .foregroundStyle(weekday == 1 || weekday == 7 ? CalendarColors.holidayRed : Color.secondary)
+                        .frame(maxWidth: .infinity)
                 }
             }
             ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
@@ -196,23 +293,43 @@ private struct MonthGrid: View {
     @ViewBuilder
     private func cell(_ day: Date?) -> some View {
         if let day {
+            let start = calendar.startOfDay(for: day)
             let isSelected = calendar.isDate(day, inSameDayAs: selectedDay)
             let isToday = calendar.isDateInToday(day)
+            let isRedDay = calendar.isDateInWeekend(day) || holidays.contains(start)
+            let people = leaveColors[start] ?? []
             Button {
                 withAnimation(.snappy) { selectedDay = day }
             } label: {
                 VStack(spacing: 2) {
                     Text(verbatim: "\(calendar.component(.day, from: day))")
                         .font(.callout.weight(isToday ? .bold : .regular))
-                        .foregroundStyle(isSelected ? Color.white : (isToday ? Color.accentColor : Color.primary))
+                        .foregroundStyle(isSelected ? Color.white : (isRedDay ? CalendarColors.holidayRed : (isToday ? Color.accentColor : Color.primary)))
                         .frame(width: 34, height: 34)
                         .background {
-                            if isSelected { Circle().fill(Color.accentColor) }
+                            if isSelected {
+                                Circle().fill(isRedDay ? CalendarColors.holidayRed : Color.accentColor)
+                            } else if isToday {
+                                Circle().stroke(Color.accentColor, lineWidth: 1.5)
+                            }
                         }
-                    Circle()
-                        .fill(Color.accentColor)
-                        .frame(width: 5, height: 5)
-                        .opacity(marked.contains(calendar.startOfDay(for: day)) ? 1 : 0)
+                    HStack(spacing: 2) {
+                        if people.isEmpty {
+                            Circle()
+                                .fill(Color.accentColor)
+                                .frame(width: 5, height: 5)
+                                .opacity(marked.contains(start) ? 1 : 0)
+                        } else {
+                            // Time off: one short bar per person, in their colour.
+                            ForEach(people.prefix(3), id: \.self) { hex in
+                                Capsule().fill(Color(hex: hex)).frame(width: people.count > 1 ? 8 : 16, height: 4)
+                            }
+                            if marked.contains(start) {
+                                Circle().fill(Color.accentColor).frame(width: 4, height: 4)
+                            }
+                        }
+                    }
+                    .frame(height: 5)
                 }
                 .contentShape(Rectangle())
             }

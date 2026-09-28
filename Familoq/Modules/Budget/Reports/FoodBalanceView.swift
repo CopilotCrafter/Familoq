@@ -46,8 +46,9 @@ enum FoodBasketLoader {
             let base = receiptExpenses.compactMap(\.baseAmount).reduce(0, +)
             let factor: Decimal = amount > 0 && base > 0 ? base / amount : 1
             for item in receiptItems where item.categoryID == groceriesID || item.categoryID == nil {
+                let count = item.quantityText.flatMap { Int($0.trimmingCharacters(in: .whitespaces)) }.map { min(max($0, 1), 24) } ?? 1
                 result.append(FoodPurchase(name: item.name, amount: item.amount * factor,
-                                           subcategoryKey: lookup.subcategory(item.subcategoryID)?.systemKey, date: date))
+                                           subcategoryKey: lookup.subcategory(item.subcategoryID)?.systemKey, date: date, count: count))
             }
         }
         result += expenses.filter { $0.receiptID == nil }.compactMap { purchase(from: $0, lookup: lookup) }
@@ -249,6 +250,8 @@ struct FoodBalanceView: View {
                             Text(LocalizedStringKey(group.title))
                                 .foregroundStyle(group.isLessHealthy ? Color.orange : Color.primary)
                             Spacer()
+                            Text((report.amounts[group] ?? 0).currencyShort(currency))
+                                .font(.caption).foregroundStyle(.secondary).monospacedDigit()
                             Text(verbatim: "\(Int((share * 100).rounded())) %").monospacedDigit()
                             if previousReport?.score != nil {
                                 let diff = Int(((share - before) * 100).rounded())
@@ -265,7 +268,7 @@ struct FoodBalanceView: View {
             } header: {
                 Text("What was bought")
             } footer: {
-                Text("Share of the money spent on food. Small numbers: change in percentage points against the previous period.")
+                Text("Share of the basket: half from the money (adjusted for typical prices, so cheap vegetables count fairly against meat) and half from the number of items. Small numbers: change in percentage points against the previous period.")
             }
         }
     }

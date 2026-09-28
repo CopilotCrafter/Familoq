@@ -19,6 +19,13 @@ final class ReceiptRecord {
     var vatSummary: String = ""
     var createdAt: Date = Date()
     var createdByMemberID: UUID? = nil
+    /// "Keep this photo" (warranty/tax): never removed by the photo cleanup.
+    var keepPhoto: Bool = false
+    /// Raised when the photo is replaced, made smaller or removed, so the
+    /// change is sent to iCloud (the photo itself is not fingerprinted).
+    var photoRevision: Int = 0
+    /// Size of the photo in bytes (this iPhone only): 0 = not measured yet, -1 = no photo.
+    var photoBytes: Int = 0
 
     init(familyID: UUID, merchant: String, date: Date, total: Decimal, currencyCode: String) {
         self.familyID = familyID
