@@ -10120,6 +10120,2382 @@
           }
         }
       }
+    },
+    "14 days before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 Tage vorher"
+          }
+        }
+      }
+    },
+    "30 days before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 Tage vorher"
+          }
+        }
+      }
+    },
+    "7 days before": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Tage vorher"
+          }
+        }
+      }
+    },
+    "A ready-to-send text to cancel on time (send it by e-mail, letter or the provider's online form, and keep the confirmation).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein fertiger Text, um rechtzeitig zu kündigen (per E-Mail, Brief oder Kündigungsformular des Anbieters senden und die Bestätigung aufbewahren)."
+          }
+        }
+      }
+    },
+    "Add a basic packing list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einfache Packliste hinzufügen"
+          }
+        }
+      }
+    },
+    "Add expenses with who paid to see who owes whom.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge Ausgaben mit „Bezahlt von“ hinzu, um zu sehen, wer wem etwas schuldet."
+          }
+        }
+      }
+    },
+    "Add insurance, phone, internet, streaming, gym or energy contracts. Familoq reminds you before the cancellation deadline, so nothing renews by accident.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge Verträge für Versicherung, Handy, Internet, Streaming, Fitnessstudio oder Energie hinzu. Familoq erinnert dich vor der Kündigungsfrist, damit sich nichts ungewollt verlängert."
+          }
+        }
+      }
+    },
+    "Add time off for this trip": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urlaub für diese Reise eintragen"
+          }
+        }
+      }
+    },
+    "Add to shopping list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf die Einkaufsliste"
+          }
+        }
+      }
+    },
+    "Add trip expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiseausgabe hinzufügen"
+          }
+        }
+      }
+    },
+    "Add warranty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantie hinzufügen"
+          }
+        }
+      }
+    },
+    "Add your family's favourite meals with their ingredients - one per line, e.g. \"500 g Hackfleisch\".": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge die Lieblingsgerichte deiner Familie mit Zutaten hinzu – eine pro Zeile, z. B. „500 g Hackfleisch“."
+          }
+        }
+      }
+    },
+    "Added %@ to the shopping list.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ steht jetzt auf der Einkaufsliste."
+          }
+        }
+      }
+    },
+    "Added the reminder \"%@\".": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung „%@“ hinzugefügt."
+          }
+        }
+      }
+    },
+    "Adds a reminder for the family in Familoq.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügt in Familoq eine Erinnerung für die Familie hinzu."
+          }
+        }
+      }
+    },
+    "Adds an expense in the family's base currency, e.g. 12 € fuel.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügt eine Ausgabe in der Basiswährung der Familie hinzu, z. B. 12 € Tanken."
+          }
+        }
+      }
+    },
+    "After 1 minute": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach 1 Minute"
+          }
+        }
+      }
+    },
+    "After 15 minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach 15 Minuten"
+          }
+        }
+      }
+    },
+    "After 5 minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach 5 Minuten"
+          }
+        }
+      }
+    },
+    "Afterwards": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danach"
+          }
+        }
+      }
+    },
+    "All fixed costs (per month)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Fixkosten (pro Monat)"
+          }
+        }
+      }
+    },
+    "All settled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles ausgeglichen"
+          }
+        }
+      }
+    },
+    "Also on the deadline day. Notifications: Family → Notifications.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auch am Tag der Frist. Mitteilungen: Familie → Mitteilungen."
+          }
+        }
+      }
+    },
+    "Amounts like \"2\", \"500 g\" or \"1 l\" at the start are recognised.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mengen wie „2“, „500 g“ oder „1 l“ am Anfang werden erkannt."
+          }
+        }
+      }
+    },
+    "Balances": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salden"
+          }
+        }
+      }
+    },
+    "Bank import": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bankimport"
+          }
+        }
+      }
+    },
+    "Book payments as a recurring expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlungen als wiederkehrende Ausgabe buchen"
+          }
+        }
+      }
+    },
+    "Booked payments appear in the budget automatically. The contract counts once in the fixed costs either way.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gebuchte Zahlungen erscheinen automatisch im Budget. In den Fixkosten zählt der Vertrag so oder so nur einmal."
+          }
+        }
+      }
+    },
+    "Bought on": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gekauft am"
+          }
+        }
+      }
+    },
+    "Breakfast": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühstück"
+          }
+        }
+      }
+    },
+    "Budget (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget (optional)"
+          }
+        }
+      }
+    },
+    "By person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Person"
+          }
+        }
+      }
+    },
+    "Cancel by %@: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kündigen bis %1$@: %2$@"
+          }
+        }
+      }
+    },
+    "Cancel by %@ (%lld days)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kündigen bis %1$@ (%2$lld Tage)"
+          }
+        }
+      }
+    },
+    "Cancellation letter": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kündigungsschreiben"
+          }
+        }
+      }
+    },
+    "Cancelled": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gekündigt"
+          }
+        }
+      }
+    },
+    "Cancelled on": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gekündigt am"
+          }
+        }
+      }
+    },
+    "Cancelled on %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gekündigt am %@"
+          }
+        }
+      }
+    },
+    "Columns": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spalten"
+          }
+        }
+      }
+    },
+    "Contract": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertrag"
+          }
+        }
+      }
+    },
+    "Contract deadlines & warranties": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kündigungsfristen & Garantien"
+          }
+        }
+      }
+    },
+    "Contracts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verträge"
+          }
+        }
+      }
+    },
+    "Converted to %@ with the exchange rate of the day.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird mit dem Tageskurs in %@ umgerechnet."
+          }
+        }
+      }
+    },
+    "Credit (in)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haben (Eingang)"
+          }
+        }
+      }
+    },
+    "Currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Währung"
+          }
+        }
+      }
+    },
+    "Customer / contract number": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kunden-/Vertragsnummer"
+          }
+        }
+      }
+    },
+    "Debit (out)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soll (Ausgang)"
+          }
+        }
+      }
+    },
+    "Delete contract": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vertrag löschen"
+          }
+        }
+      }
+    },
+    "Delete this contract?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Vertrag löschen?"
+          }
+        }
+      }
+    },
+    "Delete this trip?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Reise löschen?"
+          }
+        }
+      }
+    },
+    "Delete warranty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantie löschen"
+          }
+        }
+      }
+    },
+    "Destination": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiseziel"
+          }
+        }
+      }
+    },
+    "Dinner": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abendessen"
+          }
+        }
+      }
+    },
+    "Dinner ideas from Apple Intelligence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ideen fürs Abendessen von Apple Intelligence"
+          }
+        }
+      }
+    },
+    "Edit trip expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiseausgabe bearbeiten"
+          }
+        }
+      }
+    },
+    "Ended": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beendet"
+          }
+        }
+      }
+    },
+    "Ends on %@. In the EU the statutory warranty is 2 years; the manufacturer's guarantee can be longer.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endet am %@. In der EU beträgt die gesetzliche Gewährleistung 2 Jahre; die Herstellergarantie kann länger sein."
+          }
+        }
+      }
+    },
+    "Expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabe"
+          }
+        }
+      }
+    },
+    "Expenses (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgaben (%lld)"
+          }
+        }
+      }
+    },
+    "Face ID lock": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID-Sperre"
+          }
+        }
+      }
+    },
+    "Familoq guessed the columns - correct them if needed. The choice is remembered for files of this bank.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq hat die Spalten erraten – korrigiere sie bei Bedarf. Die Auswahl wird für Dateien dieser Bank gespeichert."
+          }
+        }
+      }
+    },
+    "Familoq is locked": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq ist gesperrt"
+          }
+        }
+      }
+    },
+    "File": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei"
+          }
+        }
+      }
+    },
+    "Fixed costs": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixkosten"
+          }
+        }
+      }
+    },
+    "Fixed costs & contracts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixkosten & Verträge"
+          }
+        }
+      }
+    },
+    "Former member": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ehemaliges Mitglied"
+          }
+        }
+      }
+    },
+    "Friends don't need the app. Their share is shown in Settle up.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freunde brauchen die App nicht. Ihr Anteil steht unter „Abrechnen“."
+          }
+        }
+      }
+    },
+    "Friends travelling with you (one name per line)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freunde, die mitreisen (ein Name pro Zeile)"
+          }
+        }
+      }
+    },
+    "Hide amounts in the app switcher": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beträge im App-Umschalter verbergen"
+          }
+        }
+      }
+    },
+    "Hide packed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingepacktes ausblenden"
+          }
+        }
+      }
+    },
+    "How much was it?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie viel war es?"
+          }
+        }
+      }
+    },
+    "Ideas are made on this iPhone and lean towards what your Healthy basket is missing.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Ideen entstehen auf diesem iPhone und berücksichtigen, was deinem gesunden Einkaufskorb fehlt."
+          }
+        }
+      }
+    },
+    "Immediately": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofort"
+          }
+        }
+      }
+    },
+    "Import %lld payment(s) · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Zahlung(en) importieren · %2$@"
+          }
+        }
+      }
+    },
+    "Import bank statement": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontoauszug importieren"
+          }
+        }
+      }
+    },
+    "In %@. Plus = gets money back, minus = owes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In %@. Plus = bekommt Geld zurück, Minus = schuldet."
+          }
+        }
+      }
+    },
+    "In your online banking, export the account transactions as CSV (Excel) and save the file in Files. Only payments going out are imported; payments already in Familoq are skipped. Importing the same file again does not create duplicates.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exportiere im Onlinebanking die Kontoumsätze als CSV (Excel) und sichere die Datei in „Dateien“. Nur Ausgänge werden importiert; Zahlungen, die schon in Familoq sind, werden übersprungen. Dieselbe Datei erneut zu importieren erzeugt keine Duplikate."
+          }
+        }
+      }
+    },
+    "Ingredients": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zutaten"
+          }
+        }
+      }
+    },
+    "Item, e.g. Washing machine": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Artikel, z. B. Waschmaschine"
+          }
+        }
+      }
+    },
+    "Keep track of warranties (usually 2 years). Add one here or from a receipt (Scan → receipt → Add warranty). Familoq reminds you 30 days before it ends.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behalte Garantien im Blick (meist 2 Jahre). Füge sie hier oder über einen Kassenbon hinzu (Scannen → Bon → Garantie hinzufügen). Familoq erinnert dich 30 Tage vor dem Ende."
+          }
+        }
+      }
+    },
+    "Last day: %@. Check it for faults now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter Tag: %@. Jetzt auf Mängel prüfen."
+          }
+        }
+      }
+    },
+    "Lock": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sperre"
+          }
+        }
+      }
+    },
+    "Lock with %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ sperren"
+          }
+        }
+      }
+    },
+    "Log an expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgabe erfassen"
+          }
+        }
+      }
+    },
+    "Logged %@ for %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ für %2$@ erfasst."
+          }
+        }
+      }
+    },
+    "Lunch": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mittagessen"
+          }
+        }
+      }
+    },
+    "Meal, e.g. Spaghetti Bolognese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gericht, z. B. Spaghetti Bolognese"
+          }
+        }
+      }
+    },
+    "Meals": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essen"
+          }
+        }
+      }
+    },
+    "Minimum term: %lld months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mindestlaufzeit: %lld Monate"
+          }
+        }
+      }
+    },
+    "Name, e.g. Mobile phone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. Handyvertrag"
+          }
+        }
+      }
+    },
+    "Name, e.g. Summer holiday": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. Sommerurlaub"
+          }
+        }
+      }
+    },
+    "New contract": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Vertrag"
+          }
+        }
+      }
+    },
+    "New payments (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Zahlungen (%lld)"
+          }
+        }
+      }
+    },
+    "New recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Rezept"
+          }
+        }
+      }
+    },
+    "New trip": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Reise"
+          }
+        }
+      }
+    },
+    "New warranty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Garantie"
+          }
+        }
+      }
+    },
+    "Next cancellation deadline: %@ - the term ends on %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste Kündigungsfrist: %1$@ – die Laufzeit endet am %2$@."
+          }
+        }
+      }
+    },
+    "No date and amount columns found. Is this a CSV export of account transactions?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Datums- und Betragsspalten gefunden. Ist das ein CSV-Export der Kontoumsätze?"
+          }
+        }
+      }
+    },
+    "No minimum term": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Mindestlaufzeit"
+          }
+        }
+      }
+    },
+    "No more deadlines - the contract ends.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine weiteren Fristen – der Vertrag endet."
+          }
+        }
+      }
+    },
+    "No recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Rezept"
+          }
+        }
+      }
+    },
+    "Note, e.g. serial number": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz, z. B. Seriennummer"
+          }
+        }
+      }
+    },
+    "Notice in": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frist in"
+          }
+        }
+      }
+    },
+    "Notice: %lld %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kündigungsfrist: %1$lld %2$@"
+          }
+        }
+      }
+    },
+    "One ingredient per line": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Zutat pro Zeile"
+          }
+        }
+      }
+    },
+    "Only Storage & Backup": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Speicher & Backup"
+          }
+        }
+      }
+    },
+    "Only on this iPhone. If Face ID does not work, your iPhone passcode unlocks Familoq.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur auf diesem iPhone. Wenn Face ID nicht funktioniert, entsperrt dein iPhone-Code Familoq."
+          }
+        }
+      }
+    },
+    "Open Storage & Backup": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speicher & Backup öffnen"
+          }
+        }
+      }
+    },
+    "Passcode": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code"
+          }
+        }
+      }
+    },
+    "Otherwise the contract renews after %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonst verlängert sich der Vertrag nach dem %@."
+          }
+        }
+      }
+    },
+    "Packing list (%lld/%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Packliste (%1$lld/%2$lld)"
+          }
+        }
+      }
+    },
+    "Paid by": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bezahlt von"
+          }
+        }
+      }
+    },
+    "Past trips (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vergangene Reisen (%lld)"
+          }
+        }
+      }
+    },
+    "Payee": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empfänger"
+          }
+        }
+      }
+    },
+    "Per day": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Tag"
+          }
+        }
+      }
+    },
+    "Pick meals from your recipes to add their ingredients automatically.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle Gerichte aus deinen Rezepten, um die Zutaten automatisch hinzuzufügen."
+          }
+        }
+      }
+    },
+    "Plan a trip: budget, costs shared with friends, packing list, calendar entry and time off in one place.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plane eine Reise: Budget, mit Freunden geteilte Kosten, Packliste, Kalendereintrag und Urlaub an einem Ort."
+          }
+        }
+      }
+    },
+    "Plan breakfast": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frühstück planen"
+          }
+        }
+      }
+    },
+    "Plan lunch": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mittagessen planen"
+          }
+        }
+      }
+    },
+    "Provider, e.g. Telekom": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anbieter, z. B. Telekom"
+          }
+        }
+      }
+    },
+    "Purpose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwendungszweck"
+          }
+        }
+      }
+    },
+    "Put this week's ingredients on the shopping list": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zutaten dieser Woche auf die Einkaufsliste"
+          }
+        }
+      }
+    },
+    "Puts an item on the family's shopping list, e.g. \"2x milk\".": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setzt einen Artikel auf die Einkaufsliste der Familie, z. B. „2x Milch“."
+          }
+        }
+      }
+    },
+    "Recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rezept"
+          }
+        }
+      }
+    },
+    "Recipes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rezepte"
+          }
+        }
+      }
+    },
+    "Recipes (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rezepte (%lld)"
+          }
+        }
+      }
+    },
+    "Recurring expenses": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrende Ausgaben"
+          }
+        }
+      }
+    },
+    "Recurring expenses and contracts. Yearly and quarterly payments are spread over the months; planned one-offs are not included.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederkehrende Ausgaben und Verträge. Jährliche und vierteljährliche Zahlungen werden auf die Monate verteilt; geplante Einmalzahlungen zählen nicht."
+          }
+        }
+      }
+    },
+    "Remind me": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnern"
+          }
+        }
+      }
+    },
+    "Renews every 2 years": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlängert sich alle 2 Jahre"
+          }
+        }
+      }
+    },
+    "Renews every 3 months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlängert sich alle 3 Monate"
+          }
+        }
+      }
+    },
+    "Renews monthly": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlängert sich monatlich"
+          }
+        }
+      }
+    },
+    "Renews yearly": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlängert sich jährlich"
+          }
+        }
+      }
+    },
+    "Running": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft"
+          }
+        }
+      }
+    },
+    "Save as recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Rezept speichern"
+          }
+        }
+      }
+    },
+    "Say": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sag"
+          }
+        }
+      }
+    },
+    "Set up Face ID or a passcode in the iPhone Settings first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Richte zuerst Face ID oder einen Code in den iPhone-Einstellungen ein."
+          }
+        }
+      }
+    },
+    "Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
+        }
+      }
+    },
+    "Settle up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrechnen"
+          }
+        }
+      }
+    },
+    "Share": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilen"
+          }
+        }
+      }
+    },
+    "Shared costs": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geteilte Kosten"
+          }
+        }
+      }
+    },
+    "Shop": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschäft"
+          }
+        }
+      }
+    },
+    "Shop or purpose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschäft oder Zweck"
+          }
+        }
+      }
+    },
+    "Show in the family calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Familienkalender zeigen"
+          }
+        }
+      }
+    },
+    "Show payments already in Familoq (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlungen zeigen, die schon in Familoq sind (%lld)"
+          }
+        }
+      }
+    },
+    "Siri & Shortcuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siri & Kurzbefehle"
+          }
+        }
+      }
+    },
+    "Siri then asks for the item, amount or reminder. The same actions are in the Shortcuts app, in Spotlight and for the Action button.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siri fragt dann nach Artikel, Betrag oder Erinnerung. Dieselben Aktionen gibt es in der Kurzbefehle-App, in Spotlight und für die Aktionstaste."
+          }
+        }
+      }
+    },
+    "Spending this month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgaben diesen Monat"
+          }
+        }
+      }
+    },
+    "Split between everyone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf alle aufteilen"
+          }
+        }
+      }
+    },
+    "Start": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beginn"
+          }
+        }
+      }
+    },
+    "Tells how much the family spent this month and where most of it went.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sagt, wie viel die Familie diesen Monat ausgegeben hat und wofür am meisten."
+          }
+        }
+      }
+    },
+    "Term & notice": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laufzeit & Kündigung"
+          }
+        }
+      }
+    },
+    "The amount must be more than zero.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Betrag muss größer als null sein."
+          }
+        }
+      }
+    },
+    "The contract ends on %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Vertrag endet am %@."
+          }
+        }
+      }
+    },
+    "The currency is suggested for new trip expenses. Everything is also converted to %@ for the budget.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Währung wird für neue Reiseausgaben vorgeschlagen. Für das Budget wird alles auch in %@ umgerechnet."
+          }
+        }
+      }
+    },
+    "The file could not be read.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei konnte nicht gelesen werden."
+          }
+        }
+      }
+    },
+    "This month you spent %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Monat habt ihr %@ ausgegeben."
+          }
+        }
+      }
+    },
+    "This month you spent %@. Most went to %@ (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen Monat habt ihr %1$@ ausgegeben. Am meisten für %2$@ (%3$@)."
+          }
+        }
+      }
+    },
+    "Trip expense": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiseausgabe"
+          }
+        }
+      }
+    },
+    "Trip expenses are normal expenses: they also appear in the budget and reports.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiseausgaben sind normale Ausgaben: Sie erscheinen auch im Budget und in den Berichten."
+          }
+        }
+      }
+    },
+    "Trip expenses stay in the budget.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiseausgaben bleiben im Budget."
+          }
+        }
+      }
+    },
+    "Turn on the Familoq lock": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq-Sperre einschalten"
+          }
+        }
+      }
+    },
+    "Unlock Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq entsperren"
+          }
+        }
+      }
+    },
+    "Unlock with %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit %@ entsperren"
+          }
+        }
+      }
+    },
+    "Upcoming": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anstehend"
+          }
+        }
+      }
+    },
+    "VAT": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MwSt."
+          }
+        }
+      }
+    },
+    "Warranties": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantien"
+          }
+        }
+      }
+    },
+    "Warranty": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantie"
+          }
+        }
+      }
+    },
+    "Warranty ends: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantie endet: %@"
+          }
+        }
+      }
+    },
+    "Warranty: %lld months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantie: %lld Monate"
+          }
+        }
+      }
+    },
+    "What": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was"
+          }
+        }
+      }
+    },
+    "What should I put on the list?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was soll auf die Liste?"
+          }
+        }
+      }
+    },
+    "What should I remind you of?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Woran soll ich dich erinnern?"
+          }
+        }
+      }
+    },
+    "What, e.g. Hotel, Dinner, Fuel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was, z. B. Hotel, Abendessen, Tanken"
+          }
+        }
+      }
+    },
+    "When": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann"
+          }
+        }
+      }
+    },
+    "Where": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo"
+          }
+        }
+      }
+    },
+    "Where or what for?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo oder wofür?"
+          }
+        }
+      }
+    },
+    "Who is coming": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer kommt mit"
+          }
+        }
+      }
+    },
+    "Whole app": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganze App"
+          }
+        }
+      }
+    },
+    "%@ left": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ übrig"
+          }
+        }
+      }
+    },
+    "%lld payment(s) imported.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Zahlung(en) importiert."
+          }
+        }
+      }
+    },
+    "%lld ingredient(s) put on the shopping list.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Zutat(en) auf die Einkaufsliste gesetzt."
+          }
+        }
+      }
+    },
+    "%@: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@ / month": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / Monat"
+          }
+        }
+      }
+    },
+    "%lld ingredient(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Zutat(en)"
+          }
+        }
+      }
+    },
+    "%lld servings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Portionen"
+          }
+        }
+      }
+    },
+    "%lld ending soon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld enden bald"
+          }
+        }
+      }
+    },
+    "days": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tage"
+          }
+        }
+      }
+    },
+    "months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monate"
+          }
+        }
+      }
+    },
+    "weeks": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochen"
+          }
+        }
+      }
+    },
+    "for %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "für %@"
+          }
+        }
+      }
+    },
+    "paid by %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bezahlt von %@"
+          }
+        }
+      }
+    },
+    "iOS also has its own lock: long-press the Familoq icon → Require Face ID.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS hat auch eine eigene Sperre: Familoq-Symbol lange drücken → „Face ID anfordern“."
+          }
+        }
+      }
+    },
+    "per month · %@ per year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pro Monat · %@ pro Jahr"
+          }
+        }
+      }
+    },
+    "until %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bis %@"
+          }
+        }
+      }
+    },
+    "Hey Siri, add to the shopping list in Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hey Siri, füge in Familoq etwas zur Einkaufsliste hinzu"
+          }
+        }
+      }
+    },
+    "Hey Siri, log an expense in Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hey Siri, erfasse eine Ausgabe in Familoq"
+          }
+        }
+      }
+    },
+    "Hey Siri, what did we spend this month in Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hey Siri, was haben wir diesen Monat in Familoq ausgegeben"
+          }
+        }
+      }
+    },
+    "Hey Siri, add a family reminder in Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hey Siri, füge in Familoq eine Familienerinnerung hinzu"
+          }
+        }
+      }
+    },
+    "Open Familoq once to set up your family first.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne Familoq einmal, um zuerst deine Familie einzurichten."
+          }
+        }
+      }
+    },
+    "Add a family reminder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familienerinnerung hinzufügen"
+          }
+        }
+      }
+    },
+    "Choose CSV file…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV-Datei auswählen…"
+          }
+        }
+      }
+    },
+    "Choose another file…": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andere Datei auswählen…"
+          }
+        }
+      }
+    },
+    "Passports / ID cards": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reisepässe / Ausweise"
+          }
+        }
+      }
+    },
+    "Tickets & bookings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tickets & Buchungen"
+          }
+        }
+      }
+    },
+    "Wallet & cards": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geldbörse & Karten"
+          }
+        }
+      }
+    },
+    "Phone chargers": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ladekabel"
+          }
+        }
+      }
+    },
+    "Medicines": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikamente"
+          }
+        }
+      }
+    },
+    "Toiletries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kulturbeutel"
+          }
+        }
+      }
+    },
+    "Sunscreen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonnencreme"
+          }
+        }
+      }
+    },
+    "Clothes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleidung"
+          }
+        }
+      }
+    },
+    "Swimwear": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Badesachen"
+          }
+        }
+      }
+    },
+    "Snacks for the journey": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snacks für unterwegs"
+          }
+        }
+      }
+    },
+    "New payments": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Zahlungen"
+          }
+        }
+      }
+    },
+    "Servings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portionen"
+          }
+        }
+      }
+    },
+    "Unlock": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entsperren"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

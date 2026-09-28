@@ -239,6 +239,8 @@ struct LeaveEditTarget: Identifiable {
     let entry: LeaveEntry?
     /// Day to prefill for a new entry.
     let day: Date?
+    /// Last day to prefill (e.g. the end of a trip).
+    var lastDay: Date? = nil
 }
 
 /// New or existing time off. Own copy; writes on Save.
@@ -263,7 +265,7 @@ struct LeaveForm: View {
         _memberID = State(initialValue: target.entry?.memberID ?? members.first(where: \.isCurrentUser)?.id ?? members.first?.id)
         _type = State(initialValue: target.entry?.type ?? .vacation)
         _first = State(initialValue: target.entry?.firstDay ?? day)
-        _last = State(initialValue: target.entry?.lastDay ?? day)
+        _last = State(initialValue: target.entry?.lastDay ?? target.lastDay.map { PlannerDates.calendar.startOfDay(for: $0) } ?? day)
         _note = State(initialValue: target.entry?.note ?? "")
     }
 

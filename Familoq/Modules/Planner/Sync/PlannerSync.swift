@@ -24,6 +24,22 @@ extension PlannerModule {
                 inFamily: { fid in #Predicate<FamilyEvent> { $0.familyID == fid } },
                 withID: { id in #Predicate<FamilyEvent> { $0.id == id } },
                 make: { id, fid in FamilyEvent(id: id, familyID: fid, title: "", start: Date(), end: Date(), isAllDay: false) }),
+            .of(Recipe.self,
+                inFamily: { fid in #Predicate<Recipe> { $0.familyID == fid } },
+                withID: { id in #Predicate<Recipe> { $0.id == id } },
+                make: { id, fid in Recipe(id: id, familyID: fid, name: "") }),
+            .of(MealPlanEntry.self,
+                inFamily: { fid in #Predicate<MealPlanEntry> { $0.familyID == fid } },
+                withID: { id in #Predicate<MealPlanEntry> { $0.id == id } },
+                make: { id, fid in MealPlanEntry(id: id, familyID: fid, day: Date(), slot: .dinner, title: "") }),
+            .of(Trip.self,
+                inFamily: { fid in #Predicate<Trip> { $0.familyID == fid } },
+                withID: { id in #Predicate<Trip> { $0.id == id } },
+                make: { id, fid in Trip(id: id, familyID: fid, name: "", startDate: Date(), endDate: Date(), currencyCode: "EUR") }),
+            .of(PackingItem.self,
+                inFamily: { fid in #Predicate<PackingItem> { $0.familyID == fid } },
+                withID: { id in #Predicate<PackingItem> { $0.id == id } },
+                make: { id, fid in PackingItem(id: id, familyID: fid, tripID: UUID(), name: "") }),
             .of(LeaveEntry.self,
                 inFamily: { fid in #Predicate<LeaveEntry> { $0.familyID == fid } },
                 withID: { id in #Predicate<LeaveEntry> { $0.id == id } },
@@ -224,6 +240,122 @@ extension LeaveAllowance: SyncableRecord {
         memberID = p.uuid("memberID") ?? memberID
         year = p.int("year", default: year)
         tenthDays = p.int("tenthDays", default: tenthDays)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension Recipe: SyncableRecord {
+    static var syncKind: SyncKind { .recipe }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("name", name)
+        p.set("ingredientsText", ingredientsText)
+        p.set("servings", servings)
+        p.set("note", note)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        name = p.string("name")
+        ingredientsText = p.string("ingredientsText")
+        servings = p.int("servings", default: 4)
+        note = p.string("note")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension MealPlanEntry: SyncableRecord {
+    static var syncKind: SyncKind { .meal }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("day", day)
+        p.set("slotRaw", slotRaw)
+        p.set("recipeID", recipeID)
+        p.set("title", title)
+        p.set("note", note)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        day = p.date("day", default: day)
+        slotRaw = p.string("slotRaw", default: "dinner")
+        recipeID = p.uuid("recipeID")
+        title = p.string("title")
+        note = p.string("note")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension Trip: SyncableRecord {
+    static var syncKind: SyncKind { .trip }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("name", name)
+        p.set("destination", destination)
+        p.set("startDate", startDate)
+        p.set("endDate", endDate)
+        p.set("currencyCode", currencyCode)
+        p.set("budgetValue", budgetValue)
+        p.set("participantsRaw", participantsRaw)
+        p.set("guestsRaw", guestsRaw)
+        p.set("eventID", eventID)
+        p.set("isArchived", isArchived)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        name = p.string("name")
+        destination = p.string("destination")
+        startDate = p.date("startDate", default: startDate)
+        endDate = p.date("endDate", default: endDate)
+        currencyCode = p.string("currencyCode", default: "EUR")
+        budgetValue = p.int64("budgetValue")
+        participantsRaw = p.string("participantsRaw")
+        guestsRaw = p.string("guestsRaw")
+        eventID = p.uuid("eventID")
+        isArchived = p.bool("isArchived")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension PackingItem: SyncableRecord {
+    static var syncKind: SyncKind { .packingItem }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("tripID", tripID)
+        p.set("name", name)
+        p.set("isPacked", isPacked)
+        p.set("memberID", memberID)
+        p.set("sortOrder", sortOrder)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        tripID = p.uuid("tripID") ?? tripID
+        name = p.string("name")
+        isPacked = p.bool("isPacked")
+        memberID = p.uuid("memberID")
+        sortOrder = p.int("sortOrder")
+        createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
     }
 }

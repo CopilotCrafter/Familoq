@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.7.0 - Fixed costs, contracts, meals, travel, Siri, Face ID
+
+### Added
+- Dashboard → Fixed costs: what the family pays every month for recurring expenses and contracts (yearly and quarterly payments spread over the months), per category and per year.
+- Contracts: term, notice period and renewal; reminders 30/14/7 days before the cancellation deadline and on the day; ready-to-send cancellation letter; optional booking as a recurring expense.
+- Warranties: add one from a receipt or by hand; reminder 30 days before it ends.
+- Family → Import bank statement: CSV export of any bank; columns guessed and remembered per bank; payments already in Familoq are skipped; no duplicates on re-import.
+- Planner → Meals: week plan (dinner, optionally lunch and breakfast), recipes with ingredients, "Put this week's ingredients on the shopping list" (amounts added up), dinner ideas from Apple Intelligence.
+- Planner → Travel: trips with budget, expenses in any currency, "Settle up" with friends who don't have the app, packing list, calendar entry and time off.
+- Siri & Shortcuts: add to the shopping list, log an expense, spending this month, family reminder (English and German phrases).
+- Family → Face ID lock: whole app or only Storage & Backup, lock delay, amounts hidden in the app switcher.
+- Planner sections are now chips (Shopping, Meals, Reminders, Calendar, Time off, Travel).
+
 ## 0.6.0 - Time off, holidays, storage
 
 ### Added

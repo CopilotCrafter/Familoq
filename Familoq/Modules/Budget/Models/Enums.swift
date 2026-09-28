@@ -41,6 +41,8 @@ enum EntryMethod: String, CaseIterable {
     case receipt
     /// Booked automatically from a recurring or planned expense.
     case scheduled
+    /// Imported from a bank statement (CSV).
+    case bankImport
 
     var displayName: String {
         switch self {
@@ -48,6 +50,7 @@ enum EntryMethod: String, CaseIterable {
         case .quick: return "Quick entry"
         case .receipt: return "Scanned receipt"
         case .scheduled: return "Recurring / planned"
+        case .bankImport: return "Bank import"
         }
     }
 }

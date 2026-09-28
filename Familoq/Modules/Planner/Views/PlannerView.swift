@@ -5,7 +5,7 @@ import FamiloqCore
 import FamiloqPlanner
 
 enum PlannerSegment: String, CaseIterable, Identifiable {
-    case shopping, reminders, calendar, timeOff
+    case shopping, meals, reminders, calendar, timeOff, travel
 
     var id: String { rawValue }
 
@@ -15,6 +15,19 @@ enum PlannerSegment: String, CaseIterable, Identifiable {
         case .reminders: return "Reminders"
         case .calendar: return "Calendar"
         case .timeOff: return "Time off"
+        case .meals: return "Meals"
+        case .travel: return "Travel"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .shopping: return "cart"
+        case .meals: return "fork.knife"
+        case .reminders: return "checklist"
+        case .calendar: return "calendar"
+        case .timeOff: return "sun.max"
+        case .travel: return "airplane"
         }
     }
 
@@ -41,18 +54,36 @@ struct PlannerView: View {
                     case .reminders: RemindersScreen(family: family)
                     case .calendar: CalendarScreen(family: family)
                     case .timeOff: TimeOffScreen(family: family)
+                    case .meals: MealsScreen(family: family)
+                    case .travel: TravelScreen(family: family)
                     }
                 }
                 .id(segment)
                 .safeAreaInset(edge: .top, spacing: 0) {
-                    Picker("Planner", selection: $segmentRaw) {
-                        ForEach(PlannerSegment.allCases) { s in
-                            Text(LocalizedStringKey(s.title)).tag(s.rawValue)
+                    // Six parts: scrollable chips instead of a cramped segmented control.
+                    ScrollViewReader { proxy in
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(PlannerSegment.allCases) { s in
+                                    Button {
+                                        withAnimation { segmentRaw = s.rawValue }
+                                    } label: {
+                                        Label(LocalizedStringKey(s.title), systemImage: s.icon)
+                                            .font(.subheadline.weight(s == segment ? .semibold : .regular))
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 7)
+                                            .background(s == segment ? Color.accentColor : Color.secondary.opacity(0.15), in: Capsule())
+                                            .foregroundStyle(s == segment ? Color.white : Color.primary)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .id(s)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.vertical, 8)
                         }
+                        .onAppear { proxy.scrollTo(segment, anchor: .center) }
                     }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
                     .background(.bar)
                 }
                 .navigationTitle(LocalizedStringKey(segment.title))

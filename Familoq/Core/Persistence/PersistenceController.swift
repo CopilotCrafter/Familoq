@@ -18,6 +18,16 @@ enum PersistenceController {
     /// Local, offline-first SwiftData store on the device. SwiftData's own
     /// CloudKit mirroring stays OFF: family sharing needs per-family zones,
     /// which `SyncCoordinator` (CKSyncEngine) handles - see docs/10-sync-and-sharing.md.
+    private static var sharedContainer: ModelContainer?
+
+    /// The one store of the app - shared with Siri & Shortcuts actions.
+    static func shared() throws -> ModelContainer {
+        if let sharedContainer { return sharedContainer }
+        let container = try makeContainer()
+        sharedContainer = container
+        return container
+    }
+
     static func makeContainer(inMemory: Bool = false) throws -> ModelContainer {
         let schema = Schema(models)
         let configuration = ModelConfiguration(

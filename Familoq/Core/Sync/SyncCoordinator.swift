@@ -128,9 +128,11 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
 
     /// Raised whenever a new SyncKind is added (2 = Planner in 0.5.0,
     /// 3 = learned receipt items in 0.5.2).
-    private static let kindsVersion = 4
-    /// Kinds added since 0.4 (fetching one again is harmless). 4 = time off in 0.6.
-    private static let newKinds: Set<SyncKind> = [.shoppingList, .shoppingItem, .reminder, .event, .itemRule, .leave, .leaveAllowance]
+    private static let kindsVersion = 5
+    /// Kinds added since 0.4 (fetching one again is harmless). 4 = time off
+    /// in 0.6, 5 = contracts, warranties, meals, travel in 0.7.
+    private static let newKinds: Set<SyncKind> = [.shoppingList, .shoppingItem, .reminder, .event, .itemRule, .leave, .leaveAllowance,
+                                                  .contract, .warranty, .recipe, .meal, .trip, .packingItem]
 
     /// An older app version skips record kinds it does not know, and its
     /// change tokens move past them. After updating, fetch those kinds once
