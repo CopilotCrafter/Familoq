@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.1 - Deeper reports
+
+### Added
+- Reports per person: choose a person at the top, or tap a person under "By member" - every section then shows only their spending.
+- Top subcategories across all categories (e.g. Meat & Poultry, Vegetables, Fuel) with the change against the previous period; tap for the expenses behind it. Category drill-down shows the change per subcategory.
+- Biggest changes (largest increases and decreases) and top shops.
+- Insights: built-in summary lines, plus "Explain with Apple Intelligence" (iOS 26+, on-device, nothing leaves the iPhone) in the app's language.
+
 ## 0.5.0 - Planner
 
 ### Added

@@ -1,6 +1,17 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ (general)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (allgemein)"
+          }
+        }
+      }
+    },
     "%@ of %@": {
       "extractionState": "manual",
       "localizations": {
@@ -683,6 +694,39 @@
         }
       }
     },
+    "Apple Intelligence could not answer: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence konnte nicht antworten: %@"
+          }
+        }
+      }
+    },
+    "Apple Intelligence is not available right now.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence ist gerade nicht verfügbar."
+          }
+        }
+      }
+    },
+    "Apple Intelligence is still getting ready (downloading). Try again later.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence wird noch vorbereitet (Download). Versuche es später erneut."
+          }
+        }
+      }
+    },
     "Appointment": {
       "extractionState": "manual",
       "localizations": {
@@ -822,6 +866,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Getränke"
+          }
+        }
+      }
+    },
+    "Biggest changes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größte Veränderungen"
           }
         }
       }
@@ -1383,6 +1438,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Demnächst"
+          }
+        }
+      }
+    },
+    "Compared with the previous period of the same length.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verglichen mit dem vorherigen, gleich langen Zeitraum."
+          }
+        }
+      }
+    },
+    "Compared with the previous period of the same length. Receipts split into subcategories (milk, meat, vegetables…) are counted per item group.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verglichen mit dem vorherigen, gleich langen Zeitraum. Kassenbons, die in Unterkategorien aufgeteilt wurden (Milch, Fleisch, Gemüse …), zählen je Artikelgruppe."
           }
         }
       }
@@ -2432,6 +2509,17 @@
         }
       }
     },
+    "Explain with Apple Intelligence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Apple Intelligence erklären"
+          }
+        }
+      }
+    },
     "Export & backup": {
       "extractionState": "manual",
       "localizations": {
@@ -3081,6 +3169,17 @@
         }
       }
     },
+    "Insights": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erkenntnisse"
+          }
+        }
+      }
+    },
     "Insurance": {
       "extractionState": "manual",
       "localizations": {
@@ -3385,6 +3484,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bekannte künftige Kosten, z. B. Inspektion im November. Sie werden in ihrem Monat bei „Sicher ausgeben“ zurückgelegt."
+          }
+        }
+      }
+    },
+    "Largest subcategory: %@ with %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größte Unterkategorie: %@ mit %@."
           }
         }
       }
@@ -3774,6 +3884,28 @@
         }
       }
     },
+    "Most money goes to %@: %@ (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das meiste Geld geht in %@: %@ (%@)."
+          }
+        }
+      }
+    },
+    "Most spent at %@: %@ in %lld purchase(s).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Am meisten bei %@: %@ in %lld Einkauf/Einkäufen."
+          }
+        }
+      }
+    },
     "Name": {
       "extractionState": "manual",
       "localizations": {
@@ -3792,6 +3924,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Name, z. B. Urlaub 2027"
+          }
+        }
+      }
+    },
+    "Needs iOS 26 or later with Apple Intelligence.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benötigt iOS 26 oder neuer mit Apple Intelligence."
           }
         }
       }
@@ -4155,6 +4298,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine"
+          }
+        }
+      }
+    },
+    "Not enough spending in this period for insights yet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch zu wenige Ausgaben in diesem Zeitraum für Erkenntnisse."
           }
         }
       }
@@ -4727,6 +4881,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zeitraum"
+          }
+        }
+      }
+    },
+    "Person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Person"
           }
         }
       }
@@ -5622,6 +5787,17 @@
         }
       }
     },
+    "Show all %lld subcategories": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %lld Unterkategorien anzeigen"
+          }
+        }
+      }
+    },
     "Show built-in rules (%lld)": {
       "extractionState": "manual",
       "localizations": {
@@ -5629,6 +5805,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eingebaute Regeln anzeigen (%lld)"
+          }
+        }
+      }
+    },
+    "Show fewer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger anzeigen"
           }
         }
       }
@@ -5684,6 +5871,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ausgegeben"
+          }
+        }
+      }
+    },
+    "Spent by %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgegeben von %@"
           }
         }
       }
@@ -5886,6 +6084,17 @@
         }
       }
     },
+    "Tap a person to see only their spending - categories, subcategories, shops and changes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf eine Person, um nur ihre Ausgaben zu sehen - Kategorien, Unterkategorien, Geschäfte und Veränderungen."
+          }
+        }
+      }
+    },
     "Target amount": {
       "extractionState": "manual",
       "localizations": {
@@ -6058,6 +6267,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dieser iCloud-Account ist noch nicht aktiviert. Bitte gib deinen Einladungscode ein."
+          }
+        }
+      }
+    },
+    "This iPhone does not support Apple Intelligence.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses iPhone unterstützt Apple Intelligence nicht."
           }
         }
       }
@@ -6260,6 +6480,28 @@
         }
       }
     },
+    "Top shops": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Top-Geschäfte"
+          }
+        }
+      }
+    },
+    "Top subcategories": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Top-Unterkategorien"
+          }
+        }
+      }
+    },
     "Total": {
       "extractionState": "manual",
       "localizations": {
@@ -6344,6 +6586,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versuche eine andere Suche oder weniger Filter."
+          }
+        }
+      }
+    },
+    "Turn on Apple Intelligence in the iPhone Settings to get a written explanation.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schalte Apple Intelligence in den iPhone-Einstellungen ein, um eine geschriebene Erklärung zu bekommen."
           }
         }
       }
@@ -6722,6 +6975,17 @@
         }
       }
     },
+    "Written on this iPhone by Apple Intelligence from the numbers above - nothing is sent anywhere. It can make mistakes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von Apple Intelligence auf diesem iPhone aus den Zahlen oben geschrieben - es wird nichts verschickt. Kann Fehler enthalten."
+          }
+        }
+      }
+    },
     "XXXX-XXXX-XXXX": {
       "extractionState": "manual",
       "localizations": {
@@ -7052,6 +7316,28 @@
         }
       }
     },
+    "new": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "neu"
+          }
+        }
+      }
+    },
+    "was %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vorher %@"
+          }
+        }
+      }
+    },
     "÷ Days left (including today)": {
       "extractionState": "manual",
       "localizations": {
@@ -7092,6 +7378,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "− Bisher ausgegeben"
+          }
+        }
+      }
+    },
+    "▲ %@: %@ more than before (%@).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "▲ %@: %@ mehr als vorher (%@)."
+          }
+        }
+      }
+    },
+    "▲ New spending: %@ %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "▲ Neue Ausgaben: %@ %@."
+          }
+        }
+      }
+    },
+    "▼ %@: %@ less than before.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "▼ %@: %@ weniger als vorher."
           }
         }
       }
