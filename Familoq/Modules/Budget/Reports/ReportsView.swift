@@ -109,6 +109,7 @@ private struct ReportContent: View {
     let family: Family
     let period: ReportPeriod
     let current: DateInterval
+    let previousInterval: DateInterval
     @Binding var selection: ReportPeriod
     @Binding var person: String
     let onEditRange: () -> Void
@@ -127,6 +128,7 @@ private struct ReportContent: View {
         self.family = family
         self.period = period
         self.current = current
+        self.previousInterval = previous
         self.onEditRange = onEditRange
         _selection = selection
         _person = person
@@ -227,6 +229,9 @@ private struct ReportContent: View {
                 }
                 .padding(.vertical, 4)
             }
+
+            FoodBalanceCard(family: family, current: current, previous: previousInterval, person: person, lookup: lookup)
+                .id("food-\(current.start.timeIntervalSince1970)-\(person)")
 
             SpendingInsightsSection(facts: insightFacts(subRows: subRows, categoryRows: rows, total: summary.total, merchants: merchants),
                                     modelInput: modelInput(summary: summary, previous: previous, categoryRows: rows, subRows: subRows, merchants: merchants))
