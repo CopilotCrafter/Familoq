@@ -155,10 +155,12 @@ private struct ScanReceiptContent: View {
                 let binding = Binding<ReceiptDraft>(
                     get: { draft ?? current },
                     set: { newValue in
-                        // Only real changes: iOS 27 text fields write their
-                        // unchanged value back while the screen is built, and
-                        // every write re-built the screen -> endless loop/freeze.
-                        if newValue != draft { draft = newValue }
+                        // Only real changes: iOS 27 controls write their value
+                        // back while the screen is built, and every write
+                        // re-built the screen -> endless loop/freeze.
+                        guard let old = draft, newValue != old else { return }
+                        ScanBreadcrumb.noteWrite(ReceiptDraft.changedFields(from: old, to: newValue))
+                        draft = newValue
                     }
                 )
                 ReceiptReviewView(family: family, draft: binding) {
@@ -271,15 +273,39 @@ struct ReceiptDetailView: View {
 enum ScanBreadcrumb {
     private static let key = "scan.breadcrumb"
 
+    private static let writesKey = "scan.breadcrumb.writes"
+    private static var renders = 0
+    private static var writes = 0
+
     static func set(_ step: String) {
         UserDefaults.standard.set(step, forKey: key)
     }
 
+    /// Counts how often the check screen is built (an endless loop shows up
+    /// as a huge number).
+    static func render(_ step: String) {
+        renders += 1
+        if renders % 10 == 1 { set("\(step) (render \(renders), writes \(writes))") }
+    }
+
+    /// Which fields of the receipt were changed by the screen itself.
+    static func noteWrite(_ fields: String) {
+        writes += 1
+        if writes <= 5 || writes % 20 == 0 {
+            UserDefaults.standard.set("write \(writes): \(fields)", forKey: writesKey)
+        }
+    }
+
     static func clear() {
         UserDefaults.standard.removeObject(forKey: key)
+        UserDefaults.standard.removeObject(forKey: writesKey)
+        renders = 0
+        writes = 0
     }
 
     static var current: String? {
-        UserDefaults.standard.string(forKey: key)
+        guard let step = UserDefaults.standard.string(forKey: key) else { return nil }
+        if let lastWrite = UserDefaults.standard.string(forKey: writesKey) { return step + " - last " + lastWrite }
+        return step
     }
 }

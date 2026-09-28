@@ -26,6 +26,23 @@ struct ReceiptDraft: Equatable {
 
     var total: Decimal? { DecimalParser.parse(totalText) }
 
+    /// Names of the fields that differ (diagnostics for the check screen).
+    static func changedFields(from a: ReceiptDraft, to b: ReceiptDraft) -> String {
+        var names: [String] = []
+        if a.merchant != b.merchant { names.append("merchant") }
+        if a.date != b.date { names.append("date \(a.date.timeIntervalSince1970)->\(b.date.timeIntervalSince1970)") }
+        if a.currencyCode != b.currencyCode { names.append("currency") }
+        if a.currencyConfirmed != b.currencyConfirmed { names.append("currencyConfirmed") }
+        if a.totalText != b.totalText { names.append("total '\(a.totalText)'->'\(b.totalText)'") }
+        if a.categorizeWholeReceipt != b.categorizeWholeReceipt { names.append("wholeReceipt") }
+        if a.wholeCategoryID != b.wholeCategoryID { names.append("wholeCategory") }
+        if a.wholeSubcategoryID != b.wholeSubcategoryID { names.append("wholeSubcategory") }
+        if a.items != b.items { names.append("items") }
+        if a.imageData != b.imageData { names.append("image") }
+        if a.warnings != b.warnings { names.append("warnings") }
+        return names.isEmpty ? "nothing" : names.joined(separator: ", ")
+    }
+
     var includedItemsSum: Decimal {
         items.filter(\.included).compactMap(\.amount).reduce(0, +)
     }
@@ -83,7 +100,9 @@ enum ReceiptDrafting {
 
         return ReceiptDraft(
             merchant: merchant,
-            date: parsed.date ?? now,
+            // Whole minutes: the date picker shows minutes only and would
+            // otherwise "correct" the seconds while the screen is built.
+            date: Date(timeIntervalSince1970: ((parsed.date ?? now).timeIntervalSince1970 / 60).rounded(.down) * 60),
             currencyCode: parsed.currencyCode ?? family.baseCurrencyCode,
             currencyConfirmed: !parsed.currency.needsConfirmation,
             currencyCandidates: currencyCandidates(for: parsed.currency, baseCurrency: family.baseCurrencyCode),

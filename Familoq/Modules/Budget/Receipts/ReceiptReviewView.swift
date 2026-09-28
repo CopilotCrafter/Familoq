@@ -76,7 +76,7 @@ struct ReceiptReviewView: View {
             }
 
             Section("Receipt") {
-                let _ = ScanBreadcrumb.set("the check screen - building receipt section")
+                let _ = ScanBreadcrumb.render("the check screen - building receipt section")
                 TextField("Merchant", text: $draft.merchant)
                 DatePicker("Date & time", selection: $draft.date, displayedComponents: [.date, .hourAndMinute])
                 HStack {
@@ -140,7 +140,7 @@ struct ReceiptReviewView: View {
 
             if !draft.categorizeWholeReceipt {
                 Section {
-                    let _ = ScanBreadcrumb.set("the check screen - building items (\(draft.items.count))")
+                    let _ = ScanBreadcrumb.render("the check screen - building items (\(draft.items.count))")
                     if draft.items.isEmpty {
                         Text("No items were recognised. Add them below or categorize the entire receipt.")
                             .font(.footnote).foregroundStyle(.secondary)
