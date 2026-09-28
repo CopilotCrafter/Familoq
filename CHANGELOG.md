@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.1
+
+### Added
+- Member rights: the owner taps a member (Family → Members) and allows budgets, categories & merchant rules, family name & base currency, or editing everyone's expenses. Enforced on the owner's iPhone during sync, so a member cannot give themselves rights.
+- Change your name: tap your own name in Members; "Use iCloud name" takes the name of your Apple Account (known once the family is shared - no extra permission). An old placeholder name "Me" is replaced automatically.
+
+### Fixed
+- Family → Categories crashed on iOS 27 (screens are now built only when opened; the category editor keeps its own state and saves when you leave it).
+
 ## 0.4.0 - Phase 5
 
 ### Added

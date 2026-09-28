@@ -147,6 +147,7 @@ extension FamilyMember: SyncableRecord {
         p.set("isActive", isActive)
         p.set("joinedAt", joinedAt)
         p.set("cloudUserRecordName", cloudUserRecordName)
+        if !permissionsRaw.isEmpty { p.set("permissions", permissionsRaw) }
         return p
     }
 
@@ -156,5 +157,6 @@ extension FamilyMember: SyncableRecord {
         isActive = p.bool("isActive", default: true)
         joinedAt = p.date("joinedAt", default: joinedAt)
         cloudUserRecordName = p.string("cloudUserRecordName")
+        permissionsRaw = p.string("permissions")
     }
 }

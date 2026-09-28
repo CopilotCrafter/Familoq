@@ -22,7 +22,8 @@ Since 0.3.0 every family is stored in iCloud and shared with its members. Familo
 - **Offline first**: everything is saved on the iPhone immediately. Changes are uploaded within ~15 s when online, and remembered (CKSyncEngine queue) when offline.
 - **Receiving changes**: when the app opens, comes to the foreground, on pull-to-refresh (Family tab) and every minute while open. (No push notifications, so no extra Apple capability is needed.)
 - **Conflicts**: last writer wins, per record.
-- **Owner-only settings** (family name, base currency, categories, budgets, roles) are enforced on the owner's iPhone: a change made by someone else is reverted to the owner's version.
+- **Owner-only settings** (family name, base currency, categories, budgets, roles) are enforced on the owner's iPhone: a change made by someone else is reverted to the owner's version - unless the owner allowed that member (Family → Members → tap the member: *Budgets*, *Categories & merchant rules*, *Family name & base currency*, *Edit everyone's expenses*). A member can never change their own rights; inviting and removing people always stays with the owner.
+- **Names**: everyone can rename themselves (tap your name in Members); *Use iCloud name* offers the Apple Account name that iCloud sharing already shows to the family.
 - **Reinstall / new iPhone** with the same Apple Account: the family comes back from iCloud. The app waits for it before offering "Create your family".
 
 ## One-time setup: the record type (CloudKit Console, ~5 minutes)

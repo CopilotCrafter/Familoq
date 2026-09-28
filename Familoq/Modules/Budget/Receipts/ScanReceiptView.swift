@@ -107,7 +107,7 @@ private struct ScanReceiptContent: View {
                 Section("Recent receipts") {
                     ForEach(recentReceipts) { receipt in
                         NavigationLink {
-                            ReceiptDetailView(receipt: receipt)
+                            LazyView(ReceiptDetailView(receipt: receipt))
                         } label: {
                             HStack {
                                 VStack(alignment: .leading) {

@@ -4,7 +4,7 @@
 // developer.apple.com > Certificates, IDs & Profiles > Identifiers.
 // Everything signing-related is filled in by CI.
 
-MARKETING_VERSION = 0.4.0
+MARKETING_VERSION = 0.4.1
 CURRENT_PROJECT_VERSION = 1
 
 FQ_BUNDLE_ID = com.carolandmartin.familoq

@@ -78,3 +78,17 @@ struct EmptyStateView: View {
         .padding(24)
     }
 }
+
+/// Builds its content only when it is actually shown. NavigationLink creates
+/// its destination for every row as soon as the list appears; destinations
+/// with their own @Query then set up database queries for every row, which
+/// made iOS 27 rebuild the list endlessly (freeze/crash).
+struct LazyView<Content: View>: View {
+    private let build: () -> Content
+
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+
+    var body: Content { build() }
+}

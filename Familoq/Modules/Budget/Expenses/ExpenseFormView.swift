@@ -436,7 +436,7 @@ private struct ReceiptLinkRow: View {
     var body: some View {
         if let receipt = receipts.first {
             NavigationLink {
-                ReceiptDetailView(receipt: receipt)
+                LazyView(ReceiptDetailView(receipt: receipt))
             } label: {
                 Label("Scanned receipt (\(receipt.merchant))", systemImage: "doc.text.viewfinder")
             }

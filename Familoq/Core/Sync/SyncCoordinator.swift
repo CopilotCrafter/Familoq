@@ -420,27 +420,43 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
         }
     }
 
-    /// Owner-only settings may only be changed by the owner. Checked on the
-    /// owner's iPhone, which then restores its own version in iCloud.
+    /// Owner-only settings may only be changed by the owner, or by a member the
+    /// owner gave that right to. Checked on the owner's iPhone, which then
+    /// restores its own version in iCloud.
     private func isChangeAllowed(kind: SyncKind, payload: SyncPayload, local: (any SyncableRecord)?, record: CKRecord) -> Bool {
         guard let modifier = record.lastModifiedUserRecordID?.recordName else { return true }
         let byOwner = modifier == CKCurrentUserDefaultName || modifier == userRecordName || modifier == record.recordID.zoneID.ownerName
         if byOwner { return true }
+        let grants = grantsOf(modifier: modifier, zoneID: record.recordID.zoneID)
         switch kind {
-        case .family, .category, .subcategory, .budget:
-            return false
+        case .family:
+            return grants.contains(.familySettings)
+        case .category, .subcategory:
+            return grants.contains(.categories)
+        case .budget:
+            return grants.contains(.budgets)
         case .member:
             // Members may add themselves and edit their own name - never make
-            // anyone owner or change someone else.
+            // anyone owner, change someone else or give themselves rights.
             let role = payload.string("roleRaw", default: "member")
             if role == FamilyRole.owner.rawValue { return false }
             if let member = local as? FamilyMember {
                 return member.role != .owner && member.cloudUserRecordName == modifier
+                    && FamilyGrant.parse(payload.string("permissions")) == member.grants
             }
-            return payload.string("cloudUserRecordName") == modifier
+            return payload.string("cloudUserRecordName") == modifier && payload.string("permissions").isEmpty
         default:
             return true
         }
+    }
+
+    /// Rights of the person who changed a record, as stored on this iPhone.
+    private func grantsOf(modifier: String, zoneID: CKRecordZone.ID) -> Set<FamilyGrant> {
+        guard let context, let familyID = SyncZone.familyID(fromZoneName: zoneID.zoneName) else { return [] }
+        let fid = familyID
+        let members = (try? context.fetch(FetchDescriptor<FamilyMember>(predicate: #Predicate { $0.familyID == fid }))) ?? []
+        guard let member = members.first(where: { $0.cloudUserRecordName == modifier && $0.isActive }) else { return [] }
+        return member.grants
     }
 
     private func keepLocalVersion(of record: CKRecord, familyID: UUID, engine: CKSyncEngine, existsLocally: Bool) {

@@ -112,7 +112,7 @@ private struct DashboardContent: View {
             Section("Budgets this month") {
                 if categoryProgress.isEmpty {
                     NavigationLink {
-                        BudgetListView(family: family)
+                        LazyView(BudgetListView(family: family))
                     } label: {
                         Label("Set category budgets", systemImage: "slider.horizontal.3")
                     }
@@ -121,7 +121,7 @@ private struct DashboardContent: View {
                         BudgetProgressRow(progress: item, currencyCode: currency)
                     }
                     NavigationLink("All budgets") {
-                        BudgetListView(family: family)
+                        LazyView(BudgetListView(family: family))
                     }
                 }
             }
@@ -144,7 +144,7 @@ private struct DashboardContent: View {
                     Text("Recent expenses")
                     Spacer()
                     NavigationLink("See all") {
-                        ExpenseListView(family: family)
+                        LazyView(ExpenseListView(family: family))
                     }
                     .font(.footnote)
                 }
@@ -172,7 +172,7 @@ private struct DashboardContent: View {
                     }
                 }
                 NavigationLink {
-                    ScheduledExpensesView(family: family)
+                    LazyView(ScheduledExpensesView(family: family))
                 } label: {
                     Label("Recurring & planned", systemImage: "calendar.badge.clock")
                 }
@@ -185,7 +185,7 @@ private struct DashboardContent: View {
                     SavingsGoalRow(goal: goal, saved: contributions.filter { $0.goalID == goal.id }.reduce(Decimal(0)) { $0 + $1.amount }, currency: currency)
                 }
                 NavigationLink {
-                    SavingsGoalsView(family: family)
+                    LazyView(SavingsGoalsView(family: family))
                 } label: {
                     Label(goals.isEmpty ? "Start a savings goal" : "All savings goals", systemImage: "star.circle")
                 }
@@ -255,7 +255,7 @@ private struct DashboardContent: View {
                 .accessibilityHint("Shows how this amount is calculated")
             } else {
                 NavigationLink {
-                    BudgetListView(family: family)
+                    LazyView(BudgetListView(family: family))
                 } label: {
                     Label("Set a monthly family budget to see Safe to spend", systemImage: "target")
                         .font(.subheadline)
