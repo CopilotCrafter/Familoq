@@ -20,7 +20,7 @@ public struct CSVWriter: Sendable {
     }
 
     public func field(_ text: String) -> String {
-        let needsQuotes = text.contains(separator) || text.contains("\"") || text.contains("\n") || text.contains("\r") || text.contains(",") || text.contains(";")
+        let needsQuotes = text.contains(separator) || text.contains("\"") || text.contains("\n") || text.contains("\r")
         let escaped = text.replacingOccurrences(of: "\"", with: "\"\"")
         return needsQuotes ? "\"\(escaped)\"" : escaped
     }
