@@ -206,6 +206,7 @@ struct ReceiptDetailView: View {
     @EnvironmentObject private var session: AppSession
     @State private var showImage = false
     @State private var editRequest: ReviewRequest?
+    @State private var warrantyTarget: WarrantyEditTarget?
 
     init(receipt: ReceiptRecord, allowsEditing: Bool = true) {
         self.allowsEditing = allowsEditing
@@ -226,6 +227,14 @@ struct ReceiptDetailView: View {
                 LabeledContent("Total", value: receipt.total.currency(receipt.currencyCode))
                 if !receipt.vatSummary.isEmpty {
                     LabeledContent("VAT", value: receipt.vatSummary)
+                }
+                Button {
+                    warrantyTarget = WarrantyEditTarget(warranty: nil, prefill: WarrantyPrefill(
+                        itemName: items.max(by: { $0.amount < $1.amount })?.name ?? receipt.merchant,
+                        merchant: receipt.merchant, date: receipt.date, amount: receipt.total,
+                        currencyCode: receipt.currencyCode, receiptID: receipt.id, expenseID: nil))
+                } label: {
+                    Label("Add warranty", systemImage: "checkmark.shield")
                 }
             }
             if !items.isEmpty {
@@ -270,6 +279,11 @@ struct ReceiptDetailView: View {
                 ToolbarItem(placement: .primaryAction) {
                     Button("Edit") { startEditing(lookup: lookup) }
                 }
+            }
+        }
+        .sheet(item: $warrantyTarget) { target in
+            if let family = session.family {
+                WarrantyForm(family: family, target: target)
             }
         }
         .fullScreenCover(item: $editRequest) { request in

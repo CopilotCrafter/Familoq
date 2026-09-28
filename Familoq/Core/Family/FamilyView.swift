@@ -98,8 +98,18 @@ private struct FamilySettingsContent: View {
                 } label: {
                     Label("Notifications", systemImage: "bell.badge")
                 }
+                NavigationLink {
+                    LazyView(AppLockSettingsView())
+                } label: {
+                    Label("Face ID lock", systemImage: "faceid")
+                }
+                NavigationLink {
+                    LazyView(SiriHelpView())
+                } label: {
+                    Label("Siri & Shortcuts", systemImage: "waveform")
+                }
             } header: {
-                Text("Planner")
+                Text("Settings")
             }
 
             Section {
@@ -122,14 +132,19 @@ private struct FamilySettingsContent: View {
 
             Section {
                 NavigationLink {
-                    LazyView(ExportBackupView(family: family))
+                    LazyView(SensitiveGate { ExportBackupView(family: family) })
                 } label: {
                     Label("Export & backup", systemImage: "square.and.arrow.up.on.square")
                 }
                 NavigationLink {
-                    LazyView(StorageView(family: family))
+                    LazyView(SensitiveGate { StorageView(family: family) })
                 } label: {
                     Label("Storage", systemImage: "internaldrive")
+                }
+                NavigationLink {
+                    LazyView(BankImportView(family: family))
+                } label: {
+                    Label("Import bank statement", systemImage: "building.columns")
                 }
             } header: {
                 Text("Your data")

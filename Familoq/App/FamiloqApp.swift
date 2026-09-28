@@ -47,6 +47,7 @@ struct RootView: View {
     @EnvironmentObject private var account: AccountService
     @EnvironmentObject private var sync: SyncCoordinator
     @EnvironmentObject private var shareInbox: ShareInbox
+    @ObservedObject private var lock = AppLock.shared
 
     var body: some View {
         Group {
@@ -80,6 +81,13 @@ struct RootView: View {
         }
         .animation(.default, value: account.state)
         .overlay { JoinProgressOverlay() }
+        .overlay {
+            if lock.isLocked && lock.isEnabled {
+                LockScreen(lock: lock)
+            } else if scenePhase != .active && lock.blurInSwitcher && account.isActive {
+                PrivacyCover()
+            }
+        }
         .task {
             await account.load()
             guard !session.isLoaded else { return }
@@ -117,6 +125,7 @@ struct RootView: View {
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
+                lock.didBecomeActive()
                 Task {
                     await sync.refresh()
                     bookScheduledExpenses()
@@ -125,6 +134,7 @@ struct RootView: View {
                     await account.refreshIfDue()
                 }
             } else if phase == .background {
+                lock.didEnterBackground()
                 sync.scanNow()
                 BackgroundRefresh.schedule()
                 Task { await PlannerNotifications.reschedule(context: context) }
