@@ -265,6 +265,17 @@
         }
       }
     },
+    "A bit low": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas wenig"
+          }
+        }
+      }
+    },
     "A family owner invites their own members.": {
       "extractionState": "manual",
       "localizations": {
@@ -474,6 +485,17 @@
         }
       }
     },
+    "Added to the shopping list: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf die Einkaufsliste gesetzt: %@"
+          }
+        }
+      }
+    },
     "Adds the backup's records to this family; records that already exist are replaced by the backup's version. Other families are never changed.": {
       "extractionState": "manual",
       "localizations": {
@@ -492,6 +514,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verwaltung"
+          }
+        }
+      }
+    },
+    "Alcohol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alkohol"
           }
         }
       }
@@ -749,6 +782,17 @@
         }
       }
     },
+    "Apples": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Äpfel"
+          }
+        }
+      }
+    },
     "Appointment": {
       "extractionState": "manual",
       "localizations": {
@@ -881,6 +925,28 @@
         }
       }
     },
+    "Berries": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beeren"
+          }
+        }
+      }
+    },
+    "Better less often": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Besser seltener"
+          }
+        }
+      }
+    },
     "Beverages": {
       "extractionState": "manual",
       "localizations": {
@@ -943,6 +1009,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Brot & Backwaren"
+          }
+        }
+      }
+    },
+    "Bread, pasta & rice": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brot, Nudeln & Reis"
+          }
+        }
+      }
+    },
+    "Broccoli": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brokkoli"
           }
         }
       }
@@ -1068,6 +1156,17 @@
         }
       }
     },
+    "Calcium": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalzium"
+          }
+        }
+      }
+    },
     "Calendar": {
       "extractionState": "manual",
       "localizations": {
@@ -1163,6 +1262,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Autowäsche"
+          }
+        }
+      }
+    },
+    "Carrots": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karotten"
           }
         }
       }
@@ -1317,6 +1427,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Einladung wird geprüft …"
+          }
+        }
+      }
+    },
+    "Cheese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Käse"
+          }
+        }
+      }
+    },
+    "Chickpeas": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kichererbsen"
           }
         }
       }
@@ -1530,6 +1662,17 @@
         }
       }
     },
+    "Could be better": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geht besser"
+          }
+        }
+      }
+    },
     "Could not change currency": {
       "extractionState": "manual",
       "localizations": {
@@ -1691,6 +1834,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tagesbeträge werden abgerundet, damit du nie darüber liegst. Nur umgerechnete Beträge in %@ zählen; Ausgaben in Fremdwährung, die auf einen Kurs warten, zählen nach der Umrechnung."
+          }
+        }
+      }
+    },
+    "Dairy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milchprodukte"
           }
         }
       }
@@ -2366,6 +2520,17 @@
         }
       }
     },
+    "Estimated from what your family bought and what it cost - not from what was eaten or from nutrition labels. A friendly guide, not medical or nutrition advice.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschätzt aus dem, was eure Familie gekauft hat und was es gekostet hat - nicht aus dem, was gegessen wurde, oder aus Nährwertangaben. Eine freundliche Orientierung, keine medizinische oder Ernährungsberatung."
+          }
+        }
+      }
+    },
     "Event": {
       "extractionState": "manual",
       "localizations": {
@@ -2773,6 +2938,17 @@
         }
       }
     },
+    "Fibre": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ballaststoffe"
+          }
+        }
+      }
+    },
     "Filed like last time (you corrected these before).": {
       "extractionState": "manual",
       "localizations": {
@@ -2806,6 +2982,17 @@
         }
       }
     },
+    "Fish": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fisch"
+          }
+        }
+      }
+    },
     "Fish & Seafood": {
       "extractionState": "manual",
       "localizations": {
@@ -2824,6 +3011,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Flüge"
+          }
+        }
+      }
+    },
+    "Food: %@ · %lld item(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebensmittel: %@ · %lld Artikel"
           }
         }
       }
@@ -2868,6 +3066,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tiefkühlkost"
+          }
+        }
+      }
+    },
+    "Fruit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obst"
           }
         }
       }
@@ -2960,6 +3169,17 @@
         }
       }
     },
+    "Good": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gut"
+          }
+        }
+      }
+    },
     "Groceries": {
       "extractionState": "manual",
       "localizations": {
@@ -2993,6 +3213,17 @@
         }
       }
     },
+    "Healthy basket": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesunder Einkauf"
+          }
+        }
+      }
+    },
     "Heating": {
       "extractionState": "manual",
       "localizations": {
@@ -3000,6 +3231,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Heizung"
+          }
+        }
+      }
+    },
+    "Herring": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hering"
           }
         }
       }
@@ -3576,6 +3818,17 @@
         }
       }
     },
+    "Last 6 months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte 6 Monate"
+          }
+        }
+      }
+    },
     "Last day": {
       "extractionState": "manual",
       "localizations": {
@@ -3649,6 +3902,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diese Familie verlassen"
+          }
+        }
+      }
+    },
+    "Lentils": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linsen"
+          }
+        }
+      }
+    },
+    "Linseed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leinsamen"
           }
         }
       }
@@ -3763,6 +4038,17 @@
         }
       }
     },
+    "Meat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fleisch"
+          }
+        }
+      }
+    },
     "Meat & Poultry": {
       "extractionState": "manual",
       "localizations": {
@@ -3869,6 +4155,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Händler, Datum & Uhrzeit, Summe, Währung, MwSt. und einzelne Positionen werden auf deinem iPhone gelesen – auch Belege aus dem Ausland. Ist die Währung unklar, fragt Familoq nach. Du prüfst alles, bevor es gespeichert wird."
+          }
+        }
+      }
+    },
+    "Milk": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milch"
           }
         }
       }
@@ -4357,6 +4654,17 @@
         }
       }
     },
+    "Non-food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non-Food"
+          }
+        }
+      }
+    },
     "None": {
       "extractionState": "manual",
       "localizations": {
@@ -4364,6 +4672,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine"
+          }
+        }
+      }
+    },
+    "Not enough data yet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch zu wenige Daten"
           }
         }
       }
@@ -4588,6 +4907,17 @@
         }
       }
     },
+    "Nutrients": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nährstoffe"
+          }
+        }
+      }
+    },
     "OK": {
       "extractionState": "manual",
       "localizations": {
@@ -4599,6 +4929,17 @@
         }
       }
     },
+    "Oats": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haferflocken"
+          }
+        }
+      }
+    },
     "Offline - changes are sent when you are back online": {
       "extractionState": "manual",
       "localizations": {
@@ -4606,6 +4947,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Offline – Änderungen werden gesendet, sobald du wieder online bist"
+          }
+        }
+      }
+    },
+    "Oils, sauces & spices": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öle, Soßen & Gewürze"
+          }
+        }
+      }
+    },
+    "Omega-3 fats": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omega-3-Fette"
           }
         }
       }
@@ -4830,6 +5193,17 @@
         }
       }
     },
+    "Other food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonstige Lebensmittel"
+          }
+        }
+      }
+    },
     "Over budget": {
       "extractionState": "manual",
       "localizations": {
@@ -4936,6 +5310,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Personen"
+          }
+        }
+      }
+    },
+    "Peppers": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paprika"
           }
         }
       }
@@ -5116,6 +5501,17 @@
         }
       }
     },
+    "Protein": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eiweiß"
+          }
+        }
+      }
+    },
     "Public Transport": {
       "extractionState": "manual",
       "localizations": {
@@ -5123,6 +5519,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "ÖPNV"
+          }
+        }
+      }
+    },
+    "Pulses & nuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hülsenfrüchte & Nüsse"
+          }
+        }
+      }
+    },
+    "Quark": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quark"
           }
         }
       }
@@ -5178,6 +5596,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beleg wird gelesen …"
+          }
+        }
+      }
+    },
+    "Ready meals & fast food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertiggerichte & Fast Food"
           }
         }
       }
@@ -5633,6 +6062,28 @@
         }
       }
     },
+    "Salmon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lachs"
+          }
+        }
+      }
+    },
+    "Sausage & cold cuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wurst & Aufschnitt"
+          }
+        }
+      }
+    },
     "Save": {
       "extractionState": "manual",
       "localizations": {
@@ -5699,6 +6150,17 @@
         }
       }
     },
+    "Scan a few receipts item by item (not as one category) to get a score.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne ein paar Kassenbons Artikel für Artikel (nicht als eine Kategorie), um eine Bewertung zu bekommen."
+          }
+        }
+      }
+    },
     "Scan a receipt": {
       "extractionState": "manual",
       "localizations": {
@@ -5706,6 +6168,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Beleg scannen"
+          }
+        }
+      }
+    },
+    "Scan receipts item by item to see how balanced your food shopping is.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne Kassenbons Artikel für Artikel, um zu sehen, wie ausgewogen euer Einkauf ist."
           }
         }
       }
@@ -5750,6 +6223,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Schule"
+          }
+        }
+      }
+    },
+    "Score %lld of 100": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld von 100 Punkten"
           }
         }
       }
@@ -5805,6 +6289,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kategoriebudgets festlegen"
+          }
+        }
+      }
+    },
+    "Share of the money spent on food. Small numbers: change in percentage points against the previous period.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anteil am Geld für Lebensmittel. Kleine Zahlen: Veränderung in Prozentpunkten ggü. dem vorherigen Zeitraum."
           }
         }
       }
@@ -5904,6 +6399,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Snacks & Süßes"
+          }
+        }
+      }
+    },
+    "Soft drinks & juices": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Softdrinks & Säfte"
           }
         }
       }
@@ -6073,6 +6579,61 @@
         }
       }
     },
+    "Swap idea: cook a simple meal with vegetables instead of ready meals.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tausch-Idee: ein einfaches Gericht mit Gemüse kochen statt Fertiggerichte."
+          }
+        }
+      }
+    },
+    "Swap idea: fresh chicken, fish or pulses instead of sausage and cold cuts.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tausch-Idee: frisches Hähnchen, Fisch oder Hülsenfrüchte statt Wurst und Aufschnitt."
+          }
+        }
+      }
+    },
+    "Swap idea: fruit, nuts or yoghurt instead of sweets and snacks.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tausch-Idee: Obst, Nüsse oder Joghurt statt Süßem und Snacks."
+          }
+        }
+      }
+    },
+    "Swap idea: water or unsweetened tea instead of soft drinks and juice.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tausch-Idee: Wasser oder ungesüßter Tee statt Softdrinks und Saft."
+          }
+        }
+      }
+    },
+    "Sweets & snacks": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süßes & Snacks"
+          }
+        }
+      }
+    },
     "Swipe to delete a list together with its items.": {
       "extractionState": "manual",
       "localizations": {
@@ -6157,6 +6718,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tippe auf eine Person, um nur ihre Ausgaben zu sehen - Kategorien, Unterkategorien, Geschäfte und Veränderungen."
+          }
+        }
+      }
+    },
+    "Tap an idea to put it on the shopping list (optional).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf eine Idee, um sie auf die Einkaufsliste zu setzen (optional)."
           }
         }
       }
@@ -6491,6 +7063,17 @@
         }
       }
     },
+    "Tips from Apple Intelligence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipps von Apple Intelligence"
+          }
+        }
+      }
+    },
     "Title": {
       "extractionState": "manual",
       "localizations": {
@@ -6678,6 +7261,17 @@
         }
       }
     },
+    "Unbalanced": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unausgewogen"
+          }
+        }
+      }
+    },
     "Uncategorized": {
       "extractionState": "manual",
       "localizations": {
@@ -6821,6 +7415,17 @@
         }
       }
     },
+    "Very balanced": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sehr ausgewogen"
+          }
+        }
+      }
+    },
     "View scanned receipt": {
       "extractionState": "manual",
       "localizations": {
@@ -6832,6 +7437,17 @@
         }
       }
     },
+    "Vitamins & minerals": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitamine & Mineralstoffe"
+          }
+        }
+      }
+    },
     "Waiting for exchange rate": {
       "extractionState": "manual",
       "localizations": {
@@ -6839,6 +7455,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wartet auf Wechselkurs"
+          }
+        }
+      }
+    },
+    "Walnuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walnüsse"
           }
         }
       }
@@ -6861,6 +7488,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wasser"
+          }
+        }
+      }
+    },
+    "Water, coffee & tea": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wasser, Kaffee & Tee"
           }
         }
       }
@@ -6898,6 +7536,17 @@
         }
       }
     },
+    "Well covered": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gut abgedeckt"
+          }
+        }
+      }
+    },
     "What needs doing?": {
       "extractionState": "manual",
       "localizations": {
@@ -6916,6 +7565,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wie soll deine Familie dich nennen?"
+          }
+        }
+      }
+    },
+    "What was bought": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was gekauft wurde"
           }
         }
       }
@@ -7019,6 +7679,28 @@
         }
       }
     },
+    "Wholegrain": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollkorn"
+          }
+        }
+      }
+    },
+    "Wholegrain bread": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollkornbrot"
+          }
+        }
+      }
+    },
     "Whose birthday?": {
       "extractionState": "manual",
       "localizations": {
@@ -7052,6 +7734,17 @@
         }
       }
     },
+    "Written on this iPhone - nothing is sent anywhere. It can make mistakes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem iPhone geschrieben - es wird nichts verschickt. Kann Fehler enthalten."
+          }
+        }
+      }
+    },
     "Written on this iPhone by Apple Intelligence from the numbers above - nothing is sent anywhere. It can make mistakes.": {
       "extractionState": "manual",
       "localizations": {
@@ -7081,6 +7774,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestern"
+          }
+        }
+      }
+    },
+    "Yoghurt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joghurt"
           }
         }
       }
@@ -7294,6 +7998,17 @@
         }
       }
     },
+    "a variety of vegetables and fruit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "abwechslungsreiches Gemüse und Obst"
+          }
+        }
+      }
+    },
     "added by %@": {
       "extractionState": "manual",
       "localizations": {
@@ -7393,6 +8108,28 @@
         }
       }
     },
+    "meat, fish, eggs, dairy, pulses": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fleisch, Fisch, Eier, Milchprodukte, Hülsenfrüchte"
+          }
+        }
+      }
+    },
+    "milk, yoghurt, cheese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milch, Joghurt, Käse"
+          }
+        }
+      }
+    },
     "new": {
       "extractionState": "manual",
       "localizations": {
@@ -7400,6 +8137,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "neu"
+          }
+        }
+      }
+    },
+    "oily fish, walnuts, linseed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fetter Fisch, Walnüsse, Leinsamen"
+          }
+        }
+      }
+    },
+    "vegetables, fruit, wholegrain, pulses": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemüse, Obst, Vollkorn, Hülsenfrüchte"
+          }
+        }
+      }
+    },
+    "vs previous period (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ggü. vorherigem Zeitraum (%lld)"
           }
         }
       }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.3 - Healthy basket
+
+### Added
+- Reports → Healthy basket: a 0-100 score for how balanced the food shopping of a period is (whole family or one person), compared with the previous period and over the last 6 months.
+- What was bought by food group (vegetables, fruit, wholegrain, dairy, fish, … and sweets, soft drinks, alcohol, sausage, ready meals highlighted in orange).
+- Nutrients (protein, fibre, vitamins & minerals, calcium, omega-3) estimated from the food groups, with ideas that can be put on the shopping list with one tap.
+- "Better less often": the biggest less healthy purchases with a swap idea; optional tips from Apple Intelligence.
+- Honest note: estimated from what was bought and its price, not medical or nutrition advice.
+
 ## 0.5.2 - Better receipt filing
 
 ### Added
