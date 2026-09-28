@@ -259,3 +259,126 @@ final class LeaveAllowance {
         DeterministicID.uuid("leave-allowance|\(familyID.uuidString)|\(memberID.uuidString)|\(year)")
     }
 }
+
+/// A family recipe: name and ingredient lines ("2 Zwiebeln", "500 g Hack").
+@Model
+final class Recipe {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var name: String = ""
+    /// One ingredient per line.
+    var ingredientsText: String = ""
+    var servings: Int = 4
+    var note: String = ""
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, name: String) {
+        self.id = id
+        self.familyID = familyID
+        self.name = name
+    }
+
+    var ingredients: [String] { MealIngredients.lines(from: ingredientsText) }
+}
+
+/// What the family eats on a day (a recipe or just a title).
+@Model
+final class MealPlanEntry {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    /// Start of the day.
+    var day: Date = Date()
+    var slotRaw: String = MealSlot.dinner.rawValue
+    var recipeID: UUID? = nil
+    var title: String = ""
+    var note: String = ""
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, day: Date, slot: MealSlot, title: String) {
+        self.id = id
+        self.familyID = familyID
+        self.day = day
+        self.slotRaw = slot.rawValue
+        self.title = title
+    }
+
+    var slot: MealSlot {
+        get { MealSlot(rawValue: slotRaw) ?? .dinner }
+        set { slotRaw = newValue.rawValue }
+    }
+}
+
+/// A family trip with its own budget and currency.
+@Model
+final class Trip {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var name: String = ""
+    var destination: String = ""
+    var startDate: Date = Date()
+    var endDate: Date = Date()
+    var currencyCode: String = "EUR"
+    /// Budget in the trip currency (fixed point).
+    var budgetValue: Int64 = 0
+    /// Family members on the trip (comma-separated IDs).
+    var participantsRaw: String = ""
+    /// Friends without the app (one name per line).
+    var guestsRaw: String = ""
+    /// Calendar entry created for the trip.
+    var eventID: UUID? = nil
+    var isArchived: Bool = false
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, name: String, startDate: Date, endDate: Date, currencyCode: String) {
+        self.id = id
+        self.familyID = familyID
+        self.name = name
+        self.startDate = startDate
+        self.endDate = endDate
+        self.currencyCode = currencyCode
+    }
+
+    var budget: Decimal {
+        get { FixedPoint.decimal(from: budgetValue) }
+        set { budgetValue = FixedPoint.storage(from: newValue) }
+    }
+
+    var participants: Set<UUID> {
+        get { MemberIDList.parse(participantsRaw) }
+        set { participantsRaw = MemberIDList.encode(newValue) }
+    }
+
+    var guests: [String] {
+        get { guestsRaw.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty } }
+        set { guestsRaw = newValue.joined(separator: "\n") }
+    }
+
+    /// Everyone who can pay or share: member IDs, then "guest:Name".
+    var participantKeys: [String] {
+        participants.map(\.uuidString).sorted() + guests.map { "guest:" + $0 }
+    }
+}
+
+/// Packing list item of a trip.
+@Model
+final class PackingItem {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var tripID: UUID = UUID()
+    var name: String = ""
+    var isPacked: Bool = false
+    var memberID: UUID? = nil
+    var sortOrder: Int = 0
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, tripID: UUID, name: String) {
+        self.id = id
+        self.familyID = familyID
+        self.tripID = tripID
+        self.name = name
+    }
+}

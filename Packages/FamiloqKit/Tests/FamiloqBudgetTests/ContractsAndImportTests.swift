@@ -55,20 +55,20 @@ final class ContractTests: XCTestCase {
 final class BankImportTests: XCTestCase {
     let calendar = FamiloqCalendar.make(timeZone: TimeZone(identifier: "Europe/Berlin")!)
 
-    let sparkasse = """
+    let sparkasse = #"""
     "Auftragskonto";"Buchungstag";"Valutadatum";"Buchungstext";"Verwendungszweck";"Beguenstigter/Zahlungspflichtiger";"Kontonummer/IBAN";"BIC (SWIFT-Code)";"Betrag";"Waehrung";"Info"
     "DE00123";"28.09.26";"28.09.26";"KARTENZAHLUNG";"ALDI SUED 021 RODING";"ALDI SUED";"DE11";"BIC";"-31,08";"EUR";"Umsatz gebucht"
     "DE00123";"27.09.26";"27.09.26";"GUTSCHRIFT";"Gehalt September";"Arbeitgeber GmbH";"DE22";"BIC";"3.210,00";"EUR";"Umsatz gebucht"
     "DE00123";"26.09.26";"26.09.26";"LASTSCHRIFT";"Vertrag 4711 ""Mobil""";"Telekom Deutschland";"DE33";"BIC";"-1.049,99";"EUR";"Umsatz gebucht"
-    """
+    """#
 
-    let dkb = """
+    let dkb = #"""
     "Konto:";"DE00 1234"
     "Kontostand vom 28.09.2026:";"1.234,00 EUR"
 
     "Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige*r";"Zahlungsempfänger*in";"Verwendungszweck";"Umsatztyp";"IBAN";"Betrag (€)"
     "28.09.26";"28.09.26";"Gebucht";"Martin";"REWE Markt";"REWE SAGT DANKE";"Ausgang";"DE44";"-45,20 €"
-    """
+    """#
 
     func testSparkasseGuessAndParse() throws {
         let rows = CSVReader.rows(sparkasse)

@@ -39,6 +39,11 @@ final class Expense {
     var keepPhoto: Bool = false
     var photoRevision: Int = 0
     var photoBytes: Int = 0
+    /// Travel: the trip, who paid (participant key) and who shares it
+    /// (comma-separated keys, empty = everyone on the trip).
+    var tripID: UUID? = nil
+    var tripPaidBy: String = ""
+    var tripSplit: String = ""
     /// Set when the expense was created from a scanned receipt.
     var receiptID: UUID? = nil
     var createdAt: Date = Date()

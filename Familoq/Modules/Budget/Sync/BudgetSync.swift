@@ -24,6 +24,14 @@ extension BudgetModule {
                     rule.id = id
                     return rule
                 }),
+            .of(Contract.self,
+                inFamily: { fid in #Predicate<Contract> { $0.familyID == fid } },
+                withID: { id in #Predicate<Contract> { $0.id == id } },
+                make: { id, fid in Contract(id: id, familyID: fid, name: "") }),
+            .of(Warranty.self,
+                inFamily: { fid in #Predicate<Warranty> { $0.familyID == fid } },
+                withID: { id in #Predicate<Warranty> { $0.id == id } },
+                make: { id, fid in Warranty(id: id, familyID: fid, itemName: "", purchaseDate: Date()) }),
             .of(ItemCategoryRule.self,
                 inFamily: { fid in #Predicate<ItemCategoryRule> { $0.familyID == fid } },
                 withID: { id in #Predicate<ItemCategoryRule> { $0.id == id } },
@@ -287,12 +295,19 @@ extension Expense: SyncableRecord {
         p.set("updatedAt", updatedAt)
         if keepPhoto { p.set("keepPhoto", true) }
         if photoRevision > 0 { p.set("photoRevision", photoRevision) }
+        // Travel fields only when used (older records keep their fingerprint).
+        if let tripID { p.set("tripID", tripID) }
+        if !tripPaidBy.isEmpty { p.set("tripPaidBy", tripPaidBy) }
+        if !tripSplit.isEmpty { p.set("tripSplit", tripSplit) }
         return p
     }
 
     func applySyncPayload(_ p: SyncPayload) {
         keepPhoto = p.bool("keepPhoto")
         photoRevision = p.int("photoRevision")
+        tripID = p.uuid("tripID")
+        tripPaidBy = p.string("tripPaidBy")
+        tripSplit = p.string("tripSplit")
         amountValue = p.int64("amountValue")
         currencyCode = p.string("currencyCode", default: "EUR")
         baseAmountValue = p.optionalInt64("baseAmountValue")
@@ -441,6 +456,98 @@ extension ItemCategoryRule: SyncableRecord {
         displayName = p.string("displayName")
         categoryID = p.uuid("categoryID") ?? categoryID
         subcategoryID = p.uuid("subcategoryID")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension Contract: SyncableRecord {
+    static var syncKind: SyncKind { .contract }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("name", name)
+        p.set("provider", provider)
+        p.set("categoryID", categoryID)
+        p.set("subcategoryID", subcategoryID)
+        p.set("amountValue", amountValue)
+        p.set("currencyCode", currencyCode)
+        p.set("frequencyRaw", frequencyRaw)
+        p.set("startDate", startDate)
+        p.set("minimumTermMonths", minimumTermMonths)
+        p.set("renewalMonths", renewalMonths)
+        p.set("noticeValue", noticeValue)
+        p.set("noticeUnitRaw", noticeUnitRaw)
+        p.set("customerNumber", customerNumber)
+        p.set("note", note)
+        p.set("memberID", memberID)
+        p.set("scheduledExpenseID", scheduledExpenseID)
+        p.set("isCancelled", isCancelled)
+        p.set("cancelledOn", cancelledOn)
+        p.set("reminderDaysRaw", reminderDaysRaw)
+        p.set("createdByMemberID", createdByMemberID)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        name = p.string("name")
+        provider = p.string("provider")
+        categoryID = p.uuid("categoryID")
+        subcategoryID = p.uuid("subcategoryID")
+        amountValue = p.int64("amountValue")
+        currencyCode = p.string("currencyCode", default: "EUR")
+        frequencyRaw = p.string("frequencyRaw", default: "monthly")
+        startDate = p.date("startDate", default: startDate)
+        minimumTermMonths = p.int("minimumTermMonths")
+        renewalMonths = p.int("renewalMonths")
+        noticeValue = p.int("noticeValue")
+        noticeUnitRaw = p.string("noticeUnitRaw", default: "months")
+        customerNumber = p.string("customerNumber")
+        note = p.string("note")
+        memberID = p.uuid("memberID")
+        scheduledExpenseID = p.uuid("scheduledExpenseID")
+        isCancelled = p.bool("isCancelled")
+        cancelledOn = p.date("cancelledOn")
+        reminderDaysRaw = p.string("reminderDaysRaw", default: "30,7")
+        createdByMemberID = p.uuid("createdByMemberID")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension Warranty: SyncableRecord {
+    static var syncKind: SyncKind { .warranty }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("itemName", itemName)
+        p.set("merchant", merchant)
+        p.set("purchaseDate", purchaseDate)
+        p.set("months", months)
+        p.set("amountValue", amountValue)
+        p.set("currencyCode", currencyCode)
+        p.set("receiptID", receiptID)
+        p.set("expenseID", expenseID)
+        p.set("note", note)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        itemName = p.string("itemName")
+        merchant = p.string("merchant")
+        purchaseDate = p.date("purchaseDate", default: purchaseDate)
+        months = p.int("months", default: 24)
+        amountValue = p.int64("amountValue")
+        currencyCode = p.string("currencyCode", default: "EUR")
+        receiptID = p.uuid("receiptID")
+        expenseID = p.uuid("expenseID")
+        note = p.string("note")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
     }

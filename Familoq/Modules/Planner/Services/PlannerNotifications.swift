@@ -4,6 +4,7 @@ import UserNotifications
 import BackgroundTasks
 import FamiloqCore
 import FamiloqPlanner
+import FamiloqBudget
 
 /// Local notifications for reminders, events and bills. Each iPhone works out
 /// its own alerts from the synced data - no push service, no server, no
@@ -16,12 +17,14 @@ enum PlannerNotifications {
         case reminders = "notify.reminders"
         case events = "notify.events"
         case bills = "notify.bills"
+        case deadlines = "notify.deadlines"
 
         var title: String {
             switch self {
             case .reminders: return "Reminders for me"
             case .events: return "Calendar alerts"
             case .bills: return "Bills due tomorrow"
+            case .deadlines: return "Contract deadlines & warranties"
             }
         }
 
@@ -86,12 +89,36 @@ enum PlannerNotifications {
         let horizon = calendar.date(byAdding: .day, value: 36, to: now) ?? now
         let upcomingBills = PlanningService.upcoming(schedules, now: now, until: horizon, calendar: calendar)
 
+        // Contract cancellation deadlines and warranty ends.
+        var contractsByID: [String: (Contract, ContractDeadline)] = [:]
+        var warrantiesByID: [String: (Warranty, Date)] = [:]
+        var deadlines: [NotificationPlanner.Deadline] = []
+        if Setting.deadlines.isOn {
+            let contracts = ((try? context.fetch(FetchDescriptor<Contract>(predicate: #Predicate { $0.isCancelled == false }))) ?? [])
+                .filter { families.contains($0.familyID) }
+            for contract in contracts {
+                guard let next = ContractSchedule.next(contract.terms, now: now, calendar: calendar) else { continue }
+                let key = "c-" + contract.id.uuidString
+                contractsByID[key] = (contract, next)
+                deadlines.append(.init(id: key, date: next.deadline, daysBefore: contract.reminderDays + [0]))
+            }
+            let warranties = ((try? context.fetch(FetchDescriptor<Warranty>())) ?? []).filter { families.contains($0.familyID) }
+            for warranty in warranties {
+                let end = WarrantyTerms.end(purchase: warranty.purchaseDate, months: warranty.months, calendar: calendar)
+                guard end > now else { continue }
+                let key = "w-" + warranty.id.uuidString
+                warrantiesByID[key] = (warranty, end)
+                deadlines.append(.init(id: key, date: end, daysBefore: [30]))
+            }
+        }
+
         let plan = NotificationPlanner.plan(
             reminders: reminders.compactMap { r in
                 r.dueDate.map { NotificationPlanner.Reminder(id: r.id, due: $0, hasTime: r.hasTime, assignees: r.assignees) }
             },
             events: events.map { NotificationPlanner.Event(spec: $0.spec, alertMinutes: $0.alertMinutes, participants: $0.participants) },
             bills: upcomingBills.map { NotificationPlanner.Bill(id: $0.id, date: $0.date) },
+            deadlines: deadlines,
             me: me, now: now, calendar: calendar)
 
         let remindersByID = Dictionary(reminders.map { ($0.id.uuidString, $0) }, uniquingKeysWith: { a, _ in a })
@@ -118,6 +145,21 @@ enum PlannerNotifications {
                 guard let bill = billsByID[alert.sourceID] else { return nil }
                 content.title = String(localized: "Due tomorrow: \(bill.schedule.title)")
                 content.body = bill.schedule.amount.formatted(.currency(code: bill.schedule.currencyCode))
+            case .deadline:
+                if let entry = contractsByID[alert.sourceID] {
+                    let (contract, next) = entry
+                    let day = next.deadline.formatted(date: .long, time: .omitted)
+                    content.title = String(localized: "Cancel by \(day): \(contract.name)")
+                    content.body = contract.renewalMonths > 0
+                        ? String(localized: "Otherwise the contract renews after \(next.termEnd.formatted(date: .long, time: .omitted)).")
+                        : String(localized: "The contract ends on \(next.termEnd.formatted(date: .long, time: .omitted)).")
+                } else if let entry = warrantiesByID[alert.sourceID] {
+                    let (warranty, end) = entry
+                    content.title = String(localized: "Warranty ends: \(warranty.itemName)")
+                    content.body = String(localized: "Last day: \(end.formatted(date: .long, time: .omitted)). Check it for faults now.")
+                } else {
+                    return nil
+                }
             }
             let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: alert.fireDate)
             let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)

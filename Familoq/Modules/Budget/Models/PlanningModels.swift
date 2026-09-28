@@ -112,3 +112,99 @@ final class SavingsContribution {
         set { amountValue = FixedPoint.storage(from: newValue) }
     }
 }
+
+/// A contract (insurance, phone, internet, streaming, gym, energy …) with
+/// its term and notice period, so Familoq can warn before a deadline.
+@Model
+final class Contract {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var name: String = ""
+    var provider: String = ""
+    var categoryID: UUID? = nil
+    var subcategoryID: UUID? = nil
+    var amountValue: Int64 = 0
+    var currencyCode: String = "EUR"
+    var frequencyRaw: String = "monthly"
+    var startDate: Date = Date()
+    var minimumTermMonths: Int = 12
+    /// Renewal after the minimum term (1 = monthly, 12 = yearly, 0 = ends).
+    var renewalMonths: Int = 1
+    var noticeValue: Int = 1
+    var noticeUnitRaw: String = "months"
+    var customerNumber: String = ""
+    var note: String = ""
+    var memberID: UUID? = nil
+    /// The recurring expense that books the payments (optional).
+    var scheduledExpenseID: UUID? = nil
+    var isCancelled: Bool = false
+    var cancelledOn: Date? = nil
+    /// Days before the deadline to remind, e.g. "30,7".
+    var reminderDaysRaw: String = "30,7"
+    var createdByMemberID: UUID? = nil
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, name: String) {
+        self.id = id
+        self.familyID = familyID
+        self.name = name
+    }
+
+    var amount: Decimal {
+        get { FixedPoint.decimal(from: amountValue) }
+        set { amountValue = FixedPoint.storage(from: newValue) }
+    }
+
+    var frequency: RecurrenceFrequency {
+        get { RecurrenceFrequency(rawValue: frequencyRaw) ?? .monthly }
+        set { frequencyRaw = newValue.rawValue }
+    }
+
+    var noticeUnit: NoticeUnit {
+        get { NoticeUnit(rawValue: noticeUnitRaw) ?? .months }
+        set { noticeUnitRaw = newValue.rawValue }
+    }
+
+    var reminderDays: [Int] {
+        get { reminderDaysRaw.split(separator: ",").compactMap { Int($0) } }
+        set { reminderDaysRaw = newValue.sorted(by: >).map(String.init).joined(separator: ",") }
+    }
+
+    var terms: ContractTerms {
+        ContractTerms(start: startDate, minimumTermMonths: minimumTermMonths, renewalMonths: renewalMonths,
+                      noticeValue: noticeValue, noticeUnit: noticeUnit)
+    }
+}
+
+/// Warranty of something bought (from a receipt or an expense).
+@Model
+final class Warranty {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var itemName: String = ""
+    var merchant: String = ""
+    var purchaseDate: Date = Date()
+    /// Usually 24 (statutory warranty in the EU); some products have more.
+    var months: Int = 24
+    var amountValue: Int64 = 0
+    var currencyCode: String = "EUR"
+    var receiptID: UUID? = nil
+    var expenseID: UUID? = nil
+    var note: String = ""
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, itemName: String, purchaseDate: Date, months: Int = 24) {
+        self.id = id
+        self.familyID = familyID
+        self.itemName = itemName
+        self.purchaseDate = purchaseDate
+        self.months = months
+    }
+
+    var amount: Decimal {
+        get { FixedPoint.decimal(from: amountValue) }
+        set { amountValue = FixedPoint.storage(from: newValue) }
+    }
+}
