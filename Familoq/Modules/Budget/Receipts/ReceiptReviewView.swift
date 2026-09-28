@@ -7,31 +7,31 @@ import FamiloqBudget
 /// Confirmation screen: everything recognised can be corrected before saving.
 struct ReceiptReviewView: View {
     let family: Family
-    @Binding var draft: ReceiptDraft
+    /// The screen owns its copy of the receipt: edits never touch the Scan
+    /// screen behind it (iOS 27 froze re-building both in a loop).
+    @State private var draft: ReceiptDraft
+    /// Categories are handed in (no @Query here - a query inside a
+    /// presented screen is re-created whenever its parent is rebuilt).
+    let lookup: CategoryLookup
     let onDone: () -> Void
 
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var session: AppSession
     @EnvironmentObject private var rates: ExchangeRateService
-    @Query private var categories: [ExpenseCategory]
-    @Query private var subcategories: [ExpenseSubcategory]
     @State private var errorMessage: String?
     @State private var showImage = false
     @State private var showDiscard = false
     /// Item whose category is being chosen (sheet).
     @State private var categoryPickerItemID: UUID?
 
-    init(family: Family, draft: Binding<ReceiptDraft>, onDone: @escaping () -> Void) {
+    init(family: Family, draft: ReceiptDraft, lookup: CategoryLookup, onDone: @escaping () -> Void) {
         self.family = family
-        _draft = draft
+        _draft = State(initialValue: draft)
+        self.lookup = lookup
         self.onDone = onDone
-        let fid = family.id
-        _categories = Query(filter: #Predicate<ExpenseCategory> { $0.familyID == fid }, sort: \ExpenseCategory.sortOrder)
-        _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid }, sort: \ExpenseSubcategory.sortOrder)
     }
 
-    private var lookup: CategoryLookup { CategoryLookup(categories: categories, subcategories: subcategories) }
-    private var groceriesID: UUID? { categories.first { $0.systemKey == "groceries" }?.id }
+    private var groceriesID: UUID? { lookup.categories.first { $0.systemKey == "groceries" }?.id }
 
     /// Currency problems are shown in the currency question instead.
     private var otherWarnings: [String] {
@@ -153,7 +153,7 @@ struct ReceiptReviewView: View {
                     .onDelete { draft.items.remove(atOffsets: $0) }
                     Button {
                         draft.items.append(ReceiptDraftItem(name: "", amountText: "", categoryID: groceriesID,
-                                                            subcategoryID: subcategories.first { $0.systemKey == "groceries.other" }?.id))
+                                                            subcategoryID: lookup.subcategories.first { $0.systemKey == "groceries.other" }?.id))
                     } label: {
                         Label("Add item", systemImage: "plus")
                     }

@@ -120,9 +120,9 @@ final class ReceiptPipelineTests: XCTestCase {
         // Render the check screen like the app does.
         let session = AppSession()
         session.start(context: context)
-        let binding = Binding(get: { draft }, set: { draft = $0 })
+        let lookupForScreen = CategoryLookup(categories: try repo.categories(), subcategories: try repo.subcategories())
         let view = NavigationStack {
-            ReceiptReviewView(family: family, draft: binding, onDone: {})
+            ReceiptReviewView(family: family, draft: draft, lookup: lookupForScreen, onDone: {})
         }
         .environmentObject(session)
         .environmentObject(ExchangeRateService())

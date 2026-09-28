@@ -33,8 +33,8 @@ private struct ScanReceiptContent: View {
     @State private var photoItem: PhotosPickerItem?
     @State private var isProcessing = false
     @State private var errorMessage: String?
-    @State private var draft: ReceiptDraft?
-    @State private var showReview = false
+    /// The check screen, shown full screen with its own navigation.
+    @State private var review: ReviewRequest?
     /// Read once when the Scan tab is first created (after a crash).
     @State private var interruptedStep: String? = ScanBreadcrumb.current
 
@@ -125,7 +125,7 @@ private struct ScanReceiptContent: View {
         }
         .onAppear {
             // Shown once; a new scan starts with a clean slate.
-            if interruptedStep != nil && !isProcessing && draft == nil { ScanBreadcrumb.clear() }
+            if interruptedStep != nil && !isProcessing && review == nil { ScanBreadcrumb.clear() }
         }
         .navigationTitle("Scan")
         .fullScreenCover(isPresented: $showScanner) {
@@ -148,24 +148,10 @@ private struct ScanReceiptContent: View {
                 await process(pages: [image])
             }
         }
-        .navigationDestination(isPresented: $showReview) {
-            if let current = draft {
-                // Never force-unwraps: while the screen closes, draft is
-                // already nil but SwiftUI may still read the binding once.
-                let binding = Binding<ReceiptDraft>(
-                    get: { draft ?? current },
-                    set: { newValue in
-                        // Only real changes: iOS 27 controls write their value
-                        // back while the screen is built, and every write
-                        // re-built the screen -> endless loop/freeze.
-                        guard let old = draft, newValue != old else { return }
-                        ScanBreadcrumb.noteWrite(ReceiptDraft.changedFields(from: old, to: newValue))
-                        draft = newValue
-                    }
-                )
-                ReceiptReviewView(family: family, draft: binding) {
-                    showReview = false
-                    draft = nil
+        .fullScreenCover(item: $review) { request in
+            NavigationStack {
+                ReceiptReviewView(family: family, draft: request.draft, lookup: request.lookup) {
+                    review = nil
                     ScanBreadcrumb.clear()
                 }
             }
@@ -187,15 +173,16 @@ private struct ScanReceiptContent: View {
             ScanBreadcrumb.set("storing the image")
             let imageData = pages.first.flatMap { ReceiptOCRService.storageJPEG(from: $0) }
             ScanBreadcrumb.set("preparing the check screen (currency \(parsed.currencyCode ?? "?"))")
-            draft = ReceiptDrafting.draft(
+            let lookup = CategoryLookup(categories: categories, subcategories: subcategories)
+            let newDraft = ReceiptDrafting.draft(
                 from: parsed,
                 family: family,
-                lookup: CategoryLookup(categories: categories, subcategories: subcategories),
+                lookup: lookup,
                 rules: rules,
                 imageData: imageData
             )
-            ScanBreadcrumb.set("the check screen (currency \(draft?.currencyCode ?? "?"), \(draft?.items.count ?? 0) items)")
-            showReview = true
+            ScanBreadcrumb.set("the check screen (currency \(newDraft.currencyCode), \(newDraft.items.count) items)")
+            review = ReviewRequest(draft: newDraft, lookup: lookup)
         } catch {
             ScanBreadcrumb.clear()
             errorMessage = error.localizedDescription
@@ -308,4 +295,11 @@ enum ScanBreadcrumb {
         if let lastWrite = UserDefaults.standard.string(forKey: writesKey) { return step + " - last " + lastWrite }
         return step
     }
+}
+
+/// One opening of the check screen.
+struct ReviewRequest: Identifiable {
+    let id = UUID()
+    let draft: ReceiptDraft
+    let lookup: CategoryLookup
 }
