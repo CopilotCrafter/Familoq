@@ -159,6 +159,8 @@ struct MealsScreen: View {
             Section {
                 Toggle("Plan lunch", isOn: $showLunch)
                 Toggle("Plan breakfast", isOn: $showBreakfast)
+            } footer: {
+                Text("When on, \"Plan my week\" also fills breakfast and lunch: quick breakfasts on weekdays, lunches that are quick or good for a lunchbox, and never the same dish as a dinner.")
             }
         }
         .sheet(item: $editing) { target in
@@ -289,10 +291,11 @@ struct MealsScreen: View {
 
     private func planWeek(_ weekMeals: [MealPlanEntry]) {
         reshuffle += 1
-        let count = MealPlanService.planWeek(family: family, weekStart: weekStart, existing: weekMeals, context: context, reshuffle: reshuffle)
+        let count = MealPlanService.planWeek(family: family, weekStart: weekStart, existing: weekMeals, context: context,
+                                             slots: slots, reshuffle: reshuffle)
         session.notice = count == 0
-            ? String(localized: "Every day from today already has a dinner. Delete one to plan it again.")
-            : String(localized: "\(count) dinner(s) planned. Tap one to swap, rate or cook it.")
+            ? String(localized: "Every meal from today is already planned. Delete one to plan it again.")
+            : String(localized: "\(count) meal(s) planned. Tap one to swap, rate or cook it.")
     }
 
     private func addIngredients(_ entries: [MealPlanEntry]) {
@@ -469,7 +472,7 @@ private struct MealEditSheet: View {
                 }
             }
             .sheet(isPresented: $showPicker) {
-                DishPickerSheet(profile: profile) { picked in
+                DishPickerSheet(profile: profile, slot: MealPlanService.planSlot(target.slot)) { picked in
                     dishID = picked.id
                     title = picked.name
                     recipeID = nil
@@ -554,7 +557,8 @@ private struct MealEditSheet: View {
             }
             Button {
                 let day = WeekPlanner.Day(date: target.day, isWeekend: PlannerDates.calendar.isDateInWeekend(target.day))
-                let request = MealPlanService.request(family: family, days: [day], already: [], context: context)
+                let request = MealPlanService.request(family: family, days: [day], already: [], context: context,
+                                                      slot: MealPlanService.planSlot(target.slot))
                 alternatives = WeekPlanner.alternatives(for: day, request: request, excluding: [dish.id], count: 5)
             } label: {
                 Label("Swap for another suggestion", systemImage: "arrow.triangle.2.circlepath")
@@ -637,6 +641,7 @@ private struct MealEditSheet: View {
 /// Search the built-in dish catalogue.
 struct DishPickerSheet: View {
     let profile: DietProfile
+    var slot: PlanSlot = .dinner
     let onPick: (Dish) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var search = ""
@@ -647,7 +652,7 @@ struct DishPickerSheet: View {
     private var dishes: [Dish] {
         let text = TextNormalizer.normalize(search, germanTransliteration: true)
         let filtered = DishCatalogue.all.filter { dish in
-            if dish.has(.lunchboxOnly) { return false }
+            if !WeekPlanner.fits(dish, slot: slot) { return false }
             if let cuisine, dish.cuisine != cuisine { return false }
             if onlyFitting && !profile.allows(dish) { return false }
             if onlyVegetarian && !dish.isVegetarian { return false }

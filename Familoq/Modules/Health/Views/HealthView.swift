@@ -27,6 +27,7 @@ private struct HealthHome: View {
     @Query private var medications: [Medication]
     @Query private var checkups: [Checkup]
     @Query private var vaccinations: [Vaccination]
+    @Query private var members: [FamilyMember]
     @State private var editingPerson: PersonEditTarget?
     @State private var agenda: [HealthAgenda.Item] = []
 
@@ -37,6 +38,12 @@ private struct HealthHome: View {
         _medications = Query(filter: #Predicate<Medication> { $0.familyID == fid && $0.isActive == true })
         _checkups = Query(filter: #Predicate<Checkup> { $0.familyID == fid })
         _vaccinations = Query(filter: #Predicate<Vaccination> { $0.familyID == fid })
+        _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid && $0.isActive == true }, sort: \FamilyMember.joinedAt)
+    }
+
+    /// Family members who have no health profile (on this iPhone) yet.
+    private var membersWithoutProfile: [FamilyMember] {
+        members.filter { member in !people.contains { $0.memberID == member.id } }
     }
 
     var body: some View {
@@ -49,11 +56,18 @@ private struct HealthHome: View {
                         PersonRow(person: person)
                     }
                 }
-                if let me = session.currentMember, !people.contains(where: { $0.memberID == me.id }) {
+                // Every family member is listed; the profile is created when it is first filled in.
+                ForEach(membersWithoutProfile) { member in
                     Button {
-                        HealthService.ensureMe(family: family, member: me, context: context)
+                        editingPerson = PersonEditTarget(person: nil, member: member)
                     } label: {
-                        Label("Add my health profile", systemImage: "person.crop.circle.badge.plus")
+                        HStack {
+                            Image(systemName: "person.crop.circle.badge.plus").font(.title2).foregroundStyle(.pink)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(verbatim: member.displayName).font(.body.weight(.medium)).foregroundStyle(.primary)
+                                Text("Tap to add health conditions and allergies").font(.caption).foregroundStyle(.secondary)
+                            }
+                        }
                     }
                 }
                 Button {
@@ -148,6 +162,8 @@ private struct PersonRow: View {
 struct PersonEditTarget: Identifiable {
     let id = UUID()
     let person: HealthPerson?
+    /// New profile for this family member.
+    var member: FamilyMember? = nil
 }
 
 /// New or existing health person. Own copy; writes on Save.
@@ -176,7 +192,7 @@ struct PersonForm: View {
         let fid = family.id
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid && $0.isActive == true }, sort: \FamilyMember.joinedAt)
         let p = target.person
-        _name = State(initialValue: p?.name ?? "")
+        _name = State(initialValue: p?.name ?? target.member?.displayName ?? "")
         _hasBirthDate = State(initialValue: p?.birthDate != nil)
         _birthDate = State(initialValue: p?.birthDate ?? (Calendar.current.date(byAdding: .year, value: -5, to: Date()) ?? Date()))
         _conditions = State(initialValue: p?.conditions ?? [])
@@ -288,7 +304,14 @@ struct PersonForm: View {
         if let existing = target.person {
             person = existing
         } else {
-            person = HealthPerson(familyID: family.id, name: "")
+            if let member = target.member {
+                // Same ID on every iPhone for a member's profile.
+                person = HealthPerson(id: DeterministicID.uuid("health-person|\(family.id.uuidString)|\(member.id.uuidString)"),
+                                      familyID: family.id, name: "")
+                person.memberID = member.id
+            } else {
+                person = HealthPerson(familyID: family.id, name: "")
+            }
             let fid = family.id
             let count = (try? context.fetchCount(FetchDescriptor<HealthPerson>(predicate: #Predicate { $0.familyID == fid }))) ?? 0
             person.sortOrder = count + 1

@@ -17622,6 +17622,50 @@
           }
         }
       }
+    },
+    "Tap to add health conditions and allergies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen, um Erkrankungen und Allergien einzutragen"
+          }
+        }
+      }
+    },
+    "Every meal from today is already planned. Delete one to plan it again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ab heute ist jede Mahlzeit schon geplant. Lösche eine, um sie neu zu planen."
+          }
+        }
+      }
+    },
+    "%lld meal(s) planned. Tap one to swap, rate or cook it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Mahlzeit(en) geplant. Tippe eine an, um sie zu tauschen, zu bewerten oder zu kochen."
+          }
+        }
+      }
+    },
+    "When on, \"Plan my week\" also fills breakfast and lunch: quick breakfasts on weekdays, lunches that are quick or good for a lunchbox, and never the same dish as a dinner.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn eingeschaltet, füllt „Woche planen“ auch Frühstück und Mittagessen: schnelles Frühstück unter der Woche, Mittagessen, die schnell gehen oder in die Brotdose passen, und nie dasselbe Gericht wie am Abend."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
