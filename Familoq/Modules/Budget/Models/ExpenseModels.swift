@@ -44,6 +44,9 @@ final class Expense {
     var tripID: UUID? = nil
     var tripPaidBy: String = ""
     var tripSplit: String = ""
+    /// Health costs: tax-relevant (außergewöhnliche Belastungen) and for whom.
+    var isTaxRelevant: Bool = false
+    var healthPersonID: UUID? = nil
     /// Set when the expense was created from a scanned receipt.
     var receiptID: UUID? = nil
     var createdAt: Date = Date()

@@ -299,6 +299,8 @@ extension Expense: SyncableRecord {
         if let tripID { p.set("tripID", tripID) }
         if !tripPaidBy.isEmpty { p.set("tripPaidBy", tripPaidBy) }
         if !tripSplit.isEmpty { p.set("tripSplit", tripSplit) }
+        if isTaxRelevant { p.set("taxRelevant", true) }
+        if let healthPersonID { p.set("healthPersonID", healthPersonID) }
         return p
     }
 
@@ -308,6 +310,8 @@ extension Expense: SyncableRecord {
         tripID = p.uuid("tripID")
         tripPaidBy = p.string("tripPaidBy")
         tripSplit = p.string("tripSplit")
+        isTaxRelevant = p.bool("taxRelevant")
+        healthPersonID = p.uuid("healthPersonID")
         amountValue = p.int64("amountValue")
         currencyCode = p.string("currencyCode", default: "EUR")
         baseAmountValue = p.optionalInt64("baseAmountValue")

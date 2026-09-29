@@ -28,6 +28,8 @@ struct SyncHandler {
     let hasImage: Bool
     /// All records of a family.
     let all: (ModelContext, UUID) throws -> [any SyncableRecord]
+    /// For backups: also the records kept "only on this iPhone".
+    let backupAll: (ModelContext, UUID) throws -> [any SyncableRecord]
     let find: (ModelContext, UUID) throws -> (any SyncableRecord)?
     /// Creates and inserts an empty record (id, familyID) before a payload is applied.
     let make: (ModelContext, UUID, UUID) -> any SyncableRecord
@@ -37,6 +39,7 @@ struct SyncHandler {
         hasImage: Bool = false,
         inFamily: @escaping (UUID) -> Predicate<T>,
         withID: @escaping (UUID) -> Predicate<T>,
+        inFamilyForBackup: ((UUID) -> Predicate<T>)? = nil,
         make: @escaping (UUID, UUID) -> T
     ) -> SyncHandler {
         SyncHandler(
@@ -44,6 +47,9 @@ struct SyncHandler {
             hasImage: hasImage,
             all: { context, familyID in
                 try context.fetch(FetchDescriptor<T>(predicate: inFamily(familyID))).map { $0 as any SyncableRecord }
+            },
+            backupAll: { context, familyID in
+                try context.fetch(FetchDescriptor<T>(predicate: (inFamilyForBackup ?? inFamily)(familyID))).map { $0 as any SyncableRecord }
             },
             find: { context, id in
                 var descriptor = FetchDescriptor<T>(predicate: withID(id))

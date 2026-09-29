@@ -9,7 +9,7 @@ enum BackupService {
     static func makeBackup(family: Family, context: ModelContext, includePhotos: Bool) throws -> FamilyBackup {
         var records: [FamilyBackup.Record] = []
         for handler in SyncRegistry.handlers {
-            for record in try handler.all(context, family.id) {
+            for record in try handler.backupAll(context, family.id) {
                 let image = (includePhotos && handler.hasImage) ? record.syncImage?.base64EncodedString() : nil
                 records.append(FamilyBackup.Record(kind: handler.kind.rawValue, id: record.syncID,
                                                    fields: record.syncPayload().values, image: image))

@@ -2,6 +2,7 @@ import Foundation
 import SwiftData
 import FamiloqCore
 import FamiloqPlanner
+import FamiloqHealth
 
 // Planner space: shopping lists, family reminders, family calendar.
 // Same storage conventions as every module (familyID on each record, UUID
@@ -270,6 +271,13 @@ final class Recipe {
     var ingredientsText: String = ""
     var servings: Int = 4
     var note: String = ""
+    /// Cooking steps, one per line (cooking mode).
+    var stepsText: String = ""
+    /// Web page the recipe was imported from.
+    var sourceURL: String = ""
+    /// Catalogue dish it was saved from ("de.kasespatzle").
+    var dishID: String = ""
+    var cuisineRaw: String = ""
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 
@@ -280,6 +288,7 @@ final class Recipe {
     }
 
     var ingredients: [String] { MealIngredients.lines(from: ingredientsText) }
+    var steps: [String] { MealIngredients.lines(from: stepsText) }
 }
 
 /// What the family eats on a day (a recipe or just a title).
@@ -293,6 +302,16 @@ final class MealPlanEntry {
     var recipeID: UUID? = nil
     var title: String = ""
     var note: String = ""
+    /// Catalogue dish ("in.rajma-chawal"), empty for own meals.
+    var dishID: String = ""
+    /// People eating (0 = the recipe's servings) - guests scale the shopping list.
+    var servings: Int = 0
+    /// Cook twice the amount; the rest is tomorrow's leftovers.
+    var cookDouble: Bool = false
+    /// Leftovers of an earlier meal (nothing to shop).
+    var isLeftover: Bool = false
+    /// School / work lunchbox.
+    var isLunchbox: Bool = false
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 
@@ -379,6 +398,85 @@ final class PackingItem {
         self.id = id
         self.familyID = familyID
         self.tripID = tripID
+        self.name = name
+    }
+}
+
+
+/// The family's meal settings (one per family, same ID on every iPhone).
+@Model
+final class MealPreferences {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    /// Ranked cuisines with regions: "de:by,bw;in:kl".
+    var cuisinesRaw: String = ""
+    /// Never suggested, one per line ("Pilze", "Koriander").
+    var avoidRaw: String = ""
+    var maxSpice: Int = 2
+    var vegetarianDays: Int = 1
+    var weekdayMinutes: Int = 40
+    var kidFriendly: Bool = false
+    var planLunch: Bool = false
+    var updatedAt: Date = Date()
+
+    init(id: UUID, familyID: UUID) {
+        self.id = id
+        self.familyID = familyID
+    }
+
+    static func preferencesID(familyID: UUID) -> UUID {
+        DeterministicID.uuid("meal-preferences|\(familyID.uuidString)")
+    }
+
+    var cuisines: [CuisinePreference] {
+        get { CuisinePreference.decode(cuisinesRaw) }
+        set { cuisinesRaw = CuisinePreference.encode(newValue) }
+    }
+
+    var avoidWords: [String] { MealIngredients.lines(from: avoidRaw) }
+}
+
+/// Thumbs up or down of one person for a dish (one per person and dish).
+@Model
+final class MealRating {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    /// Catalogue dish ID or "recipe:<uuid>" or "title:<normalised title>".
+    var dishKey: String = ""
+    var memberID: UUID = UUID()
+    /// +1 or -1 (0 = removed).
+    var value: Int = 0
+    var updatedAt: Date = Date()
+
+    init(id: UUID, familyID: UUID, dishKey: String, memberID: UUID, value: Int) {
+        self.id = id
+        self.familyID = familyID
+        self.dishKey = dishKey
+        self.memberID = memberID
+        self.value = value
+    }
+
+    static func ratingID(familyID: UUID, dishKey: String, memberID: UUID) -> UUID {
+        DeterministicID.uuid("meal-rating|\(familyID.uuidString)|\(dishKey)|\(memberID.uuidString)")
+    }
+}
+
+/// Food at home (from receipts or typed), with an optional use-by date.
+@Model
+final class PantryItem {
+    var id: UUID = UUID()
+    var familyID: UUID = UUID()
+    var name: String = ""
+    var quantity: String = ""
+    var useBy: Date? = nil
+    var addedFromReceipt: Bool = false
+    var addedByMemberID: UUID? = nil
+    var createdAt: Date = Date()
+    var updatedAt: Date = Date()
+
+    init(id: UUID = UUID(), familyID: UUID, name: String) {
+        self.id = id
+        self.familyID = familyID
         self.name = name
     }
 }

@@ -37,7 +37,7 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
         }
     }
 
-    var isAvailable: Bool { self != .health }
+    var isAvailable: Bool { true }
 }
 
 /// Contract every module implements. Adding a space later means:
@@ -62,6 +62,7 @@ protocol FamiloqModule {
 enum FamiloqModules {
     static let enabled: [any FamiloqModule.Type] = [
         BudgetModule.self,
-        PlannerModule.self
+        PlannerModule.self,
+        HealthModule.self
     ]
 }

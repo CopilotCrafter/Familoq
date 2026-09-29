@@ -44,6 +44,18 @@ extension PlannerModule {
                 inFamily: { fid in #Predicate<LeaveEntry> { $0.familyID == fid } },
                 withID: { id in #Predicate<LeaveEntry> { $0.id == id } },
                 make: { id, fid in LeaveEntry(id: id, familyID: fid, memberID: UUID(), type: .vacation, firstDay: Date(), lastDay: Date()) }),
+            .of(MealPreferences.self,
+                inFamily: { fid in #Predicate<MealPreferences> { $0.familyID == fid } },
+                withID: { id in #Predicate<MealPreferences> { $0.id == id } },
+                make: { id, fid in MealPreferences(id: id, familyID: fid) }),
+            .of(MealRating.self,
+                inFamily: { fid in #Predicate<MealRating> { $0.familyID == fid } },
+                withID: { id in #Predicate<MealRating> { $0.id == id } },
+                make: { id, fid in MealRating(id: id, familyID: fid, dishKey: "", memberID: UUID(), value: 0) }),
+            .of(PantryItem.self,
+                inFamily: { fid in #Predicate<PantryItem> { $0.familyID == fid } },
+                withID: { id in #Predicate<PantryItem> { $0.id == id } },
+                make: { id, fid in PantryItem(id: id, familyID: fid, name: "") }),
             .of(LeaveAllowance.self,
                 inFamily: { fid in #Predicate<LeaveAllowance> { $0.familyID == fid } },
                 withID: { id in #Predicate<LeaveAllowance> { $0.id == id } },
@@ -254,6 +266,10 @@ extension Recipe: SyncableRecord {
         p.set("ingredientsText", ingredientsText)
         p.set("servings", servings)
         p.set("note", note)
+        if !stepsText.isEmpty { p.set("stepsText", stepsText) }
+        if !sourceURL.isEmpty { p.set("sourceURL", sourceURL) }
+        if !dishID.isEmpty { p.set("dishID", dishID) }
+        if !cuisineRaw.isEmpty { p.set("cuisine", cuisineRaw) }
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
         return p
@@ -264,6 +280,10 @@ extension Recipe: SyncableRecord {
         ingredientsText = p.string("ingredientsText")
         servings = p.int("servings", default: 4)
         note = p.string("note")
+        stepsText = p.string("stepsText")
+        sourceURL = p.string("sourceURL")
+        dishID = p.string("dishID")
+        cuisineRaw = p.string("cuisine")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
     }
@@ -280,6 +300,11 @@ extension MealPlanEntry: SyncableRecord {
         p.set("recipeID", recipeID)
         p.set("title", title)
         p.set("note", note)
+        if !dishID.isEmpty { p.set("dishID", dishID) }
+        if servings > 0 { p.set("servings", servings) }
+        if cookDouble { p.set("cookDouble", true) }
+        if isLeftover { p.set("isLeftover", true) }
+        if isLunchbox { p.set("isLunchbox", true) }
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
         return p
@@ -291,6 +316,11 @@ extension MealPlanEntry: SyncableRecord {
         recipeID = p.uuid("recipeID")
         title = p.string("title")
         note = p.string("note")
+        dishID = p.string("dishID")
+        servings = p.int("servings")
+        cookDouble = p.bool("cookDouble")
+        isLeftover = p.bool("isLeftover")
+        isLunchbox = p.bool("isLunchbox")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
     }
@@ -355,6 +385,83 @@ extension PackingItem: SyncableRecord {
         isPacked = p.bool("isPacked")
         memberID = p.uuid("memberID")
         sortOrder = p.int("sortOrder")
+        createdAt = p.date("createdAt", default: createdAt)
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension MealPreferences: SyncableRecord {
+    static var syncKind: SyncKind { .mealPrefs }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("cuisines", cuisinesRaw)
+        p.set("avoid", avoidRaw)
+        p.set("maxSpice", maxSpice)
+        p.set("vegetarianDays", vegetarianDays)
+        p.set("weekdayMinutes", weekdayMinutes)
+        p.set("kidFriendly", kidFriendly)
+        p.set("planLunch", planLunch)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        cuisinesRaw = p.string("cuisines")
+        avoidRaw = p.string("avoid")
+        maxSpice = p.int("maxSpice", default: 2)
+        vegetarianDays = p.int("vegetarianDays", default: 1)
+        weekdayMinutes = p.int("weekdayMinutes", default: 40)
+        kidFriendly = p.bool("kidFriendly")
+        planLunch = p.bool("planLunch")
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension MealRating: SyncableRecord {
+    static var syncKind: SyncKind { .mealRating }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("dishKey", dishKey)
+        p.set("memberID", memberID)
+        p.set("value", value)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        dishKey = p.string("dishKey")
+        memberID = p.uuid("memberID") ?? memberID
+        value = p.int("value")
+        updatedAt = p.date("updatedAt", default: updatedAt)
+    }
+}
+
+extension PantryItem: SyncableRecord {
+    static var syncKind: SyncKind { .pantry }
+    var syncID: UUID { id }
+
+    func syncPayload() -> SyncPayload {
+        var p = SyncPayload()
+        p.set("name", name)
+        p.set("quantity", quantity)
+        p.set("useBy", useBy)
+        p.set("fromReceipt", addedFromReceipt)
+        p.set("addedBy", addedByMemberID)
+        p.set("createdAt", createdAt)
+        p.set("updatedAt", updatedAt)
+        return p
+    }
+
+    func applySyncPayload(_ p: SyncPayload) {
+        name = p.string("name")
+        quantity = p.string("quantity")
+        useBy = p.date("useBy")
+        addedFromReceipt = p.bool("fromReceipt")
+        addedByMemberID = p.uuid("addedBy")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
     }

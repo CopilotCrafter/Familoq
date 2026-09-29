@@ -104,7 +104,7 @@ struct TimeOffScreen: View {
                     DatePicker("To", selection: $customTo, in: customFrom..., displayedComponents: [.date])
                 }
             } footer: {
-                Text("Weekends and public holidays (\(holidaySettings.countryName)\(holidaySettings.stateName.map { ", " + $0 } ?? "")) are not counted. Half day = 0.5; training is not taken from the allowance.")
+                Text("Weekends and public holidays (\(holidaySettings.countryName)\(holidaySettings.stateName.map { ", " + $0 } ?? "")) are not counted. Half day = 0.5; training and sick days are not taken from the allowance.")
             }
 
             Section("Per person") {
@@ -113,6 +113,7 @@ struct TimeOffScreen: View {
                     let used = TimeOffCalculator.usedDays(spans, in: range, holidays: holidaySet, calendar: calendar)
                     let usedYear = TimeOffCalculator.usedDays(spans, in: yearRange, holidays: yearHolidays, calendar: calendar)
                     let training = TimeOffCalculator.trainingDays(spans, in: range, holidays: holidaySet, calendar: calendar)
+                    let sick = TimeOffCalculator.sickDays(spans, in: range, holidays: holidaySet, calendar: calendar)
                     let total = allowance(memberID: member.id, year: year)
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
@@ -123,6 +124,9 @@ struct TimeOffScreen: View {
                         }
                         if training > 0 {
                             Text("+ \(training) training day(s)").font(.caption).foregroundStyle(.secondary)
+                        }
+                        if sick > 0 {
+                            Label("\(sick) sick day(s)", systemImage: "cross.case.fill").font(.caption).foregroundStyle(.orange)
                         }
                         Button {
                             allowanceEditing = AllowanceTarget(memberID: member.id, name: member.displayName, year: year, days: total ?? 30)
@@ -256,6 +260,7 @@ struct LeaveForm: View {
     @State private var first: Date
     @State private var last: Date
     @State private var note: String
+    @State private var remindSickNote = true
 
     init(family: Family, target: LeaveEditTarget, members: [FamilyMember]) {
         self.family = family
@@ -291,13 +296,16 @@ struct LeaveForm: View {
                         DatePicker("Last day", selection: $last, in: first..., displayedComponents: [.date])
                     }
                     TextField("Note (optional)", text: $note)
+                    if type == .sick && target.entry == nil {
+                        Toggle("Remind to send the sick note (AU)", isOn: $remindSickNote)
+                    }
                 } footer: {
                     let calendar = PlannerDates.calendar
                     let holidays = HolidaySettings.shared.holidays(around: first, calendar: calendar)
                     let span = LeaveSpan(memberID: memberID ?? UUID(), type: type, first: first, last: type == .halfDay ? first : last)
                     let all = DateInterval(start: calendar.startOfDay(for: first), end: calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: span.last)) ?? first)
                     let used = TimeOffCalculator.usedDays([span], in: all, holidays: Set(holidays.keys), calendar: calendar)
-                    Text(type == .training ? LocalizedStringKey("Not taken from the vacation allowance.") : LocalizedStringKey("Uses \(TimeOffScreen.days(used)) vacation day(s) (weekends and public holidays not counted)."))
+                    Text(type == .training || type == .sick ? LocalizedStringKey("Not taken from the vacation allowance.") : LocalizedStringKey("Uses \(TimeOffScreen.days(used)) vacation day(s) (weekends and public holidays not counted)."))
                 }
                 if target.entry != nil {
                     Section {
@@ -342,8 +350,27 @@ struct LeaveForm: View {
         entry.lastDay = lastDay
         entry.note = note.trimmingCharacters(in: .whitespaces)
         entry.updatedAt = Date()
+        if type == .sick && target.entry == nil && remindSickNote {
+            addSickNoteReminder(memberID: memberID, firstDay: firstDay)
+        }
         try? context.save()
+        if type == .sick { Task { await PlannerNotifications.reschedule(context: context) } }
         dismiss()
+    }
+
+    /// Reminder (for the sick person) to send the sick note to the employer.
+    private func addSickNoteReminder(memberID: UUID, firstDay: Date) {
+        let calendar = PlannerDates.calendar
+        let start = max(calendar.startOfDay(for: Date()), firstDay)
+        let due = calendar.date(bySettingHour: 9, minute: 0, second: 0, of: start) ?? start
+        let reminder = FamilyReminder(familyID: family.id, title: String(localized: "Send the sick note (AU) to the employer"))
+        reminder.notes = String(localized: "Many employers need it from the first or the fourth day of illness - check your contract.")
+        reminder.createdByMemberID = session.currentMember?.id
+        reminder.assignees = [memberID]
+        reminder.dueDate = due < Date() ? Date().addingTimeInterval(3600) : due
+        reminder.hasTime = true
+        reminder.repeatStart = reminder.dueDate
+        context.insert(reminder)
     }
 }
 

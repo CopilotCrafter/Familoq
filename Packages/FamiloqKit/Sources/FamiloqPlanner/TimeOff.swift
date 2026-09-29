@@ -1,7 +1,7 @@
 import Foundation
 
 public enum LeaveType: String, CaseIterable, Codable, Sendable {
-    case vacation, halfDay, bridgeDay, companyClosure, training
+    case vacation, halfDay, bridgeDay, companyClosure, training, sick
 
     public var title: String {
         switch self {
@@ -10,6 +10,7 @@ public enum LeaveType: String, CaseIterable, Codable, Sendable {
         case .bridgeDay: return "Bridge day"
         case .companyClosure: return "Company closure"
         case .training: return "Training"
+        case .sick: return "Sick"
         }
     }
 
@@ -20,6 +21,7 @@ public enum LeaveType: String, CaseIterable, Codable, Sendable {
         case .bridgeDay: return "arrow.left.and.right"
         case .companyClosure: return "building.2.fill"
         case .training: return "graduationcap.fill"
+        case .sick: return "cross.case.fill"
         }
     }
 
@@ -28,7 +30,7 @@ public enum LeaveType: String, CaseIterable, Codable, Sendable {
         switch self {
         case .vacation, .bridgeDay, .companyClosure: return 1
         case .halfDay: return 0.5
-        case .training: return 0
+        case .training, .sick: return 0
         }
     }
 }
@@ -80,7 +82,16 @@ public enum TimeOffCalculator {
 
     /// Working days of training (shown separately, not taken from the allowance).
     public static func trainingDays(_ spans: [LeaveSpan], in period: DateInterval, holidays: Set<Date>, calendar: Calendar) -> Int {
-        spans.filter { $0.type == .training }.reduce(0) { total, span in
+        workingDays(of: .training, spans, in: period, holidays: holidays, calendar: calendar)
+    }
+
+    /// Working days of sick leave in `period` (not taken from the allowance).
+    public static func sickDays(_ spans: [LeaveSpan], in period: DateInterval, holidays: Set<Date>, calendar: Calendar) -> Int {
+        workingDays(of: .sick, spans, in: period, holidays: holidays, calendar: calendar)
+    }
+
+    static func workingDays(of type: LeaveType, _ spans: [LeaveSpan], in period: DateInterval, holidays: Set<Date>, calendar: Calendar) -> Int {
+        spans.filter { $0.type == type }.reduce(0) { total, span in
             total + days(of: span, calendar: calendar).filter {
                 period.contains($0) && $0 < period.end && isWorkingDay($0, holidays: holidays, calendar: calendar)
             }.count
@@ -91,7 +102,7 @@ public enum TimeOffCalculator {
     /// off together (weekends between them included, so a trip shows as one).
     public static func overlaps(_ spans: [LeaveSpan], in period: DateInterval, minimumPeople: Int = 2, calendar: Calendar) -> [(first: Date, last: Date, people: Set<UUID>)] {
         var peopleByDay: [Date: Set<UUID>] = [:]
-        for span in spans where span.type != .training {
+        for span in spans where span.type != .training && span.type != .sick {
             for day in days(of: span, calendar: calendar) where day >= period.start && day < period.end {
                 peopleByDay[day, default: []].insert(span.memberID)
             }

@@ -98,4 +98,17 @@ final class TimeOffTests: XCTestCase {
         XCTAssertEqual(overlaps.first?.last, d(2026, 10, 23))
         XCTAssertEqual(overlaps.first?.people, [martin, carol])
     }
+
+    func testSickDaysAreNotVacation() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "Europe/Berlin")!
+        let member = UUID()
+        let first = calendar.date(from: DateComponents(year: 2026, month: 10, day: 5))!   // Monday
+        let last = calendar.date(from: DateComponents(year: 2026, month: 10, day: 11))!   // Sunday
+        let span = LeaveSpan(memberID: member, type: .sick, first: first, last: last)
+        let year = DateInterval(start: calendar.date(from: DateComponents(year: 2026, month: 1, day: 1))!,
+                                end: calendar.date(from: DateComponents(year: 2027, month: 1, day: 1))!)
+        XCTAssertEqual(TimeOffCalculator.usedDays([span], in: year, holidays: [], calendar: calendar), 0)
+        XCTAssertEqual(TimeOffCalculator.sickDays([span], in: year, holidays: [], calendar: calendar), 5)
+    }
 }
