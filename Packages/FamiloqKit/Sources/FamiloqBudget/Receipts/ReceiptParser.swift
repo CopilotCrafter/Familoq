@@ -209,6 +209,11 @@ public enum ReceiptParser {
         return rest.filter(\.isLetter).count <= 2
     }
 
+    /// "1,254" (kg) is 1.254 - quantities never have thousands separators.
+    static func parseQuantity(_ text: String) -> Decimal? {
+        Decimal(string: text.replacingOccurrences(of: ",", with: "."), locale: Locale(identifier: "en_US_POSIX"))
+    }
+
     static func containsDate(_ line: String) -> Bool {
         firstMatch(dateDMY, in: line) != nil || firstMatch(dateYMD, in: line) != nil || firstMatch(dateISO, in: line) != nil
     }
@@ -406,7 +411,7 @@ public enum ReceiptParser {
                     .replacingOccurrences(of: #"eur|€|/|kg|stk|st\b"#, with: "", options: .regularExpression)
                 let hasName = rest.filter(\.isLetter).count > 2
                 if !hasName {
-                    let quantity = DecimalParser.parse(q[1])
+                    let quantity = parseQuantity(q[1])
                     // The line total is on the quantity line; the name was the line above.
                     if let name = pendingName, let lineTotal = trailingPriceValue(restText, wholeUnits: wholeUnits), lineTotal > 0 {
                         let classification = GroceryItemClassifier.classify(name)

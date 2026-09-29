@@ -118,42 +118,61 @@ public enum ReceiptLineAssembler {
         let maxX = usable.map { $0.x + $0.width }.max() ?? 1
         let rightEdge = minX + (maxX - minX) * 0.5
         func isColumnPrice(_ f: OCRFragment) -> Bool { f.midX > rightEdge && isPriceOnly(f.text) }
+        func name(_ row: [OCRFragment]) -> String { join(row.filter { !isColumnPrice($0) }) }
 
-        guard let totalRow = grouped.firstIndex(where: { ReceiptParser.isTotalLine(join($0)) }),
+        guard let totalRow = grouped.firstIndex(where: { ReceiptParser.isTotalLine(name($0)) }),
               let firstPriceRow = grouped.firstIndex(where: { $0.contains(where: isColumnPrice) }),
               firstPriceRow < totalRow else { return nil }
         // A name can sit a little above its price: start one row earlier
         // when that row is a name without a price.
         var start = firstPriceRow
-        if start > 0 {
-            let previous = grouped[start - 1].filter { !isColumnPrice($0) }
-            let text = join(previous)
-            if !grouped[start].contains(where: { !isColumnPrice($0) }) && needsPrice(text) { start -= 1 }
+        if start > 0, !grouped[start].contains(where: { !isColumnPrice($0) }), needsPrice(name(grouped[start - 1])) {
+            start -= 1
+        }
+        // Items end at the total, or earlier at a card-slip line
+        // ("K-U-N-D-E-N-B-E-L-E-G" comes before ALDI's "Betrag").
+        var itemEnd = start
+        while itemEnd < totalRow && !isStopLine(name(grouped[itemEnd])) { itemEnd += 1 }
+
+        let needing = (start..<itemEnd).filter { needsPrice(name(grouped[$0])) }
+        let totalName = name(grouped[totalRow])
+        let totalNeedsPrice = ReceiptParser.trailingPriceValue(totalName) == nil
+        let wanted = needing.count + (totalNeedsPrice ? 1 : 0)
+        // Prices top to bottom from the first item on (they may have drifted
+        // below their row, even past the total).
+        let prices = grouped[start...].flatMap { $0.filter(isColumnPrice) }.sorted { $0.midY < $1.midY }
+        guard !needing.isEmpty, prices.count >= wanted else { return nil }
+        let used = Array(prices.prefix(wanted))
+        var assigned: [Int: OCRFragment] = [:]
+        for (index, row) in needing.enumerated() { assigned[row] = used[index] }
+        if totalNeedsPrice { assigned[totalRow] = used[needing.count] }
+        let usedSet = Set(used.map { "\($0.x)|\($0.y)|\($0.text)" })
+        func leftover(_ row: [OCRFragment]) -> String {
+            join(row.filter { !isColumnPrice($0) || !usedSet.contains("\($0.x)|\($0.y)|\($0.text)") })
         }
 
-        // Items end with the last price before the total (card slips such as
-        // "K-U-N-D-E-N-B-E-L-E-G" can come before ALDI's "Betrag" line).
-        guard let lastPriceRow = grouped[start..<totalRow].lastIndex(where: { $0.contains(where: isColumnPrice) }) else { return nil }
-        let block = grouped[start...lastPriceRow]
-        let prices = block.flatMap { $0.filter(isColumnPrice) }
-        let names = block.map { row in join(row.filter { !isColumnPrice($0) }) }
-        let needing = names.filter(needsPrice)
-        guard !prices.isEmpty, needing.count == prices.count else { return nil }
-
-        // Prices top to bottom (by height, slope removed like the rows).
-        let orderedPrices = prices.sorted { $0.midY < $1.midY }
         var result = grouped[..<start].map(join)
-        var next = 0
-        for name in names where !name.isEmpty {
-            if needsPrice(name) {
-                result.append(name + " " + orderedPrices[next].text.trimmingCharacters(in: .whitespaces))
-                next += 1
-            } else {
-                result.append(name)
+        for index in start..<grouped.count {
+            let row = grouped[index]
+            var text = leftover(row)
+            if let price = assigned[index] {
+                text = name(row) + " " + price.text.trimmingCharacters(in: .whitespaces)
+                // Unused prices of this row (rare) stay at the end.
+                let extra = row.filter { isColumnPrice($0) && !usedSet.contains("\($0.x)|\($0.y)|\($0.text)") }
+                if !extra.isEmpty { text += " " + join(extra) }
             }
+            if !text.trimmingCharacters(in: .whitespaces).isEmpty { result.append(text) }
         }
-        result.append(contentsOf: grouped[(lastPriceRow + 1)...].map(join))
         return result
+    }
+
+    /// A card-slip / payment line: items do not continue after it.
+    static func isStopLine(_ text: String) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespaces)
+        guard trimmed.filter(\.isLetter).count >= 3 else { return false }
+        let lower = trimmed.lowercased()
+        if ["coupon", "rabatt", "preisvorteil", "nachlass", "pfand"].contains(where: { lower.contains($0) }) { return false }
+        return ReceiptParser.isSkipLine(trimmed) || ReceiptParser.isSkipLine(trimmed.replacingOccurrences(of: "-", with: ""))
     }
 
     /// An item name still waiting for its price (not a quantity line like
