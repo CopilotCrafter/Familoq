@@ -43,6 +43,8 @@ targets:
         product: FamiloqBudget
       - package: FamiloqKit
         product: FamiloqPlanner
+      - package: FamiloqKit
+        product: FamiloqHealth
     info:
       path: Familoq/Info.plist
       properties:
@@ -114,6 +116,8 @@ targets:
         product: FamiloqBudget
       - package: FamiloqKit
         product: FamiloqPlanner
+      - package: FamiloqKit
+        product: FamiloqHealth
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(FQ_BUNDLE_ID).tests

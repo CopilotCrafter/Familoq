@@ -9,8 +9,10 @@
 //   FamiloqPlanner shopping list, family reminders, family calendar and the
 //                  notification plan (which alerts each iPhone schedules)
 //
-// Future spaces (FamiloqTravel, FamiloqHealth, FamiloqPlans, ...) become new
-// library targets here that depend on FamiloqCore.
+//   FamiloqHealth  dish catalogue & week planner, diet rules for health
+//                  conditions, plate check, check-up / vaccination / refill dates
+//
+// Future spaces become new library targets here that depend on FamiloqCore.
 //
 // Depends ONLY on Foundation, so it builds and tests on:
 //   * iOS / macOS (inside the app)
@@ -28,7 +30,8 @@ let package = Package(
     products: [
         .library(name: "FamiloqCore", targets: ["FamiloqCore"]),
         .library(name: "FamiloqBudget", targets: ["FamiloqBudget"]),
-        .library(name: "FamiloqPlanner", targets: ["FamiloqPlanner"])
+        .library(name: "FamiloqPlanner", targets: ["FamiloqPlanner"]),
+        .library(name: "FamiloqHealth", targets: ["FamiloqHealth"])
     ],
     targets: [
         .target(name: "FamiloqCore"),
@@ -36,6 +39,8 @@ let package = Package(
         .testTarget(name: "FamiloqCoreTests", dependencies: ["FamiloqCore"]),
         .target(name: "FamiloqPlanner", dependencies: ["FamiloqCore", "FamiloqBudget"]),
         .testTarget(name: "FamiloqBudgetTests", dependencies: ["FamiloqBudget", "FamiloqCore"]),
-        .testTarget(name: "FamiloqPlannerTests", dependencies: ["FamiloqPlanner", "FamiloqBudget", "FamiloqCore"])
+        .testTarget(name: "FamiloqPlannerTests", dependencies: ["FamiloqPlanner", "FamiloqBudget", "FamiloqCore"]),
+        .target(name: "FamiloqHealth", dependencies: ["FamiloqCore", "FamiloqBudget"]),
+        .testTarget(name: "FamiloqHealthTests", dependencies: ["FamiloqHealth", "FamiloqBudget", "FamiloqCore"])
     ]
 )
