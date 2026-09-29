@@ -13,7 +13,7 @@
 enum DishCatalogueData {
     static let lines: [String] = {
         let groups: [[String]] = [german, indian, italian, greek, turkish, levantine, chinese, japanese,
-                                  korean, thai, vietnamese, mexican, spanish, french, lunchbox]
+                                  korean, thai, vietnamese, mexican, spanish, french, lunchbox, breakfast]
         return groups.flatMap { $0 }
     }()
 
@@ -277,5 +277,47 @@ enum DishCatalogueData {
         "in||Kathi Roll mit Paneer|Flatbread roll with spiced paneer|Fladenbrot-Rolle mit Paneer|v|w|25|g,d,lb,lbo,s1||4 Chapatis; 300 g Paneer; 1 Paprika; 1 Zwiebel; 150 g Joghurt",
         "jp||Onigiri mit Lachs|Rice balls with salmon|Reisbällchen mit Lachs|f|r|30|sea,k,lb,lbo||300 g Sushireis; 200 g Lachsfilet; 1 Päckchen Nori; 1 Gurke",
         "gr||Couscous-Salat mit Kichererbsen|Couscous salad with chickpeas|Couscous-Salat mit Kichererbsen|l|w|15|g,vv,lb,lbo||200 g Vollkorn-Couscous; 1 Dose Kichererbsen; 1 Gurke; 250 g Kirschtomaten; 1 Zitrone; 1 Bund Minze"
+    ]
+
+    /// Breakfasts (flag "bf"): only suggested for breakfast.
+    static let breakfast: [String] = [
+        "de||Vollkornbrot mit Käse und Gurke|Wholegrain bread with cheese and cucumber|Vollkornbrot mit Käse und Gurke|v|w|10|g,d,bf,k||1 Vollkornbrot; 200 g Käse in Scheiben; 1 Gurke; 250 g Kirschtomaten",
+        "de||Müsli mit Joghurt und Obst|Muesli with yoghurt and fruit|Müsli mit Joghurt und Obst|v|w|5|d,n,bf,k||300 g Müsli ohne Zucker; 500 g Naturjoghurt; 2 Äpfel; 1 Schale Beeren",
+        "de||Haferbrei mit Apfel und Zimt|Porridge with apple and cinnamon|Haferbrei mit Apfel und Zimt|v|w|10|d,bf,k||200 g Haferflocken; 800 ml Milch; 2 Äpfel; 1 TL Zimt",
+        "de||Quark mit Beeren und Leinöl|Quark with berries and linseed oil|Quark mit Beeren und Leinöl|v|n|5|d,bf||500 g Magerquark; 300 g Beeren; 2 EL Leinöl; 2 EL Haferflocken",
+        "de||Rührei mit Vollkornbrot|Scrambled eggs on wholegrain bread|Rührei mit Vollkornbrot|e|w|15|g,bf,k||8 Eier; 1 Vollkornbrot; 1 Bund Schnittlauch; 2 Tomaten",
+        "de||Frühstücksei mit Brötchen|Boiled egg with rolls and jam|Gekochtes Ei mit Brötchen und Marmelade|e|b|15|g,d,hg,bf,k||4 Eier; 8 Brötchen; 1 Glas Marmelade; 50 g Butter",
+        "de|by|Weißwurstfrühstück|Veal sausages with pretzel and sweet mustard|Weißwürste mit Brezn und süßem Senf|pk|b|20|pr,hs,hf,bf||8 Weißwürste; 4 Brezn; 1 Glas süßer Senf",
+        "de||Vollkornbrot mit Frischkäse und Radieschen|Wholegrain bread with cream cheese and radishes|Vollkornbrot mit Frischkäse und Radieschen|v|w|10|g,d,bf,vv||1 Vollkornbrot; 200 g Frischkäse; 1 Bund Radieschen; 1 Bund Schnittlauch",
+        "in|mh|Poha (Frühstück)|Flattened rice with peas and peanuts|Reisflocken mit Erbsen und Erdnüssen|vg|r|20|n,bf,k,s1||300 g Poha; 1 Zwiebel; 100 g Erbsen; 50 g Erdnüsse; 1 Zitrone",
+        "in|ka,tn|Upma|Semolina with vegetables and curry leaves|Grieß mit Gemüse und Curryblättern|vg|w|20|g,bf,vv,s1||250 g Hartweizengrieß; 1 Zwiebel; 1 Karotte; 100 g Erbsen; 1 Bund Curryblätter",
+        "in|tn,kl|Idli mit Chutney|Steamed rice cakes with coconut chutney|Gedämpfte Reisküchlein mit Kokos-Chutney|l|r|20|bf,k||500 g Idli-Teig; 100 g Kokosraspeln; 2 grüne Chilis; 1 Stück Ingwer",
+        "in|tn,ka|Dosa mit Sambar|Rice crepe with lentil sambar|Reis-Crêpe mit Linsen-Sambar|l|r|30|bf,s1||500 g Dosa-Teig; 150 g Toor Dal; 2 Tomaten; 1 EL Sambar-Pulver",
+        "in|pb|Aloo Paratha mit Joghurt|Potato-stuffed flatbread with yoghurt|Mit Kartoffeln gefülltes Fladenbrot mit Joghurt|v|w|35|g,d,hf,bf,s1||300 g Atta; 500 g Kartoffeln; 1 TL Garam Masala; 400 g Joghurt; 40 g Ghee",
+        "in||Besan Chilla|Gram-flour pancakes with vegetables|Kichererbsenmehl-Pfannkuchen mit Gemüse|l|n|20|bf,vv,s1||250 g Kichererbsenmehl; 1 Zwiebel; 1 Tomate; 1 Bund Koriander; 200 g Joghurt",
+        "in|tn|Ven Pongal|Rice and moong dal with pepper and ghee|Reis mit Mungbohnen, Pfeffer und Ghee|l|r|30|hf,bf,k||200 g Reis; 100 g Moong Dal; 1 TL Pfefferkörner; 1 TL Kreuzkümmel; 40 g Ghee",
+        "in|kl|Puttu mit Kadala|Steamed rice cake with chickpea curry|Gedämpfter Reiskuchen mit Kichererbsen-Curry|l|r|30|bf,s2||300 g Puttu-Reismehl; 100 g Kokosraspeln; 250 g schwarze Kichererbsen; 1 Zwiebel",
+        "in|up|Masala-Omelett mit Toast|Spiced omelette with toast|Gewürz-Omelett mit Toast|e|b|15|g,bf,s1,k||8 Eier; 1 Zwiebel; 1 Tomate; 1 grüne Chili; 8 Scheiben Vollkorntoast",
+        "in|gj|Thepla mit Chai|Fenugreek flatbread with yoghurt|Bockshornklee-Fladenbrot mit Joghurt|v|w|30|g,d,bf||300 g Atta; 1 Bund Bockshornklee; 400 g Joghurt",
+        "it||Joghurt mit Obst und Nüssen|Yoghurt with fruit and nuts|Joghurt mit Obst und Nüssen|v|n|5|d,n,bf,k||500 g Naturjoghurt; 2 Bananen; 300 g Beeren; 50 g Walnüsse",
+        "it||Bruschetta mit Tomate zum Frühstück|Toast with tomato and olive oil|Geröstetes Brot mit Tomate und Olivenöl|vg|b|10|g,bf,vv||1 Ciabatta; 4 Tomaten; 4 EL Olivenöl; 1 Bund Basilikum",
+        "gr||Griechischer Joghurt mit Honig und Walnüssen|Greek yoghurt with honey and walnuts|Griechischer Joghurt mit Honig und Walnüssen|v|n|5|d,n,hg,bf,k||500 g griechischer Joghurt; 4 EL Honig; 80 g Walnüsse; 2 Äpfel",
+        "gr||Feta-Tomaten-Brot|Wholegrain bread with feta, tomato and olives|Vollkornbrot mit Feta, Tomate und Oliven|v|w|10|g,d,hs,bf,vv||1 Vollkornbrot; 200 g Feta; 4 Tomaten; 1 Gurke; 50 g Oliven",
+        "tr||Türkisches Frühstück|Cheese, olives, tomato, cucumber, egg and bread|Käse, Oliven, Tomate, Gurke, Ei und Brot|v,e|b|15|g,d,hs,bf,vv,k||200 g Feta; 100 g Oliven; 4 Tomaten; 1 Gurke; 4 Eier; 1 Fladenbrot",
+        "tr||Menemen zum Frühstück|Eggs with peppers and tomatoes|Rührei mit Paprika und Tomaten|e|b|20|g,bf,vv,k||8 Eier; 3 grüne Paprika; 4 Tomaten; 1 Fladenbrot",
+        "lv||Ful Medames|Fava beans with olive oil and lemon|Dicke Bohnen mit Olivenöl und Zitrone|l|b|15|g,bf,vv||2 Dosen Ful (Saubohnen); 2 Zitronen; 4 EL Olivenöl; 1 Bund Petersilie; 4 Pitabrote",
+        "lv||Labneh mit Za'atar|Strained yoghurt with za'atar, vegetables and bread|Labneh mit Za'atar, Gemüse und Brot|v|b|10|g,d,bf,vv||500 g Labneh; 2 EL Za'atar; 4 EL Olivenöl; 1 Gurke; 4 Tomaten; 4 Pitabrote",
+        "lv||Shakshuka zum Frühstück|Eggs in spiced tomato sauce|Eier in würziger Tomatensoße|e|b|25|g,bf,vv,k||8 Eier; 800 g stückige Tomaten; 2 Paprika; 1 Fladenbrot",
+        "cn||Congee mit Ingwer|Rice porridge with ginger and spring onions|Reisbrei mit Ingwer und Frühlingszwiebeln|vg|r|40|bf,k||200 g Reis; 1 Stück Ingwer; 4 Frühlingszwiebeln; 2 EL Sojasoße",
+        "cn||Baozi|Steamed buns with vegetable filling|Gedämpfte Hefeteigtaschen mit Gemüse|vg|d|20|g,sy,bf,k||12 Baozi (TK); 2 EL Sojasoße; 1 Gurke",
+        "jp||Japanisches Frühstück|Rice, miso soup, grilled salmon and egg|Reis, Misosuppe, gegrillter Lachs und Ei|f,e|r|30|sy,hs,bf||300 g Reis; 4 EL Misopaste; 300 g Lachsfilet; 4 Eier; 1 Päckchen Nori",
+        "jp||Onigiri zum Frühstück|Rice balls with salmon|Reisbällchen mit Lachs|f|r|25|sea,bf,k||300 g Sushireis; 200 g Lachsfilet; 1 Päckchen Nori",
+        "kr||Gyeran-mari mit Reis|Rolled omelette with rice|Gerolltes Omelett mit Reis|e|r|20|bf,k||8 Eier; 2 Frühlingszwiebeln; 1 Karotte; 300 g Reis",
+        "th||Jok (Reisbrei)|Rice porridge with ginger and egg|Reisbrei mit Ingwer und Ei|e|r|35|bf||200 g Jasminreis; 1 Stück Ingwer; 4 Eier; 3 Frühlingszwiebeln; 2 EL Fischsoße",
+        "vn||Bánh mì mit Ei|Baguette with egg, vegetables and herbs|Baguette mit Ei, Gemüse und Kräutern|e|b|15|g,bf,vv||2 Baguettes; 6 Eier; 1 Gurke; 2 Karotten; 1 Bund Koriander",
+        "mx||Huevos rancheros|Fried eggs on tortillas with salsa and beans|Spiegeleier auf Tortillas mit Salsa und Bohnen|e,l|b|20|bf,vv,s1||8 Eier; 8 Maistortillas; 1 Dose schwarze Bohnen; 400 g stückige Tomaten; 1 Avocado",
+        "es||Pan con tomate|Toast with grated tomato and olive oil|Brot mit geriebener Tomate und Olivenöl|vg|b|10|g,bf||1 Baguette; 4 Tomaten; 4 EL Olivenöl; 1 Knoblauchzehe",
+        "fr||Omelette aux fines herbes|Herb omelette with baguette|Kräuteromelett mit Baguette|e|b|15|g,bf,k||8 Eier; 1 Bund Kräuter; 1 Baguette; 20 g Butter",
+        "fr||Tartine mit Butter und Konfitüre|Baguette with butter and jam|Baguette mit Butter und Konfitüre|v|b|5|g,d,hg,sw,bf,k||1 Baguette; 50 g Butter; 1 Glas Konfitüre"
     ]
 }
