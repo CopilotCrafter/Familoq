@@ -104,7 +104,7 @@ public enum ReceiptParser {
     )
     private static let anyPrice = try! NSRegularExpression(pattern: #"-?\d{1,5}(?:[.,]\d{3})*[.,]\d{2}"#)
     private static let quantityLine = try! NSRegularExpression(
-        pattern: #"^\s*(\d+(?:[.,]\d+)?)\s*(?:st|stk|x|kg|g)?\s*[x×*]\s*(\d+[.,]\d{2})"#,
+        pattern: #"^\s*(\d+(?:[.,]\d+)?)\s*(?:st|stk|x|kg|g|l|ltr)?\s*[x×*]\s*(\d+[.,]\d{2})"#,
         options: [.caseInsensitive]
     )
     private static let percent = try! NSRegularExpression(pattern: #"(\d{1,2}(?:[.,]\d{1,2})?)\s?%"#)
@@ -209,6 +209,10 @@ public enum ReceiptParser {
         return rest.filter(\.isLetter).count <= 2
     }
 
+    static func containsDate(_ line: String) -> Bool {
+        firstMatch(dateDMY, in: line) != nil || firstMatch(dateYMD, in: line) != nil || firstMatch(dateISO, in: line) != nil
+    }
+
     static func isSkipLine(_ line: String) -> Bool {
         let lower = line.lowercased()
         return skipKeywords.contains { hasPhrase($0, in: lower) }
@@ -237,7 +241,8 @@ public enum ReceiptParser {
             let letters = line.filter(\.isLetter).count
             guard letters >= 3 else { continue }
             let lower = line.lowercased()
-            if skipKeywords.contains(where: { lower.contains($0) }) { continue }
+            // Whole words: "Bäckerei Mustermann" is not skipped for "ust".
+            if skipKeywords.contains(where: { hasPhrase($0, in: lower) }) { continue }
             if firstMatch(dateDMY, in: line) != nil || firstMatch(trailingPrice, in: line) != nil { continue }
             if line.range(of: #"\d{5}"#, options: .regularExpression) != nil { continue } // postcode line
             return (line.trimmingCharacters(in: CharacterSet(charactersIn: "*-=# ")), nil)
@@ -384,6 +389,9 @@ public enum ReceiptParser {
         let end = totalIndex ?? lines.count
         var items: [ParsedReceiptItem] = []
         var pendingQuantity: Decimal?
+        /// A name line without a price ("Äpfel Elstar") whose price is on the
+        /// quantity line below ("1,254 kg x 2,49 EUR/kg   3,12 A").
+        var pendingName: String?
         var nextID = 0
 
         for line in lines.prefix(end) {
@@ -393,11 +401,24 @@ public enum ReceiptParser {
             if let q = firstMatch(quantityLine, in: line) {
                 // Letters left after removing the quantity expression = an item name.
                 // "2,672 kg x 1,99 EUR/kg": units are not a name.
-                let rest = line.replacingOccurrences(of: q[0], with: "").lowercased()
+                let restText = line.replacingOccurrences(of: q[0], with: "")
+                let rest = restText.lowercased()
                     .replacingOccurrences(of: #"eur|€|/|kg|stk|st\b"#, with: "", options: .regularExpression)
                 let hasName = rest.filter(\.isLetter).count > 2
                 if !hasName {
                     let quantity = DecimalParser.parse(q[1])
+                    // The line total is on the quantity line; the name was the line above.
+                    if let name = pendingName, let lineTotal = trailingPriceValue(restText, wholeUnits: wholeUnits), lineTotal > 0 {
+                        let classification = GroceryItemClassifier.classify(name)
+                        items.append(ParsedReceiptItem(
+                            id: nextID, name: name, amount: lineTotal, quantity: quantity,
+                            suggestedSubcategoryKey: classification?.subcategoryKey,
+                            classificationConfidence: classification?.confidence ?? 0))
+                        nextID += 1
+                        pendingName = nil
+                        pendingQuantity = nil
+                        continue
+                    }
                     if let last = items.indices.last, items[last].quantity == nil, pendingQuantity == nil {
                         items[last].quantity = quantity
                     } else {
@@ -407,7 +428,20 @@ public enum ReceiptParser {
                 }
             }
 
-            guard let price = trailingPriceValue(line, wholeUnits: wholeUnits) else { continue }
+            guard let price = trailingPriceValue(line, wholeUnits: wholeUnits) else {
+                let name = itemName(from: line, wholeUnits: wholeUnits)
+                let looksLikeName = name.filter(\.isLetter).count >= 3
+                    && !skipKeywords.contains(where: { hasPhrase($0, in: lower) })
+                    && firstMatch(dateDMY, in: line) == nil
+                pendingName = looksLikeName ? name : nil
+                continue
+            }
+            pendingName = nil
+            // A negative amount is always a discount ("PAYBACK Coupon -0,20").
+            if price < 0, let last = items.indices.last {
+                items[last].amount += price
+                continue
+            }
             if skipKeywords.contains(where: { hasPhrase($0, in: lower) }) { continue }
             if firstMatch(dateDMY, in: line) != nil || firstMatch(dateYMD, in: line) != nil { continue }
             // Whole-amount receipts: "14:05" would otherwise look like a price of 5.

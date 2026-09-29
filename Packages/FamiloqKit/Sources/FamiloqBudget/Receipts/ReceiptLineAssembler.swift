@@ -131,7 +131,10 @@ public enum ReceiptLineAssembler {
             if !grouped[start].contains(where: { !isColumnPrice($0) }) && needsPrice(text) { start -= 1 }
         }
 
-        let block = grouped[start..<totalRow]
+        // Items end with the last price before the total (card slips such as
+        // "K-U-N-D-E-N-B-E-L-E-G" can come before ALDI's "Betrag" line).
+        guard let lastPriceRow = grouped[start..<totalRow].lastIndex(where: { $0.contains(where: isColumnPrice) }) else { return nil }
+        let block = grouped[start...lastPriceRow]
         let prices = block.flatMap { $0.filter(isColumnPrice) }
         let names = block.map { row in join(row.filter { !isColumnPrice($0) }) }
         let needing = names.filter(needsPrice)
@@ -149,7 +152,7 @@ public enum ReceiptLineAssembler {
                 result.append(name)
             }
         }
-        result.append(contentsOf: grouped[totalRow...].map(join))
+        result.append(contentsOf: grouped[(lastPriceRow + 1)...].map(join))
         return result
     }
 
@@ -161,7 +164,10 @@ public enum ReceiptLineAssembler {
         if ["eur", "€", "chf", "usd", "gbp"].contains(trimmed.lowercased()) { return false }
         if ReceiptParser.isQuantityLine(trimmed) { return false }
         if ReceiptParser.trailingPriceValue(trimmed) != nil { return false }
-        if ReceiptParser.isSkipLine(trimmed) { return false }
+        let lower = trimmed.lowercased()
+        let isDiscount = ["coupon", "rabatt", "preisvorteil", "nachlass"].contains { lower.contains($0) }
+        if !isDiscount && (ReceiptParser.isSkipLine(trimmed) || ReceiptParser.isSkipLine(trimmed.replacingOccurrences(of: "-", with: ""))) { return false }
+        if ReceiptParser.containsDate(trimmed) { return false }
         return true
     }
 }
