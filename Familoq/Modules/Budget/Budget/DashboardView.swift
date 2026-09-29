@@ -200,6 +200,13 @@ private struct DashboardContent: View {
         }
         .navigationTitle(month.start.formatted(.dateTime.month(.wide).year()))
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    session.showFamily = true
+                } label: {
+                    Label("Family & settings", systemImage: "person.2.circle")
+                }
+            }
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     showReports = true

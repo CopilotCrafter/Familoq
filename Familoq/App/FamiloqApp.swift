@@ -228,9 +228,12 @@ struct RootTabView: View {
             PlannerView()
                 .tabItem { Label("Planner", systemImage: "checklist") }
                 .tag(AppTab.planner)
+            HealthView()
+                .tabItem { Label("Health", systemImage: "heart.fill") }
+                .tag(AppTab.health)
+        }
+        .sheet(isPresented: $session.showFamily) {
             FamilyView()
-                .tabItem { Label("Family", systemImage: "person.2.fill") }
-                .tag(AppTab.family)
         }
         .overlay(alignment: .top) {
             if let notice = session.notice {

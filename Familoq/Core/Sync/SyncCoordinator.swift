@@ -128,11 +128,14 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
 
     /// Raised whenever a new SyncKind is added (2 = Planner in 0.5.0,
     /// 3 = learned receipt items in 0.5.2).
-    private static let kindsVersion = 5
+    private static let kindsVersion = 6
     /// Kinds added since 0.4 (fetching one again is harmless). 4 = time off
-    /// in 0.6, 5 = contracts, warranties, meals, travel in 0.7.
+    /// in 0.6, 5 = contracts, warranties, meals, travel in 0.7, 6 = meal
+    /// settings, ratings, pantry and the Health space in 0.8.
     private static let newKinds: Set<SyncKind> = [.shoppingList, .shoppingItem, .reminder, .event, .itemRule, .leave, .leaveAllowance,
-                                                  .contract, .warranty, .recipe, .meal, .trip, .packingItem]
+                                                  .contract, .warranty, .recipe, .meal, .trip, .packingItem,
+                                                  .mealPrefs, .mealRating, .pantry, .healthPerson, .checkup, .vaccination,
+                                                  .medication, .measurement, .healthContact, .claim, .plate]
 
     /// An older app version skips record kinds it does not know, and its
     /// change tokens move past them. After updating, fetch those kinds once
@@ -302,7 +305,8 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
         guard let context,
               let parsed = SyncKind.parse(recordName: recordID.recordName),
               let handler = SyncRegistry.handler(for: parsed.0),
-              let object = try? handler.find(context, parsed.1) else { return nil }
+              let object = try? handler.find(context, parsed.1),
+              object.isSyncShareable else { return nil }
         let kind = parsed.0
         let entry = ledgerEntry(recordID.recordName)
         var record = entry?.systemFields.flatMap(Self.decodeSystemFields) ?? CKRecord(recordType: Self.recordType, recordID: recordID)

@@ -43,6 +43,8 @@ targets:
         product: FamiloqBudget
       - package: FamiloqKit
         product: FamiloqPlanner
+      - package: FamiloqKit
+        product: FamiloqHealth
     info:
       path: Familoq/Info.plist
       properties:
@@ -66,7 +68,7 @@ targets:
         # The app only uses HTTPS (standard encryption) -> exempt.
         # Avoids the export-compliance question on every TestFlight upload.
         ITSAppUsesNonExemptEncryption: false
-        NSCameraUsageDescription: Familoq uses the camera to scan receipts. Images are processed on your iPhone.
+        NSCameraUsageDescription: Familoq uses the camera to scan receipts and to check plates. Images are processed on your iPhone.
         NSFaceIDUsageDescription: Familoq uses Face ID to protect your family's data.
         # CloudKit container: App Invitations (public DB) and family sync (private/shared DB)
         FQCloudKitContainer: iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)
@@ -114,6 +116,8 @@ targets:
         product: FamiloqBudget
       - package: FamiloqKit
         product: FamiloqPlanner
+      - package: FamiloqKit
+        product: FamiloqHealth
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(FQ_BUNDLE_ID).tests

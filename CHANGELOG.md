@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.8.0 - Meals by cuisine, Health tab
+
+### Added
+- Planner → Meals → Meal settings: rank 3-4 cuisines (German, Indian, Italian, Greek, Turkish, Lebanese, Chinese, Japanese, Korean, Thai, Vietnamese, Mexican, Spanish, French) with 1-2 regions each (German and Indian by state); vegetarian days, weekday cooking time, spice level, kid-friendly, "never suggest" list.
+- Built-in dish catalogue (over 200 dishes with ingredients for 4) and "Plan my week": follows the cuisine ranking (about 3/2/1/1), balances fish, pulses and vegetarian days, no repeats from the last 3 weeks, quick on weekdays, seasonal, prefers what is at home and what the family rated well.
+- Per meal: swap for another suggestion, thumbs up/down per person, guests (servings scale the shopping list), "Cook double" adds tomorrow's leftovers, lunchbox ideas, tips per person for their health conditions, rough carbs per portion for diabetes.
+- Week balance score for the planned meals.
+- At home (pantry): items with use-by reminders, add food from recent receipts, "Cook with what's at home"; the shopping list skips what is at home.
+- Recipes: steps, import from a website link or a cookbook photo, cooking mode (step by step, screen stays on, timers), steps written by Apple Intelligence.
+- New Health tab: a profile per person (members, children, relatives) with health conditions (blood pressure, diabetes, cholesterol, triglycerides, thyroid/Hashimoto's, gout, fatty liver, weight, coeliac, lactose, IBS, reflux, iron, osteoporosis, pregnancy, kidney disease, heart disease) and allergies that shape the meal plan; "Only on this iPhone" per person.
+- Check-ups with intervals and appointments, children's U/J exams by age, vaccinations with boosters (STIKO intervals, flu each October, travel vaccines linked to trips), medications with daily reminders and a refill reminder, measurements with charts and a PDF report for the doctor.
+- Health costs per person and year with a tax-relevant mark (außergewöhnliche Belastungen) and a shareable list; insurance refunds (to send in / waiting / refunded); doctors & contacts with 112, 116 117 and the pharmacy emergency search; emergency cards behind Face ID.
+- Plate check: photo of a plate, foods suggested on the iPhone and corrected by you, plate balance score with notes for the family's conditions.
+- Time off: "Sick" type (not taken from the allowance), sick days per person, reminder to send the sick note (AU).
+- Healthy basket and meal plan use everyone's health settings.
+
+### Changed
+- Family & settings moved to the button at the top left of the Dashboard; the Health tab took its place in the tab bar.
+
 ## 0.7.0 - Fixed costs, contracts, meals, travel, Siri, Face ID
 
 ### Added

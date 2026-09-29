@@ -18,6 +18,9 @@ enum PlannerNotifications {
         case events = "notify.events"
         case bills = "notify.bills"
         case deadlines = "notify.deadlines"
+        case health = "notify.health"
+        case medications = "notify.medications"
+        case pantry = "notify.pantry"
 
         var title: String {
             switch self {
@@ -25,6 +28,9 @@ enum PlannerNotifications {
             case .events: return "Calendar alerts"
             case .bills: return "Bills due tomorrow"
             case .deadlines: return "Contract deadlines & warranties"
+            case .health: return "Check-ups, vaccinations & refills"
+            case .medications: return "Medication times"
+            case .pantry: return "Use-by dates at home"
             }
         }
 
@@ -59,7 +65,8 @@ enum PlannerNotifications {
         case .authorized, .provisional, .ephemeral: break
         default: return
         }
-        let requests = plannedRequests(context: context, now: now)
+        var requests = plannedRequests(context: context, now: now)
+        requests.append(contentsOf: doseRequests(context: context))
         let pending = await center.pendingNotificationRequests().map(\.identifier).filter { $0.hasPrefix(prefix) }
         center.removePendingNotificationRequests(withIdentifiers: pending)
         for request in requests {
@@ -112,6 +119,11 @@ enum PlannerNotifications {
             }
         }
 
+        // Health (check-ups, vaccinations, refills) and pantry use-by dates.
+        let health = HealthAgenda.deadlines(familyIDs: families, me: me, context: context, now: now, calendar: calendar)
+        deadlines.append(contentsOf: health.deadlines)
+        let doseCount = min(20, doseRequests(context: context).count)
+
         let plan = NotificationPlanner.plan(
             reminders: reminders.compactMap { r in
                 r.dueDate.map { NotificationPlanner.Reminder(id: r.id, due: $0, hasTime: r.hasTime, assignees: r.assignees) }
@@ -119,7 +131,7 @@ enum PlannerNotifications {
             events: events.map { NotificationPlanner.Event(spec: $0.spec, alertMinutes: $0.alertMinutes, participants: $0.participants) },
             bills: upcomingBills.map { NotificationPlanner.Bill(id: $0.id, date: $0.date) },
             deadlines: deadlines,
-            me: me, now: now, calendar: calendar)
+            me: me, now: now, calendar: calendar, limit: 60 - doseCount)
 
         let remindersByID = Dictionary(reminders.map { ($0.id.uuidString, $0) }, uniquingKeysWith: { a, _ in a })
         let eventsByID = Dictionary(events.map { ($0.id.uuidString, $0) }, uniquingKeysWith: { a, _ in a })
@@ -157,6 +169,9 @@ enum PlannerNotifications {
                     let (warranty, end) = entry
                     content.title = String(localized: "Warranty ends: \(warranty.itemName)")
                     content.body = String(localized: "Last day: \(end.formatted(date: .long, time: .omitted)). Check it for faults now.")
+                } else if let text = health.content[alert.sourceID] {
+                    content.title = text.title
+                    content.body = text.body
                 } else {
                     return nil
                 }
@@ -165,6 +180,16 @@ enum PlannerNotifications {
             let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
             return UNNotificationRequest(identifier: alert.id, content: content, trigger: trigger)
         }
+    }
+}
+
+extension PlannerNotifications {
+    /// Daily medication reminders for this iPhone's people.
+    static func doseRequests(context: ModelContext) -> [UNNotificationRequest] {
+        let mine = (try? context.fetch(FetchDescriptor<FamilyMember>(predicate: #Predicate { $0.isCurrentUser == true && $0.isActive == true }))) ?? []
+        let families = Set(mine.map(\.familyID))
+        guard !families.isEmpty else { return [] }
+        return HealthAgenda.doseRequests(familyIDs: families, me: Set(mine.map(\.id)), context: context)
     }
 }
 

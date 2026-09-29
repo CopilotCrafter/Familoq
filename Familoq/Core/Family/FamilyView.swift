@@ -3,15 +3,24 @@ import SwiftData
 import CloudKit
 import FamiloqCore
 
+/// Family & settings - opened from the Dashboard (top left).
 struct FamilyView: View {
     @EnvironmentObject private var session: AppSession
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            if let family = session.family {
-                FamilySettingsContent(family: family)
-            } else {
-                ProgressView()
+            Group {
+                if let family = session.family {
+                    FamilySettingsContent(family: family)
+                } else {
+                    ProgressView()
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
             }
         }
     }

@@ -10,11 +10,16 @@ protocol SyncableRecord: PersistentModel {
     /// Every field except `id`/`familyID` (those come from the record name and zone).
     func syncPayload() -> SyncPayload
     func applySyncPayload(_ payload: SyncPayload)
+    /// False for records kept "only on this iPhone" (never uploaded).
+    var isSyncShareable: Bool { get }
     /// Receipt photos travel as a file (CKAsset) next to the record.
     var syncImage: Data? { get set }
 }
 
 extension SyncableRecord {
+    /// False for records kept "only on this iPhone" - never uploaded.
+    var isSyncShareable: Bool { true }
+
     var syncImage: Data? {
         get { nil }
         set { }
@@ -28,6 +33,8 @@ struct SyncHandler {
     let hasImage: Bool
     /// All records of a family.
     let all: (ModelContext, UUID) throws -> [any SyncableRecord]
+    /// For backups: also the records kept "only on this iPhone".
+    let backupAll: (ModelContext, UUID) throws -> [any SyncableRecord]
     let find: (ModelContext, UUID) throws -> (any SyncableRecord)?
     /// Creates and inserts an empty record (id, familyID) before a payload is applied.
     let make: (ModelContext, UUID, UUID) -> any SyncableRecord
@@ -37,6 +44,7 @@ struct SyncHandler {
         hasImage: Bool = false,
         inFamily: @escaping (UUID) -> Predicate<T>,
         withID: @escaping (UUID) -> Predicate<T>,
+        inFamilyForBackup: ((UUID) -> Predicate<T>)? = nil,
         make: @escaping (UUID, UUID) -> T
     ) -> SyncHandler {
         SyncHandler(
@@ -44,6 +52,9 @@ struct SyncHandler {
             hasImage: hasImage,
             all: { context, familyID in
                 try context.fetch(FetchDescriptor<T>(predicate: inFamily(familyID))).map { $0 as any SyncableRecord }
+            },
+            backupAll: { context, familyID in
+                try context.fetch(FetchDescriptor<T>(predicate: (inFamilyForBackup ?? inFamily)(familyID))).map { $0 as any SyncableRecord }
             },
             find: { context, id in
                 var descriptor = FetchDescriptor<T>(predicate: withID(id))
@@ -98,7 +109,8 @@ enum SyncRegistry {
     /// Removes every synced record of a family from this iPhone.
     static func deleteAll(familyID: UUID, context: ModelContext) throws {
         for handler in handlers.reversed() {
-            for record in try handler.all(context, familyID) {
+            // Including the private ones (only on this iPhone).
+            for record in try handler.backupAll(context, familyID) {
                 context.delete(record)
             }
         }

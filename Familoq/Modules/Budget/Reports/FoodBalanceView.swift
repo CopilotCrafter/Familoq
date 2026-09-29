@@ -3,6 +3,7 @@ import SwiftData
 import Charts
 import FamiloqCore
 import FamiloqBudget
+import FamiloqHealth
 #if canImport(FoundationModels)
 import FoundationModels
 #endif
@@ -161,6 +162,7 @@ struct FoodBalanceView: View {
     @State private var report: FoodBalanceReport?
     @State private var previousReport: FoodBalanceReport?
     @State private var trend: [TrendPoint] = []
+    @State private var conditions: Set<HealthCondition> = []
 
     struct TrendPoint: Identifiable {
         let month: Date
@@ -179,6 +181,7 @@ struct FoodBalanceView: View {
                 header(report)
                 groupsSection(report)
                 nutrientsSection(report)
+                conditionsSection(report)
                 lessHealthySection(report)
                 trendSection
                 aiSection(report)
@@ -204,6 +207,30 @@ struct FoodBalanceView: View {
         let history = FoodBasketLoader.purchases(familyID: family.id, interval: DateInterval(start: sixMonths, end: monthEnd), person: person, lookup: lookup, context: context)
         trend = FoodBalance.monthlyScores(history, months: 6, endingAt: Date(), calendar: calendar)
             .compactMap { point in point.score.map { TrendPoint(month: point.month, score: $0) } }
+        conditions = HealthService.dietProfile(familyID: family.id, context: context).conditions
+    }
+
+    /// Purchases worth watching for the family's health conditions (Health tab).
+    @ViewBuilder
+    private func conditionsSection(_ report: FoodBalanceReport) -> some View {
+        let warnings = BasketHealthCheck.warnings(report, conditions: conditions)
+        if !warnings.isEmpty {
+            Section {
+                ForEach(warnings) { warning in
+                    Label {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(verbatim: String(localized: String.LocalizationValue(warning.group.title)) + " · \(Int((warning.share * 100).rounded())) %")
+                            Text("Worth watching for: \(String(localized: String.LocalizationValue(warning.condition.title)))")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
+                    } icon: {
+                        Image(systemName: "heart.text.square").foregroundStyle(.pink)
+                    }
+                }
+            } header: {
+                Text("For your health settings")
+            }
+        }
     }
 
     // MARK: Sections
