@@ -172,6 +172,8 @@ public enum ReceiptLineAssembler {
         guard trimmed.filter(\.isLetter).count >= 3 else { return false }
         let lower = trimmed.lowercased()
         if ["coupon", "rabatt", "preisvorteil", "nachlass", "pfand"].contains(where: { lower.contains($0) }) { return false }
+        // "0,184 kg x 4,90 EUR/kg" belongs to the item above.
+        if ReceiptParser.isQuantityLine(trimmed) { return false }
         return ReceiptParser.isSkipLine(trimmed) || ReceiptParser.isSkipLine(trimmed.replacingOccurrences(of: "-", with: ""))
     }
 
