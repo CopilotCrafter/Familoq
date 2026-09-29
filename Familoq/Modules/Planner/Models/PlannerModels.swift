@@ -412,7 +412,7 @@ final class MealPreferences {
     var cuisinesRaw: String = ""
     /// Never suggested, one per line ("Pilze", "Koriander").
     var avoidRaw: String = ""
-    var maxSpice: Int = 2
+    var maxSpice: Int = 3
     var vegetarianDays: Int = 1
     var weekdayMinutes: Int = 40
     var kidFriendly: Bool = false

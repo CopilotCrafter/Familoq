@@ -170,7 +170,7 @@ final class Medication {
     var remindRefill: Bool = true
     var isActive: Bool = true
     var note: String = ""
-    var isPrivate: Bool = true
+    var isPrivate: Bool = false
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 
@@ -214,7 +214,7 @@ final class HealthMeasurement {
     var value2: Double = 0
     var date: Date = Date()
     var note: String = ""
-    var isPrivate: Bool = true
+    var isPrivate: Bool = false
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 

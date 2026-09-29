@@ -10,11 +10,16 @@ protocol SyncableRecord: PersistentModel {
     /// Every field except `id`/`familyID` (those come from the record name and zone).
     func syncPayload() -> SyncPayload
     func applySyncPayload(_ payload: SyncPayload)
+    /// False for records kept "only on this iPhone" (never uploaded).
+    var isSyncShareable: Bool { get }
     /// Receipt photos travel as a file (CKAsset) next to the record.
     var syncImage: Data? { get set }
 }
 
 extension SyncableRecord {
+    /// False for records kept "only on this iPhone" - never uploaded.
+    var isSyncShareable: Bool { true }
+
     var syncImage: Data? {
         get { nil }
         set { }
@@ -104,7 +109,8 @@ enum SyncRegistry {
     /// Removes every synced record of a family from this iPhone.
     static func deleteAll(familyID: UUID, context: ModelContext) throws {
         for handler in handlers.reversed() {
-            for record in try handler.all(context, familyID) {
+            // Including the private ones (only on this iPhone).
+            for record in try handler.backupAll(context, familyID) {
                 context.delete(record)
             }
         }

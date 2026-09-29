@@ -132,5 +132,6 @@ enum HealthService {
         for item in (try? context.fetch(FetchDescriptor<PlateLog>(predicate: #Predicate { $0.personID == optionalPID }))) ?? [] { context.delete(item) }
         context.delete(person)
         try? context.save()
+        Task { await PlannerNotifications.reschedule(context: context) }
     }
 }

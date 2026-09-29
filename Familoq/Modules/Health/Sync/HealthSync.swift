@@ -6,6 +6,7 @@ import FamiloqCore
 // `isPrivate` itself is never synced: a private record is not sent at all.
 
 extension HealthPerson: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .healthPerson }
     var syncID: UUID { id }
 
@@ -43,11 +44,13 @@ extension HealthPerson: SyncableRecord {
         sortOrder = p.int("sortOrder")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }
 
 extension Checkup: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .checkup }
     var syncID: UUID { id }
 
@@ -81,11 +84,13 @@ extension Checkup: SyncableRecord {
         remind = p.bool("remind", default: true)
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }
 
 extension Vaccination: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .vaccination }
     var syncID: UUID { id }
 
@@ -119,11 +124,13 @@ extension Vaccination: SyncableRecord {
         tripID = p.uuid("tripID")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }
 
 extension Medication: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .medication }
     var syncID: UUID { id }
 
@@ -161,11 +168,13 @@ extension Medication: SyncableRecord {
         note = p.string("note")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }
 
 extension HealthMeasurement: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .measurement }
     var syncID: UUID { id }
 
@@ -193,7 +202,8 @@ extension HealthMeasurement: SyncableRecord {
         note = p.string("note")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }
 
@@ -227,6 +237,7 @@ extension HealthContact: SyncableRecord {
 }
 
 extension InsuranceClaim: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .claim }
     var syncID: UUID { id }
 
@@ -262,11 +273,13 @@ extension InsuranceClaim: SyncableRecord {
         note = p.string("note")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }
 
 extension PlateLog: SyncableRecord {
+    var isSyncShareable: Bool { !isPrivate }
     static var syncKind: SyncKind { .plate }
     var syncID: UUID { id }
 
@@ -294,6 +307,7 @@ extension PlateLog: SyncableRecord {
         note = p.string("note")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
-        isPrivate = p.bool("private")
+        // Sync never un-privates a record kept on this iPhone; a backup can mark one private.
+        if p.values["private"] != nil { isPrivate = true }
     }
 }

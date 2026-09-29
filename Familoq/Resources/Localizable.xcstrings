@@ -17589,6 +17589,39 @@
           }
         }
       }
+    },
+    "Overdue since %@ - time to book an appointment.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überfällig seit %@ – Zeit, einen Termin zu vereinbaren."
+          }
+        }
+      }
+    },
+    "Between %@ and %@ - book it with the paediatrician.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischen %1$@ und %2$@ – Termin beim Kinderarzt vereinbaren."
+          }
+        }
+      }
+    },
+    "Overdue since %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überfällig seit %@."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

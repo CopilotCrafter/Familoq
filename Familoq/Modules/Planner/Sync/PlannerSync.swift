@@ -410,7 +410,7 @@ extension MealPreferences: SyncableRecord {
     func applySyncPayload(_ p: SyncPayload) {
         cuisinesRaw = p.string("cuisines")
         avoidRaw = p.string("avoid")
-        maxSpice = p.int("maxSpice", default: 2)
+        maxSpice = p.int("maxSpice", default: 3)
         vegetarianDays = p.int("vegetarianDays", default: 1)
         weekdayMinutes = p.int("weekdayMinutes", default: 40)
         kidFriendly = p.bool("kidFriendly")

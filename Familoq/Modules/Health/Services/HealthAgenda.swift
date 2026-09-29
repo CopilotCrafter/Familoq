@@ -22,6 +22,8 @@ enum HealthAgenda {
         let personName: String
         /// For notifications: days before the date (0 = on the day).
         let daysBefore: [Int]
+        /// Children's exams: last day of the age window.
+        var windowEnd: Date? = nil
 
         var icon: String {
             switch kind {
@@ -50,7 +52,8 @@ enum HealthAgenda {
                 guard let birth = person.birthDate,
                       let next = ChildExam.next(birthDate: birth, done: checkup.doneExams, now: now, calendar: calendar) else { continue }
                 result.append(Item(id: "u-" + checkup.id.uuidString + "-" + next.exam.name, kind: .childExam, date: next.from,
-                                   title: next.exam.name, personID: person.id, personName: person.name, daysBefore: [14, 0]))
+                                   title: next.exam.name, personID: person.id, personName: person.name, daysBefore: [14, 0],
+                                   windowEnd: next.to))
                 continue
             }
             guard let last = checkup.lastDate, let due = HealthDue.next(after: last, months: checkup.intervalMonths, calendar: calendar) else { continue }
@@ -102,22 +105,41 @@ enum HealthAgenda {
             let people = ((try? context.fetch(FetchDescriptor<HealthPerson>())) ?? []).filter { familyIDs.contains($0.familyID) }
             let byID = Dictionary(people.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
             for item in items(familyIDs: familyIDs, context: context, now: now, calendar: calendar)
-            where item.date > now && concernsMe(byID[item.personID], me: me) {
-                deadlines.append(.init(id: item.id, date: item.date, daysBefore: item.daysBefore))
+            where concernsMe(byID[item.personID], me: me) {
                 let day = item.date.formatted(date: .long, time: .omitted)
+                var fireDate = item.date
+                var daysBefore = item.daysBefore
+                var overdue = false
+                if item.date <= now {
+                    if item.kind == .childExam, let end = item.windowEnd, end > now {
+                        // Window already open: remind a week before it closes.
+                        fireDate = end
+                        daysBefore = [7, 1]
+                    } else if item.kind == .checkup || item.kind == .vaccination {
+                        // Overdue: a gentle reminder once a week (next Saturday).
+                        overdue = true
+                        fireDate = calendar.nextDate(after: now, matching: DateComponents(weekday: 7), matchingPolicy: .nextTime) ?? now
+                        daysBefore = [0]
+                    } else {
+                        continue
+                    }
+                }
+                deadlines.append(.init(id: item.id, date: fireDate, daysBefore: daysBefore))
                 switch item.kind {
                 case .checkup:
                     content[item.id] = (String(localized: "Check-up due: \(item.title) (\(item.personName))"),
-                                        String(localized: "Due around \(day) - time to book an appointment."))
+                                        overdue ? String(localized: "Overdue since \(day) - time to book an appointment.")
+                                                : String(localized: "Due around \(day) - time to book an appointment."))
                 case .childExam:
+                    let end = (item.windowEnd ?? item.date).formatted(date: .long, time: .omitted)
                     content[item.id] = (String(localized: "\(item.title) check-up for \(item.personName)"),
-                                        String(localized: "The window starts on \(day) - book it with the paediatrician."))
+                                        String(localized: "Between \(day) and \(end) - book it with the paediatrician."))
                 case .appointment:
                     content[item.id] = (String(localized: "Appointment: \(item.title) (\(item.personName))"),
                                         item.date.formatted(date: .long, time: .shortened))
                 case .vaccination:
                     content[item.id] = (String(localized: "Vaccination due: \(item.title) (\(item.personName))"),
-                                        String(localized: "Due around \(day)."))
+                                        overdue ? String(localized: "Overdue since \(day).") : String(localized: "Due around \(day)."))
                 case .refill:
                     content[item.id] = (String(localized: "Medication running out: \(item.title) (\(item.personName))"),
                                         String(localized: "It lasts until about \(day) - get a new pack or prescription."))

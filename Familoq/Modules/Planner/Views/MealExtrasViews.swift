@@ -18,7 +18,7 @@ struct MealSettingsSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var cuisines: [CuisinePreference] = []
     @State private var avoid = ""
-    @State private var maxSpice = 2
+    @State private var maxSpice = 3
     @State private var vegetarianDays = 1
     @State private var weekdayMinutes = 40
     @State private var kidFriendly = false
@@ -113,7 +113,7 @@ struct MealSettingsSheet: View {
     private func load() {
         guard !loaded else { return }
         loaded = true
-        let prefs = MealSettingsService.preferences(familyID: family.id, context: context)
+        guard let prefs = MealSettingsService.existing(familyID: family.id, context: context) else { return }
         cuisines = prefs.cuisines
         avoid = prefs.avoidRaw
         maxSpice = prefs.maxSpice
@@ -240,6 +240,7 @@ struct PantryView: View {
                             Button("Used up", role: .destructive) {
                                 context.delete(item)
                                 try? context.save()
+                                Task { await PlannerNotifications.reschedule(context: context) }
                             }
                         }
                     }

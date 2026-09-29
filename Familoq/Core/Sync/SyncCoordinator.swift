@@ -305,7 +305,8 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
         guard let context,
               let parsed = SyncKind.parse(recordName: recordID.recordName),
               let handler = SyncRegistry.handler(for: parsed.0),
-              let object = try? handler.find(context, parsed.1) else { return nil }
+              let object = try? handler.find(context, parsed.1),
+              object.isSyncShareable else { return nil }
         let kind = parsed.0
         let entry = ledgerEntry(recordID.recordName)
         var record = entry?.systemFields.flatMap(Self.decodeSystemFields) ?? CKRecord(recordType: Self.recordType, recordID: recordID)

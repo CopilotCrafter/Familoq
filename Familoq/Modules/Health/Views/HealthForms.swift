@@ -108,6 +108,7 @@ struct CheckupForm: View {
                         Button("Delete", role: .destructive) {
                             context.delete(checkup)
                             try? context.save()
+                            Task { await PlannerNotifications.reschedule(context: context) }
                             dismiss()
                         }
                     }
@@ -236,6 +237,7 @@ struct VaccinationForm: View {
                         Button("Delete", role: .destructive) {
                             context.delete(vaccination)
                             try? context.save()
+                            Task { await PlannerNotifications.reschedule(context: context) }
                             dismiss()
                         }
                     }

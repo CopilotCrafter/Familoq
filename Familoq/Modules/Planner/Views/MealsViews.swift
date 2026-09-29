@@ -609,15 +609,24 @@ private struct MealEditSheet: View {
         }()
         let wasDouble = entry.cookDouble
         let pickedDish = dish
-        entry.title = title.trimmingCharacters(in: .whitespaces)
+        let newTitle = title.trimmingCharacters(in: .whitespaces)
+        let newDishID = recipeID == nil ? (pickedDish?.id ?? "") : ""
+        if entry.isLeftover && (entry.title != newTitle || entry.recipeID != recipeID || entry.dishID != newDishID) {
+            entry.isLeftover = false
+        }
+        if wasDouble && (!cookDouble || entry.dishID != newDishID || entry.recipeID != recipeID) {
+            // Remove the old "Leftovers" entry (a new one is added below if still cooking double).
+            MealPlanService.leftovers(of: entry, context: context).forEach { context.delete($0) }
+        }
+        entry.title = newTitle
         entry.recipeID = recipeID
-        entry.dishID = recipeID == nil ? (pickedDish?.id ?? "") : ""
+        entry.dishID = newDishID
         entry.note = note
         entry.servings = servings == familySize ? 0 : servings
         entry.cookDouble = cookDouble
         entry.isLunchbox = target.slot == .lunch && isLunchbox
         entry.updatedAt = Date()
-        if cookDouble && !wasDouble {
+        if cookDouble && MealPlanService.leftovers(of: entry, context: context).isEmpty {
             MealPlanService.addLeftovers(of: entry, planLunch: planLunch, context: context)
         }
         try? context.save()

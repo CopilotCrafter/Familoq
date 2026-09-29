@@ -161,12 +161,12 @@ enum MealPlanService {
                                   family: Family, memberID: UUID?, context: ModelContext) -> (added: Int, skipped: [String]) {
         guard let list = ShoppingService.lists(familyID: family.id, context: context).first else { return (0, []) }
         let lines = entries.flatMap { ingredients(for: $0, recipes: recipes, familySize: familySize) }
-        let pantry = pantryWords(familyID: family.id, context: context).map { ShoppingEntryParser.key($0) }.filter { !$0.isEmpty }
+        let pantry = pantryWords(familyID: family.id, context: context).map { ShoppingEntryParser.key($0) }.filter { $0.count >= 4 }
         var skipped: [String] = []
         var added = 0
         for entry in MealIngredients.merged(lines) {
             let key = ShoppingEntryParser.key(entry.name)
-            if pantry.contains(where: { key.contains($0) || $0.contains(key) }) {
+            if isAtHome(key, pantry: pantry) {
                 skipped.append(entry.name)
                 continue
             }
@@ -175,6 +175,29 @@ enum MealPlanService {
             }
         }
         return (added, skipped)
+    }
+
+    /// "Linsen" at home covers "Tellerlinsen"? No - only the same word or its
+    /// start ("Reis" covers "Reis", "Basmatireis" is a different item; "Eis"
+    /// never covers "Reis", "Milch" never "Kokosmilch").
+    static func isAtHome(_ key: String, pantry: [String]) -> Bool {
+        guard key.count >= 3 else { return false }
+        let words = key.split(separator: " ").map(String.init)
+        return pantry.contains { item in
+            item == key || words.contains { $0 == item || ($0.count >= 4 && item.hasPrefix($0)) || (item.count >= 4 && $0.hasPrefix(item)) }
+        }
+    }
+
+    /// Leftover entries created by "Cook double" for this meal.
+    static func leftovers(of entry: MealPlanEntry, context: ModelContext) -> [MealPlanEntry] {
+        let calendar = PlannerDates.calendar
+        guard let next = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: entry.day)),
+              let after = calendar.date(byAdding: .day, value: 1, to: next) else { return [] }
+        let fid = entry.familyID
+        let candidates = (try? context.fetch(FetchDescriptor<MealPlanEntry>(predicate: #Predicate {
+            $0.familyID == fid && $0.isLeftover == true && $0.day >= next && $0.day < after
+        }))) ?? []
+        return candidates.filter { $0.dishID == entry.dishID && $0.recipeID == entry.recipeID }
     }
 
     /// Traits of the week's meals for the balance check.
