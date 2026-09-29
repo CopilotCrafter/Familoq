@@ -12496,6 +12496,5088 @@
           }
         }
       }
+    },
+    "German": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deutsch"
+          }
+        }
+      }
+    },
+    "Indian": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indisch"
+          }
+        }
+      }
+    },
+    "Italian": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Italienisch"
+          }
+        }
+      }
+    },
+    "Greek & Mediterranean": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Griechisch & mediterran"
+          }
+        }
+      }
+    },
+    "Turkish": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Türkisch"
+          }
+        }
+      }
+    },
+    "Lebanese & Middle Eastern": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Libanesisch & orientalisch"
+          }
+        }
+      }
+    },
+    "Chinese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chinesisch"
+          }
+        }
+      }
+    },
+    "Japanese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japanisch"
+          }
+        }
+      }
+    },
+    "Korean": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koreanisch"
+          }
+        }
+      }
+    },
+    "Thai": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thailändisch"
+          }
+        }
+      }
+    },
+    "Vietnamese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vietnamesisch"
+          }
+        }
+      }
+    },
+    "Mexican": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mexikanisch"
+          }
+        }
+      }
+    },
+    "Spanish": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spanisch"
+          }
+        }
+      }
+    },
+    "French": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Französisch"
+          }
+        }
+      }
+    },
+    "Andhra Pradesh": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andhra Pradesh"
+          }
+        }
+      }
+    },
+    "Bihar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bihar"
+          }
+        }
+      }
+    },
+    "Goa": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goa"
+          }
+        }
+      }
+    },
+    "Gujarat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gujarat"
+          }
+        }
+      }
+    },
+    "Kashmir": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaschmir"
+          }
+        }
+      }
+    },
+    "Karnataka": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karnataka"
+          }
+        }
+      }
+    },
+    "Kerala": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kerala"
+          }
+        }
+      }
+    },
+    "Maharashtra": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maharashtra"
+          }
+        }
+      }
+    },
+    "Odisha": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odisha"
+          }
+        }
+      }
+    },
+    "Punjab": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punjab"
+          }
+        }
+      }
+    },
+    "Rajasthan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rajasthan"
+          }
+        }
+      }
+    },
+    "Tamil Nadu": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamil Nadu"
+          }
+        }
+      }
+    },
+    "Telangana (Hyderabad)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telangana (Hyderabad)"
+          }
+        }
+      }
+    },
+    "Uttar Pradesh & Delhi": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uttar Pradesh & Delhi"
+          }
+        }
+      }
+    },
+    "West Bengal": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Westbengalen"
+          }
+        }
+      }
+    },
+    "Campania (Naples)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kampanien (Neapel)"
+          }
+        }
+      }
+    },
+    "Emilia-Romagna": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emilia-Romagna"
+          }
+        }
+      }
+    },
+    "Lazio (Rome)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latium (Rom)"
+          }
+        }
+      }
+    },
+    "Liguria": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ligurien"
+          }
+        }
+      }
+    },
+    "Lombardy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lombardei"
+          }
+        }
+      }
+    },
+    "Apulia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apulien"
+          }
+        }
+      }
+    },
+    "Sicily": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sizilien"
+          }
+        }
+      }
+    },
+    "Tuscany": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toskana"
+          }
+        }
+      }
+    },
+    "Veneto": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Venetien"
+          }
+        }
+      }
+    },
+    "Crete": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kreta"
+          }
+        }
+      }
+    },
+    "Aegean": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ägäis"
+          }
+        }
+      }
+    },
+    "Southeast (Gaziantep)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Südosten (Gaziantep)"
+          }
+        }
+      }
+    },
+    "Istanbul": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Istanbul"
+          }
+        }
+      }
+    },
+    "Black Sea": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwarzes Meer"
+          }
+        }
+      }
+    },
+    "Lebanon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Libanon"
+          }
+        }
+      }
+    },
+    "Palestine & Jordan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palästina & Jordanien"
+          }
+        }
+      }
+    },
+    "Syria": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Syrien"
+          }
+        }
+      }
+    },
+    "Cantonese": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kantonesisch"
+          }
+        }
+      }
+    },
+    "Hunan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hunan"
+          }
+        }
+      }
+    },
+    "Shanghai & Jiangsu": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shanghai & Jiangsu"
+          }
+        }
+      }
+    },
+    "Shandong & North": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shandong & Norden"
+          }
+        }
+      }
+    },
+    "Sichuan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichuan"
+          }
+        }
+      }
+    },
+    "Hokkaido": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hokkaido"
+          }
+        }
+      }
+    },
+    "Kansai (Osaka)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kansai (Osaka)"
+          }
+        }
+      }
+    },
+    "Kyushu": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kyushu"
+          }
+        }
+      }
+    },
+    "Central (Bangkok)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zentral (Bangkok)"
+          }
+        }
+      }
+    },
+    "Isan (Northeast)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isan (Nordosten)"
+          }
+        }
+      }
+    },
+    "North (Chiang Mai)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Norden (Chiang Mai)"
+          }
+        }
+      }
+    },
+    "South": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süden"
+          }
+        }
+      }
+    },
+    "North (Hanoi)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Norden (Hanoi)"
+          }
+        }
+      }
+    },
+    "Central (Huế)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitte (Huế)"
+          }
+        }
+      }
+    },
+    "South (Saigon)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süden (Saigon)"
+          }
+        }
+      }
+    },
+    "Mexico City": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mexiko-Stadt"
+          }
+        }
+      }
+    },
+    "Oaxaca": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oaxaca"
+          }
+        }
+      }
+    },
+    "Yucatán": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yucatán"
+          }
+        }
+      }
+    },
+    "Andalusia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Andalusien"
+          }
+        }
+      }
+    },
+    "Basque Country": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baskenland"
+          }
+        }
+      }
+    },
+    "Catalonia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Katalonien"
+          }
+        }
+      }
+    },
+    "Galicia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Galicien"
+          }
+        }
+      }
+    },
+    "Valencia": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valencia"
+          }
+        }
+      }
+    },
+    "Alsace": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elsass"
+          }
+        }
+      }
+    },
+    "Brittany": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bretagne"
+          }
+        }
+      }
+    },
+    "Burgundy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burgund"
+          }
+        }
+      }
+    },
+    "Lyon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lyon"
+          }
+        }
+      }
+    },
+    "Provence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Provence"
+          }
+        }
+      }
+    },
+    "High blood pressure": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluthochdruck"
+          }
+        }
+      }
+    },
+    "Type 2 diabetes / prediabetes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ-2-Diabetes / Prädiabetes"
+          }
+        }
+      }
+    },
+    "Type 1 diabetes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ-1-Diabetes"
+          }
+        }
+      }
+    },
+    "High cholesterol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhöhtes Cholesterin"
+          }
+        }
+      }
+    },
+    "High triglycerides": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erhöhte Triglyceride"
+          }
+        }
+      }
+    },
+    "Heart disease": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herzerkrankung"
+          }
+        }
+      }
+    },
+    "Underactive thyroid / Hashimoto's": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schilddrüsenunterfunktion / Hashimoto"
+          }
+        }
+      }
+    },
+    "Overactive thyroid": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schilddrüsenüberfunktion"
+          }
+        }
+      }
+    },
+    "Gout / high uric acid": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gicht / erhöhte Harnsäure"
+          }
+        }
+      }
+    },
+    "Fatty liver": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fettleber"
+          }
+        }
+      }
+    },
+    "Losing weight": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abnehmen"
+          }
+        }
+      }
+    },
+    "Coeliac disease (gluten-free)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zöliakie (glutenfrei)"
+          }
+        }
+      }
+    },
+    "Lactose intolerance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laktoseintoleranz"
+          }
+        }
+      }
+    },
+    "Irritable bowel (IBS)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reizdarm"
+          }
+        }
+      }
+    },
+    "Heartburn / reflux": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sodbrennen / Reflux"
+          }
+        }
+      }
+    },
+    "Iron deficiency": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eisenmangel"
+          }
+        }
+      }
+    },
+    "Osteoporosis": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osteoporose"
+          }
+        }
+      }
+    },
+    "Pregnancy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwangerschaft"
+          }
+        }
+      }
+    },
+    "Kidney disease": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nierenerkrankung"
+          }
+        }
+      }
+    },
+    "More vegetables, pulses and low-fat dairy; less salt, sausage, cured meat, pickles and ready meals.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr Gemüse, Hülsenfrüchte und fettarme Milchprodukte; weniger Salz, Wurst, Gepökeltes, Eingelegtes und Fertiggerichte."
+          }
+        }
+      }
+    },
+    "Wholegrain, fibre, protein with every meal and smaller portions of white rice, pasta and bread; hardly any sugar or sweet drinks.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollkorn, Ballaststoffe, Eiweiß zu jeder Mahlzeit und kleinere Portionen weißer Reis, Nudeln und Brot; kaum Zucker oder süße Getränke."
+          }
+        }
+      }
+    },
+    "Balanced meals; the carb counts are rough estimates and not for insulin dosing - follow your diabetes team.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgewogene Mahlzeiten; die Kohlenhydratangaben sind grobe Schätzungen und nicht zur Insulindosierung – folge deinem Diabetes-Team."
+          }
+        }
+      }
+    },
+    "Oats, pulses, nuts, fish and olive or rapeseed oil; less butter, ghee, cream, fatty meat, sausage and fried food.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hafer, Hülsenfrüchte, Nüsse, Fisch und Oliven- oder Rapsöl; weniger Butter, Ghee, Sahne, fettes Fleisch, Wurst und Frittiertes."
+          }
+        }
+      }
+    },
+    "Less sugar, white flour and alcohol; fish twice a week, more vegetables and pulses.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger Zucker, Weißmehl und Alkohol; zweimal pro Woche Fisch, mehr Gemüse und Hülsenfrüchte."
+          }
+        }
+      }
+    },
+    "Low salt and low saturated fat: vegetables, pulses, fish, wholegrain and plant oils.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenig Salz und wenig gesättigte Fette: Gemüse, Hülsenfrüchte, Fisch, Vollkorn und Pflanzenöle."
+          }
+        }
+      }
+    },
+    "A normal balanced diet with iodised salt, fish and dairy; selenium from fish and eggs. Gluten-free only with coeliac disease. Take the tablet 30-60 minutes before breakfast, away from coffee, soy, calcium and high-fibre foods.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normale ausgewogene Ernährung mit Jodsalz, Fisch und Milchprodukten; Selen aus Fisch und Eiern. Glutenfrei nur bei Zöliakie. Die Tablette 30–60 Minuten vor dem Frühstück nehmen, getrennt von Kaffee, Soja, Kalzium und ballaststoffreichem Essen."
+          }
+        }
+      }
+    },
+    "Balanced meals; iodine-rich seaweed is left out.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgewogene Mahlzeiten; jodreiche Algen werden weggelassen."
+          }
+        }
+      }
+    },
+    "Dairy, vegetables and pulses are fine; less offal, red meat, shellfish, beer and sweet drinks.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milchprodukte, Gemüse und Hülsenfrüchte sind in Ordnung; weniger Innereien, rotes Fleisch, Meeresfrüchte, Bier und süße Getränke."
+          }
+        }
+      }
+    },
+    "Like diabetes: wholegrain, vegetables and fish; no alcohol, little sugar and fried food.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie bei Diabetes: Vollkorn, Gemüse und Fisch; kein Alkohol, wenig Zucker und Frittiertes."
+          }
+        }
+      }
+    },
+    "Half the plate vegetables, enough protein, smaller carb portions; fewer fried and sweet dishes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den halben Teller Gemüse, genug Eiweiß, kleinere Kohlenhydratportionen; weniger Frittiertes und Süßes."
+          }
+        }
+      }
+    },
+    "Strictly gluten-free: dishes with wheat, rye, barley or spelt are never suggested. Check labels - the catalogue is a guide.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Streng glutenfrei: Gerichte mit Weizen, Roggen, Gerste oder Dinkel werden nie vorgeschlagen. Etiketten prüfen – der Katalog ist eine Orientierung."
+          }
+        }
+      }
+    },
+    "Dishes with milk, cream or yoghurt come less often; lactose-free products work as swaps. Hard cheese is usually fine.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerichte mit Milch, Sahne oder Joghurt kommen seltener; laktosefreie Produkte eignen sich als Ersatz. Hartkäse ist meist in Ordnung."
+          }
+        }
+      }
+    },
+    "Fewer beans, wheat and very spicy or fried dishes (a rough low-FODMAP guide - a dietitian can tailor it).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger Bohnen, Weizen und sehr scharfe oder frittierte Gerichte (eine grobe Low-FODMAP-Orientierung – eine Ernährungsberatung kann sie anpassen)."
+          }
+        }
+      }
+    },
+    "Fewer very spicy, fatty and fried dishes and less alcohol; smaller evening portions.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger sehr scharfe, fette und frittierte Gerichte und weniger Alkohol; kleinere Portionen am Abend."
+          }
+        }
+      }
+    },
+    "Pulses, green vegetables, meat or fish; vitamin C with the meal and tea or coffee not right with it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hülsenfrüchte, grünes Gemüse, Fleisch oder Fisch; Vitamin C zur Mahlzeit und Tee oder Kaffee nicht direkt dazu."
+          }
+        }
+      }
+    },
+    "Dairy or calcium-rich foods, fish for vitamin D, green vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milchprodukte oder kalziumreiche Lebensmittel, Fisch für Vitamin D, grünes Gemüse."
+          }
+        }
+      }
+    },
+    "Folate, iron and calcium; no raw fish or meat, no liver, no alcohol; heat eggs and fish well, no raw-milk soft cheese.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folsäure, Eisen und Kalzium; kein roher Fisch oder rohes Fleisch, keine Leber, kein Alkohol; Eier und Fisch gut durchgaren, kein Rohmilch-Weichkäse."
+          }
+        }
+      }
+    },
+    "Familoq only lowers salt. Potassium, phosphate and protein limits depend on the stage - ask your nephrologist or dietitian.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq reduziert nur das Salz. Grenzen für Kalium, Phosphat und Eiweiß hängen vom Stadium ab – frag deine Nephrologin, deinen Nephrologen oder die Ernährungsberatung."
+          }
+        }
+      }
+    },
+    "Less salt: salt at the table, not in the pot; small portion of sausage or ham.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger Salz: bei Tisch salzen, nicht im Topf; kleine Portion Wurst oder Schinken."
+          }
+        }
+      }
+    },
+    "Half portion of rice, pasta or bread; extra salad or vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halbe Portion Reis, Nudeln oder Brot; extra Salat oder Gemüse."
+          }
+        }
+      }
+    },
+    "Small portion; add a salad or yoghurt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleine Portion; dazu Salat oder Joghurt."
+          }
+        }
+      }
+    },
+    "Use oil instead of butter, ghee or cream; small portion.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öl statt Butter, Ghee oder Sahne; kleine Portion."
+          }
+        }
+      }
+    },
+    "Small portion of meat or seafood; more vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleine Portion Fleisch oder Meeresfrüchte; mehr Gemüse."
+          }
+        }
+      }
+    },
+    "Smaller portion, half the plate vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinere Portion, den halben Teller Gemüse."
+          }
+        }
+      }
+    },
+    "Smaller carb portion, extra vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinere Kohlenhydratportion, extra Gemüse."
+          }
+        }
+      }
+    },
+    "Use lactose-free milk, cream or yoghurt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laktosefreie Milch, Sahne oder Joghurt verwenden."
+          }
+        }
+      }
+    },
+    "Mild portion (chilli at the table); no late big meal.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milde Portion (Chili bei Tisch); keine große Mahlzeit spät abends."
+          }
+        }
+      }
+    },
+    "Add lemon, peppers or fruit (vitamin C) for better iron uptake.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zitrone, Paprika oder Obst (Vitamin C) dazu – für eine bessere Eisenaufnahme."
+          }
+        }
+      }
+    },
+    "Soy is fine, but not within 4 hours of the thyroid tablet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soja ist in Ordnung, aber nicht innerhalb von 4 Stunden nach der Schilddrüsentablette."
+          }
+        }
+      }
+    },
+    "Cook fish and eggs through.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fisch und Eier gut durchgaren."
+          }
+        }
+      }
+    },
+    "Gluten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gluten"
+          }
+        }
+      }
+    },
+    "Milk / lactose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Milch / Laktose"
+          }
+        }
+      }
+    },
+    "Nuts & peanuts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nüsse & Erdnüsse"
+          }
+        }
+      }
+    },
+    "Egg": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ei"
+          }
+        }
+      }
+    },
+    "Shellfish": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meeresfrüchte"
+          }
+        }
+      }
+    },
+    "Soy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soja"
+          }
+        }
+      }
+    },
+    "Vegetables & salad": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemüse & Salat"
+          }
+        }
+      }
+    },
+    "White rice, pasta, bread, potatoes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weißer Reis, Nudeln, Brot, Kartoffeln"
+          }
+        }
+      }
+    },
+    "Pulses & tofu": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hülsenfrüchte & Tofu"
+          }
+        }
+      }
+    },
+    "Fish, chicken, eggs": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fisch, Hähnchen, Eier"
+          }
+        }
+      }
+    },
+    "Red meat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rotes Fleisch"
+          }
+        }
+      }
+    },
+    "Sausage & ham": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wurst & Schinken"
+          }
+        }
+      }
+    },
+    "Fried food": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frittiertes"
+          }
+        }
+      }
+    },
+    "Cream, cheese & butter sauces": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sahne-, Käse- & Buttersoßen"
+          }
+        }
+      }
+    },
+    "Dessert & sweets": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachtisch & Süßes"
+          }
+        }
+      }
+    },
+    "Sweet drink": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süßes Getränk"
+          }
+        }
+      }
+    },
+    "Add vegetables or salad - ideally half the plate.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemüse oder Salat dazu – am besten den halben Teller."
+          }
+        }
+      }
+    },
+    "Add some protein: pulses, fish, eggs, chicken or tofu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwas Eiweiß dazu: Hülsenfrüchte, Fisch, Eier, Hähnchen oder Tofu."
+          }
+        }
+      }
+    },
+    "Big portion of rice, pasta, bread or potatoes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Große Portion Reis, Nudeln, Brot oder Kartoffeln."
+          }
+        }
+      }
+    },
+    "Wholegrain instead of white keeps you full longer.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vollkorn statt Weißmehl macht länger satt."
+          }
+        }
+      }
+    },
+    "Fried food - better less often.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frittiertes – besser seltener."
+          }
+        }
+      }
+    },
+    "Sausage or ham - salty and processed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wurst oder Schinken – salzig und verarbeitet."
+          }
+        }
+      }
+    },
+    "Creamy or cheesy sauce - a lighter one is better for the heart.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sahnige oder käsige Soße – eine leichtere ist besser fürs Herz."
+          }
+        }
+      }
+    },
+    "Sweet extras - fine now and then.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süße Extras – ab und zu in Ordnung."
+          }
+        }
+      }
+    },
+    "Great plate - well balanced!": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toller Teller – gut ausgewogen!"
+          }
+        }
+      }
+    },
+    "%@: watch this for %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: darauf achten bei %2$@."
+          }
+        }
+      }
+    },
+    "Dentist check-up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahnarzt-Kontrolle"
+          }
+        }
+      }
+    },
+    "Professional teeth cleaning": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Professionelle Zahnreinigung"
+          }
+        }
+      }
+    },
+    "Eye test": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sehtest"
+          }
+        }
+      }
+    },
+    "General check-up (Check-up 35)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheits-Check-up (Check-up 35)"
+          }
+        }
+      }
+    },
+    "Skin cancer screening": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hautkrebs-Screening"
+          }
+        }
+      }
+    },
+    "Gynaecologist check-up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frauenarzt-Vorsorge"
+          }
+        }
+      }
+    },
+    "Urologist check-up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urologie-Vorsorge"
+          }
+        }
+      }
+    },
+    "Blood test": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blutuntersuchung"
+          }
+        }
+      }
+    },
+    "Colonoscopy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Darmspiegelung"
+          }
+        }
+      }
+    },
+    "Hearing test": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hörtest"
+          }
+        }
+      }
+    },
+    "Children's check-up (U/J exam)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kinder-Vorsorge (U/J-Untersuchung)"
+          }
+        }
+      }
+    },
+    "Tetanus / diphtheria / whooping cough": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tetanus / Diphtherie / Keuchhusten"
+          }
+        }
+      }
+    },
+    "Flu": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grippe"
+          }
+        }
+      }
+    },
+    "COVID-19": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "COVID-19"
+          }
+        }
+      }
+    },
+    "Pneumococcus": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pneumokokken"
+          }
+        }
+      }
+    },
+    "Tick-borne encephalitis (FSME)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FSME (Zecken)"
+          }
+        }
+      }
+    },
+    "Shingles": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gürtelrose"
+          }
+        }
+      }
+    },
+    "Measles / mumps / rubella": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masern / Mumps / Röteln"
+          }
+        }
+      }
+    },
+    "Hepatitis A": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hepatitis A"
+          }
+        }
+      }
+    },
+    "Hepatitis B": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hepatitis B"
+          }
+        }
+      }
+    },
+    "HPV": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HPV"
+          }
+        }
+      }
+    },
+    "Meningococcus": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meningokokken"
+          }
+        }
+      }
+    },
+    "Typhoid": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typhus"
+          }
+        }
+      }
+    },
+    "Rabies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tollwut"
+          }
+        }
+      }
+    },
+    "Yellow fever": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelbfieber"
+          }
+        }
+      }
+    },
+    "Polio": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polio"
+          }
+        }
+      }
+    },
+    "Blood pressure": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blutdruck"
+          }
+        }
+      }
+    },
+    "Pulse": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puls"
+          }
+        }
+      }
+    },
+    "Blood sugar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blutzucker"
+          }
+        }
+      }
+    },
+    "HbA1c": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HbA1c"
+          }
+        }
+      }
+    },
+    "Weight": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gewicht"
+          }
+        }
+      }
+    },
+    "Total cholesterol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamtcholesterin"
+          }
+        }
+      }
+    },
+    "LDL cholesterol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LDL-Cholesterin"
+          }
+        }
+      }
+    },
+    "HDL cholesterol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HDL-Cholesterin"
+          }
+        }
+      }
+    },
+    "Triglycerides": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triglyceride"
+          }
+        }
+      }
+    },
+    "TSH (thyroid)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TSH (Schilddrüse)"
+          }
+        }
+      }
+    },
+    "Sick": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Krank"
+          }
+        }
+      }
+    },
+    "Plan my week": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Woche planen"
+          }
+        }
+      }
+    },
+    "Meal settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essens-Einstellungen"
+          }
+        }
+      }
+    },
+    "At home (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Hause (%lld)"
+          }
+        }
+      }
+    },
+    "%lld use soon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld bald verbrauchen"
+          }
+        }
+      }
+    },
+    "Tip: choose your family's cuisines in Meal settings - \"Plan my week\" then follows them.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipp: Wähle in den Essens-Einstellungen die Küchen deiner Familie – „Woche planen“ richtet sich dann danach."
+          }
+        }
+      }
+    },
+    "Week balance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochen-Balance"
+          }
+        }
+      }
+    },
+    "Well balanced: fish, pulses and plenty of vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gut ausgewogen: Fisch, Hülsenfrüchte und viel Gemüse."
+          }
+        }
+      }
+    },
+    "Cook double": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doppelt kochen"
+          }
+        }
+      }
+    },
+    "%lld tip(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Tipp(s)"
+          }
+        }
+      }
+    },
+    "No fish this week - one fish dinner adds omega-3 and iodine.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Woche kein Fisch – ein Fischgericht bringt Omega-3 und Jod."
+          }
+        }
+      }
+    },
+    "Pulses (lentils, beans, chickpeas) twice a week add fibre and protein.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hülsenfrüchte (Linsen, Bohnen, Kichererbsen) zweimal pro Woche bringen Ballaststoffe und Eiweiß."
+          }
+        }
+      }
+    },
+    "Meat on %lld days - two or three is plenty.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An %lld Tagen Fleisch – zwei oder drei reichen."
+          }
+        }
+      }
+    },
+    "Sausage or ham on %lld day(s) - salty and processed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An %lld Tag(en) Wurst oder Schinken – salzig und verarbeitet."
+          }
+        }
+      }
+    },
+    "Fewer than half the meals are vegetable-rich - add a salad or vegetables.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weniger als die Hälfte der Gerichte ist gemüsereich – Salat oder Gemüse dazu."
+          }
+        }
+      }
+    },
+    "New dinner ideas from Apple Intelligence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Ideen fürs Abendessen von Apple Intelligence"
+          }
+        }
+      }
+    },
+    "Ideas are made on this iPhone and follow your cuisines and health settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Ideen entstehen auf diesem iPhone und folgen euren Küchen und Gesundheitseinstellungen."
+          }
+        }
+      }
+    },
+    "Every day from today already has a dinner. Delete one to plan it again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ab heute hat jeder Tag schon ein Abendessen. Lösche eines, um es neu zu planen."
+          }
+        }
+      }
+    },
+    "%lld dinner(s) planned. Tap one to swap, rate or cook it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Abendessen geplant. Tippe eines an, um es zu tauschen, zu bewerten oder zu kochen."
+          }
+        }
+      }
+    },
+    "%lld ingredient(s) put on the shopping list; %lld already at home.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Zutat(en) auf die Einkaufsliste gesetzt; %2$lld schon zu Hause."
+          }
+        }
+      }
+    },
+    "Choose from the dish catalogue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus dem Gerichte-Katalog wählen"
+          }
+        }
+      }
+    },
+    "Own recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eigenes Rezept"
+          }
+        }
+      }
+    },
+    "Lunchbox (school / work)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brotdose (Schule / Arbeit)"
+          }
+        }
+      }
+    },
+    "%lld people": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Personen"
+          }
+        }
+      }
+    },
+    "Cook double - leftovers tomorrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doppelt kochen – Reste für morgen"
+          }
+        }
+      }
+    },
+    "More people (guests) scale the shopping list. \"Cook double\" adds tomorrow's leftovers to the plan.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr Personen (Gäste) vergrößern die Einkaufsliste. „Doppelt kochen“ setzt die Reste für morgen in den Plan."
+          }
+        }
+      }
+    },
+    "How did you like it?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie hat es geschmeckt?"
+          }
+        }
+      }
+    },
+    "Cook now (step by step)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt kochen (Schritt für Schritt)"
+          }
+        }
+      }
+    },
+    "Leftovers from yesterday's dinner are a good lunchbox too (\"Cook double\").": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reste vom Abendessen gestern sind auch eine gute Brotdose („Doppelt kochen“)."
+          }
+        }
+      }
+    },
+    "%lld min": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Min."
+          }
+        }
+      }
+    },
+    "Vegetarian": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegetarisch"
+          }
+        }
+      }
+    },
+    "About %lld g carbohydrates per portion (rough estimate)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etwa %lld g Kohlenhydrate pro Portion (grobe Schätzung)"
+          }
+        }
+      }
+    },
+    "Ingredients for %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zutaten für %lld"
+          }
+        }
+      }
+    },
+    "Swap for another suggestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gegen einen anderen Vorschlag tauschen"
+          }
+        }
+      }
+    },
+    "Saved to your recipes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In deinen Rezepten gespeichert."
+          }
+        }
+      }
+    },
+    "Save as own recipe (to edit)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als eigenes Rezept speichern (zum Bearbeiten)"
+          }
+        }
+      }
+    },
+    "From the dish catalogue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus dem Gerichte-Katalog"
+          }
+        }
+      }
+    },
+    "Only dishes that fit our health settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur Gerichte, die zu unseren Gesundheitseinstellungen passen"
+          }
+        }
+      }
+    },
+    "%lld dishes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Gerichte"
+          }
+        }
+      }
+    },
+    "Dish catalogue": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerichte-Katalog"
+          }
+        }
+      }
+    },
+    "All": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
+          }
+        }
+      }
+    },
+    "Add your family's favourite meals with their ingredients - one per line, e.g. \"500 g Hackfleisch\" - or import them from a website or a cookbook photo.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge die Lieblingsgerichte deiner Familie mit Zutaten hinzu – eine pro Zeile, z. B. „500 g Hackfleisch“ – oder importiere sie von einer Website oder einem Kochbuchfoto."
+          }
+        }
+      }
+    },
+    "%lld ingredient(s) · %lld step(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld Zutat(en) · %2$lld Schritt(e)"
+          }
+        }
+      }
+    },
+    "Cook": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kochen"
+          }
+        }
+      }
+    },
+    "Import from a website": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von einer Website importieren"
+          }
+        }
+      }
+    },
+    "Import from a photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von einem Foto importieren"
+          }
+        }
+      }
+    },
+    "One step per line": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Schritt pro Zeile"
+          }
+        }
+      }
+    },
+    "Write steps with Apple Intelligence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritte mit Apple Intelligence schreiben"
+          }
+        }
+      }
+    },
+    "Steps": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritte"
+          }
+        }
+      }
+    },
+    "Shown one by one in cooking mode; a time like \"20 min\" gets a timer.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Kochmodus einzeln angezeigt; eine Zeit wie „20 Min.“ bekommt einen Timer."
+          }
+        }
+      }
+    },
+    "Original recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Originalrezept"
+          }
+        }
+      }
+    },
+    "Leftovers: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reste: %@"
+          }
+        }
+      }
+    },
+    "Cuisines (first = most often)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Küchen (erste = am häufigsten)"
+          }
+        }
+      }
+    },
+    "Add a cuisine": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Küche hinzufügen"
+          }
+        }
+      }
+    },
+    "Move up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach oben"
+          }
+        }
+      }
+    },
+    "Choose 3-4 cuisines; swipe right on one to move it up, tap it for 1-2 regions or states (e.g. Bavaria, Kerala). A week then has about 3 dinners from the first, 2 from the second and 1 each from the others.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle 3–4 Küchen; wische nach rechts, um eine nach oben zu schieben, tippe sie an für 1–2 Regionen oder Bundesstaaten (z. B. Bayern, Kerala). Eine Woche hat dann etwa 3 Abendessen aus der ersten, 2 aus der zweiten und je 1 aus den anderen."
+          }
+        }
+      }
+    },
+    "Vegetarian days per week: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegetarische Tage pro Woche: %lld"
+          }
+        }
+      }
+    },
+    "Weekday dinners up to %lld min": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abendessen unter der Woche bis %lld Min."
+          }
+        }
+      }
+    },
+    "Spicy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schärfe"
+          }
+        }
+      }
+    },
+    "Not spicy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht scharf"
+          }
+        }
+      }
+    },
+    "Mild": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mild"
+          }
+        }
+      }
+    },
+    "Medium": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mittel"
+          }
+        }
+      }
+    },
+    "Hot": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scharf"
+          }
+        }
+      }
+    },
+    "Kid-friendly": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kinderfreundlich"
+          }
+        }
+      }
+    },
+    "One per line, e.g. Pilze, Koriander, Schwein": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eins pro Zeile, z. B. Pilze, Koriander, Schwein"
+          }
+        }
+      }
+    },
+    "Never suggest": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie vorschlagen"
+          }
+        }
+      }
+    },
+    "Allergies and health conditions are set per person in Health → the person.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allergien und Gesundheitszustände stellst du pro Person unter Gesundheit → Person ein."
+          }
+        }
+      }
+    },
+    "No regions for this cuisine.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diese Küche gibt es keine Regionen."
+          }
+        }
+      }
+    },
+    "Up to 2. Dishes from these regions come more often; the rest of the cuisine is still suggested.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis zu 2. Gerichte aus diesen Regionen kommen öfter; der Rest der Küche wird weiterhin vorgeschlagen."
+          }
+        }
+      }
+    },
+    "At home": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Hause"
+          }
+        }
+      }
+    },
+    "Add, e.g. 500 g Linsen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen, z. B. 500 g Linsen"
+          }
+        }
+      }
+    },
+    "Use by": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbrauchen bis"
+          }
+        }
+      }
+    },
+    "Add food from recent receipts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebensmittel von letzten Kassenbons hinzufügen"
+          }
+        }
+      }
+    },
+    "\"Plan my week\" prefers dishes that use what is at home, and the shopping list skips it. Notifications remind you the day before the use-by date.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Woche planen“ bevorzugt Gerichte mit dem, was zu Hause ist, und die Einkaufsliste lässt es aus. Mitteilungen erinnern dich am Tag vor dem Verbrauchsdatum."
+          }
+        }
+      }
+    },
+    "Use by %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbrauchen bis %@"
+          }
+        }
+      }
+    },
+    "Use by %@ - past": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbrauchen bis %@ – abgelaufen"
+          }
+        }
+      }
+    },
+    "Use by %@ - soon": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbrauchen bis %@ – bald"
+          }
+        }
+      }
+    },
+    "Used up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgebraucht"
+          }
+        }
+      }
+    },
+    "Cook with what's at home": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kochen mit dem, was da ist"
+          }
+        }
+      }
+    },
+    "Uses %lld things you have": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzt %lld Dinge, die du hast"
+          }
+        }
+      }
+    },
+    "No food on receipts from the last 14 days.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Lebensmittel auf Kassenbons der letzten 14 Tage."
+          }
+        }
+      }
+    },
+    "From receipts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von Kassenbons"
+          }
+        }
+      }
+    },
+    "Add %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld hinzufügen"
+          }
+        }
+      }
+    },
+    "Import": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importieren"
+          }
+        }
+      }
+    },
+    "Works with most recipe sites (e.g. Chefkoch). Only the page itself is loaded; nothing about your family is sent.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funktioniert mit den meisten Rezeptseiten (z. B. Chefkoch). Nur die Seite selbst wird geladen; nichts über deine Familie wird gesendet."
+          }
+        }
+      }
+    },
+    "Choose a photo of the recipe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foto des Rezepts auswählen"
+          }
+        }
+      }
+    },
+    "Take a photo of the cookbook page with the Camera first. The text is read on this iPhone; check the ingredients and steps before saving.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotografiere die Kochbuchseite zuerst mit der Kamera. Der Text wird auf diesem iPhone gelesen; prüfe Zutaten und Schritte vor dem Sichern."
+          }
+        }
+      }
+    },
+    "No recipe found on this page. Try the photo import or type it in.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dieser Seite wurde kein Rezept gefunden. Versuche den Foto-Import oder tippe es ein."
+          }
+        }
+      }
+    },
+    "The photo could not be read.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Foto konnte nicht gelesen werden."
+          }
+        }
+      }
+    },
+    "No text found in the photo.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Text im Foto gefunden."
+          }
+        }
+      }
+    },
+    "No steps saved. Add them in the recipe (Recipes → the recipe → Steps).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Schritte gespeichert. Füge sie im Rezept hinzu (Rezepte → Rezept → Schritte)."
+          }
+        }
+      }
+    },
+    "Swipe for the steps →": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für die Schritte wischen →"
+          }
+        }
+      }
+    },
+    "Step %lld of %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schritt %1$lld von %2$lld"
+          }
+        }
+      }
+    },
+    "Timer %lld min": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer %lld Min."
+          }
+        }
+      }
+    },
+    "Stop": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopp"
+          }
+        }
+      }
+    },
+    "No family yet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Familie"
+          }
+        }
+      }
+    },
+    "Add a person (child, relative)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Person hinzufügen (Kind, Angehörige)"
+          }
+        }
+      }
+    },
+    "Health conditions and allergies shape the meal suggestions (Planner → Meals). A person marked \"Only on this iPhone\" is not shared with the family.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheitszustände und Allergien bestimmen die Essensvorschläge (Planer → Essen). Eine Person mit „Nur auf diesem iPhone“ wird nicht mit der Familie geteilt."
+          }
+        }
+      }
+    },
+    "Nothing due in the next 3 months. Add check-ups and vaccinations in each person.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den nächsten 3 Monaten steht nichts an. Füge Vorsorgen und Impfungen bei jeder Person hinzu."
+          }
+        }
+      }
+    },
+    "Medications (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikamente (%lld)"
+          }
+        }
+      }
+    },
+    "Measurements": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messwerte"
+          }
+        }
+      }
+    },
+    "Plate check (photo)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teller-Check (Foto)"
+          }
+        }
+      }
+    },
+    "Health costs & tax": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheitskosten & Steuer"
+          }
+        }
+      }
+    },
+    "Insurance refunds": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstattungen der Versicherung"
+          }
+        }
+      }
+    },
+    "Doctors & contacts": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ärzte & Kontakte"
+          }
+        }
+      }
+    },
+    "Emergency cards": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notfallkarten"
+          }
+        }
+      }
+    },
+    "Organiser": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Organisation"
+          }
+        }
+      }
+    },
+    "Familoq gives general guidance from common dietary recommendations - it is not medical advice. For kidney disease, type 1 diabetes, pregnancy or allergies, follow your doctor or dietitian.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familoq gibt allgemeine Hinweise nach gängigen Ernährungsempfehlungen – das ist keine medizinische Beratung. Bei Nierenerkrankung, Typ-1-Diabetes, Schwangerschaft oder Allergien folge deiner Ärztin, deinem Arzt oder der Ernährungsberatung."
+          }
+        }
+      }
+    },
+    "No conditions or allergies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Erkrankungen oder Allergien"
+          }
+        }
+      }
+    },
+    "Birth date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geburtsdatum"
+          }
+        }
+      }
+    },
+    "Born": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geboren"
+          }
+        }
+      }
+    },
+    "The birth date is used for children's check-ups (U3-U11, J1).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Geburtsdatum wird für die Kinder-Vorsorge (U3–U11, J1) verwendet."
+          }
+        }
+      }
+    },
+    "Health conditions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheitszustände"
+          }
+        }
+      }
+    },
+    "Used for the meal plan only: dishes that fit come more often, strict ones (coeliac disease, pregnancy) are never suggested, and the meal shows a tip for this person.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur für den Essensplan: Passende Gerichte kommen öfter, strenge Regeln (Zöliakie, Schwangerschaft) werden nie verletzt, und beim Gericht steht ein Tipp für diese Person."
+          }
+        }
+      }
+    },
+    "Allergies & intolerances": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allergien & Unverträglichkeiten"
+          }
+        }
+      }
+    },
+    "Dishes with these are never suggested. The catalogue is a guide - always check labels.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerichte damit werden nie vorgeschlagen. Der Katalog ist eine Orientierung – Etiketten immer prüfen."
+          }
+        }
+      }
+    },
+    "Emergency card": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notfallkarte"
+          }
+        }
+      }
+    },
+    "Blood type": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blutgruppe"
+          }
+        }
+      }
+    },
+    "Unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unbekannt"
+          }
+        }
+      }
+    },
+    "Emergency contact": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notfallkontakt"
+          }
+        }
+      }
+    },
+    "Their phone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon"
+          }
+        }
+      }
+    },
+    "Notes (e.g. implants, important information)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen (z. B. Implantate, wichtige Hinweise)"
+          }
+        }
+      }
+    },
+    "Reminders go to": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerungen gehen an"
+          }
+        }
+      }
+    },
+    "None chosen: the person themselves (if they use Familoq), otherwise everyone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niemand gewählt: an die Person selbst (wenn sie Familoq nutzt), sonst an alle."
+          }
+        }
+      }
+    },
+    "Only on this iPhone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur auf diesem iPhone"
+          }
+        }
+      }
+    },
+    "Not shared with the family: this person and their check-ups, vaccinations, medications and measurements stay on this iPhone (and in your backup). Meal plans made on other iPhones then don't know them.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mit der Familie geteilt: Diese Person und ihre Vorsorgen, Impfungen, Medikamente und Messwerte bleiben auf diesem iPhone (und in deinem Backup). Essenspläne auf anderen iPhones kennen sie dann nicht."
+          }
+        }
+      }
+    },
+    "Delete person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Person löschen"
+          }
+        }
+      }
+    },
+    "New person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neue Person"
+          }
+        }
+      }
+    },
+    "Health profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheitsprofil"
+          }
+        }
+      }
+    },
+    "Delete this person and all their health records?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Person und alle ihre Gesundheitsdaten löschen?"
+          }
+        }
+      }
+    },
+    "Removed": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt"
+          }
+        }
+      }
+    },
+    "No conditions or allergies. Tap Edit to add them - the meal plan then takes them into account.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Erkrankungen oder Allergien. Tippe auf Bearbeiten, um sie hinzuzufügen – der Essensplan berücksichtigt sie dann."
+          }
+        }
+      }
+    },
+    "For the meal plan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für den Essensplan"
+          }
+        }
+      }
+    },
+    "Add check-up": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorsorge hinzufügen"
+          }
+        }
+      }
+    },
+    "Check-ups": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorsorge"
+          }
+        }
+      }
+    },
+    "next %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nächste %@"
+          }
+        }
+      }
+    },
+    "Add vaccination": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impfung hinzufügen"
+          }
+        }
+      }
+    },
+    "Vaccinations": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impfungen"
+          }
+        }
+      }
+    },
+    "Enter each vaccination from the vaccination card (Impfpass). Boosters use the usual STIKO intervals; change them if your doctor says otherwise.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trage jede Impfung aus dem Impfpass ein. Auffrischungen nutzen die üblichen STIKO-Abstände; ändere sie, wenn deine Ärztin oder dein Arzt es anders sagt."
+          }
+        }
+      }
+    },
+    "Add medication": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikament hinzufügen"
+          }
+        }
+      }
+    },
+    "Medications": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikamente"
+          }
+        }
+      }
+    },
+    "Add measurement": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messwert hinzufügen"
+          }
+        }
+      }
+    },
+    "Appointment %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin %@"
+          }
+        }
+      }
+    },
+    "Add the birth date in the profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geburtsdatum im Profil ergänzen"
+          }
+        }
+      }
+    },
+    "All children's check-ups done": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Kinder-Vorsorgen erledigt"
+          }
+        }
+      }
+    },
+    "Next around %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste etwa %@"
+          }
+        }
+      }
+    },
+    "When was the last one? Tap to add it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann war die letzte? Zum Eintragen tippen."
+          }
+        }
+      }
+    },
+    "lasts until %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "reicht bis %@"
+          }
+        }
+      }
+    },
+    "What, e.g. Orthodontist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was, z. B. Kieferorthopäde"
+          }
+        }
+      }
+    },
+    "Done (yellow booklet)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erledigt (gelbes Heft)"
+          }
+        }
+      }
+    },
+    "Add the birth date in the profile to get the dates.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergänze das Geburtsdatum im Profil, um die Termine zu sehen."
+          }
+        }
+      }
+    },
+    "Last check-up known": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Untersuchung bekannt"
+          }
+        }
+      }
+    },
+    "Last one": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte"
+          }
+        }
+      }
+    },
+    "Every %lld months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %lld Monate"
+          }
+        }
+      }
+    },
+    "Typical interval: %lld months.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üblicher Abstand: %lld Monate."
+          }
+        }
+      }
+    },
+    "Appointment booked": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin vereinbart"
+          }
+        }
+      }
+    },
+    "Note (doctor, what to bring)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz (Arzt, was mitbringen)"
+          }
+        }
+      }
+    },
+    "Reminder 14 days before it is due and on the day; for an appointment, the day before.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung 14 Tage vorher und am Tag selbst; bei einem Termin am Vortag."
+          }
+        }
+      }
+    },
+    "Mark as done today": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute erledigt"
+          }
+        }
+      }
+    },
+    "Vaccine": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impfstoff"
+          }
+        }
+      }
+    },
+    "Vaccine name": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name der Impfung"
+          }
+        }
+      }
+    },
+    "Batch number (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargennummer (optional)"
+          }
+        }
+      }
+    },
+    "No routine booster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Routine-Auffrischung"
+          }
+        }
+      }
+    },
+    "Booster after %lld months": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auffrischung nach %lld Monaten"
+          }
+        }
+      }
+    },
+    "Next dose on a set date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste Dosis an festem Datum"
+          }
+        }
+      }
+    },
+    "Next dose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste Dosis"
+          }
+        }
+      }
+    },
+    "Flu: reminder each October.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grippe: Erinnerung jeden Oktober."
+          }
+        }
+      }
+    },
+    "For a series (e.g. 2nd or 3rd dose) set the date of the next dose.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei einer Serie (z. B. 2. oder 3. Dosis) das Datum der nächsten Dosis eintragen."
+          }
+        }
+      }
+    },
+    "For the trip": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für die Reise"
+          }
+        }
+      }
+    },
+    "Name, e.g. L-Thyroxin 75": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. L-Thyroxin 75"
+          }
+        }
+      }
+    },
+    "Dose, e.g. 1 tablet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosis, z. B. 1 Tablette"
+          }
+        }
+      }
+    },
+    "Remind me to take it": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An die Einnahme erinnern"
+          }
+        }
+      }
+    },
+    "Time %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhrzeit %lld"
+          }
+        }
+      }
+    },
+    "Add a time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhrzeit hinzufügen"
+          }
+        }
+      }
+    },
+    "Remove last": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte entfernen"
+          }
+        }
+      }
+    },
+    "Every day at these times, on the iPhones that get this person's reminders.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Täglich zu diesen Zeiten, auf den iPhones, die die Erinnerungen dieser Person bekommen."
+          }
+        }
+      }
+    },
+    "Left now: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktuell übrig: %lld"
+          }
+        }
+      }
+    },
+    "Per day: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Tag: %@"
+          }
+        }
+      }
+    },
+    "Remind me before it runs out": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnern, bevor es ausgeht"
+          }
+        }
+      }
+    },
+    "Lasts about %lld days.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reicht etwa %lld Tage."
+          }
+        }
+      }
+    },
+    "Pack": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Packung"
+          }
+        }
+      }
+    },
+    "A reminder 7 days before the pack is empty, so there is time for a prescription. Update \"Left now\" when you open a new pack.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Erinnerung 7 Tage bevor die Packung leer ist, damit Zeit für ein Rezept bleibt. Passe „Aktuell übrig“ an, wenn du eine neue Packung öffnest."
+          }
+        }
+      }
+    },
+    "Taking it at the moment": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird zurzeit genommen"
+          }
+        }
+      }
+    },
+    "Medications are private by default. Share one if a partner should remind a child or parent.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikamente sind standardmäßig privat. Teile eines, wenn ein Partner ein Kind oder Elternteil erinnern soll."
+          }
+        }
+      }
+    },
+    "Systolic, e.g. 128": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Systolisch, z. B. 128"
+          }
+        }
+      }
+    },
+    "Diastolic, e.g. 82": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diastolisch, z. B. 82"
+          }
+        }
+      }
+    },
+    "Value": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wert"
+          }
+        }
+      }
+    },
+    "Note (e.g. after sport, fasting)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz (z. B. nach Sport, nüchtern)"
+          }
+        }
+      }
+    },
+    "Show stopped medications": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgesetzte Medikamente zeigen"
+          }
+        }
+      }
+    },
+    "Report for the doctor (PDF)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bericht für die Ärztin/den Arzt (PDF)"
+          }
+        }
+      }
+    },
+    "Born %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geboren am %@"
+          }
+        }
+      }
+    },
+    "Created %@ with Familoq": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellt am %@ mit Familoq"
+          }
+        }
+      }
+    },
+    "Conditions": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erkrankungen"
+          }
+        }
+      }
+    },
+    "Health costs": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheitskosten"
+          }
+        }
+      }
+    },
+    "Refunded by insurance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Von der Versicherung erstattet"
+          }
+        }
+      }
+    },
+    "Tax-relevant": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steuerlich relevant"
+          }
+        }
+      }
+    },
+    "Share list for the tax return": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste für die Steuererklärung teilen"
+          }
+        }
+      }
+    },
+    "Expenses in the Health category (plus any marked tax-relevant). Mark doctor's bills, medicines on prescription, glasses, dentures or therapies you pay yourself as tax-relevant - they may count as außergewöhnliche Belastungen. Not tax advice.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgaben der Kategorie Gesundheit (plus alle als steuerlich relevant markierten). Markiere selbst bezahlte Arztrechnungen, verschriebene Medikamente, Brillen, Zahnersatz oder Therapien als steuerlich relevant – sie können als außergewöhnliche Belastungen zählen. Keine Steuerberatung."
+          }
+        }
+      }
+    },
+    "Not assigned": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht zugeordnet"
+          }
+        }
+      }
+    },
+    "Health costs %@ (außergewöhnliche Belastungen)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesundheitskosten %@ (außergewöhnliche Belastungen)"
+          }
+        }
+      }
+    },
+    "Total: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summe: %@"
+          }
+        }
+      }
+    },
+    "Still expected back": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch erwartete Erstattung"
+          }
+        }
+      }
+    },
+    "Add a bill to claim": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechnung zur Erstattung hinzufügen"
+          }
+        }
+      }
+    },
+    "For private or supplementary insurance: note each bill, when it was sent in and what came back.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für private oder Zusatzversicherung: Notiere jede Rechnung, wann sie eingereicht wurde und was zurückkam."
+          }
+        }
+      }
+    },
+    "To send in": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einzureichen"
+          }
+        }
+      }
+    },
+    "Sent in - waiting": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingereicht – wartet"
+          }
+        }
+      }
+    },
+    "Refunded": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstattet"
+          }
+        }
+      }
+    },
+    "Bill, e.g. Dentist invoice March": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechnung, z. B. Zahnarzt März"
+          }
+        }
+      }
+    },
+    "Nobody": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niemand"
+          }
+        }
+      }
+    },
+    "Sent in": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eingereicht"
+          }
+        }
+      }
+    },
+    "On": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Am"
+          }
+        }
+      }
+    },
+    "Refunded amount": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstatteter Betrag"
+          }
+        }
+      }
+    },
+    "Refund": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstattung"
+          }
+        }
+      }
+    },
+    "Add doctor or pharmacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arzt oder Apotheke hinzufügen"
+          }
+        }
+      }
+    },
+    "112 – Emergency (ambulance, fire)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "112 – Notruf (Rettungsdienst, Feuerwehr)"
+          }
+        }
+      }
+    },
+    "116 117 – On-call doctor (evenings, weekends)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "116 117 – Ärztlicher Bereitschaftsdienst (abends, Wochenende)"
+          }
+        }
+      }
+    },
+    "Pharmacy on emergency duty near you": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notdienst-Apotheke in der Nähe"
+          }
+        }
+      }
+    },
+    "The pharmacy search opens aponet.de in Safari.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Apothekensuche öffnet aponet.de in Safari."
+          }
+        }
+      }
+    },
+    "Name, e.g. Dr. Müller": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. Dr. Müller"
+          }
+        }
+      }
+    },
+    "Phone": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon"
+          }
+        }
+      }
+    },
+    "Address": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse"
+          }
+        }
+      }
+    },
+    "Note (opening hours, patient number)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz (Sprechzeiten, Patientennummer)"
+          }
+        }
+      }
+    },
+    "Contact": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakt"
+          }
+        }
+      }
+    },
+    "Family doctor": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hausarzt"
+          }
+        }
+      }
+    },
+    "Dentist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahnarzt"
+          }
+        }
+      }
+    },
+    "Paediatrician": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kinderarzt"
+          }
+        }
+      }
+    },
+    "Gynaecologist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frauenarzt"
+          }
+        }
+      }
+    },
+    "Eye doctor": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Augenarzt"
+          }
+        }
+      }
+    },
+    "ENT doctor": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HNO-Arzt"
+          }
+        }
+      }
+    },
+    "Dermatologist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hautarzt"
+          }
+        }
+      }
+    },
+    "Cardiologist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kardiologe"
+          }
+        }
+      }
+    },
+    "Diabetologist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diabetologe"
+          }
+        }
+      }
+    },
+    "Endocrinologist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endokrinologe"
+          }
+        }
+      }
+    },
+    "Orthopaedist": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orthopäde"
+          }
+        }
+      }
+    },
+    "Physiotherapy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Physiotherapie"
+          }
+        }
+      }
+    },
+    "Hospital": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Krankenhaus"
+          }
+        }
+      }
+    },
+    "Open the Health app for Medical ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health-App für den Notfallpass öffnen"
+          }
+        }
+      }
+    },
+    "Medical ID in Apple's Health app can show allergies, medications and contacts on the lock screen for rescuers - set it up there for each iPhone owner.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Notfallpass in Apples Health-App kann Allergien, Medikamente und Kontakte auf dem Sperrbildschirm für Rettungskräfte zeigen – richte ihn dort für jede iPhone-Besitzerin und jeden iPhone-Besitzer ein."
+          }
+        }
+      }
+    },
+    "Show the emergency cards": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notfallkarten anzeigen"
+          }
+        }
+      }
+    },
+    "Age": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alter"
+          }
+        }
+      }
+    },
+    "Allergies": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allergien"
+          }
+        }
+      }
+    },
+    "Medication": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikament"
+          }
+        }
+      }
+    },
+    "Plate check": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teller-Check"
+          }
+        }
+      }
+    },
+    "Take a photo of the plate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teller fotografieren"
+          }
+        }
+      }
+    },
+    "Without a photo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ohne Foto"
+          }
+        }
+      }
+    },
+    "The photo is looked at on this iPhone only. It suggests what is on the plate - you correct the amounts. Grams or calories cannot be measured reliably from a photo, so Familoq only rates the balance.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Foto wird nur auf diesem iPhone ausgewertet. Es schlägt vor, was auf dem Teller ist – du korrigierst die Mengen. Gramm oder Kalorien lassen sich aus einem Foto nicht zuverlässig messen, daher bewertet Familoq nur die Ausgewogenheit."
+          }
+        }
+      }
+    },
+    "Last 7 days": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte 7 Tage"
+          }
+        }
+      }
+    },
+    "Average plate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchschnittlicher Teller"
+          }
+        }
+      }
+    },
+    "Saved plates": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gespeicherte Teller"
+          }
+        }
+      }
+    },
+    "Plate balance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teller-Balance"
+          }
+        }
+      }
+    },
+    "Compared with the healthy plate: half vegetables, a quarter protein, a quarter (wholegrain) carbohydrates.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verglichen mit dem gesunden Teller: halb Gemüse, ein Viertel Eiweiß, ein Viertel (Vollkorn-)Kohlenhydrate."
+          }
+        }
+      }
+    },
+    "On the plate (0-5 portions)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf dem Teller (0–5 Portionen)"
+          }
+        }
+      }
+    },
+    "Whose plate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wessen Teller"
+          }
+        }
+      }
+    },
+    "Check-ups, vaccinations & refills": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorsorge, Impfungen & Nachkauf"
+          }
+        }
+      }
+    },
+    "Medication times": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikamenten-Zeiten"
+          }
+        }
+      }
+    },
+    "Use-by dates at home": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbrauchsdaten zu Hause"
+          }
+        }
+      }
+    },
+    "Check-up due: %@ (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorsorge fällig: %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Due around %@ - time to book an appointment.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig etwa am %@ – Zeit, einen Termin zu vereinbaren."
+          }
+        }
+      }
+    },
+    "%@ check-up for %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@-Untersuchung für %2$@"
+          }
+        }
+      }
+    },
+    "The window starts on %@ - book it with the paediatrician.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Zeitraum beginnt am %@ – vereinbare einen Termin beim Kinderarzt."
+          }
+        }
+      }
+    },
+    "Appointment: %@ (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin: %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Vaccination due: %@ (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impfung fällig: %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "Due around %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig etwa am %@."
+          }
+        }
+      }
+    },
+    "Medication running out: %@ (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikament geht aus: %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "It lasts until about %@ - get a new pack or prescription.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es reicht bis etwa %@ – neue Packung oder Rezept besorgen."
+          }
+        }
+      }
+    },
+    "Use soon: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bald verbrauchen: %@"
+          }
+        }
+      }
+    },
+    "Use by tomorrow.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bis morgen verbrauchen."
+          }
+        }
+      }
+    },
+    "Medication: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medikament: %@"
+          }
+        }
+      }
+    },
+    "%lld sick day(s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Krankheitstag(e)"
+          }
+        }
+      }
+    },
+    "Remind to send the sick note (AU)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An die Krankmeldung (AU) erinnern"
+          }
+        }
+      }
+    },
+    "Send the sick note (AU) to the employer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Krankmeldung (AU) an den Arbeitgeber schicken"
+          }
+        }
+      }
+    },
+    "Many employers need it from the first or the fourth day of illness - check your contract.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viele Arbeitgeber brauchen sie ab dem ersten oder vierten Krankheitstag – prüfe deinen Vertrag."
+          }
+        }
+      }
+    },
+    "Weekends and public holidays (%@%@) are not counted. Half day = 0.5; training and sick days are not taken from the allowance.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wochenenden und Feiertage (%1$@%2$@) zählen nicht. Halber Tag = 0,5; Fortbildung und Krankheitstage werden nicht vom Urlaubsanspruch abgezogen."
+          }
+        }
+      }
+    },
+    "Family & settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familie & Einstellungen"
+          }
+        }
+      }
+    },
+    "Worth watching for: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Blick behalten wegen: %@"
+          }
+        }
+      }
+    },
+    "For your health settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für eure Gesundheitseinstellungen"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

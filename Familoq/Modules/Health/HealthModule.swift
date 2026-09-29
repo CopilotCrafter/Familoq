@@ -97,9 +97,9 @@ enum HealthService {
     /// that are on this iPhone, plus the family's meal settings).
     static func dietProfile(familyID: UUID, context: ModelContext) -> DietProfile {
         let people = people(familyID: familyID, context: context)
-        let prefs = MealSettingsService.preferences(familyID: familyID, context: context)
-        return DietProfile(people: people.map(\.dietPerson), avoidWords: prefs.avoidWords,
-                           maxSpice: prefs.maxSpice, kidFriendly: prefs.kidFriendly)
+        let prefs = MealSettingsService.existing(familyID: familyID, context: context)
+        return DietProfile(people: people.map(\.dietPerson), avoidWords: prefs?.avoidWords ?? [],
+                           maxSpice: prefs?.maxSpice ?? 3, kidFriendly: prefs?.kidFriendly ?? false)
     }
 
     /// Makes a person and everything of theirs private (or shared again).

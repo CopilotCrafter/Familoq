@@ -7,6 +7,14 @@ import FamiloqHealth
 
 @MainActor
 enum MealSettingsService {
+    /// The saved settings, if any (does not create them - safe while drawing a view).
+    static func existing(familyID: UUID, context: ModelContext) -> MealPreferences? {
+        let id = MealPreferences.preferencesID(familyID: familyID)
+        var descriptor = FetchDescriptor<MealPreferences>(predicate: #Predicate { $0.id == id })
+        descriptor.fetchLimit = 1
+        return try? context.fetch(descriptor).first
+    }
+
     /// The family's meal settings (created with defaults on first use).
     static func preferences(familyID: UUID, context: ModelContext) -> MealPreferences {
         let id = MealPreferences.preferencesID(familyID: familyID)
@@ -85,20 +93,20 @@ enum MealPlanService {
     }
 
     static func request(family: Family, days: [WeekPlanner.Day], already: [Dish], context: ModelContext) -> WeekPlanner.Request {
-        let prefs = MealSettingsService.preferences(familyID: family.id, context: context)
+        let prefs = MealSettingsService.existing(familyID: family.id, context: context)
         let calendar = PlannerDates.calendar
         let first = days.first?.date ?? Date()
         let seed = UInt64(abs(Int(first.timeIntervalSince1970 / 86_400))) &* 31 &+ UInt64(family.id.uuid.0)
         return WeekPlanner.Request(
             days: days,
-            cuisines: prefs.cuisines,
+            cuisines: prefs?.cuisines ?? [],
             profile: HealthService.dietProfile(familyID: family.id, context: context),
             ratings: ratings(familyID: family.id, context: context),
             recentDishIDs: recentDishIDs(familyID: family.id, before: first, context: context),
             alreadyPlanned: already,
             pantryWords: pantryWords(familyID: family.id, context: context),
-            vegetarianDays: prefs.vegetarianDays,
-            weekdayMinutes: prefs.weekdayMinutes,
+            vegetarianDays: prefs?.vegetarianDays ?? 1,
+            weekdayMinutes: prefs?.weekdayMinutes ?? 40,
             month: calendar.component(.month, from: first),
             seed: seed)
     }
@@ -116,9 +124,9 @@ enum MealPlanService {
             days.append(WeekPlanner.Day(date: day, isWeekend: calendar.isDateInWeekend(day)))
         }
         guard !days.isEmpty else { return 0 }
-        var request = request(family: family, days: days, already: dinners.compactMap(dish(for:)), context: context)
-        request.seed &+= UInt64(reshuffle)
-        let plan = WeekPlanner.plan(request)
+        var planRequest = request(family: family, days: days, already: dinners.compactMap(dish(for:)), context: context)
+        planRequest.seed &+= UInt64(reshuffle)
+        let plan = WeekPlanner.plan(planRequest)
         for item in plan {
             let entry = MealPlanEntry(familyID: family.id, day: calendar.startOfDay(for: item.date), slot: .dinner, title: item.dish.name)
             entry.dishID = item.dish.id
@@ -194,9 +202,9 @@ enum MealPlanService {
 
     /// Lunchbox ideas: leftovers of yesterday's dinner, then lunchbox dishes.
     static func lunchboxIdeas(family: Family, day: Date, context: ModelContext) -> [Dish] {
-        let prefs = MealSettingsService.preferences(familyID: family.id, context: context)
+        let prefs = MealSettingsService.existing(familyID: family.id, context: context)
         let profile = HealthService.dietProfile(familyID: family.id, context: context)
-        let cuisines = Set(prefs.cuisines.map(\.cuisine))
+        let cuisines = Set((prefs?.cuisines ?? []).map(\.cuisine))
         let candidates = DishCatalogue.all.filter { dish in
             dish.has(.lunchbox) && profile.allows(dish) && (cuisines.isEmpty || cuisines.contains(dish.cuisine) || dish.has(.lunchboxOnly))
         }
