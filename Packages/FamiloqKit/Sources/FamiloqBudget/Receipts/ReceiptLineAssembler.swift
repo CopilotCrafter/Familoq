@@ -53,6 +53,17 @@ public enum ReceiptLineAssembler {
     }
 
     public static func lines(from fragments: [OCRFragment]) -> [String] {
+        rows(from: fragments).map(join)
+    }
+
+    static func join(_ row: [OCRFragment]) -> String {
+        row.sorted { $0.x < $1.x }
+            .map { $0.text.trimmingCharacters(in: .whitespaces) }
+            .joined(separator: " ")
+    }
+
+    /// Fragments grouped into rows (top to bottom), slope removed.
+    static func rows(from fragments: [OCRFragment]) -> [[OCRFragment]] {
         let usable = fragments.filter { !$0.text.trimmingCharacters(in: .whitespaces).isEmpty }
         var slopeByPage: [Int: Double] = [:]
         for page in Set(usable.map(\.page)) {
@@ -80,11 +91,77 @@ public enum ReceiptLineAssembler {
             }
             rows.append([fragment])
         }
+        return rows
+    }
 
-        return rows.map { row in
-            row.sorted { $0.x < $1.x }
-                .map { $0.text.trimmingCharacters(in: .whitespaces) }
-                .joined(separator: " ")
+    // MARK: Price column paired in order
+
+    private static let priceOnly = try! NSRegularExpression(
+        pattern: #"^\s*-?\d{1,5}(?:[.,]\d{3})*[.,]\d{2}\s*(?:EUR|€)?\s*(?:[A-Z0-9]{1,2})?\s*\*?\s*$"#,
+        options: [.caseInsensitive])
+
+    static func isPriceOnly(_ text: String) -> Bool {
+        priceOnly.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil
+    }
+
+    /// Second reading for photos where the paper is curled or unevenly
+    /// angled: the prices on the right are paired with the item names IN
+    /// ORDER (1st price - 1st name, …) instead of by height. Only when the
+    /// numbers of names and prices between the first price and the total
+    /// are the same; nil otherwise. The parser uses it when the normal
+    /// lines do not add up to the total.
+    public static func columnPairedLines(from fragments: [OCRFragment]) -> [String]? {
+        let usable = fragments.filter { !$0.text.trimmingCharacters(in: .whitespaces).isEmpty }
+        guard !usable.isEmpty, Set(usable.map(\.page)).count == 1 else { return nil }
+        let grouped = rows(from: usable)
+        let minX = usable.map(\.x).min() ?? 0
+        let maxX = usable.map { $0.x + $0.width }.max() ?? 1
+        let rightEdge = minX + (maxX - minX) * 0.5
+        func isColumnPrice(_ f: OCRFragment) -> Bool { f.midX > rightEdge && isPriceOnly(f.text) }
+
+        guard let totalRow = grouped.firstIndex(where: { ReceiptParser.isTotalLine(join($0)) }),
+              let firstPriceRow = grouped.firstIndex(where: { $0.contains(where: isColumnPrice) }),
+              firstPriceRow < totalRow else { return nil }
+        // A name can sit a little above its price: start one row earlier
+        // when that row is a name without a price.
+        var start = firstPriceRow
+        if start > 0 {
+            let previous = grouped[start - 1].filter { !isColumnPrice($0) }
+            let text = join(previous)
+            if !grouped[start].contains(where: { !isColumnPrice($0) }) && needsPrice(text) { start -= 1 }
         }
+
+        let block = grouped[start..<totalRow]
+        let prices = block.flatMap { $0.filter(isColumnPrice) }
+        let names = block.map { row in join(row.filter { !isColumnPrice($0) }) }
+        let needing = names.filter(needsPrice)
+        guard !prices.isEmpty, needing.count == prices.count else { return nil }
+
+        // Prices top to bottom (by height, slope removed like the rows).
+        let orderedPrices = prices.sorted { $0.midY < $1.midY }
+        var result = grouped[..<start].map(join)
+        var next = 0
+        for name in names where !name.isEmpty {
+            if needsPrice(name) {
+                result.append(name + " " + orderedPrices[next].text.trimmingCharacters(in: .whitespaces))
+                next += 1
+            } else {
+                result.append(name)
+            }
+        }
+        result.append(contentsOf: grouped[totalRow...].map(join))
+        return result
+    }
+
+    /// An item name still waiting for its price (not a quantity line like
+    /// "0,184 kg x 4,90 EUR/kg", not a header like "EUR", no price of its own).
+    static func needsPrice(_ text: String) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespaces)
+        guard trimmed.filter(\.isLetter).count >= 2 else { return false }
+        if ["eur", "€", "chf", "usd", "gbp"].contains(trimmed.lowercased()) { return false }
+        if ReceiptParser.isQuantityLine(trimmed) { return false }
+        if ReceiptParser.trailingPriceValue(trimmed) != nil { return false }
+        if ReceiptParser.isSkipLine(trimmed) { return false }
+        return true
     }
 }

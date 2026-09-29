@@ -179,6 +179,41 @@ public enum ReceiptParser {
         )
     }
 
+    /// Reads OCR fragments. Uses the normal lines; when their items do not
+    /// add up to the total, a second reading that pairs the price column with
+    /// the names in order (curled paper, uneven angle) is tried.
+    public static func parse(fragments: [OCRFragment], calendar: Calendar = FamiloqCalendar.make(), now: Date = Date()) -> ParsedReceipt {
+        let geometric = parse(lines: ReceiptLineAssembler.lines(from: fragments), calendar: calendar, now: now)
+        if geometric.itemsMatchTotal { return geometric }
+        guard let alternative = ReceiptLineAssembler.columnPairedLines(from: fragments) else { return geometric }
+        let paired = parse(lines: alternative, calendar: calendar, now: now)
+        if paired.itemsMatchTotal { return paired }
+        if paired.total != nil && geometric.total == nil { return paired }
+        if let total = paired.total, total == geometric.total {
+            let before = abs(NSDecimalNumber(decimal: geometric.itemsSum - total).doubleValue)
+            let after = abs(NSDecimalNumber(decimal: paired.itemsSum - total).doubleValue)
+            if after < before { return paired }
+        }
+        return geometric
+    }
+
+    static func isTotalLine(_ line: String) -> Bool {
+        let lower = line.lowercased()
+        return totalKeywords.contains { hasPhrase($0, in: lower) } && !notTotalKeywords.contains { hasPhrase($0, in: lower) }
+    }
+
+    static func isQuantityLine(_ line: String) -> Bool {
+        guard let q = firstMatch(quantityLine, in: line) else { return false }
+        let rest = line.replacingOccurrences(of: q[0], with: "").lowercased()
+            .replacingOccurrences(of: #"eur|€|/|kg|stk|st\b"#, with: "", options: .regularExpression)
+        return rest.filter(\.isLetter).count <= 2
+    }
+
+    static func isSkipLine(_ line: String) -> Bool {
+        let lower = line.lowercased()
+        return skipKeywords.contains { hasPhrase($0, in: lower) }
+    }
+
     // MARK: Merchant
 
     static func findMerchant(_ lines: [String]) -> (String?, String?) {
@@ -287,6 +322,30 @@ public enum ReceiptParser {
             // Keyword on one line, amount on the next.
             if index + 1 < lines.count, let price = trailingPriceValue(lines[index + 1], wholeUnits: wholeUnits), lines[index + 1].filter(\.isLetter).count <= 4 {
                 return (price, index)
+            }
+        }
+        return repeatedTotal(lines, wholeUnits: wholeUnits)
+    }
+
+    /// No "Summe" line read: the total is usually printed several times
+    /// (sum, card payment, card slip, VAT table). The largest amount that
+    /// appears at least twice and equals the prices above it is the total.
+    static func repeatedTotal(_ lines: [String], wholeUnits: Bool) -> (Decimal?, Int?) {
+        var firstIndex: [Decimal: Int] = [:]
+        var count: [Decimal: Int] = [:]
+        for (index, line) in lines.enumerated() {
+            for text in allMatches(anyPrice, in: line) {
+                guard let value = DecimalParser.parse(text), value > 0 else { continue }
+                count[value, default: 0] += 1
+                if firstIndex[value] == nil { firstIndex[value] = index }
+            }
+        }
+        for value in count.filter({ $0.value >= 2 }).keys.sorted(by: >) {
+            guard let index = firstIndex[value] else { continue }
+            let sum = findItems(lines, totalIndex: index, wholeUnits: wholeUnits).reduce(Decimal(0)) { $0 + $1.amount }
+            let diff = sum - value
+            if diff >= Decimal(string: "-0.02")!, diff <= Decimal(string: "0.02")! {
+                return (value, index)
             }
         }
         return (nil, nil)
