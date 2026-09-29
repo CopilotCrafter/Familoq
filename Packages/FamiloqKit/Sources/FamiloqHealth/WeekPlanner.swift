@@ -17,6 +17,11 @@ public struct SeededRandom: RandomNumberGenerator, Sendable {
 }
 
 /// Fills the empty dinners of a week from the catalogue.
+/// Which meal of the day is planned.
+public enum PlanSlot: String, Sendable, CaseIterable {
+    case breakfast, lunch, dinner
+}
+
 public enum WeekPlanner {
     public struct Day: Sendable {
         public var date: Date
@@ -43,10 +48,12 @@ public enum WeekPlanner {
         public var weekdayMinutes: Int
         public var month: Int
         public var seed: UInt64
+        public var slot: PlanSlot
 
         public init(days: [Day], cuisines: [CuisinePreference], profile: DietProfile, ratings: [String: Double] = [:],
                     recentDishIDs: Set<String> = [], alreadyPlanned: [Dish] = [], pantryWords: [String] = [],
-                    vegetarianDays: Int = 1, weekdayMinutes: Int = 40, month: Int, seed: UInt64) {
+                    vegetarianDays: Int = 1, weekdayMinutes: Int = 40, month: Int, seed: UInt64, slot: PlanSlot = .dinner) {
+            self.slot = slot
             self.days = days
             self.cuisines = cuisines
             self.profile = profile
@@ -66,18 +73,34 @@ public enum WeekPlanner {
         public let dish: Dish
     }
 
-    /// Candidates: allowed by the strict rules, in the chosen cuisines, not lunchbox-only.
+    /// Candidates: allowed by the strict rules, in the chosen cuisines and
+    /// right for the meal (breakfast dishes only for breakfast; lunchbox-only
+    /// dishes only for lunch).
     public static func pool(_ request: Request, catalogue: [Dish] = DishCatalogue.all) -> [Dish] {
         let chosen = Set(request.cuisines.prefix(4).map(\.cuisine))
-        return catalogue.filter { dish in
-            !dish.has(.lunchboxOnly) && (chosen.isEmpty || chosen.contains(dish.cuisine)) && request.profile.allows(dish)
+        let matching = catalogue.filter { dish in
+            fits(dish, slot: request.slot) && request.profile.allows(dish)
+        }
+        let inCuisines = matching.filter { chosen.isEmpty || chosen.contains($0.cuisine) }
+        // Few breakfasts in the chosen cuisines: add simple ones from other cuisines.
+        if request.slot == .breakfast && inCuisines.count < 7 {
+            return inCuisines + matching.filter { !inCuisines.contains($0) && ($0.cuisine == .german || $0.cuisine == .greek) }
+        }
+        return inCuisines
+    }
+
+    public static func fits(_ dish: Dish, slot: PlanSlot) -> Bool {
+        switch slot {
+        case .breakfast: return dish.has(.breakfast)
+        case .lunch: return !dish.has(.breakfast)
+        case .dinner: return !dish.has(.breakfast) && !dish.has(.lunchboxOnly)
         }
     }
 
     public static func plan(_ request: Request, catalogue: [Dish] = DishCatalogue.all) -> [Planned] {
         let candidates = pool(request, catalogue: catalogue)
         guard !candidates.isEmpty, !request.days.isEmpty else { return [] }
-        var random = SeededRandom(seed: request.seed)
+        var random = SeededRandom(seed: request.seed &+ UInt64(request.slot == .dinner ? 0 : (request.slot == .lunch ? 101 : 202)))
         let sequence = request.cuisines.isEmpty ? [] : CuisinePreference.sequence(request.cuisines, days: request.days.count)
         var state = Balance(request.alreadyPlanned)
         var used = Set(request.alreadyPlanned.map(\.id))
@@ -132,6 +155,9 @@ public enum WeekPlanner {
 
     static func score(_ dish: Dish, day: Day, request: Request, state: Balance, daysLeft: Int, previous: Dish?,
                       random: inout SeededRandom) -> Double {
+        if request.slot == .breakfast {
+            return breakfastScore(dish, day: day, request: request, previous: previous, random: &random)
+        }
         var s = 1.0
         // Regions of the chosen cuisine.
         if let pref = request.cuisines.first(where: { $0.cuisine == dish.cuisine }), !pref.regions.isEmpty,
@@ -153,10 +179,12 @@ public enum WeekPlanner {
             if !previous.proteins.isDisjoint(with: dish.proteins) { s -= 0.3 }
             if previous.base == dish.base { s -= 0.2 }
         }
-        // Time: quick on weekdays.
+        // Time: quick on weekdays (lunch even quicker, or a lunchbox).
         if !day.isWeekend {
-            if dish.minutes > request.weekdayMinutes { s -= dish.minutes > 75 ? 1.4 : 0.6 }
-        } else if dish.minutes >= 60 {
+            let limit = request.slot == .lunch ? min(request.weekdayMinutes, 30) : request.weekdayMinutes
+            if dish.minutes > limit { s -= dish.minutes > 75 ? 1.4 : (dish.minutes > limit + 15 ? 1.0 : 0.6) }
+            if request.slot == .lunch && dish.has(.lunchbox) { s += 0.5 }
+        } else if dish.minutes >= 60 && request.slot == .dinner {
             s += 0.2
         }
         // Season.
@@ -174,6 +202,25 @@ public enum WeekPlanner {
         }
         if dish.has(.sweet) { s -= 0.5 }
         s += random.unit() * 0.35
+        return s
+    }
+
+    /// Breakfast: quick on weekdays, no fish/pulse targets, sweet is fine.
+    static func breakfastScore(_ dish: Dish, day: Day, request: Request, previous: Dish?, random: inout SeededRandom) -> Double {
+        var s = 1.0
+        if let pref = request.cuisines.first(where: { $0.cuisine == dish.cuisine }), !pref.regions.isEmpty,
+           !Set(pref.regions).isDisjoint(with: dish.regions) {
+            s += 0.5
+        }
+        s += request.profile.fit(dish)
+        s += 0.5 * max(-2, min(2, request.ratings[dish.id] ?? 0))
+        if request.recentDishIDs.contains(dish.id) { s -= 0.6 }
+        if dish.base == .wholegrain { s += 0.3 }
+        if let previous, previous.id == dish.id { s -= 2 }
+        let limit = day.isWeekend ? 45 : 15
+        if dish.minutes > limit { s -= dish.minutes > 30 ? 1.5 : 0.7 }
+        if !dish.seasonMonths.isEmpty { s += dish.isInSeason(month: request.month) ? 0.3 : -1.5 }
+        s += random.unit() * 0.4
         return s
     }
 }

@@ -157,6 +157,24 @@ final class WeekPlannerTests: XCTestCase {
         XCTAssertEqual(WeekPlanner.plan(request).map(\.dish.id), plan.map(\.dish.id))
     }
 
+    func testBreakfastAndLunchPlans() {
+        let cuisines = [CuisinePreference(cuisine: .german), CuisinePreference(cuisine: .indian, regions: ["kl"])]
+        let dinners = WeekPlanner.plan(WeekPlanner.Request(days: week(), cuisines: cuisines, profile: DietProfile(), month: 10, seed: 3))
+        XCTAssertTrue(dinners.allSatisfy { !$0.dish.has(.breakfast) })
+        let breakfasts = WeekPlanner.plan(WeekPlanner.Request(days: week(), cuisines: cuisines, profile: DietProfile(),
+                                                              month: 10, seed: 3, slot: .breakfast))
+        XCTAssertEqual(breakfasts.count, 7)
+        XCTAssertTrue(breakfasts.allSatisfy { $0.dish.has(.breakfast) }, breakfasts.map(\.dish.name).joined(separator: ", "))
+        for item in breakfasts.prefix(5) { XCTAssertLessThanOrEqual(item.dish.minutes, 30, item.dish.name) }
+        XCTAssertGreaterThanOrEqual(Set(breakfasts.map(\.dish.id)).count, 5, "varied breakfasts")
+        let lunches = WeekPlanner.plan(WeekPlanner.Request(days: week(), cuisines: cuisines, profile: DietProfile(),
+                                                           alreadyPlanned: dinners.map(\.dish), month: 10, seed: 3, slot: .lunch))
+        XCTAssertEqual(lunches.count, 7)
+        XCTAssertTrue(lunches.allSatisfy { !$0.dish.has(.breakfast) })
+        XCTAssertTrue(Set(lunches.map(\.dish.id)).isDisjoint(with: dinners.map(\.dish.id)), "lunch is not the same as a dinner")
+        for item in lunches.prefix(5) { XCTAssertLessThanOrEqual(item.dish.minutes, 60, item.dish.name) }
+    }
+
     func testOutOfSeasonAvoided() {
         let request = WeekPlanner.Request(days: week(), cuisines: [CuisinePreference(cuisine: .german, regions: ["ni"])],
                                           profile: DietProfile(), month: 12, seed: 1)

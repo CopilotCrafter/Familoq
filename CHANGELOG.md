@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.2 - Breakfast & lunch plans, family in Health
+
+### Added
+- "Plan my week" also plans breakfast and lunch when they are switched on (Planner → Meals, bottom): about 40 breakfasts from all cuisines (quick on weekdays), lunches that are quick or good for a lunchbox and never the same dish as a dinner.
+- Swap and the dish catalogue show breakfasts for breakfast and meals for lunch/dinner.
+
+### Changed
+- Health lists every family member automatically; tap one to add their conditions and allergies.
+
 ## 0.8.1 - Better receipt reading
 
 ### Fixed

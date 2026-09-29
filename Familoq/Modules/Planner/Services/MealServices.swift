@@ -92,7 +92,8 @@ enum MealPlanService {
         return items.map(\.name)
     }
 
-    static func request(family: Family, days: [WeekPlanner.Day], already: [Dish], context: ModelContext) -> WeekPlanner.Request {
+    static func request(family: Family, days: [WeekPlanner.Day], already: [Dish], context: ModelContext,
+                        slot: PlanSlot = .dinner) -> WeekPlanner.Request {
         let prefs = MealSettingsService.existing(familyID: family.id, context: context)
         let calendar = PlannerDates.calendar
         let first = days.first?.date ?? Date()
@@ -108,32 +109,54 @@ enum MealPlanService {
             vegetarianDays: prefs?.vegetarianDays ?? 1,
             weekdayMinutes: prefs?.weekdayMinutes ?? 40,
             month: calendar.component(.month, from: first),
-            seed: seed)
+            seed: seed,
+            slot: slot)
     }
 
-    /// Fills the empty dinners of the week. Returns how many were planned.
+    static func planSlot(_ slot: MealSlot) -> PlanSlot {
+        switch slot {
+        case .breakfast: return .breakfast
+        case .lunch: return .lunch
+        case .dinner: return .dinner
+        }
+    }
+
+    /// Fills the empty meals of the week from today: dinners, then lunches
+    /// and breakfasts when they are planned. Returns how many were planned.
     @discardableResult
-    static func planWeek(family: Family, weekStart: Date, existing: [MealPlanEntry], context: ModelContext, reshuffle: Int = 0) -> Int {
+    static func planWeek(family: Family, weekStart: Date, existing: [MealPlanEntry], context: ModelContext,
+                         slots: [MealSlot] = [.dinner], reshuffle: Int = 0) -> Int {
         let calendar = PlannerDates.calendar
         let today = calendar.startOfDay(for: Date())
-        let dinners = existing.filter { $0.slot == .dinner }
-        var days: [WeekPlanner.Day] = []
-        for offset in 0..<7 {
-            guard let day = calendar.date(byAdding: .day, value: offset, to: weekStart), day >= today else { continue }
-            if dinners.contains(where: { calendar.isDate($0.day, inSameDayAs: day) }) { continue }
-            days.append(WeekPlanner.Day(date: day, isWeekend: calendar.isDateInWeekend(day)))
-        }
-        guard !days.isEmpty else { return 0 }
-        var planRequest = request(family: family, days: days, already: dinners.compactMap(dish(for:)), context: context)
-        planRequest.seed &+= UInt64(reshuffle)
-        let plan = WeekPlanner.plan(planRequest)
-        for item in plan {
-            let entry = MealPlanEntry(familyID: family.id, day: calendar.startOfDay(for: item.date), slot: .dinner, title: item.dish.name)
-            entry.dishID = item.dish.id
-            context.insert(entry)
+        var planned: [MealPlanEntry] = existing
+        var count = 0
+        // Dinners first: lunches then avoid the same dishes and complete the balance.
+        for slot in [MealSlot.dinner, .lunch, .breakfast] where slots.contains(slot) {
+            let taken = planned.filter { $0.slot == slot }
+            var days: [WeekPlanner.Day] = []
+            for offset in 0..<7 {
+                guard let day = calendar.date(byAdding: .day, value: offset, to: weekStart), day >= today else { continue }
+                if taken.contains(where: { calendar.isDate($0.day, inSameDayAs: day) }) { continue }
+                days.append(WeekPlanner.Day(date: day, isWeekend: calendar.isDateInWeekend(day)))
+            }
+            guard !days.isEmpty else { continue }
+            // Balance over lunch and dinner; breakfast only avoids repeats of itself.
+            let already = slot == .breakfast
+                ? taken.compactMap(dish(for:))
+                : planned.filter { $0.slot != .breakfast && !$0.isLeftover }.compactMap(dish(for:))
+            var planRequest = request(family: family, days: days, already: already, context: context, slot: planSlot(slot))
+            planRequest.seed &+= UInt64(reshuffle)
+            for item in WeekPlanner.plan(planRequest) {
+                let entry = MealPlanEntry(familyID: family.id, day: calendar.startOfDay(for: item.date), slot: slot, title: item.dish.name)
+                entry.dishID = item.dish.id
+                entry.isLunchbox = slot == .lunch && item.dish.has(.lunchboxOnly)
+                context.insert(entry)
+                planned.append(entry)
+                count += 1
+            }
         }
         try? context.save()
-        return plan.count
+        return count
     }
 
     /// Ingredient lines of an entry, scaled for guests / cook double.

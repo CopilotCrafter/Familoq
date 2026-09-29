@@ -20,7 +20,7 @@ public enum DishFlag: String, CaseIterable, Sendable {
     case gluten = "g", dairy = "d", nuts = "n", soy = "sy"
     case highSalt = "hs", highSatFat = "hf", highSugar = "hg", purine = "pu", fried = "fr"
     case processedMeat = "pr", offal = "lv", raw = "raw", alcohol = "al", seaweed = "sea"
-    case sweet = "sw", vegetableRich = "vv", kidFriendly = "k", lunchbox = "lb", lunchboxOnly = "lbo"
+    case sweet = "sw", vegetableRich = "vv", kidFriendly = "k", lunchbox = "lb", lunchboxOnly = "lbo", breakfast = "bf"
     case spicy1 = "s1", spicy2 = "s2", spicy3 = "s3"
 }
 
