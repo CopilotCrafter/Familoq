@@ -168,9 +168,8 @@ private struct ScanReceiptContent: View {
         do {
             let fragments = try await ReceiptOCRService.recognize(pages: pages)
             ScanBreadcrumb.set("line assembly (\(fragments.count) text pieces)")
-            let lines = ReceiptLineAssembler.lines(from: fragments)
-            ScanBreadcrumb.set("reading the receipt (\(lines.count) lines)")
-            let parsed = ReceiptParser.parse(lines: lines)
+            ScanBreadcrumb.set("reading the receipt")
+            let parsed = ReceiptParser.parse(fragments: fragments)
             ScanBreadcrumb.set("storing the image")
             let imageData = pages.first.flatMap { ReceiptOCRService.storageJPEG(from: $0) }
             ScanBreadcrumb.set("preparing the check screen (currency \(parsed.currencyCode ?? "?"))")

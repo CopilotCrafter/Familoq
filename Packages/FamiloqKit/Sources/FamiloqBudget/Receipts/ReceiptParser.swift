@@ -104,7 +104,7 @@ public enum ReceiptParser {
     )
     private static let anyPrice = try! NSRegularExpression(pattern: #"-?\d{1,5}(?:[.,]\d{3})*[.,]\d{2}"#)
     private static let quantityLine = try! NSRegularExpression(
-        pattern: #"^\s*(\d+(?:[.,]\d+)?)\s*(?:st|stk|x|kg|g)?\s*[x×*]\s*(\d+[.,]\d{2})"#,
+        pattern: #"^\s*(\d+(?:[.,]\d+)?)\s*(?:st|stk|x|kg|g|l|ltr)?\s*[x×*]\s*(\d+[.,]\d{2})"#,
         options: [.caseInsensitive]
     )
     private static let percent = try! NSRegularExpression(pattern: #"(\d{1,2}(?:[.,]\d{1,2})?)\s?%"#)
@@ -179,6 +179,50 @@ public enum ReceiptParser {
         )
     }
 
+    /// Reads OCR fragments. Uses the normal lines; when their items do not
+    /// add up to the total, a second reading that pairs the price column with
+    /// the names in order (curled paper, uneven angle) is tried.
+    public static func parse(fragments: [OCRFragment], calendar: Calendar = FamiloqCalendar.make(), now: Date = Date()) -> ParsedReceipt {
+        let geometric = parse(lines: ReceiptLineAssembler.lines(from: fragments), calendar: calendar, now: now)
+        if geometric.itemsMatchTotal { return geometric }
+        guard let alternative = ReceiptLineAssembler.columnPairedLines(from: fragments) else { return geometric }
+        let paired = parse(lines: alternative, calendar: calendar, now: now)
+        if paired.itemsMatchTotal { return paired }
+        if paired.total != nil && geometric.total == nil { return paired }
+        if let total = paired.total, total == geometric.total {
+            let before = abs(NSDecimalNumber(decimal: geometric.itemsSum - total).doubleValue)
+            let after = abs(NSDecimalNumber(decimal: paired.itemsSum - total).doubleValue)
+            if after < before { return paired }
+        }
+        return geometric
+    }
+
+    static func isTotalLine(_ line: String) -> Bool {
+        let lower = line.lowercased()
+        return totalKeywords.contains { hasPhrase($0, in: lower) } && !notTotalKeywords.contains { hasPhrase($0, in: lower) }
+    }
+
+    static func isQuantityLine(_ line: String) -> Bool {
+        guard let q = firstMatch(quantityLine, in: line) else { return false }
+        let rest = line.replacingOccurrences(of: q[0], with: "").lowercased()
+            .replacingOccurrences(of: #"eur|€|/|kg|stk|st\b"#, with: "", options: .regularExpression)
+        return rest.filter(\.isLetter).count <= 2
+    }
+
+    /// "1,254" (kg) is 1.254 - quantities never have thousands separators.
+    static func parseQuantity(_ text: String) -> Decimal? {
+        Decimal(string: text.replacingOccurrences(of: ",", with: "."), locale: Locale(identifier: "en_US_POSIX"))
+    }
+
+    static func containsDate(_ line: String) -> Bool {
+        firstMatch(dateDMY, in: line) != nil || firstMatch(dateYMD, in: line) != nil || firstMatch(dateISO, in: line) != nil
+    }
+
+    static func isSkipLine(_ line: String) -> Bool {
+        let lower = line.lowercased()
+        return skipKeywords.contains { hasPhrase($0, in: lower) }
+    }
+
     // MARK: Merchant
 
     static func findMerchant(_ lines: [String]) -> (String?, String?) {
@@ -202,7 +246,8 @@ public enum ReceiptParser {
             let letters = line.filter(\.isLetter).count
             guard letters >= 3 else { continue }
             let lower = line.lowercased()
-            if skipKeywords.contains(where: { lower.contains($0) }) { continue }
+            // Whole words: "Bäckerei Mustermann" is not skipped for "ust".
+            if skipKeywords.contains(where: { hasPhrase($0, in: lower) }) { continue }
             if firstMatch(dateDMY, in: line) != nil || firstMatch(trailingPrice, in: line) != nil { continue }
             if line.range(of: #"\d{5}"#, options: .regularExpression) != nil { continue } // postcode line
             return (line.trimmingCharacters(in: CharacterSet(charactersIn: "*-=# ")), nil)
@@ -289,6 +334,30 @@ public enum ReceiptParser {
                 return (price, index)
             }
         }
+        return repeatedTotal(lines, wholeUnits: wholeUnits)
+    }
+
+    /// No "Summe" line read: the total is usually printed several times
+    /// (sum, card payment, card slip, VAT table). The largest amount that
+    /// appears at least twice and equals the prices above it is the total.
+    static func repeatedTotal(_ lines: [String], wholeUnits: Bool) -> (Decimal?, Int?) {
+        var firstIndex: [Decimal: Int] = [:]
+        var count: [Decimal: Int] = [:]
+        for (index, line) in lines.enumerated() {
+            for text in allMatches(anyPrice, in: line) {
+                guard let value = DecimalParser.parse(text), value > 0 else { continue }
+                count[value, default: 0] += 1
+                if firstIndex[value] == nil { firstIndex[value] = index }
+            }
+        }
+        for value in count.filter({ $0.value >= 2 }).keys.sorted(by: >) {
+            guard let index = firstIndex[value] else { continue }
+            let sum = findItems(lines, totalIndex: index, wholeUnits: wholeUnits).reduce(Decimal(0)) { $0 + $1.amount }
+            let diff = sum - value
+            if diff >= Decimal(string: "-0.02")!, diff <= Decimal(string: "0.02")! {
+                return (value, index)
+            }
+        }
         return (nil, nil)
     }
 
@@ -325,6 +394,9 @@ public enum ReceiptParser {
         let end = totalIndex ?? lines.count
         var items: [ParsedReceiptItem] = []
         var pendingQuantity: Decimal?
+        /// A name line without a price ("Äpfel Elstar") whose price is on the
+        /// quantity line below ("1,254 kg x 2,49 EUR/kg   3,12 A").
+        var pendingName: String?
         var nextID = 0
 
         for line in lines.prefix(end) {
@@ -334,11 +406,24 @@ public enum ReceiptParser {
             if let q = firstMatch(quantityLine, in: line) {
                 // Letters left after removing the quantity expression = an item name.
                 // "2,672 kg x 1,99 EUR/kg": units are not a name.
-                let rest = line.replacingOccurrences(of: q[0], with: "").lowercased()
+                let restText = line.replacingOccurrences(of: q[0], with: "")
+                let rest = restText.lowercased()
                     .replacingOccurrences(of: #"eur|€|/|kg|stk|st\b"#, with: "", options: .regularExpression)
                 let hasName = rest.filter(\.isLetter).count > 2
                 if !hasName {
-                    let quantity = DecimalParser.parse(q[1])
+                    let quantity = parseQuantity(q[1])
+                    // The line total is on the quantity line; the name was the line above.
+                    if let name = pendingName, let lineTotal = trailingPriceValue(restText, wholeUnits: wholeUnits), lineTotal > 0 {
+                        let classification = GroceryItemClassifier.classify(name)
+                        items.append(ParsedReceiptItem(
+                            id: nextID, name: name, amount: lineTotal, quantity: quantity,
+                            suggestedSubcategoryKey: classification?.subcategoryKey,
+                            classificationConfidence: classification?.confidence ?? 0))
+                        nextID += 1
+                        pendingName = nil
+                        pendingQuantity = nil
+                        continue
+                    }
                     if let last = items.indices.last, items[last].quantity == nil, pendingQuantity == nil {
                         items[last].quantity = quantity
                     } else {
@@ -348,7 +433,20 @@ public enum ReceiptParser {
                 }
             }
 
-            guard let price = trailingPriceValue(line, wholeUnits: wholeUnits) else { continue }
+            guard let price = trailingPriceValue(line, wholeUnits: wholeUnits) else {
+                let name = itemName(from: line, wholeUnits: wholeUnits)
+                let looksLikeName = name.filter(\.isLetter).count >= 3
+                    && !skipKeywords.contains(where: { hasPhrase($0, in: lower) })
+                    && firstMatch(dateDMY, in: line) == nil
+                pendingName = looksLikeName ? name : nil
+                continue
+            }
+            pendingName = nil
+            // A negative amount is always a discount ("PAYBACK Coupon -0,20").
+            if price < 0, let last = items.indices.last {
+                items[last].amount += price
+                continue
+            }
             if skipKeywords.contains(where: { hasPhrase($0, in: lower) }) { continue }
             if firstMatch(dateDMY, in: line) != nil || firstMatch(dateYMD, in: line) != nil { continue }
             // Whole-amount receipts: "14:05" would otherwise look like a price of 5.

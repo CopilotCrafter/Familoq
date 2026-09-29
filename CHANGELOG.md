@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.1 - Better receipt reading
+
+### Fixed
+- Receipts photographed curled or unevenly (e.g. REWE with a separate price column): when the items don't add up to the total, the prices are paired with the names in order - items, amounts and the total come out right.
+- Total found even when the "Summe" line is not read (it is printed several times on the card slip / VAT table).
+- Weighed items where the name is on one line and the total on the weight line (Lidl, Kaufland), "2 x 0,79 1,58" lines (EDEKA), fuel litres (Aral), coupons with "PAYBACK", kg amounts like 1,254.
+- Shop names like "Bäckerei Mustermann" are recognised.
+- Tested with typical receipts of REWE, Lidl, ALDI Süd/Nord, EDEKA, Kaufland, Netto, Penny, dm, Rossmann, Norma, Aral and a bakery - flat, curled and tilted.
+
 ## 0.8.0 - Meals by cuisine, Health tab
 
 ### Added
