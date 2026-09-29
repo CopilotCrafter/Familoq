@@ -78,9 +78,9 @@ enum HealthService {
                                                                 sortBy: [SortDescriptor(\HealthPerson.sortOrder), SortDescriptor(\HealthPerson.createdAt)]))) ?? []
     }
 
-    /// The current user's own health profile, created on first use (each
-    /// member's iPhone creates their own, so "Only on this iPhone" is never
-    /// undone by another iPhone recreating it).
+    /// The current user's own health profile (created when they tap "Add my
+    /// health profile" - only on their own iPhone, so "Only on this iPhone" is
+    /// never undone by another iPhone recreating it).
     static func ensureMe(family: Family, member: FamilyMember?, context: ModelContext) {
         guard let member else { return }
         let existing = people(familyID: family.id, context: context)

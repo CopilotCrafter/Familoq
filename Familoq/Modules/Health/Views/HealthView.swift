@@ -49,6 +49,13 @@ private struct HealthHome: View {
                         PersonRow(person: person)
                     }
                 }
+                if let me = session.currentMember, !people.contains(where: { $0.memberID == me.id }) {
+                    Button {
+                        HealthService.ensureMe(family: family, member: me, context: context)
+                    } label: {
+                        Label("Add my health profile", systemImage: "person.crop.circle.badge.plus")
+                    }
+                }
                 Button {
                     editingPerson = PersonEditTarget(person: nil)
                 } label: {
@@ -112,7 +119,6 @@ private struct HealthHome: View {
             PersonForm(family: family, target: target)
         }
         .task(id: "\(people.count)-\(checkups.count)-\(vaccinations.count)-\(medications.count)") {
-            HealthService.ensureMe(family: family, member: session.currentMember, context: context)
             agenda = HealthAgenda.items(familyIDs: [family.id], context: context)
         }
     }
