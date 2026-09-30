@@ -17,6 +17,9 @@ git tag v1.2.0 && git push --tags
 | Push a tag `vX.Y.Z` | Build X.Y.Z -> TestFlight -> **submitted for App Store review** | variable `APP_STORE_SUBMISSIONS` must be `true` |
 | Apple approves | Goes live immediately | variable `APP_STORE_AUTO_RELEASE` = `true` (otherwise click *Release* in App Store Connect) |
 | Manual | Actions -> *Release (TestFlight / App Store)* -> Run workflow (tick *submit for review* if wanted) | - |
+| Daily check (05:17 UTC) | If the last TestFlight upload is 55+ days old, a new build is started (TestFlight builds expire after 90 days) | variable `TESTFLIGHT_REFRESH_DAYS` (default 55) |
+| Daily check | Red run + e-mail 30 days before the distribution certificate or App Store profile expires (Mondays and the last week) | variable `SIGNING_WARN_DAYS` (default 30) |
+| Every TestFlight build | Also given to external tester groups (e.g. friends), with the newest CHANGELOG section as "What to test" | variable `TESTFLIGHT_GROUPS`, e.g. `Friends` (comma-separated; empty = off) |
 
 Variables: GitHub -> *Settings -> Secrets and variables -> Actions -> Variables*.
 
@@ -44,3 +47,15 @@ Every push to `main` = Build (~6 min macOS) + Release (~15-25 min macOS). Work o
 ## Tools
 - TestFlight uploads: Apple's own `altool` / `xcodebuild` (scripts/ci/upload-testflight.sh).
 - App Store submission: [fastlane](https://fastlane.tools) (`fastlane/Fastfile`) on the runner only - it waits for Apple's processing and submits via the App Store Connect API key. Nothing is installed on Windows.
+
+## Friends via TestFlight (external testers)
+1. App Store Connect -> Familoq -> TestFlight -> *External Testing* -> **+** -> group name, e.g. `Friends`.
+2. Fill in *Test Information* once: beta description, feedback e-mail, privacy policy URL, and *Beta App Review Information* with a **demo invitation code** (Familoq is invite-only).
+3. GitHub -> Variables -> `TESTFLIGHT_GROUPS` = `Friends`. From the next build on, CI hands every build to the group. The first build of each version waits for Apple's short beta review.
+4. Add friends by e-mail in the group, or turn on the group's *Public Link* and send it.
+
+## Keep-alive (workflow "TestFlight keep-alive & signing check")
+- TestFlight builds stop opening 90 days after upload. The daily check starts a new build after 55 quiet days, so installed copies never expire.
+- GitHub disables scheduled workflows in public repositories after 60 days without commits. The check therefore commits `.github/keepalive.txt` after 45 quiet days (the commit starts no other workflow). After such a commit, run `git pull` on Windows before pushing.
+- If your Apple Developer membership lapses, uploads fail; installed TestFlight builds then stop opening at the latest 90 days after their upload.
+

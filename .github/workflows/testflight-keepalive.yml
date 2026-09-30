@@ -1,0 +1,174 @@
+name: TestFlight keep-alive & signing check
+
+# TestFlight builds stop opening 90 days after upload. Every day this checks
+# when the last build was uploaded; after 55 days (repository variable
+# TESTFLIGHT_REFRESH_DAYS) it starts "Release (TestFlight / App Store)" on
+# main, so friends always have a working build - even in quiet months.
+#
+# GitHub switches off scheduled workflows of a public repository after 60
+# days without a commit, so this also commits a small marker file
+# (.github/keepalive.txt) when the repository has been quiet for 45 days.
+# Commits made with the workflow token never start other workflows.
+#
+# The second job warns before the Apple Distribution certificate or the App
+# Store provisioning profile expire (both last one year). A red run = an
+# e-mail from GitHub.
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: "Start a new TestFlight build now"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: testflight-keepalive
+  cancel-in-progress: false
+
+jobs:
+  keepalive:
+    name: Refresh TestFlight build when it gets old
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      REFRESH_DAYS: ${{ vars.TESTFLIGHT_REFRESH_DAYS || '55' }}
+      FORCE: ${{ github.event.inputs.force_build || 'false' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Find the last uploaded build
+        id: last
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, datetime
+
+          def api(path):
+              out = subprocess.run(["gh", "api", path], check=True, capture_output=True, text=True).stdout
+              return json.loads(out)
+
+          repo = os.environ["REPO"]
+          runs = api(f"repos/{repo}/actions/workflows/release.yml/runs?per_page=40")["workflow_runs"]
+          busy = any(r["status"] in ("queued", "in_progress", "waiting", "pending") for r in runs)
+          last = None
+          for run in runs:
+              if run["status"] != "completed" or run["conclusion"] != "success":
+                  continue
+              jobs = api(f"repos/{repo}/actions/runs/{run['id']}/jobs")["jobs"]
+              # Only runs that really signed and uploaded (not skipped ones).
+              if any(j["name"].startswith("Archive") and j["conclusion"] == "success" for j in jobs):
+                  last = run
+                  break
+          now = datetime.datetime.now(datetime.timezone.utc)
+          if last:
+              when = datetime.datetime.fromisoformat(last["updated_at"].replace("Z", "+00:00"))
+              age = (now - when).days
+              print(f"Last uploaded build: run #{last['run_number']} on {when:%Y-%m-%d} ({age} days ago)")
+          else:
+              age = 9999
+              print("No uploaded build found in the last 40 release runs.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"age={age}\n")
+              f.write(f"busy={'true' if busy else 'false'}\n")
+          PY
+
+      - name: Start a new TestFlight build
+        id: build
+        if: steps.last.outputs.busy != 'true' && (env.FORCE == 'true' || fromJSON(steps.last.outputs.age) >= fromJSON(env.REFRESH_DAYS))
+        run: |
+          gh workflow run release.yml --repo "$REPO" --ref main
+          echo "started=true" >> "$GITHUB_OUTPUT"
+          echo "## Started a new TestFlight build" >> "$GITHUB_STEP_SUMMARY"
+          echo "The last upload was ${{ steps.last.outputs.age }} days ago (limit: $REFRESH_DAYS days, TestFlight builds expire after 90)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the schedule alive
+        run: |
+          LAST_COMMIT=$(git log -1 --format=%ct)
+          DAYS=$(( ( $(date +%s) - LAST_COMMIT ) / 86400 ))
+          echo "Last commit on main: $DAYS days ago"
+          if [ "$DAYS" -lt 45 ] && [ "${{ steps.build.outputs.started }}" != "true" ]; then
+            echo "Nothing to do."
+            exit 0
+          fi
+          echo "Last automatic check: $(date -u +%Y-%m-%dT%H:%MZ)" > .github/keepalive.txt
+          echo "Last TestFlight upload before it: ${{ steps.last.outputs.age }} days ago" >> .github/keepalive.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/keepalive.txt
+          git commit -m "Keep-alive: automatic TestFlight check [skip ci]"
+          git push origin HEAD:main || echo "::warning::Could not push the keep-alive commit (branch protection?). Scheduled runs stop after 60 days without commits."
+
+      - name: Summary
+        run: |
+          echo "Last TestFlight upload: ${{ steps.last.outputs.age }} days ago. A new build starts after $REFRESH_DAYS days." >> "$GITHUB_STEP_SUMMARY"
+
+  signing:
+    name: Certificate & profile expiry
+    runs-on: ubuntu-latest
+    env:
+      IOS_DIST_CERT_P12_BASE64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+      IOS_DIST_CERT_PASSWORD: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+      IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+      WARN_DAYS: ${{ vars.SIGNING_WARN_DAYS || '30' }}
+    steps:
+      - name: Check expiry dates
+        run: |
+          if [ -z "$IOS_DIST_CERT_P12_BASE64" ] || [ -z "$IOS_PROVISIONING_PROFILE_BASE64" ]; then
+            echo "::notice::Signing secrets not set - nothing to check."
+            exit 0
+          fi
+          T="$RUNNER_TEMP"
+          printf '%s' "$IOS_DIST_CERT_P12_BASE64" | tr -d ' \r\n' | base64 --decode > "$T/dist.p12"
+          printf '%s' "$IOS_PROVISIONING_PROFILE_BASE64" | tr -d ' \r\n' | base64 --decode > "$T/profile.mobileprovision"
+          trap 'rm -f "$T/dist.p12" "$T/profile.mobileprovision" "$T/cert.pem" "$T/profile.plist"' EXIT
+
+          # Certificate end date (newer OpenSSL needs -legacy for Apple's .p12 files).
+          openssl pkcs12 -in "$T/dist.p12" -nokeys -clcerts -passin "pass:$IOS_DIST_CERT_PASSWORD" -out "$T/cert.pem" 2>/dev/null \
+            || openssl pkcs12 -legacy -in "$T/dist.p12" -nokeys -clcerts -passin "pass:$IOS_DIST_CERT_PASSWORD" -out "$T/cert.pem" 2>/dev/null \
+            || { echo "::warning::Could not read the certificate (password?)."; }
+          CERT_END=""
+          if [ -s "$T/cert.pem" ]; then
+            CERT_END=$(openssl x509 -in "$T/cert.pem" -noout -enddate | cut -d= -f2)
+          fi
+
+          # Profile expiry: the .mobileprovision is a signed plist.
+          openssl smime -inform der -verify -noverify -in "$T/profile.mobileprovision" -out "$T/profile.plist" 2>/dev/null \
+            || openssl cms -inform der -verify -noverify -in "$T/profile.mobileprovision" -out "$T/profile.plist" 2>/dev/null || true
+          PROFILE_END=$(python3 -c "import plistlib,sys; print(plistlib.load(open(sys.argv[1],'rb'))['ExpirationDate'].strftime('%Y-%m-%d %H:%M:%S UTC'))" "$T/profile.plist" 2>/dev/null || true)
+
+          NOW=$(date +%s)
+          status=0
+          report() {
+            local what="$1" end="$2"
+            if [ -z "$end" ]; then
+              echo "::warning::$what: expiry date could not be read."
+              return
+            fi
+            local left=$(( ( $(date -d "$end" +%s) - NOW ) / 86400 ))
+            echo "$what expires on $end ($left days left)" | tee -a "$GITHUB_STEP_SUMMARY"
+            if [ "$left" -le "$WARN_DAYS" ]; then
+              echo "::error title=$what expires soon::$what expires in $left days ($end). Renew it (docs/02-apple-account-and-signing.md) and update the GitHub secret, otherwise TestFlight builds stop."
+              status=1
+            fi
+          }
+          report "Apple Distribution certificate" "$CERT_END"
+          report "App Store provisioning profile" "$PROFILE_END"
+
+          # Red (= e-mail) on Mondays and in the last week, a warning on other days.
+          if [ "$status" = "1" ]; then
+            SOON=$(( 1 ))
+            for END in "$CERT_END" "$PROFILE_END"; do
+              [ -n "$END" ] && [ $(( ( $(date -d "$END" +%s) - NOW ) / 86400 )) -le 7 ] && SOON=2
+            done
+            if [ "$(date +%u)" = "1" ] || [ "$SOON" = "2" ]; then exit 1; fi
+          fi

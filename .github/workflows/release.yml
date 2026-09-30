@@ -281,8 +281,25 @@ jobs:
           retention-days: 90
 
       - name: Upload to TestFlight
-        if: env.SUBMIT_FOR_REVIEW != 'true'
+        if: env.SUBMIT_FOR_REVIEW != 'true' && vars.TESTFLIGHT_GROUPS == ''
         run: bash scripts/ci/upload-testflight.sh "$RUNNER_TEMP/export/Familoq.ipa"
+
+      # With repository variable TESTFLIGHT_GROUPS (e.g. "Friends"), every build
+      # is also given to those external tester groups. Apple reviews the first
+      # build of each version for external testing (usually within a day).
+      - name: Upload to TestFlight and give it to tester groups
+        if: env.SUBMIT_FOR_REVIEW != 'true' && vars.TESTFLIGHT_GROUPS != ''
+        env:
+          TESTFLIGHT_GROUPS: ${{ vars.TESTFLIGHT_GROUPS }}
+        run: |
+          command -v fastlane >/dev/null 2>&1 || HOMEBREW_NO_AUTO_UPDATE=1 brew install fastlane
+          # "What to test": the newest section of CHANGELOG.md.
+          CHANGELOG=$(awk '/^## /{n++} n==1' CHANGELOG.md | head -c 3500)
+          fastlane ios testflight_to_groups \
+            ipa:"$RUNNER_TEMP/export/Familoq.ipa" \
+            app_identifier:"$BUNDLE_ID" \
+            groups:"$TESTFLIGHT_GROUPS" \
+            changelog:"$CHANGELOG"
 
       - name: Upload, wait for processing and submit for App Store review
         if: env.SUBMIT_FOR_REVIEW == 'true'
