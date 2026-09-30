@@ -328,6 +328,7 @@ struct TripDetailView: View {
             expensesSection
             settleSection
             packingSection
+            TripDocumentsSection(family: family, trip: trip)
             Section {
                 Button {
                     leaveTarget = LeaveEditTarget(entry: nil, day: trip.startDate, lastDay: trip.endDate)

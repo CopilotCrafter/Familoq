@@ -12,6 +12,7 @@ struct RemindersScreen: View {
     @AppStorage("reminders.onlyMine") private var onlyMine = false
     @State private var showDone = false
     @State private var editing: ReminderEditTarget?
+    @State private var openDocument: UUID?
 
     init(family: Family) {
         self.family = family
@@ -107,6 +108,9 @@ struct RemindersScreen: View {
         .sheet(item: $editing) { target in
             ReminderForm(family: family, target: target, members: members)
         }
+        .navigationDestination(item: $openDocument) { id in
+            DocumentByID(family: family, id: id)
+        }
     }
 
     private func row(_ reminder: FamilyReminder, names: MemberNames, overdue: Bool) -> some View {
@@ -155,6 +159,16 @@ struct RemindersScreen: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+
+            if let documentID = reminder.documentID {
+                Button {
+                    openDocument = documentID
+                } label: {
+                    Image(systemName: "doc.text.fill").font(.title3)
+                }
+                .buttonStyle(.borderless)
+                .accessibilityLabel(Text("Open document"))
+            }
         }
         .swipeActions {
             Button(role: .destructive) {

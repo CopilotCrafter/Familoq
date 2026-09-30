@@ -321,7 +321,9 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
         if handler.hasImage {
             if let data = object.syncImage, let url = Self.writeAssetFile(data, name: recordID.recordName) {
                 record["asset"] = CKAsset(fileURL: url)
-            } else {
+            } else if !(object is DocumentPage) {
+                // A document page without data is still downloading here -
+                // never remove its file for the whole family.
                 record["asset"] = nil
             }
         }

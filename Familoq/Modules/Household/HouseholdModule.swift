@@ -1,7 +1,5 @@
 import Foundation
 import SwiftData
-import PDFKit
-import UIKit
 import FamiloqCore
 import FamiloqBudget
 
@@ -101,95 +99,5 @@ enum CarService {
         context.delete(car)
         try? context.save()
         Task { await PlannerNotifications.reschedule(context: context) }
-    }
-}
-
-@MainActor
-enum DocumentService {
-    static func pages(of documentID: UUID, context: ModelContext) -> [DocumentPage] {
-        let did = documentID
-        return (try? context.fetch(FetchDescriptor<DocumentPage>(predicate: #Predicate { $0.documentID == did },
-                                                                 sortBy: [SortDescriptor(\DocumentPage.sortOrder)]))) ?? []
-    }
-
-    /// Adds scanned or imported pages after the existing ones.
-    static func addPages(_ items: [(format: String, data: Data)], to document: FamilyDocument, context: ModelContext) {
-        var order = (pages(of: document.id, context: context).map(\.sortOrder).max() ?? -1) + 1
-        for item in items {
-            let page = DocumentPage(familyID: document.familyID, documentID: document.id, format: item.format, data: item.data, sortOrder: order)
-            page.isPrivate = document.isPrivate
-            context.insert(page)
-            order += 1
-        }
-        document.updatedAt = Date()
-    }
-
-    /// Keeps the pages' privacy in step with the document.
-    static func setPrivate(_ document: FamilyDocument, _ value: Bool, context: ModelContext) {
-        document.isPrivate = value
-        document.updatedAt = Date()
-        for page in pages(of: document.id, context: context) { page.isPrivate = value }
-    }
-
-    static func delete(_ document: FamilyDocument, context: ModelContext) {
-        for page in pages(of: document.id, context: context) { context.delete(page) }
-        context.delete(document)
-        try? context.save()
-        Task { await PlannerNotifications.reschedule(context: context) }
-    }
-
-    /// Stores a photo as a sharp but small colour JPEG (documents need
-    /// colour and must stay readable when printed).
-    static func storageJPEG(_ image: UIImage, maxSide: CGFloat = 2200) -> Data? {
-        let size = image.size
-        let scale = min(1, maxSide / max(size.width, size.height, 1))
-        let target = CGSize(width: (size.width * scale).rounded(), height: (size.height * scale).rounded())
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1
-        let resized = UIGraphicsImageRenderer(size: target, format: format).image { _ in
-            image.draw(in: CGRect(origin: .zero, size: target))
-        }
-        return resized.jpegData(compressionQuality: 0.72)
-    }
-
-    /// All pages as one PDF - for "Download / Share".
-    static func pdf(of pages: [DocumentPage]) -> Data? {
-        let result = PDFDocument()
-        for page in pages {
-            guard let data = page.data else { continue }
-            if page.isPDF {
-                guard let source = PDFDocument(data: data) else { continue }
-                for index in 0..<source.pageCount {
-                    if let p = source.page(at: index) { result.insert(p, at: result.pageCount) }
-                }
-            } else if let image = UIImage(data: data), let p = PDFPage(image: image) {
-                result.insert(p, at: result.pageCount)
-            }
-        }
-        guard result.pageCount > 0 else { return nil }
-        return result.dataRepresentation()
-    }
-
-    /// Writes the PDF to a temporary file named after the document.
-    static func exportFile(_ document: FamilyDocument, pages: [DocumentPage]) -> URL? {
-        guard let data = pdf(of: pages) else { return nil }
-        let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: " -_"))
-        var name = String(document.displayTitle.unicodeScalars.map { allowed.contains($0) ? Character($0) : "-" })
-        if !document.personName.isEmpty { name += " - " + String(document.personName.unicodeScalars.map { allowed.contains($0) ? Character($0) : "-" }) }
-        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("FamiloqExport", isDirectory: true)
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let url = folder.appendingPathComponent((name.isEmpty ? "Document" : name) + ".pdf")
-        do {
-            try data.write(to: url, options: [.atomic, .completeFileProtection])
-            return url
-        } catch {
-            return nil
-        }
-    }
-
-    /// Removes exported copies (they are only needed while sharing).
-    static func clearExports() {
-        let folder = FileManager.default.temporaryDirectory.appendingPathComponent("FamiloqExport", isDirectory: true)
-        try? FileManager.default.removeItem(at: folder)
     }
 }

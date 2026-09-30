@@ -150,4 +150,34 @@ final class DocumentsTests: XCTestCase {
         XCTAssertFalse(DocumentKind.carRegistration.isPersonal)
         XCTAssertEqual(Set(DocumentKind.allCases.map(\.icon)).count, DocumentKind.allCases.count)
     }
+
+    func testFrontBackPairs() {
+        let sides: [PageSide] = [.front, .back, .none, .front, .none, .none]
+        let images = [true, true, true, true, false, true]
+        XCTAssertEqual(DocumentLayout.pairs(sides: sides, isImage: images, pairUnlabeled: false), [[0, 1], [2], [3], [4], [5]])
+        XCTAssertEqual(DocumentLayout.pairs(sides: [.none, .none, .none], isImage: [true, true, true], pairUnlabeled: true), [[0, 1], [2]])
+        XCTAssertEqual(DocumentLayout.pairs(sides: [.back, .front], isImage: [true, true], pairUnlabeled: true), [[0], [1]])
+        XCTAssertTrue(DocumentKind.idCard.isTwoSided)
+        XCTAssertFalse(DocumentKind.passport.isTwoSided)
+    }
+
+    func testCopyStamp() {
+        let date = d(2026, 9, 30)
+        XCTAssertEqual(CopyStamp.text(language: .german, purpose: "Bank", date: date, calendar: calendar), "KOPIE – nur für Bank – 30.09.2026")
+        XCTAssertEqual(CopyStamp.text(language: .german, purpose: " ", date: date, calendar: calendar), "KOPIE – 30.09.2026")
+        XCTAssertEqual(CopyStamp.text(language: .english, purpose: "Visa", date: date, calendar: calendar), "COPY – only for Visa – 30/09/2026")
+    }
+
+    func testTags() {
+        XCTAssertEqual(DocumentTags.parse("Car, House,,car , Taxes 2026"), ["Car", "House", "Taxes 2026"])
+        XCTAssertEqual(DocumentTags.encode(["Kids", "a,b", "Kids"]), "Kids,a b")
+        XCTAssertTrue(DocumentTags.suggested(year: 2026).contains("Taxes 2026"))
+    }
+
+    func testSearch() {
+        XCTAssertTrue(DocumentSearch.matches(query: "allianz police", in: ["Kfz-Versicherung", "ALLIANZ Versicherungs-AG Police Nr. 123"]))
+        XCTAssertTrue(DocumentSearch.matches(query: "Geburtsurkunde müller", in: ["Geburtsurkunde", "Anna Mueller"]))
+        XCTAssertFalse(DocumentSearch.matches(query: "huk", in: ["Allianz"]))
+        XCTAssertTrue(DocumentSearch.matches(query: "  ", in: ["x"]))
+    }
 }

@@ -19261,6 +19261,831 @@
           }
         }
       }
+    },
+    "Add back side": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückseite hinzufügen"
+          }
+        }
+      }
+    },
+    "Appears in Planner → Reminders, with a link to the document.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheint unter Planer → Erinnerungen, mit Link zum Dokument."
+          }
+        }
+      }
+    },
+    "Ask a family member": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familienmitglied bitten"
+          }
+        }
+      }
+    },
+    "Back": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückseite"
+          }
+        }
+      }
+    },
+    "Front": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorderseite"
+          }
+        }
+      }
+    },
+    "Page": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite"
+          }
+        }
+      }
+    },
+    "Black & white": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwarz-weiß"
+          }
+        }
+      }
+    },
+    "Black out": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwärzen"
+          }
+        }
+      }
+    },
+    "Black out areas": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereiche schwärzen"
+          }
+        }
+      }
+    },
+    "Both sides on one A4 page": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beide Seiten auf einer A4-Seite"
+          }
+        }
+      }
+    },
+    "Both sides on one page is the usual copy for offices, banks and employers.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beide Seiten auf einer Seite ist die übliche Kopie für Ämter, Banken und Arbeitgeber."
+          }
+        }
+      }
+    },
+    "Choose documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente auswählen"
+          }
+        }
+      }
+    },
+    "Clear": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leeren"
+          }
+        }
+      }
+    },
+    "Close": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schließen"
+          }
+        }
+      }
+    },
+    "Combine %lld into one PDF": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld zu einem PDF zusammenfassen"
+          }
+        }
+      }
+    },
+    "Combine into one PDF": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu einem PDF zusammenfassen"
+          }
+        }
+      }
+    },
+    "Copy for someone else": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopie für andere"
+          }
+        }
+      }
+    },
+    "Done reordering": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        }
+      }
+    },
+    "Download / Share": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden / Teilen"
+          }
+        }
+      }
+    },
+    "Drag over what should be hidden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über das ziehen, was verdeckt werden soll"
+          }
+        }
+      }
+    },
+    "Edit pages": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seiten bearbeiten"
+          }
+        }
+      }
+    },
+    "Expires before the trip ends": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft vor Reiseende ab"
+          }
+        }
+      }
+    },
+    "File name": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateiname"
+          }
+        }
+      }
+    },
+    "For upload limits of online forms.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Upload-Grenzen von Online-Formularen."
+          }
+        }
+      }
+    },
+    "Front & back": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorder- & Rückseite"
+          }
+        }
+      }
+    },
+    "Language": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprache"
+          }
+        }
+      }
+    },
+    "Layout": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anordnung"
+          }
+        }
+      }
+    },
+    "Mark as copy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Kopie kennzeichnen"
+          }
+        }
+      }
+    },
+    "Move this and the following pages to a new document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese und die folgenden Seiten in ein neues Dokument verschieben"
+          }
+        }
+      }
+    },
+    "Needed by": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benötigt bis"
+          }
+        }
+      }
+    },
+    "Needed for trips": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für Reisen benötigt"
+          }
+        }
+      }
+    },
+    "New tag": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Tag"
+          }
+        }
+      }
+    },
+    "Note, e.g. for the passport office": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notiz, z. B. für das Passamt"
+          }
+        }
+      }
+    },
+    "One page per side": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Seite einzeln"
+          }
+        }
+      }
+    },
+    "Only for, e.g. Bank, Visa, Landlord": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur für, z. B. Bank, Visum, Vermieter"
+          }
+        }
+      }
+    },
+    "Only the exported copy is changed. Covered text is really removed - the page is saved as a picture.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur die exportierte Kopie wird geändert. Verdeckter Text wird wirklich entfernt – die Seite wird als Bild gespeichert."
+          }
+        }
+      }
+    },
+    "Open document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument öffnen"
+          }
+        }
+      }
+    },
+    "Opens with Face ID - also without internet, the documents are on this iPhone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet mit Face ID – auch ohne Internet, die Dokumente sind auf diesem iPhone."
+          }
+        }
+      }
+    },
+    "Page %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite %lld"
+          }
+        }
+      }
+    },
+    "Please bring or scan: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte mitbringen oder scannen: %@"
+          }
+        }
+      }
+    },
+    "Protect with a password": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Passwort schützen"
+          }
+        }
+      }
+    },
+    "Reorder": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sortieren"
+          }
+        }
+      }
+    },
+    "Replace with a new scan": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durch neuen Scan ersetzen"
+          }
+        }
+      }
+    },
+    "Request a document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument anfragen"
+          }
+        }
+      }
+    },
+    "Save in Files, print, mail or send to an office - as a copy with a stamp, blacked-out numbers, a password or smaller if you like.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In „Dateien“ sichern, drucken, mailen oder an ein Amt schicken – auf Wunsch als gestempelte Kopie, mit geschwärzten Nummern, Passwort oder kleiner."
+          }
+        }
+      }
+    },
+    "Scan front & back": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorder- & Rückseite scannen"
+          }
+        }
+      }
+    },
+    "Scan the front, turn the card over and scan the back, then tap Save. Both sides are kept as front and back.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne die Vorderseite, dreh die Karte um und scanne die Rückseite, dann tippe auf „Sichern“. Beide Seiten werden als Vorder- und Rückseite gespeichert."
+          }
+        }
+      }
+    },
+    "Search documents and their text": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente und ihren Text durchsuchen"
+          }
+        }
+      }
+    },
+    "Send the password separately, e.g. by phone or text message.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schicke das Passwort getrennt, z. B. per Telefon oder SMS."
+          }
+        }
+      }
+    },
+    "Share / Download PDF": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF teilen / laden"
+          }
+        }
+      }
+    },
+    "Shown in the trip's travel documents.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheint in den Reisedokumenten der Reise."
+          }
+        }
+      }
+    },
+    "Side": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite"
+          }
+        }
+      }
+    },
+    "Size": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Größe"
+          }
+        }
+      }
+    },
+    "Smaller file": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinere Datei"
+          }
+        }
+      }
+    },
+    "Split into a new document from here": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ab hier in ein neues Dokument teilen"
+          }
+        }
+      }
+    },
+    "Split the document here?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument hier teilen?"
+          }
+        }
+      }
+    },
+    "Start scanning": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scannen starten"
+          }
+        }
+      }
+    },
+    "Tags": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tags"
+          }
+        }
+      }
+    },
+    "Tap Reorder to move pages. Swipe to delete. Touch and hold a page to replace it or split the document there.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf „Sortieren“, um Seiten zu verschieben. Zum Löschen wischen. Seite gedrückt halten, um sie zu ersetzen oder das Dokument dort zu teilen."
+          }
+        }
+      }
+    },
+    "Tap documents in the order they should appear in the PDF.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe die Dokumente in der Reihenfolge an, in der sie im PDF erscheinen sollen."
+          }
+        }
+      }
+    },
+    "Taxes %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steuern %lld"
+          }
+        }
+      }
+    },
+    "The stamp shows who the copy is for. On the German ID card you may black out the access number (CAN) and the serial number.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Stempel zeigt, für wen die Kopie ist. Beim Personalausweis darfst du die Zugangsnummer (CAN) und die Seriennummer schwärzen."
+          }
+        }
+      }
+    },
+    "This document is not on this iPhone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Dokument ist nicht auf diesem iPhone."
+          }
+        }
+      }
+    },
+    "Travel documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reisedokumente"
+          }
+        }
+      }
+    },
+    "Trips": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reisen"
+          }
+        }
+      }
+    },
+    "Turn the card over and scan the back, then tap Save.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dreh die Karte um und scanne die Rückseite, dann tippe auf „Sichern“."
+          }
+        }
+      }
+    },
+    "Undo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widerrufen"
+          }
+        }
+      }
+    },
+    "What is needed, e.g. Please scan the birth certificate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was wird gebraucht, z. B. Bitte die Geburtsurkunde scannen"
+          }
+        }
+      }
+    },
+    "%lld pages are still downloading from iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Seiten werden noch aus iCloud geladen."
+          }
+        }
+      }
+    },
+    "Back side": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückseite"
+          }
+        }
+      }
+    },
+    "Not a card side": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Kartenseite"
+          }
+        }
+      }
+    },
+    "House": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haus"
+          }
+        }
+      }
+    },
+    "Kids": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kinder"
+          }
+        }
+      }
+    },
+    "Work": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arbeit"
+          }
+        }
+      }
+    },
+    "Show %lld travel documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Reisedokumente anzeigen"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
