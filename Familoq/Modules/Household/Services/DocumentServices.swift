@@ -36,6 +36,61 @@ enum DocumentService {
         document.updatedAt = Date()
     }
 
+    /// The back goes right after the front (so both print on one sheet).
+    static func addBack(_ items: [NewPage], to document: FamilyDocument, context: ModelContext) {
+        let existing = pages(of: document.id, context: context)
+        guard let front = existing.lastIndex(where: { $0.side == .front }) else {
+            addPages(items, to: document, context: context)
+            return
+        }
+        var ordered: [DocumentPage] = Array(existing[...front])
+        for item in items {
+            let page = DocumentPage(familyID: document.familyID, documentID: document.id, format: item.format, data: item.data)
+            page.isPrivate = document.isPrivate
+            page.side = item.side
+            context.insert(page)
+            ordered.append(page)
+        }
+        ordered += existing[(front + 1)...]
+        reorder(ordered)
+        document.updatedAt = Date()
+    }
+
+    /// Before 0.9.1 an imported PDF was one page. Split them (same page IDs
+    /// on every iPhone, so doing it twice does not duplicate anything).
+    static func splitStoredPDFs(familyID: UUID, context: ModelContext) {
+        let fid = familyID
+        let candidates = (try? context.fetch(FetchDescriptor<DocumentPage>(predicate: #Predicate { $0.familyID == fid && $0.format == "pdf" }))) ?? []
+        var changed = false
+        for page in candidates {
+            guard let data = page.data, let doc = PDFDocument(data: data), !doc.isLocked, doc.pageCount > 1 else { continue }
+            let parts = pages(fromPDF: data)
+            guard parts.count > 1 else { continue }
+            let siblings = pages(of: page.documentID, context: context)
+            guard let at = siblings.firstIndex(where: { $0.id == page.id }) else { continue }
+            var ordered = Array(siblings[..<at])
+            for (index, part) in parts.enumerated() {
+                let id = DeterministicID.uuid("document-page|\(page.id.uuidString)|\(index)")
+                var existing = FetchDescriptor<DocumentPage>(predicate: #Predicate { $0.id == id })
+                existing.fetchLimit = 1
+                if let found = try? context.fetch(existing).first {
+                    ordered.append(found)
+                    continue
+                }
+                let new = DocumentPage(id: id, familyID: page.familyID, documentID: page.documentID, format: "pdf", data: part.data)
+                new.isPrivate = page.isPrivate
+                new.quarterTurns = page.quarterTurns
+                context.insert(new)
+                ordered.append(new)
+            }
+            ordered += siblings[(at + 1)...]
+            reorder(ordered)
+            context.delete(page)
+            changed = true
+        }
+        if changed { try? context.save() }
+    }
+
     /// Scanned photos as pages. Cards: first photo = front, second = back.
     static func pages(from images: [UIImage], twoSided: Bool, firstSide: PageSide = .front) -> [NewPage] {
         images.enumerated().compactMap { index, image in
@@ -52,13 +107,18 @@ enum DocumentService {
     /// rotated, split and read one by one).
     static func pages(fromPDF data: Data) -> [NewPage] {
         guard let source = PDFDocument(data: data), source.pageCount > 0 else { return [] }
-        if source.isEncrypted && source.isLocked { return [NewPage(format: "pdf", data: data)] }
-        var result: [NewPage] = []
-        for index in 0..<source.pageCount {
-            guard let page = source.page(at: index) else { continue }
-            let single = PDFDocument()
-            single.insert(page, at: 0)
-            if let bytes = single.dataRepresentation() { result.append(NewPage(format: "pdf", data: bytes)) }
+        if source.isLocked { return [NewPage(format: "pdf", data: data)] }
+        let result: [NewPage] = withExtendedLifetime(source) { () -> [NewPage] in
+            var list: [NewPage] = []
+            for index in 0..<source.pageCount {
+                guard let page = source.page(at: index) else { continue }
+                let single = PDFDocument()
+                single.insert(page, at: 0)
+                if let bytes = withExtendedLifetime(single, { single.dataRepresentation() }) {
+                    list.append(NewPage(format: "pdf", data: bytes))
+                }
+            }
+            return list
         }
         return result.isEmpty ? [NewPage(format: "pdf", data: data)] : result
     }
@@ -85,9 +145,9 @@ enum DocumentService {
     /// Moves the pages from `index` on into a new document of the same kind
     /// and person ("Split here").
     @discardableResult
-    static func split(_ document: FamilyDocument, at index: Int, context: ModelContext) -> FamilyDocument? {
+    static func split(_ document: FamilyDocument, atPage pageID: UUID, context: ModelContext) -> FamilyDocument? {
         let all = pages(of: document.id, context: context)
-        guard index > 0, index < all.count else { return nil }
+        guard let index = all.firstIndex(where: { $0.id == pageID }), index > 0 else { return nil }
         let copy = FamilyDocument(familyID: document.familyID, title: document.displayTitle + " (2)")
         copy.kind = document.kind
         copy.memberID = document.memberID
@@ -151,14 +211,17 @@ enum PageImage {
     /// page rendered (about 200 dpi on A4).
     static func image(format: String, data: Data, quarterTurns: Int, width: CGFloat = 1654) -> UIImage? {
         if format == "pdf" {
-            guard let doc = PDFDocument(data: data), let page = doc.page(at: 0) else { return nil }
-            page.rotation = (page.rotation + quarterTurns * 90) % 360
-            let bounds = page.bounds(for: .mediaBox)
-            let turned = page.rotation % 180 != 0
-            let w = turned ? bounds.height : bounds.width
-            let h = turned ? bounds.width : bounds.height
-            guard w > 0, h > 0 else { return nil }
-            return page.thumbnail(of: CGSize(width: width, height: width * h / w), for: .mediaBox)
+            guard let doc = PDFDocument(data: data) else { return nil }
+            return withExtendedLifetime(doc) { () -> UIImage? in
+                guard let page = doc.page(at: 0) else { return nil }
+                page.rotation = (page.rotation + quarterTurns * 90) % 360
+                let bounds = page.bounds(for: .mediaBox)
+                let turned = page.rotation % 180 != 0
+                let w = turned ? bounds.height : bounds.width
+                let h = turned ? bounds.width : bounds.height
+                guard w > 0, h > 0 else { return nil }
+                return page.thumbnail(of: CGSize(width: width, height: width * h / w), for: .mediaBox)
+            }
         }
         guard let image = UIImage(data: data) else { return nil }
         return rotated(image, quarterTurns: quarterTurns)
@@ -187,28 +250,35 @@ enum PageImage {
 @MainActor
 enum DocumentText {
     private static var running = false
+    private static var again = false
 
-    /// Reads pages that were not read yet (a few at a time).
+    /// Reads pages that were not read yet (pages still downloading wait).
     static func readMissing(familyID: UUID, context: ModelContext) async {
-        guard !running else { return }
+        guard !running else {
+            again = true
+            return
+        }
         running = true
         defer { running = false }
-        let fid = familyID
-        var descriptor = FetchDescriptor<DocumentPage>(predicate: #Predicate { $0.familyID == fid && $0.textScanned == false })
-        descriptor.fetchLimit = 12
-        let pages = (try? context.fetch(descriptor)) ?? []
-        var changed = false
-        for page in pages {
-            guard let data = page.data else { continue }
-            let format = page.format
-            let turns = page.quarterTurns
-            let text = await Task.detached(priority: .utility) { DocumentText.read(format: format, data: data, quarterTurns: turns) }.value
-            if page.isDeleted { continue }
-            page.text = String(text.prefix(20_000))
-            page.textScanned = true
-            changed = true
-        }
-        if changed { try? context.save() }
+        repeat {
+            again = false
+            let fid = familyID
+            let pages = (try? context.fetch(FetchDescriptor<DocumentPage>(predicate: #Predicate { $0.familyID == fid && $0.textScanned == false }))) ?? []
+            for page in pages {
+                guard let data = page.data else { continue }
+                let id = page.id
+                let format = page.format
+                let turns = page.quarterTurns
+                let text = await Task.detached(priority: .utility) { DocumentText.read(format: format, data: data, quarterTurns: turns) }.value
+                // The page may have been deleted meanwhile - fetch it again.
+                var lookup = FetchDescriptor<DocumentPage>(predicate: #Predicate { $0.id == id })
+                lookup.fetchLimit = 1
+                guard let current = try? context.fetch(lookup).first else { continue }
+                current.text = String(text.prefix(20_000))
+                current.textScanned = true
+                try? context.save()
+            }
+        } while again
     }
 
     nonisolated static func read(format: String, data: Data, quarterTurns: Int) -> String {
@@ -237,8 +307,6 @@ enum DocumentText {
 struct ExportOptions {
     var name: String
     var twoSidesOnOnePage = false
-    /// Two unlabeled photos of a card count as front and back.
-    var pairUnlabeled = false
     var smaller = false
     var blackAndWhite = false
     var stamp = false
@@ -252,10 +320,13 @@ struct ExportOptions {
 /// One page of the export (a copy of the stored page's content).
 struct ExportPage: Identifiable {
     let id: UUID
+    let documentID: UUID
     let format: String
     let data: Data
     let quarterTurns: Int
     let side: PageSide
+    /// ID card, licence …: two unlabeled photos are front and back.
+    let cardLike: Bool
 
     var isImage: Bool { format != "pdf" }
 }
@@ -264,11 +335,28 @@ enum DocumentExporter {
     static let a4 = CGSize(width: 595, height: 842)
 
     @MainActor
-    static func exportPages(_ pages: [DocumentPage]) -> [ExportPage] {
+    static func exportPages(_ pages: [DocumentPage], cardLike: Bool) -> [ExportPage] {
         pages.compactMap { page in
             guard let data = page.data else { return nil }
-            return ExportPage(id: page.id, format: page.format, data: data, quarterTurns: page.quarterTurns, side: page.side)
+            return ExportPage(id: page.id, documentID: page.documentID, format: page.format, data: data,
+                              quarterTurns: page.quarterTurns, side: page.side, cardLike: cardLike)
         }
+    }
+
+    /// Front and back are only paired within the same document.
+    static func groups(_ pages: [ExportPage], twoSidesOnOnePage: Bool) -> [[Int]] {
+        guard twoSidesOnOnePage else { return pages.indices.map { [$0] } }
+        var result: [[Int]] = []
+        var start = 0
+        while start < pages.count {
+            var end = start
+            while end + 1 < pages.count && pages[end + 1].documentID == pages[start].documentID { end += 1 }
+            let chunk = Array(pages[start...end])
+            let pairs = DocumentLayout.pairs(sides: chunk.map(\.side), isImage: chunk.map(\.isImage), pairUnlabeled: chunk[0].cardLike)
+            result += pairs.map { $0.map { $0 + start } }
+            start = end + 1
+        }
+        return result
     }
 
     /// The finished PDF (password-protected when a password is set).
@@ -277,10 +365,8 @@ enum DocumentExporter {
         let result = PDFDocument()
         // Pages keep a reference to their document - keep those alive.
         var sources: [PDFDocument] = []
-        let groups: [[Int]] = options.twoSidesOnOnePage
-            ? DocumentLayout.pairs(sides: pages.map(\.side), isImage: pages.map(\.isImage), pairUnlabeled: options.pairUnlabeled)
-            : pages.indices.map { [$0] }
-        for group in groups {
+        let layout = groups(pages, twoSidesOnOnePage: options.twoSidesOnOnePage)
+        for group in layout {
             if group.count == 2 {
                 let images = group.compactMap { processedImage(pages[$0], options: options) }
                 if let doc = renderPage(size: a4, options: options, draw: { rect in drawPair(images, in: rect) }),

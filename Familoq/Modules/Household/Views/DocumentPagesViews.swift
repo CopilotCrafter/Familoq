@@ -315,8 +315,8 @@ struct PageEditorView: View {
             .confirmationDialog("Split the document here?", isPresented: Binding(get: { splitting != nil }, set: { if !$0 { splitting = nil } }),
                                 titleVisibility: .visible) {
                 Button("Move this and the following pages to a new document") {
-                    if let page = splitting, let index = pages.firstIndex(where: { $0.id == page.id }) {
-                        DocumentService.split(document, at: index, context: context)
+                    if let page = splitting {
+                        DocumentService.split(document, atPage: page.id, context: context)
                         sync.scanNow()
                     }
                     splitting = nil

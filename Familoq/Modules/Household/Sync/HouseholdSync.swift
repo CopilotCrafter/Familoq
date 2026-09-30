@@ -108,7 +108,6 @@ extension DocumentPage: SyncableRecord {
         p.set("createdAt", createdAt)
         if !sideRaw.isEmpty { p.set("side", sideRaw) }
         if quarterTurns != 0 { p.set("turns", quarterTurns) }
-        if !text.isEmpty { p.set("text", text) }
         if isPrivate { p.set("private", true) }
         return p
     }
@@ -121,9 +120,6 @@ extension DocumentPage: SyncableRecord {
         createdAt = p.date("createdAt", default: createdAt)
         sideRaw = p.string("side")
         quarterTurns = p.int("turns")
-        let synced = p.string("text")
-        // Text read on another iPhone; keep our own when it sent none.
-        if !synced.isEmpty { text = synced; textScanned = true }
         if p.values["private"] != nil { isPrivate = true }
     }
 

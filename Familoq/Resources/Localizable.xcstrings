@@ -20075,6 +20075,17 @@
           }
         }
       }
+    },
+    "Show %lld travel documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Reisedokumente anzeigen"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

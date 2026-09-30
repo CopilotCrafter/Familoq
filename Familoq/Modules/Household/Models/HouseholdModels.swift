@@ -123,7 +123,7 @@ final class DocumentPage {
     var sideRaw: String = ""
     /// Quarter turns clockwise (0-3), applied when shown and exported.
     var quarterTurns: Int = 0
-    /// Words read from the page on the iPhone (for search only).
+    /// Words read from the page on this iPhone (for search only, not synced).
     var text: String = ""
     /// Local: text reading was tried (also when the page has no text).
     var textScanned: Bool = false

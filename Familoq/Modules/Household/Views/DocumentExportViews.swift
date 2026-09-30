@@ -29,7 +29,6 @@ struct DocumentExportSheet: View {
     init(request: ExportRequest) {
         self.request = request
         var options = ExportOptions(name: request.name)
-        options.pairUnlabeled = request.cardLike
         options.twoSidesOnOnePage = request.cardLike && request.pages.contains { $0.side == .back }
         _options = State(initialValue: options)
     }
@@ -261,7 +260,8 @@ struct DocumentRequestSheet: View {
         self.target = target
         let fid = family.id
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid && $0.isActive == true }, sort: \FamilyMember.joinedAt)
-        let name = target.document?.displayTitle ?? ""
+        // A private document's title stays off the family's reminders.
+        let name = target.document.map { $0.isPrivate ? "" : $0.displayTitle } ?? ""
         _title = State(initialValue: name.isEmpty ? "" : String(localized: "Please bring or scan: \(name)"))
         _due = State(initialValue: Calendar.current.date(byAdding: .day, value: 3, to: Date()) ?? Date())
     }
@@ -350,6 +350,7 @@ struct TripDocumentsSection: View {
     let trip: Trip
     @Query private var documents: [FamilyDocument]
     @State private var choosing = false
+    @ObservedObject private var lock = VaultLock.shared
 
     init(family: Family, trip: Trip) {
         self.family = family
@@ -361,7 +362,18 @@ struct TripDocumentsSection: View {
     var body: some View {
         let linked = documents.filter { $0.tripIDs.contains(trip.id) }
         Section {
-            ForEach(linked) { doc in
+            if !linked.isEmpty && !lock.unlocked && AppLock.shared.canUse {
+                Button {
+                    Task {
+                        if await AppLock.shared.authenticate(reason: String(localized: "Open the family documents")) {
+                            lock.unlocked = true
+                        }
+                    }
+                } label: {
+                    Label("Show \(linked.count) travel documents", systemImage: "faceid")
+                }
+            } else {
+                ForEach(linked) { doc in
                 NavigationLink {
                     LazyView(DocumentDetailView(family: family, document: doc))
                 } label: {
@@ -378,19 +390,20 @@ struct TripDocumentsSection: View {
                         Image(systemName: doc.kind.icon)
                     }
                 }
+                }
             }
             Button {
                 choosing = true
             } label: {
                 Label("Choose documents", systemImage: "doc.badge.plus")
             }
+            .sheet(isPresented: $choosing) {
+                VaultGate { TripDocumentPicker(trip: trip, documents: documents) }
+            }
         } header: {
             Text("Travel documents")
         } footer: {
             Text("Opens with Face ID - also without internet, the documents are on this iPhone.")
-        }
-        .sheet(isPresented: $choosing) {
-            VaultGate { TripDocumentPicker(trip: trip, documents: documents) }
         }
     }
 }

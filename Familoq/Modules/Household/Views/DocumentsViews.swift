@@ -212,7 +212,10 @@ private struct DocumentsList: View {
         .sheet(item: $requesting) { target in
             DocumentRequestSheet(family: family, target: target)
         }
-        .task { await DocumentText.readMissing(familyID: family.id, context: context) }
+        .task {
+            DocumentService.splitStoredPDFs(familyID: family.id, context: context)
+            await DocumentText.readMissing(familyID: family.id, context: context)
+        }
     }
 
     private func pageTexts() -> [UUID: String] {
@@ -239,7 +242,7 @@ private struct DocumentsList: View {
         let chosen = selected.compactMap { id in documents.first { $0.id == id } }
         var exportPages: [ExportPage] = []
         for doc in chosen {
-            exportPages += DocumentExporter.exportPages(pages.filter { $0.documentID == doc.id })
+            exportPages += DocumentExporter.exportPages(pages.filter { $0.documentID == doc.id }, cardLike: doc.kind.isTwoSided)
         }
         let name = chosen.count == 1 ? chosen[0].displayTitle : String(localized: "Documents")
         combining = ExportRequest(pages: exportPages, name: DocumentService.fileName(name),
@@ -435,7 +438,7 @@ struct DocumentDetailView: View {
 
             Section {
                 Button {
-                    exportRequest = ExportRequest(pages: DocumentExporter.exportPages(pages),
+                    exportRequest = ExportRequest(pages: DocumentExporter.exportPages(pages, cardLike: document.kind.isTwoSided),
                                                   name: exportName, cardLike: document.kind.isTwoSided)
                 } label: {
                     Label("Download / Share as PDF", systemImage: "square.and.arrow.down")
@@ -530,7 +533,16 @@ struct DocumentDetailView: View {
         .fullScreenCover(item: $scanMode) { mode in
             DocumentScannerView(onFinish: { images in
                 scanMode = nil
-                add(DocumentService.pages(from: images, twoSided: mode != .pages, firstSide: mode == .back ? .back : .front))
+                let new = DocumentService.pages(from: images, twoSided: mode != .pages, firstSide: mode == .back ? .back : .front)
+                if mode == .back {
+                    guard !new.isEmpty else { return }
+                    DocumentService.addBack(Array(new.prefix(1)), to: document, context: context)
+                    try? context.save()
+                    sync.scanNow()
+                    Task { await DocumentText.readMissing(familyID: family.id, context: context) }
+                } else {
+                    add(new)
+                }
             }, onCancel: { scanMode = nil })
             .ignoresSafeArea()
         }
