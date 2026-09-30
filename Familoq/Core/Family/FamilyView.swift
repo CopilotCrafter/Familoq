@@ -136,7 +136,7 @@ private struct FamilySettingsContent: View {
             } header: {
                 Text("Familoq spaces")
             } footer: {
-                Text("Familoq grows into your family's shared space. Budget, shopping list, reminders and calendar are available now; travel and health will follow.")
+                Text("One place for your family: budget, shopping, meals, reminders, calendar, travel, health, cars and documents.")
             }
 
             Section {

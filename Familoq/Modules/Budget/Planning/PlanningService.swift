@@ -31,6 +31,8 @@ enum PlanningService {
                 expense.createdByMemberID = schedule.createdByMemberID
                 expense.paymentMethodRaw = schedule.paymentMethodRaw
                 expense.note = schedule.note
+                expense.carID = schedule.carID
+                expense.carCostRaw = schedule.carCostRaw
                 expense.entryMethod = .scheduled
                 expense.resetConversion()
                 context.insert(expense)

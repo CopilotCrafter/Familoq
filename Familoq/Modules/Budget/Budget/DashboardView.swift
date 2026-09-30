@@ -106,6 +106,8 @@ private struct DashboardContent: View {
 
             FixedCostsSection(family: family)
 
+            HouseholdDashboardSection(family: family)
+
             if summary.unconvertedCount > 0 {
                 Section {
                     Label("\(summary.unconvertedCount) foreign-currency expense(s) are waiting for an exchange rate and are not in the totals yet.", systemImage: "clock.arrow.circlepath")

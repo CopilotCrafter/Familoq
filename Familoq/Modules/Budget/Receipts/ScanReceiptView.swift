@@ -314,8 +314,11 @@ extension ReceiptDetailView {
     func startEditing(lookup: CategoryLookup) {
         let fid = receipt.familyID
         let itemRules = (try? context.fetch(FetchDescriptor<ItemCategoryRule>(predicate: #Predicate { $0.familyID == fid }))) ?? []
-        editRequest = ReviewRequest(draft: ReceiptDrafting.draft(editing: receipt, items: items, lookup: lookup, itemRules: itemRules),
-                                    lookup: lookup)
+        var draft = ReceiptDrafting.draft(editing: receipt, items: items, lookup: lookup, itemRules: itemRules)
+        let rid: UUID? = receipt.id
+        let expenses = (try? context.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.receiptID == rid }))) ?? []
+        ReceiptDrafting.applyCar(from: expenses, to: &draft)
+        editRequest = ReviewRequest(draft: draft, lookup: lookup)
     }
 }
 

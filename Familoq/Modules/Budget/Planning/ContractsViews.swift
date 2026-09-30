@@ -317,9 +317,12 @@ struct ContractsView: View {
 struct ContractEditTarget: Identifiable {
     let id = UUID()
     let contract: Contract?
+    /// New car contract (insurance, tax) from the car screen.
+    var carID: UUID? = nil
+    var carCost: CarCostKind? = nil
 }
 
-private struct ContractForm: View {
+struct ContractForm: View {
     let family: Family
     let target: ContractEditTarget
     let lookup: CategoryLookup
@@ -347,6 +350,9 @@ private struct ContractForm: View {
     @State private var isCancelled: Bool
     @State private var cancelledOn: Date
     @State private var confirmDelete = false
+    @State private var carID: UUID?
+    @State private var carCost: CarCostKind
+    @Query private var cars: [Car]
 
     init(family: Family, target: ContractEditTarget, lookup: CategoryLookup) {
         self.family = family
@@ -375,6 +381,20 @@ private struct ContractForm: View {
         _bookPayments = State(initialValue: c?.scheduledExpenseID != nil)
         _isCancelled = State(initialValue: c?.isCancelled ?? false)
         _cancelledOn = State(initialValue: c?.cancelledOn ?? Date())
+        let fid = family.id
+        _cars = Query(filter: #Predicate<Car> { $0.familyID == fid && $0.isArchived == false }, sort: \Car.sortOrder)
+        _carID = State(initialValue: c?.carID ?? target.carID)
+        let kind = c.flatMap { CarCostKind(rawValue: $0.carCostRaw) } ?? target.carCost ?? .insurance
+        _carCost = State(initialValue: kind)
+        if c == nil, let carKind = target.carCost {
+            let ids = CarService.transportIDs(carKind, lookup: lookup)
+            _categoryID = State(initialValue: ids.categoryID ?? insurance)
+            _subcategoryID = State(initialValue: ids.subcategoryID)
+            _name = State(initialValue: String(localized: String.LocalizationValue(carKind.title)))
+            _bookPayments = State(initialValue: true)
+            _frequency = State(initialValue: .yearly)
+            _renewal = State(initialValue: 12)
+        }
     }
 
     private var terms: ContractTerms {
@@ -408,6 +428,24 @@ private struct ContractForm: View {
                             Text("None").tag(UUID?.none)
                             ForEach(lookup.activeSubcategories(of: categoryID)) { Text(verbatim: $0.name).tag(Optional($0.id)) }
                         }
+                    }
+                }
+
+                if !cars.isEmpty {
+                    Section {
+                        Picker("Car", selection: $carID) {
+                            Text("None").tag(UUID?.none)
+                            ForEach(cars) { car in Text(verbatim: car.displayName).tag(Optional(car.id)) }
+                        }
+                        if carID != nil {
+                            Picker("For", selection: $carCost) {
+                                ForEach(CarCostKind.allCases) { kind in
+                                    Label(LocalizedStringKey(kind.title), systemImage: kind.icon).tag(kind)
+                                }
+                            }
+                        }
+                    } footer: {
+                        Text("Booked payments count as costs of this car.")
                     }
                 }
 
@@ -551,6 +589,8 @@ private struct ContractForm: View {
         contract.note = note
         contract.isCancelled = isCancelled
         contract.cancelledOn = isCancelled ? cancelledOn : nil
+        contract.carID = carID
+        contract.carCostRaw = carID == nil ? "" : carCost.rawValue
         contract.updatedAt = Date()
         syncSchedule(contract)
         try? context.save()
@@ -585,6 +625,8 @@ private struct ContractForm: View {
         s.frequency = contract.frequency
         s.categoryID = contract.categoryID
         s.subcategoryID = contract.subcategoryID
+        s.carID = contract.carID
+        s.carCostRaw = contract.carCostRaw
         s.isActive = !contract.isCancelled
         s.updatedAt = Date()
         contract.scheduledExpenseID = s.id

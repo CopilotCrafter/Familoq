@@ -21,6 +21,7 @@ struct ExpenseFormView: View {
     @Query private var subcategories: [ExpenseSubcategory]
     @Query private var members: [FamilyMember]
     @Query private var rules: [MerchantRuleRecord]
+    @Query private var cars: [Car]
 
     @State private var amountText: String
     @State private var currencyCode: String
@@ -37,6 +38,10 @@ struct ExpenseFormView: View {
     @State private var photoItem: PhotosPickerItem?
     @State private var useManualRate: Bool
     @State private var manualRateText: String
+    @State private var carID: UUID?
+    @State private var carCost: CarCostKind
+    @State private var fuelText: String
+    @State private var odometerText: String
 
     @State private var suggestion: CategorySuggestion?
     @State private var categoryTouched: Bool
@@ -54,6 +59,11 @@ struct ExpenseFormView: View {
         _subcategories = Query(filter: #Predicate<ExpenseSubcategory> { $0.familyID == fid }, sort: \ExpenseSubcategory.sortOrder)
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid }, sort: \FamilyMember.joinedAt)
         _rules = Query(filter: #Predicate<MerchantRuleRecord> { $0.familyID == fid })
+        _cars = Query(filter: #Predicate<Car> { $0.familyID == fid && $0.isArchived == false }, sort: \Car.sortOrder)
+        _carID = State(initialValue: editing?.carID)
+        _carCost = State(initialValue: editing?.carCost ?? .fuel)
+        _fuelText = State(initialValue: editing?.fuelQuantity.map { $0.formatted(.number.precision(.fractionLength(0...2)).grouping(.never)) } ?? "")
+        _odometerText = State(initialValue: (editing?.odometer ?? 0) > 0 ? "\(editing?.odometer ?? 0)" : "")
 
         if let e = editing {
             _amountText = State(initialValue: "\(e.amount)")
@@ -164,6 +174,10 @@ struct ExpenseFormView: View {
                 }
             }
 
+            if !cars.isEmpty || carID != nil {
+                carSection
+            }
+
             Section("Optional") {
                 TextField("Note", text: $note, axis: .vertical)
                     .lineLimit(1...4)
@@ -258,6 +272,51 @@ struct ExpenseFormView: View {
                     .foregroundStyle(.secondary)
             }
         }
+    }
+
+    @ViewBuilder
+    private var carSection: some View {
+        Section {
+            Picker("Car", selection: carBinding) {
+                Text("None").tag(UUID?.none)
+                ForEach(cars) { Text(verbatim: $0.displayName).tag(Optional($0.id)) }
+            }
+            if carID != nil {
+                Picker("For", selection: $carCost) {
+                    ForEach(CarCostKind.allCases) { k in
+                        Label(LocalizedStringKey(k.title), systemImage: k.icon).tag(k)
+                    }
+                }
+                if carCost.hasQuantity {
+                    TextField(carCost == .charging ? LocalizedStringKey("kWh") : LocalizedStringKey("Liters"), text: $fuelText)
+                        .keyboardType(.decimalPad)
+                }
+                TextField("km reading (optional)", text: $odometerText).keyboardType(.numberPad)
+            }
+        } header: {
+            Text("Car")
+        }
+    }
+
+    /// Choosing a car suggests Transport and what the cost was for.
+    private var carBinding: Binding<UUID?> {
+        Binding(
+            get: { carID },
+            set: { newValue in
+                carID = newValue
+                guard newValue != nil else { return }
+                let subKey = lookup.subcategory(subcategoryID)?.systemKey
+                if let guess = CarCostKind.guess(subcategoryKey: subKey) {
+                    carCost = guess
+                } else if categoryID == nil || !categoryTouched {
+                    let ids = CarService.transportIDs(carCost, lookup: lookup)
+                    if let cat = ids.categoryID {
+                        categoryID = cat
+                        subcategoryID = ids.subcategoryID
+                    }
+                }
+            }
+        )
     }
 
     @ViewBuilder
@@ -384,6 +443,12 @@ struct ExpenseFormView: View {
         expense.memberID = memberID
         expense.paymentMethod = paymentMethod
         expense.note = note
+        expense.carID = carID
+        expense.carCostRaw = carID == nil ? "" : carCost.rawValue
+        expense.fuelQuantity = carID != nil && carCost.hasQuantity
+            ? DecimalParser.parse(fuelText).map { NSDecimalNumber(decimal: $0).doubleValue } : nil
+        expense.odometer = carID == nil ? 0 : (Int(odometerText.filter(\.isNumber)) ?? 0)
+        if carID != nil { CarService.rememberCar(carID, memberID: memberID ?? session.currentMember?.id) }
         if photoChanged || editing == nil {
             expense.syncImage = receiptData
             if editing != nil { expense.photoRevision += 1 }

@@ -25,6 +25,11 @@ struct ReceiptDraft: Equatable {
     var warnings: [String]
     /// Items the family filed themselves before (ItemRuleKey -> category).
     var learned: [String: ItemTarget] = [:]
+    /// Fuel receipt: which car, liters and km reading.
+    var isFuel: Bool = false
+    var carID: UUID?
+    var litersText: String = ""
+    var odometerText: String = ""
 
     var total: Decimal? { DecimalParser.parse(totalText) }
 
@@ -113,6 +118,9 @@ enum ReceiptDrafting {
 
         let learned = learnedTargets(itemRules)
         let items = draftItems(from: parsed, lookup: lookup, learned: learned)
+        let suggestedKey = lookup.subcategory(suggestion?.subcategoryID)?.systemKey
+        let isFuel = FuelReceipt.isFuelReceipt(subcategoryKey: suggestedKey, itemNames: parsed.items.map(\.name))
+        let liters = FuelReceipt.liters(items: parsed.items)
 
         let total = parsed.total ?? (parsed.items.isEmpty ? nil : parsed.itemsSum)
         let vat = parsed.vat.map { line in
@@ -137,8 +145,19 @@ enum ReceiptDrafting {
             rawText: parsed.rawLines.joined(separator: "\n"),
             vatSummary: vat,
             warnings: parsed.warnings,
-            learned: learned
+            learned: learned,
+            isFuel: isFuel,
+            litersText: liters.map { NSDecimalNumber(value: $0).stringValue } ?? ""
         )
+    }
+
+    /// Editing a saved fuel receipt: the car details from its expenses.
+    static func applyCar(from expenses: [Expense], to draft: inout ReceiptDraft) {
+        guard let car = expenses.first(where: { $0.carID != nil }) else { return }
+        draft.isFuel = true
+        draft.carID = car.carID
+        draft.litersText = car.fuelQuantity.map { NSDecimalNumber(value: $0).stringValue } ?? ""
+        draft.odometerText = car.odometer > 0 ? String(car.odometer) : ""
     }
 
     static func learnedTargets(_ rules: [ItemCategoryRule]) -> [String: ItemTarget] {
@@ -151,6 +170,8 @@ enum ReceiptDrafting {
     static func draftItems(from parsed: ParsedReceipt, lookup: CategoryLookup, learned: [String: ItemTarget] = [:]) -> [ReceiptDraftItem] {
         let groceriesID = lookup.categories.first { $0.systemKey == "groceries" }?.id
         let groceriesOtherID = lookup.subcategories.first { $0.systemKey == "groceries.other" }?.id
+        let transportID = lookup.categories.first { $0.systemKey == "transport" }?.id
+        let fuelID = lookup.subcategories.first { $0.systemKey == "transport.fuel" }?.id
         return parsed.items.map { item in
             if let target = learned[ItemRuleKey.make(item.name)],
                lookup.category(target.categoryID) != nil {
@@ -159,6 +180,13 @@ enum ReceiptDrafting {
                     categoryID: target.categoryID, subcategoryID: target.subcategoryID,
                     confidence: 1, source: .learned,
                     suggestedCategoryID: target.categoryID, suggestedSubcategoryID: target.subcategoryID)
+            }
+            if let transportID, FuelReceipt.isFuelItem(item.name) {
+                return ReceiptDraftItem(
+                    name: item.name, amountText: plain(item.amount),
+                    categoryID: transportID, subcategoryID: fuelID,
+                    confidence: 1, source: .keyword,
+                    suggestedCategoryID: transportID, suggestedSubcategoryID: fuelID)
             }
             let key = item.suggestedSubcategoryKey
             let subID = key.flatMap { k in lookup.subcategories.first { $0.systemKey == k }?.id } ?? groceriesOtherID
@@ -370,8 +398,30 @@ enum ReceiptSaver {
             expenses.append(expense)
         }
         for leftover in reusable { context.delete(leftover) }
+        attachCar(draft, to: expenses, lookup: lookup)
         try context.save()
         return expenses
+    }
+
+    /// Fuel receipt: the fuel expense belongs to the chosen car (the rest -
+    /// snacks, coffee - stays an ordinary expense).
+    static func attachCar(_ draft: ReceiptDraft, to expenses: [Expense], lookup: CategoryLookup) {
+        guard let carID = draft.carID, draft.isFuel else { return }
+        let fuel = expenses.first { lookup.subcategory($0.subcategoryID)?.systemKey == "transport.fuel" }
+            ?? expenses.first { lookup.category($0.categoryID)?.systemKey == "transport" }
+            ?? expenses.max { $0.amount < $1.amount }
+        guard let fuel else { return }
+        for other in expenses where other !== fuel && other.carID == carID {
+            other.carID = nil
+            other.carCostRaw = ""
+            other.fuelMilli = 0
+            other.odometer = 0
+        }
+        fuel.carID = carID
+        fuel.carCost = .fuel
+        fuel.fuelQuantity = DecimalParser.parse(draft.litersText).map { NSDecimalNumber(decimal: $0).doubleValue }
+        fuel.odometer = Int(draft.odometerText.filter(\.isNumber)) ?? 0
+        fuel.updatedAt = Date()
     }
 
     /// Every item the user filed differently from the suggestion is

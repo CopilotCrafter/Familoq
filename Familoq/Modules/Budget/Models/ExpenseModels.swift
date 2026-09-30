@@ -47,6 +47,11 @@ final class Expense {
     /// Health costs: tax-relevant (außergewöhnliche Belastungen) and for whom.
     var isTaxRelevant: Bool = false
     var healthPersonID: UUID? = nil
+    /// Cars: which car, what for (CarCostKind), liters x 1000 and km reading.
+    var carID: UUID? = nil
+    var carCostRaw: String = ""
+    var fuelMilli: Int = 0
+    var odometer: Int = 0
     /// Set when the expense was created from a scanned receipt.
     var receiptID: UUID? = nil
     var createdAt: Date = Date()
@@ -92,6 +97,17 @@ final class Expense {
     }
 
     var isForeignCurrency: Bool { currencyCode != baseCurrencyCode }
+
+    var carCost: CarCostKind? {
+        get { CarCostKind(rawValue: carCostRaw) }
+        set { carCostRaw = newValue?.rawValue ?? "" }
+    }
+
+    /// Liters (or kWh) of fuel.
+    var fuelQuantity: Double? {
+        get { fuelMilli > 0 ? Double(fuelMilli) / 1000 : nil }
+        set { fuelMilli = newValue.map { Int(($0 * 1000).rounded()) } ?? 0 }
+    }
 
     /// Clears conversion data before re-converting.
     func resetConversion() {
