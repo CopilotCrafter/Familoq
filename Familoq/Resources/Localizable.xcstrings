@@ -17666,6 +17666,1601 @@
           }
         }
       }
+    },
+    "Cars": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autos"
+          }
+        }
+      }
+    },
+    "Documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente"
+          }
+        }
+      }
+    },
+    "Add car": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto hinzufügen"
+          }
+        }
+      }
+    },
+    "Add car cost": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autokosten hinzufügen"
+          }
+        }
+      }
+    },
+    "Add fuel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanken hinzufügen"
+          }
+        }
+      }
+    },
+    "Add charging": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden hinzufügen"
+          }
+        }
+      }
+    },
+    "Add car insurance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kfz-Versicherung hinzufügen"
+          }
+        }
+      }
+    },
+    "Add vehicle tax": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kfz-Steuer hinzufügen"
+          }
+        }
+      }
+    },
+    "Add your cars to see what each one really costs: fuel with km and consumption, service, repairs, tyres, TÜV, insurance, tax, parking, tolls and washing. Scanned fuel receipts ask which car.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge eure Autos hinzu und sieh, was jedes wirklich kostet: Tanken mit km und Verbrauch, Inspektion, Reparaturen, Reifen, TÜV, Versicherung, Steuer, Parken, Maut und Waschen. Gescannte Tankbelege fragen, welches Auto."
+          }
+        }
+      }
+    },
+    "All time": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamt"
+          }
+        }
+      }
+    },
+    "Amount (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Betrag (%@)"
+          }
+        }
+      }
+    },
+    "Average price per kWh": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchschnittspreis pro kWh"
+          }
+        }
+      }
+    },
+    "Average price per liter": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchschnittspreis pro Liter"
+          }
+        }
+      }
+    },
+    "Booked payments count as costs of this car.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gebuchte Zahlungen zählen als Kosten dieses Autos."
+          }
+        }
+      }
+    },
+    "Booked yearly or monthly - with a reminder before the cancellation deadline.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jährlich oder monatlich gebucht – mit Erinnerung vor der Kündigungsfrist."
+          }
+        }
+      }
+    },
+    "Car costs per month: average of this year.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autokosten pro Monat: Durchschnitt dieses Jahres."
+          }
+        }
+      }
+    },
+    "Car insurance": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kfz-Versicherung"
+          }
+        }
+      }
+    },
+    "Car wash": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autowäsche"
+          }
+        }
+      }
+    },
+    "Cars & documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autos & Dokumente"
+          }
+        }
+      }
+    },
+    "Change dates in Edit. Notifications: Family → Notifications.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termine unter „Bearbeiten“ ändern. Mitteilungen: Familie → Mitteilungen."
+          }
+        }
+      }
+    },
+    "Charging": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden"
+          }
+        }
+      }
+    },
+    "Consumption": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbrauch"
+          }
+        }
+      }
+    },
+    "Consumption needs full fill-ups with the km reading.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für den Verbrauch vollgetankt und mit km-Stand eintragen."
+          }
+        }
+      }
+    },
+    "Cost per km": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten pro km"
+          }
+        }
+      }
+    },
+    "Costs": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten"
+          }
+        }
+      }
+    },
+    "Delete car": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto löschen"
+          }
+        }
+      }
+    },
+    "Delete this car?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Auto löschen?"
+          }
+        }
+      }
+    },
+    "Delete this cost?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Kosten löschen?"
+          }
+        }
+      }
+    },
+    "Drive": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrieb"
+          }
+        }
+      }
+    },
+    "Driven": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gefahren"
+          }
+        }
+      }
+    },
+    "Due on %@ - book the inspection.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig am %@ – Termin für die Hauptuntersuchung vereinbaren."
+          }
+        }
+      }
+    },
+    "Edit car": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto bearbeiten"
+          }
+        }
+      }
+    },
+    "Electric": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elektro"
+          }
+        }
+      }
+    },
+    "Petrol": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzin"
+          }
+        }
+      }
+    },
+    "Diesel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesel"
+          }
+        }
+      }
+    },
+    "LPG": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autogas (LPG)"
+          }
+        }
+      }
+    },
+    "Hybrid": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hybrid"
+          }
+        }
+      }
+    },
+    "Plug-in hybrid": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plug-in-Hybrid"
+          }
+        }
+      }
+    },
+    "Fill up to full and enter the km reading - then Familoq works out the consumption.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volltanken und den km-Stand eintragen – dann berechnet Familoq den Verbrauch."
+          }
+        }
+      }
+    },
+    "Its costs stay in the budget.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seine Kosten bleiben im Budget."
+          }
+        }
+      }
+    },
+    "Last km reading": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzter km-Stand"
+          }
+        }
+      }
+    },
+    "Liters": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liter"
+          }
+        }
+      }
+    },
+    "kWh": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kWh"
+          }
+        }
+      }
+    },
+    "Log": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf"
+          }
+        }
+      }
+    },
+    "Name, e.g. Golf": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. Golf"
+          }
+        }
+      }
+    },
+    "New car": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Auto"
+          }
+        }
+      }
+    },
+    "Next TÜV": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächster TÜV"
+          }
+        }
+      }
+    },
+    "Next TÜV in 2 years": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächster TÜV in 2 Jahren"
+          }
+        }
+      }
+    },
+    "Next service": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste Inspektion"
+          }
+        }
+      }
+    },
+    "Next service at km (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste Inspektion bei km (optional)"
+          }
+        }
+      }
+    },
+    "Next service in 1 year": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nächste Inspektion in 1 Jahr"
+          }
+        }
+      }
+    },
+    "No car": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Auto"
+          }
+        }
+      }
+    },
+    "Number plate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kennzeichen"
+          }
+        }
+      }
+    },
+    "Only they get this car's reminders, and their fuel receipts suggest this car.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur sie bekommen die Erinnerungen zu diesem Auto, und ihre Tankbelege schlagen dieses Auto vor."
+          }
+        }
+      }
+    },
+    "Per month (average)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Monat (Durchschnitt)"
+          }
+        }
+      }
+    },
+    "Planned for %@ - book the garage.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplant für %@ – Werkstatttermin vereinbaren."
+          }
+        }
+      }
+    },
+    "Price per kWh": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preis pro kWh"
+          }
+        }
+      }
+    },
+    "Price per liter": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preis pro Liter"
+          }
+        }
+      }
+    },
+    "Remind to change tyres": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An Reifenwechsel erinnern"
+          }
+        }
+      }
+    },
+    "Repair": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reparatur"
+          }
+        }
+      }
+    },
+    "Service": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspektion"
+          }
+        }
+      }
+    },
+    "Service at": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspektion bei"
+          }
+        }
+      }
+    },
+    "Service date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspektionstermin"
+          }
+        }
+      }
+    },
+    "Service due: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspektion fällig: %@"
+          }
+        }
+      }
+    },
+    "Sold or archived": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkauft oder archiviert"
+          }
+        }
+      }
+    },
+    "Sold or archived (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verkauft oder archiviert (%lld)"
+          }
+        }
+      }
+    },
+    "Summer tyres": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sommerreifen"
+          }
+        }
+      }
+    },
+    "Winter tyres": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Winterreifen"
+          }
+        }
+      }
+    },
+    "The fuel counts as a cost of this car. With the km reading Familoq works out the consumption.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Kraftstoff zählt als Kosten dieses Autos. Mit dem km-Stand berechnet Familoq den Verbrauch."
+          }
+        }
+      }
+    },
+    "This year: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Jahr: %@"
+          }
+        }
+      }
+    },
+    "Time to change the tyres.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeit für den Reifenwechsel."
+          }
+        }
+      }
+    },
+    "Tolls & vignette": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maut & Vignette"
+          }
+        }
+      }
+    },
+    "Tyres": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reifen"
+          }
+        }
+      }
+    },
+    "TÜV / inspection": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TÜV / Hauptuntersuchung"
+          }
+        }
+      }
+    },
+    "TÜV / inspection date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TÜV-Termin"
+          }
+        }
+      }
+    },
+    "TÜV due: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TÜV fällig: %@"
+          }
+        }
+      }
+    },
+    "TÜV, service & tyres": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TÜV, Inspektion & Reifen"
+          }
+        }
+      }
+    },
+    "TÜV: 30 and 7 days before. Service: 14 days before. Tyres: 10 October and 10 April (\"O bis O\").": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TÜV: 30 und 7 Tage vorher. Inspektion: 14 Tage vorher. Reifen: 10. Oktober und 10. April („O bis O“)."
+          }
+        }
+      }
+    },
+    "Vehicle tax": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kfz-Steuer"
+          }
+        }
+      }
+    },
+    "Where / what, e.g. Aral": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo / was, z. B. Aral"
+          }
+        }
+      }
+    },
+    "Who drives it": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wer fährt es"
+          }
+        }
+      }
+    },
+    "in %lld days": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in %lld Tagen"
+          }
+        }
+      }
+    },
+    "%lld km to go": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %lld km"
+          }
+        }
+      }
+    },
+    "Insurance, tax & leasing": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versicherung, Steuer & Leasing"
+          }
+        }
+      }
+    },
+    "km reading (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "km-Stand (optional)"
+          }
+        }
+      }
+    },
+    "Add document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument hinzufügen"
+          }
+        }
+      }
+    },
+    "Add pages": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seiten hinzufügen"
+          }
+        }
+      }
+    },
+    "Belongs to": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gehört zu"
+          }
+        }
+      }
+    },
+    "Birth certificate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geburtsurkunde"
+          }
+        }
+      }
+    },
+    "Car registration": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fahrzeugschein / Zulassung"
+          }
+        }
+      }
+    },
+    "Certificate / diploma": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeugnis / Urkunde"
+          }
+        }
+      }
+    },
+    "Choose photos": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotos auswählen"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren"
+          }
+        }
+      }
+    },
+    "Creates a PDF of all pages - to save in Files, print, mail or send to an office.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellt ein PDF aller Seiten – zum Sichern in „Dateien“, Drucken, Mailen oder für Ämter."
+          }
+        }
+      }
+    },
+    "Delete document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument löschen"
+          }
+        }
+      }
+    },
+    "Delete page": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seite löschen"
+          }
+        }
+      }
+    },
+    "Delete this document and all its pages?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Dokument mit allen Seiten löschen?"
+          }
+        }
+      }
+    },
+    "Delete this page?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Seite löschen?"
+          }
+        }
+      }
+    },
+    "Documents are protected": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente sind geschützt"
+          }
+        }
+      }
+    },
+    "Download / Share as PDF": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als PDF laden / teilen"
+          }
+        }
+      }
+    },
+    "Driving licence": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Führerschein"
+          }
+        }
+      }
+    },
+    "Edit document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokument bearbeiten"
+          }
+        }
+      }
+    },
+    "Expires soon: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft bald ab: %@"
+          }
+        }
+      }
+    },
+    "Expiring": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft ab"
+          }
+        }
+      }
+    },
+    "Expiring documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ablaufende Dokumente"
+          }
+        }
+      }
+    },
+    "Expiry date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ablaufdatum"
+          }
+        }
+      }
+    },
+    "ID card": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalausweis"
+          }
+        }
+      }
+    },
+    "Import PDF or image file": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF oder Bilddatei importieren"
+          }
+        }
+      }
+    },
+    "Insurance policy": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versicherungspolice"
+          }
+        }
+      }
+    },
+    "Issue date": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausstellungsdatum"
+          }
+        }
+      }
+    },
+    "Issued": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgestellt"
+          }
+        }
+      }
+    },
+    "Marriage certificate": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heiratsurkunde"
+          }
+        }
+      }
+    },
+    "Medical document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medizinisches Dokument"
+          }
+        }
+      }
+    },
+    "Name, e.g. a child": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, z. B. ein Kind"
+          }
+        }
+      }
+    },
+    "New document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Dokument"
+          }
+        }
+      }
+    },
+    "No pages yet - scan the document or import a photo or PDF.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch keine Seiten – scanne das Dokument oder importiere ein Foto oder PDF."
+          }
+        }
+      }
+    },
+    "Nobody / other person": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niemand / andere Person"
+          }
+        }
+      }
+    },
+    "Not shared with the family and not stored in iCloud - include it in your own backups.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht mit der Familie geteilt und nicht in iCloud gespeichert – sichere es in deinen eigenen Backups."
+          }
+        }
+      }
+    },
+    "Number": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nummer"
+          }
+        }
+      }
+    },
+    "Number (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nummer (optional)"
+          }
+        }
+      }
+    },
+    "Open the family documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familiendokumente öffnen"
+          }
+        }
+      }
+    },
+    "Pages": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seiten"
+          }
+        }
+      }
+    },
+    "Passport": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reisepass"
+          }
+        }
+      }
+    },
+    "Remind me before it expires": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vor dem Ablauf erinnern"
+          }
+        }
+      }
+    },
+    "Reminder 30 and 7 days before.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung 30 und 7 Tage vorher."
+          }
+        }
+      }
+    },
+    "Reminder 90 and 30 days before - renewing takes weeks.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erinnerung 90 und 30 Tage vorher – die Verlängerung dauert Wochen."
+          }
+        }
+      }
+    },
+    "Residence permit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufenthaltstitel"
+          }
+        }
+      }
+    },
+    "Save to Files": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In „Dateien“ sichern"
+          }
+        }
+      }
+    },
+    "Scan passports, ID cards, birth certificates, insurance policies or the car registration - or import a PDF. Familoq reminds you before a document expires. Mark a document \"Only on this iPhone\" to keep it off iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne Reisepässe, Ausweise, Geburtsurkunden, Versicherungspolicen oder den Fahrzeugschein – oder importiere ein PDF. Familoq erinnert dich, bevor ein Dokument abläuft. Markiere ein Dokument mit „Nur auf diesem iPhone“, damit es nicht in iCloud landet."
+          }
+        }
+      }
+    },
+    "Search documents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumente durchsuchen"
+          }
+        }
+      }
+    },
+    "Shared only with your family through iCloud. Opening documents always needs Face ID or your passcode.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur mit deiner Familie über iCloud geteilt. Zum Öffnen braucht es immer Face ID oder deinen Code."
+          }
+        }
+      }
+    },
+    "Shared with the family": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit der Familie geteilt"
+          }
+        }
+      }
+    },
+    "Tax document": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Steuerunterlage"
+          }
+        }
+      }
+    },
+    "This page is still downloading from iCloud.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Seite wird noch aus iCloud geladen."
+          }
+        }
+      }
+    },
+    "Title (optional)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel (optional)"
+          }
+        }
+      }
+    },
+    "Valid until": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gültig bis"
+          }
+        }
+      }
+    },
+    "Valid until %@ - renew it in time.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gültig bis %@ – rechtzeitig verlängern."
+          }
+        }
+      }
+    },
+    "Warranty / invoice": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garantie / Rechnung"
+          }
+        }
+      }
+    },
+    "valid until %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gültig bis %@"
+          }
+        }
+      }
+    },
+    "%lld expiring": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld laufen ab"
+          }
+        }
+      }
+    },
+    "%lld pages added": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Seiten hinzugefügt"
+          }
+        }
+      }
+    },
+    "Could not create the PDF.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das PDF konnte nicht erstellt werden."
+          }
+        }
+      }
+    },
+    "Could not save the file.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei konnte nicht gesichert werden."
+          }
+        }
+      }
+    },
+    "This PDF is too large (max. 20 MB).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses PDF ist zu groß (max. 20 MB)."
+          }
+        }
+      }
+    },
+    "One place for your family: budget, shopping, meals, reminders, calendar, travel, health, cars and documents.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Ort für eure Familie: Budget, Einkauf, Essen, Erinnerungen, Kalender, Reisen, Gesundheit, Autos und Dokumente."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -301,6 +301,10 @@ extension Expense: SyncableRecord {
         if !tripSplit.isEmpty { p.set("tripSplit", tripSplit) }
         if isTaxRelevant { p.set("taxRelevant", true) }
         if let healthPersonID { p.set("healthPersonID", healthPersonID) }
+        if let carID { p.set("carID", carID) }
+        if !carCostRaw.isEmpty { p.set("carCost", carCostRaw) }
+        if fuelMilli > 0 { p.set("fuelMilli", fuelMilli) }
+        if odometer > 0 { p.set("odometer", odometer) }
         return p
     }
 
@@ -312,6 +316,10 @@ extension Expense: SyncableRecord {
         tripSplit = p.string("tripSplit")
         isTaxRelevant = p.bool("taxRelevant")
         healthPersonID = p.uuid("healthPersonID")
+        carID = p.uuid("carID")
+        carCostRaw = p.string("carCost")
+        fuelMilli = p.int("fuelMilli")
+        odometer = p.int("odometer")
         amountValue = p.int64("amountValue")
         currencyCode = p.string("currencyCode", default: "EUR")
         baseAmountValue = p.optionalInt64("baseAmountValue")
@@ -365,10 +373,14 @@ extension ScheduledExpense: SyncableRecord {
         p.set("createdByMemberID", createdByMemberID)
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
+        if let carID { p.set("carID", carID) }
+        if !carCostRaw.isEmpty { p.set("carCost", carCostRaw) }
         return p
     }
 
     func applySyncPayload(_ p: SyncPayload) {
+        carID = p.uuid("carID")
+        carCostRaw = p.string("carCost")
         title = p.string("title")
         amountValue = p.int64("amountValue")
         currencyCode = p.string("currencyCode", default: "EUR")
@@ -493,10 +505,14 @@ extension Contract: SyncableRecord {
         p.set("createdByMemberID", createdByMemberID)
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
+        if let carID { p.set("carID", carID) }
+        if !carCostRaw.isEmpty { p.set("carCost", carCostRaw) }
         return p
     }
 
     func applySyncPayload(_ p: SyncPayload) {
+        carID = p.uuid("carID")
+        carCostRaw = p.string("carCost")
         name = p.string("name")
         provider = p.string("provider")
         categoryID = p.uuid("categoryID")

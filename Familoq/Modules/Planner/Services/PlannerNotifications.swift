@@ -21,6 +21,8 @@ enum PlannerNotifications {
         case health = "notify.health"
         case medications = "notify.medications"
         case pantry = "notify.pantry"
+        case cars = "notify.cars"
+        case documents = "notify.documents"
 
         var title: String {
             switch self {
@@ -31,6 +33,8 @@ enum PlannerNotifications {
             case .health: return "Check-ups, vaccinations & refills"
             case .medications: return "Medication times"
             case .pantry: return "Use-by dates at home"
+            case .cars: return "TÜV, service & tyres"
+            case .documents: return "Expiring documents"
             }
         }
 
@@ -122,6 +126,9 @@ enum PlannerNotifications {
         // Health (check-ups, vaccinations, refills) and pantry use-by dates.
         let health = HealthAgenda.deadlines(familyIDs: families, me: me, context: context, now: now, calendar: calendar)
         deadlines.append(contentsOf: health.deadlines)
+        // Cars (TÜV, service, tyres) and expiring documents.
+        let household = HouseholdAgenda.deadlines(familyIDs: families, me: me, context: context, now: now, calendar: calendar)
+        deadlines.append(contentsOf: household.deadlines)
         let doseCount = min(20, doseRequests(context: context).count)
 
         let plan = NotificationPlanner.plan(
@@ -169,7 +176,7 @@ enum PlannerNotifications {
                     let (warranty, end) = entry
                     content.title = String(localized: "Warranty ends: \(warranty.itemName)")
                     content.body = String(localized: "Last day: \(end.formatted(date: .long, time: .omitted)). Check it for faults now.")
-                } else if let text = health.content[alert.sourceID] {
+                } else if let text = health.content[alert.sourceID] ?? household.content[alert.sourceID] {
                     content.title = text.title
                     content.body = text.body
                 } else {

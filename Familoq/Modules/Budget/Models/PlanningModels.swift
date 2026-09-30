@@ -25,6 +25,9 @@ final class ScheduledExpense {
     /// Newest due date that was already booked as an expense.
     var bookedThrough: Date? = nil
     var isActive: Bool = true
+    /// Car costs booked from this (insurance, tax, leasing).
+    var carID: UUID? = nil
+    var carCostRaw: String = ""
     var createdByMemberID: UUID? = nil
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
@@ -141,6 +144,9 @@ final class Contract {
     var cancelledOn: Date? = nil
     /// Days before the deadline to remind, e.g. "30,7".
     var reminderDaysRaw: String = "30,7"
+    /// Car contract (insurance, tax, leasing).
+    var carID: UUID? = nil
+    var carCostRaw: String = ""
     var createdByMemberID: UUID? = nil
     var createdAt: Date = Date()
     var updatedAt: Date = Date()

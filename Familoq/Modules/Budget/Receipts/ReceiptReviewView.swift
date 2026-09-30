@@ -28,6 +28,8 @@ struct ReceiptReviewView: View {
     /// Apple Intelligence filing unknown items: nil = not tried yet.
     @State private var aiSorted: Int?
     @State private var aiWorking = false
+    /// Loaded once (no @Query here, see above).
+    @State private var cars: [Car] = []
 
     init(family: Family, draft: ReceiptDraft, lookup: CategoryLookup, editing: ReceiptRecord? = nil, onDone: @escaping () -> Void) {
         self.family = family
@@ -120,6 +122,23 @@ struct ReceiptReviewView: View {
                 }
             }
 
+            if draft.isFuel && !cars.isEmpty {
+                Section {
+                    Picker("Car", selection: $draft.carID) {
+                        Text("No car").tag(UUID?.none)
+                        ForEach(cars) { Text(verbatim: $0.displayName).tag(Optional($0.id)) }
+                    }
+                    if draft.carID != nil {
+                        TextField("Liters", text: $draft.litersText).keyboardType(.decimalPad)
+                        TextField("km reading (optional)", text: $draft.odometerText).keyboardType(.numberPad)
+                    }
+                } header: {
+                    Text("Car")
+                } footer: {
+                    Text("The fuel counts as a cost of this car. With the km reading Familoq works out the consumption.")
+                }
+            }
+
             Section {
                 Toggle("Categorize entire receipt as one category", isOn: $draft.categorizeWholeReceipt)
                 if draft.categorizeWholeReceipt {
@@ -192,7 +211,16 @@ struct ReceiptReviewView: View {
                 Button("Save") { save() }.fontWeight(.semibold)
             }
         }
-        .onAppear { ScanBreadcrumb.set("the check screen - shown (currency \(draft.currencyCode), \(draft.items.count) items)") }
+        .onAppear {
+            ScanBreadcrumb.set("the check screen - shown (currency \(draft.currencyCode), \(draft.items.count) items)")
+            if cars.isEmpty && draft.isFuel {
+                let loaded = CarService.cars(familyID: family.id, context: context)
+                cars = loaded
+                if draft.carID == nil && editing == nil {
+                    draft.carID = CarService.lastCar(memberID: session.currentMember?.id, cars: loaded)
+                }
+            }
+        }
         .task { await sortUnknownItems() }
         .sheet(isPresented: Binding(get: { categoryPickerItemID != nil }, set: { if !$0 { categoryPickerItemID = nil } })) {
             if let id = categoryPickerItemID, let index = draft.items.firstIndex(where: { $0.id == id }) {
@@ -307,6 +335,7 @@ struct ReceiptReviewView: View {
         do {
             let expenses = try ReceiptSaver.save(draft, family: family, member: session.currentMember, lookup: lookup, context: context,
                                                  replacing: editing)
+            if draft.isFuel { CarService.rememberCar(draft.carID, memberID: session.currentMember?.id) }
             // Items on the shopping list that are on this receipt are ticked off.
             let ticked = editing != nil ? [] : ShoppingService.tickOff(receiptLines: draft.items.filter(\.included).map(\.name),
                                                                        familyID: family.id, memberID: session.currentMember?.id, context: context)

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.0 - Cars and document vault
+
+### Added
+- Planner → Cars: every family car with what it really costs - fuel with liters, km and l/100 km (kWh for electric cars), service, repairs, tyres, TÜV, insurance, vehicle tax, parking, tolls and washing. Cost per km, average fuel price, monthly average, a log per car.
+- Car costs are normal budget expenses (Transport): add them on the car, in any expense (new "Car" section) or book insurance and vehicle tax as a contract of the car.
+- Scanned fuel receipts ask which car (the car you used last is suggested) and take the liters from the receipt; add the km reading for the consumption.
+- Reminders: TÜV 30 and 7 days before, service 14 days before, tyre change on 10 October and 10 April. Only the car's drivers get them.
+- Planner → Documents: the family document vault - passports, ID cards, driving licences, birth and marriage certificates, insurance policies, car registration, certificates, medical and tax documents. Scan with the camera, choose photos or import PDFs.
+- Always opens with Face ID (or the passcode). Shared with the family through iCloud, or "Only on this iPhone" per document.
+- Download / Share as PDF and Save to Files for every document.
+- Reminders before documents expire (passports and ID cards 90 and 30 days before).
+- Dashboard: cars with their monthly cost and next due date, documents that expire soon.
+
 ## 0.8.2 - Breakfast & lunch plans, family in Health
 
 ### Added

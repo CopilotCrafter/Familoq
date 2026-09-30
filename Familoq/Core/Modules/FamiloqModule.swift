@@ -4,7 +4,7 @@ import SwiftData
 /// Familoq is a family "everything space". Each space is a module that plugs
 /// into the shared core (family, members, invitations, sync, currency).
 /// Built: Budget, Shopping list, Reminders, Events (the last three live in
-/// the Planner module). Travel and Health are planned.
+/// the Planner module), Travel, Health, Cars and Documents.
 enum FamiloqSpace: String, CaseIterable, Identifiable {
     case budget
     case shopping
@@ -12,6 +12,8 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
     case events
     case travel
     case health
+    case cars
+    case documents
 
     var id: String { rawValue }
 
@@ -20,6 +22,8 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
         case .budget: return "Budget"
         case .travel: return "Travel"
         case .health: return "Health"
+        case .cars: return "Cars"
+        case .documents: return "Documents"
         case .shopping: return "Shopping list"
         case .reminders: return "Reminders"
         case .events: return "Events"
@@ -31,6 +35,8 @@ enum FamiloqSpace: String, CaseIterable, Identifiable {
         case .budget: return "chart.pie.fill"
         case .travel: return "airplane.circle.fill"
         case .health: return "heart.circle.fill"
+        case .cars: return "car.circle.fill"
+        case .documents: return "doc.circle.fill"
         case .shopping: return "cart.circle.fill"
         case .reminders: return "bell.circle.fill"
         case .events: return "calendar.circle.fill"
@@ -63,6 +69,7 @@ enum FamiloqModules {
     static let enabled: [any FamiloqModule.Type] = [
         BudgetModule.self,
         PlannerModule.self,
-        HealthModule.self
+        HealthModule.self,
+        HouseholdModule.self
     ]
 }

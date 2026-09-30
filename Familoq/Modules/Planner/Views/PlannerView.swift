@@ -5,7 +5,7 @@ import FamiloqCore
 import FamiloqPlanner
 
 enum PlannerSegment: String, CaseIterable, Identifiable {
-    case shopping, meals, reminders, calendar, timeOff, travel
+    case shopping, meals, reminders, calendar, timeOff, travel, cars, documents
 
     var id: String { rawValue }
 
@@ -17,6 +17,8 @@ enum PlannerSegment: String, CaseIterable, Identifiable {
         case .timeOff: return "Time off"
         case .meals: return "Meals"
         case .travel: return "Travel"
+        case .cars: return "Cars"
+        case .documents: return "Documents"
         }
     }
 
@@ -28,6 +30,8 @@ enum PlannerSegment: String, CaseIterable, Identifiable {
         case .calendar: return "calendar"
         case .timeOff: return "sun.max"
         case .travel: return "airplane"
+        case .cars: return "car"
+        case .documents: return "doc.text"
         }
     }
 
@@ -56,11 +60,13 @@ struct PlannerView: View {
                     case .timeOff: TimeOffScreen(family: family)
                     case .meals: MealsScreen(family: family)
                     case .travel: TravelScreen(family: family)
+                    case .cars: CarsScreen(family: family)
+                    case .documents: DocumentsScreen(family: family)
                     }
                 }
                 .id(segment)
                 .safeAreaInset(edge: .top, spacing: 0) {
-                    // Six parts: scrollable chips instead of a cramped segmented control.
+                    // Eight parts: scrollable chips instead of a cramped segmented control.
                     ScrollViewReader { proxy in
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
