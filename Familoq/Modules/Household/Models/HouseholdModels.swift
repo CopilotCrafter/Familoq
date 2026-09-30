@@ -72,6 +72,10 @@ final class FamilyDocument {
     var remind: Bool = true
     var note: String = ""
     var isPrivate: Bool = false
+    /// Tags ("Car", "Taxes 2026"), comma-separated.
+    var tagsRaw: String = ""
+    /// Trips it is needed for (travel folder), comma-separated IDs.
+    var tripIDsRaw: String = ""
     var createdByMemberID: UUID? = nil
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
@@ -90,6 +94,16 @@ final class FamilyDocument {
     var displayTitle: String {
         title.isEmpty ? String(localized: String.LocalizationValue(kind.title)) : title
     }
+
+    var tags: [String] {
+        get { DocumentTags.parse(tagsRaw) }
+        set { tagsRaw = DocumentTags.encode(newValue) }
+    }
+
+    var tripIDs: Set<UUID> {
+        get { Set(tripIDsRaw.split(separator: ",").compactMap { UUID(uuidString: String($0)) }) }
+        set { tripIDsRaw = newValue.map(\.uuidString).sorted().joined(separator: ",") }
+    }
 }
 
 /// One page (photo) or an imported PDF of a document.
@@ -105,6 +119,14 @@ final class DocumentPage {
     var sortOrder: Int = 0
     /// Copied from the document so the page is never uploaded on its own.
     var isPrivate: Bool = false
+    /// "front" / "back" of a card, empty for other pages.
+    var sideRaw: String = ""
+    /// Quarter turns clockwise (0-3), applied when shown and exported.
+    var quarterTurns: Int = 0
+    /// Words read from the page on the iPhone (for search only).
+    var text: String = ""
+    /// Local: text reading was tried (also when the page has no text).
+    var textScanned: Bool = false
     var createdAt: Date = Date()
 
     init(id: UUID = UUID(), familyID: UUID, documentID: UUID, format: String = "jpg", data: Data? = nil, sortOrder: Int = 0) {
@@ -118,4 +140,9 @@ final class DocumentPage {
     }
 
     var isPDF: Bool { format == "pdf" }
+
+    var side: PageSide {
+        get { PageSide(rawValue: sideRaw) ?? .none }
+        set { sideRaw = newValue.rawValue }
+    }
 }

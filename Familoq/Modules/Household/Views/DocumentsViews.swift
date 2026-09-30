@@ -73,25 +73,39 @@ struct VaultGate<Content: View>: View {
     }
 }
 
+// MARK: - List
+
 private struct DocumentsList: View {
     let family: Family
+    @Environment(\.modelContext) private var context
     @Query private var documents: [FamilyDocument]
     @Query private var members: [FamilyMember]
+    @Query private var pages: [DocumentPage]
     @State private var editing: DocumentEditTarget?
     @State private var search = ""
+    @State private var tag: String?
+    @State private var selecting = false
+    @State private var selected: [UUID] = []
+    @State private var combining: ExportRequest?
+    @State private var requesting: DocumentRequestTarget?
 
     init(family: Family) {
         self.family = family
         let fid = family.id
         _documents = Query(filter: #Predicate<FamilyDocument> { $0.familyID == fid }, sort: \FamilyDocument.title)
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid }, sort: \FamilyMember.joinedAt)
+        _pages = Query(filter: #Predicate<DocumentPage> { $0.familyID == fid }, sort: \DocumentPage.sortOrder)
     }
 
     var body: some View {
         let calendar = FamiloqCalendar.make()
         let now = Date()
         let names = MemberNames(members)
-        let filtered = documents.filter { matches($0, names: names) }
+        let texts = search.isEmpty ? [:] : pageTexts()
+        let filtered = documents.filter { doc in
+            (tag == nil || doc.tags.contains { $0.caseInsensitiveCompare(tag ?? "") == .orderedSame })
+                && matches(doc, names: names, texts: texts)
+        }
         let expiring = filtered.filter {
             switch DocumentExpiry.state(expiresOn: $0.expiresOn, now: now, calendar: calendar) {
             case .soon?, .expired?: return true
@@ -103,75 +117,206 @@ private struct DocumentsList: View {
             if a.isEmpty != b.isEmpty { return b.isEmpty }
             return a < b
         }
+        let allTags = Array(Set(documents.flatMap(\.tags))).sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
         List {
-            Section {
-                Button {
-                    editing = DocumentEditTarget(document: nil)
-                } label: {
-                    Label("Add document", systemImage: "plus")
+            if !selecting {
+                Section {
+                    Button {
+                        editing = DocumentEditTarget(document: nil)
+                    } label: {
+                        Label("Add document", systemImage: "plus")
+                    }
+                } footer: {
+                    if documents.isEmpty {
+                        Text("Scan passports, ID cards, birth certificates, insurance policies or the car registration - or import a PDF. Familoq reminds you before a document expires. Mark a document \"Only on this iPhone\" to keep it off iCloud.")
+                    }
                 }
-            } footer: {
-                if documents.isEmpty {
-                    Text("Scan passports, ID cards, birth certificates, insurance policies or the car registration - or import a PDF. Familoq reminds you before a document expires. Mark a document \"Only on this iPhone\" to keep it off iCloud.")
+            } else {
+                Section {
+                    Text("Tap documents in the order they should appear in the PDF.")
+                        .font(.subheadline).foregroundStyle(.secondary)
                 }
             }
-            if !expiring.isEmpty && search.isEmpty {
+            if !allTags.isEmpty {
+                Section {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            TagChip(title: String(localized: "All"), isOn: tag == nil) { tag = nil }
+                            ForEach(allTags, id: \.self) { name in
+                                TagChip(title: name, isOn: tag == name) { tag = tag == name ? nil : name }
+                            }
+                        }
+                    }
+                    .listRowInsets(EdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12))
+                }
+            }
+            if !expiring.isEmpty && search.isEmpty && tag == nil && !selecting {
                 Section("Expiring") {
-                    ForEach(expiring) { doc in link(doc, names: names, calendar: calendar, now: now) }
+                    ForEach(expiring) { doc in row(doc, names: names, calendar: calendar, now: now) }
                 }
             }
             ForEach(owners, id: \.self) { key in
                 Section {
-                    ForEach(groups[key] ?? []) { doc in link(doc, names: names, calendar: calendar, now: now) }
+                    ForEach(groups[key] ?? []) { doc in row(doc, names: names, calendar: calendar, now: now) }
                 } header: {
                     if key.isEmpty { Text("Household") } else { Text(verbatim: key) }
                 }
             }
         }
-        .searchable(text: $search, prompt: Text("Search documents"))
+        .searchable(text: $search, prompt: Text("Search documents and their text"))
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                if selecting {
+                    Button("Cancel") {
+                        selecting = false
+                        selected = []
+                    }
+                } else {
+                    Menu {
+                        Button {
+                            selecting = true
+                        } label: {
+                            Label("Combine into one PDF", systemImage: "doc.on.doc")
+                        }
+                        Button {
+                            requesting = DocumentRequestTarget(document: nil)
+                        } label: {
+                            Label("Request a document", systemImage: "person.crop.circle.badge.questionmark")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            if selecting {
+                Button {
+                    combine()
+                } label: {
+                    Label("Combine \(selected.count) into one PDF", systemImage: "doc.on.doc.fill")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(selected.isEmpty)
+                .padding()
+                .background(.bar)
+            }
+        }
         .sheet(item: $editing) { target in
             DocumentForm(family: family, target: target)
         }
+        .sheet(item: $combining) { request in
+            DocumentExportSheet(request: request)
+        }
+        .sheet(item: $requesting) { target in
+            DocumentRequestSheet(family: family, target: target)
+        }
+        .task { await DocumentText.readMissing(familyID: family.id, context: context) }
+    }
+
+    private func pageTexts() -> [UUID: String] {
+        var result: [UUID: String] = [:]
+        for page in pages where !page.text.isEmpty {
+            result[page.documentID, default: ""] += " " + page.text
+        }
+        return result
     }
 
     private func owner(_ doc: FamilyDocument, names: MemberNames) -> String {
         names.name(doc.memberID) ?? doc.personName
     }
 
-    private func matches(_ doc: FamilyDocument, names: MemberNames) -> Bool {
-        let text = search.trimmingCharacters(in: .whitespaces)
-        guard !text.isEmpty else { return true }
-        let haystack = [doc.displayTitle, owner(doc, names: names), doc.number, doc.note,
-                        String(localized: String.LocalizationValue(doc.kind.title))].joined(separator: " ")
-        return haystack.localizedCaseInsensitiveContains(text)
+    private func matches(_ doc: FamilyDocument, names: MemberNames, texts: [UUID: String]) -> Bool {
+        guard !search.trimmingCharacters(in: .whitespaces).isEmpty else { return true }
+        return DocumentSearch.matches(query: search, in: [
+            doc.displayTitle, owner(doc, names: names), doc.number, doc.note, doc.tagsRaw,
+            String(localized: String.LocalizationValue(doc.kind.title)), texts[doc.id] ?? ""
+        ])
     }
 
-    private func link(_ doc: FamilyDocument, names: MemberNames, calendar: Calendar, now: Date) -> some View {
-        NavigationLink {
-            LazyView(DocumentDetailView(family: family, document: doc))
-        } label: {
-            HStack(spacing: 12) {
-                Image(systemName: doc.kind.icon).foregroundStyle(.indigo).frame(width: 28)
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 4) {
-                        Text(verbatim: doc.displayTitle).font(.body.weight(.medium))
-                        if doc.isPrivate { Image(systemName: "iphone").font(.caption).foregroundStyle(.secondary) }
+    private func combine() {
+        let chosen = selected.compactMap { id in documents.first { $0.id == id } }
+        var exportPages: [ExportPage] = []
+        for doc in chosen {
+            exportPages += DocumentExporter.exportPages(pages.filter { $0.documentID == doc.id })
+        }
+        let name = chosen.count == 1 ? chosen[0].displayTitle : String(localized: "Documents")
+        combining = ExportRequest(pages: exportPages, name: DocumentService.fileName(name),
+                                  cardLike: chosen.contains { $0.kind.isTwoSided })
+        selecting = false
+        selected = []
+    }
+
+    @ViewBuilder
+    private func row(_ doc: FamilyDocument, names: MemberNames, calendar: Calendar, now: Date) -> some View {
+        if selecting {
+            Button {
+                if let index = selected.firstIndex(of: doc.id) { selected.remove(at: index) } else { selected.append(doc.id) }
+            } label: {
+                HStack {
+                    if let index = selected.firstIndex(of: doc.id) {
+                        Text(verbatim: "\(index + 1)")
+                            .font(.caption.weight(.bold)).foregroundStyle(.white)
+                            .frame(width: 24, height: 24).background(Circle().fill(Color.accentColor))
+                    } else {
+                        Image(systemName: "circle").font(.title3).foregroundStyle(.secondary).frame(width: 24)
                     }
-                    let whose = owner(doc, names: names)
-                    if !whose.isEmpty || doc.expiresOn != nil {
-                        HStack(spacing: 4) {
-                            if !whose.isEmpty { Text(verbatim: whose) }
-                            if let expires = doc.expiresOn {
-                                Text("valid until \(expires.formatted(date: .abbreviated, time: .omitted))")
-                            }
-                        }
-                        .font(.caption).foregroundStyle(.secondary)
-                    }
+                    rowLabel(doc, names: names, calendar: calendar, now: now)
                 }
-                Spacer()
-                ExpiryBadge(expiresOn: doc.expiresOn, now: now, calendar: calendar)
+            }
+            .buttonStyle(.plain)
+        } else {
+            NavigationLink {
+                LazyView(DocumentDetailView(family: family, document: doc))
+            } label: {
+                rowLabel(doc, names: names, calendar: calendar, now: now)
             }
         }
+    }
+
+    private func rowLabel(_ doc: FamilyDocument, names: MemberNames, calendar: Calendar, now: Date) -> some View {
+        let whose = owner(doc, names: names)
+        return HStack(spacing: 12) {
+            Image(systemName: doc.kind.icon).foregroundStyle(.indigo).frame(width: 28)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 4) {
+                    Text(verbatim: doc.displayTitle).font(.body.weight(.medium))
+                    if doc.isPrivate { Image(systemName: "iphone").font(.caption).foregroundStyle(.secondary) }
+                }
+                if !whose.isEmpty || doc.expiresOn != nil || !doc.tags.isEmpty {
+                    HStack(spacing: 4) {
+                        if !whose.isEmpty { Text(verbatim: whose) }
+                        if let expires = doc.expiresOn {
+                            Text("valid until \(expires.formatted(date: .abbreviated, time: .omitted))")
+                        }
+                        if !doc.tags.isEmpty { Text(verbatim: "· " + doc.tags.joined(separator: ", ")).lineLimit(1) }
+                    }
+                    .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+            Spacer()
+            ExpiryBadge(expiresOn: doc.expiresOn, now: now, calendar: calendar)
+        }
+        .contentShape(Rectangle())
+    }
+}
+
+struct TagChip: View {
+    let title: String
+    let isOn: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(verbatim: title)
+                .font(.subheadline.weight(isOn ? .semibold : .regular))
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(isOn ? Color.accentColor : Color.secondary.opacity(0.15), in: Capsule())
+                .foregroundStyle(isOn ? Color.white : Color.primary)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -203,21 +348,22 @@ struct DocumentDetailView: View {
     let family: Family
     let document: FamilyDocument
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var sync: SyncCoordinator
     @Query private var pages: [DocumentPage]
     @Query private var members: [FamilyMember]
     @Query private var cars: [Car]
+    @Query private var trips: [Trip]
     @State private var editing: DocumentEditTarget?
-    @State private var exportURL: URL?
-    @State private var exporting = false
-    @State private var exportFile: PDFFile?
-    @State private var scanning = false
+    @State private var exportRequest: ExportRequest?
+    @State private var scanMode: ScanMode?
+    @State private var guide: ScanMode?
     @State private var importing = false
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var viewing: DocumentPage?
-    @State private var deletingPage: DocumentPage?
+    @State private var editingPages = false
+    @State private var requesting: DocumentRequestTarget?
     @State private var message: String?
-    @Environment(\.dismiss) private var dismiss
 
     init(family: Family, document: FamilyDocument) {
         self.family = family
@@ -227,6 +373,7 @@ struct DocumentDetailView: View {
         _pages = Query(filter: #Predicate<DocumentPage> { $0.documentID == did }, sort: \DocumentPage.sortOrder)
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid })
         _cars = Query(filter: #Predicate<Car> { $0.familyID == fid })
+        _trips = Query(filter: #Predicate<Trip> { $0.familyID == fid })
     }
 
     var body: some View {
@@ -238,8 +385,11 @@ struct DocumentDetailView: View {
         }
     }
 
+    private var hasBack: Bool { pages.contains { $0.side == .back } }
+
     private var content: some View {
         let calendar = FamiloqCalendar.make()
+        let missing = pages.filter { $0.data == nil }.count
         return List {
             Section {
                 if pages.isEmpty {
@@ -254,34 +404,45 @@ struct DocumentDetailView: View {
                                     PageThumbnail(page: page)
                                 }
                                 .buttonStyle(.plain)
-                                .contextMenu {
-                                    Button("Delete page", role: .destructive) { deletingPage = page }
-                                }
                             }
                         }
                         .padding(.vertical, 4)
                     }
                 }
-                addPagesMenu
+                if document.kind.isTwoSided && !hasBack && !pages.isEmpty {
+                    Button {
+                        guide = .back
+                    } label: {
+                        Label("Add back side", systemImage: "rectangle.on.rectangle.angled")
+                    }
+                }
+                AddPagesMenu(twoSided: document.kind.isTwoSided, onScan: { guide = $0 },
+                             importing: $importing, photoItems: $photoItems)
+                if pages.count > 0 {
+                    Button {
+                        editingPages = true
+                    } label: {
+                        Label("Edit pages", systemImage: "square.grid.2x2")
+                    }
+                }
             } header: {
                 Text("Pages")
+            } footer: {
+                if missing > 0 {
+                    Text("\(missing) pages are still downloading from iCloud.")
+                }
             }
 
             Section {
                 Button {
-                    download()
+                    exportRequest = ExportRequest(pages: DocumentExporter.exportPages(pages),
+                                                  name: exportName, cardLike: document.kind.isTwoSided)
                 } label: {
                     Label("Download / Share as PDF", systemImage: "square.and.arrow.down")
                 }
                 .disabled(pages.isEmpty)
-                Button {
-                    saveToFiles()
-                } label: {
-                    Label("Save to Files", systemImage: "folder")
-                }
-                .disabled(pages.isEmpty)
             } footer: {
-                Text("Creates a PDF of all pages - to save in Files, print, mail or send to an office.")
+                Text("Save in Files, print, mail or send to an office - as a copy with a stamp, blacked-out numbers, a password or smaller if you like.")
             }
 
             Section {
@@ -314,6 +475,13 @@ struct DocumentDetailView: View {
                         Text("Valid until")
                     }
                 }
+                if !document.tags.isEmpty {
+                    LabeledContent("Tags") { Text(verbatim: document.tags.joined(separator: ", ")) }
+                }
+                let tripNames = trips.filter { document.tripIDs.contains($0.id) }.map(\.name)
+                if !tripNames.isEmpty {
+                    LabeledContent("Trips") { Text(verbatim: tripNames.joined(separator: ", ")) }
+                }
                 if !document.note.isEmpty { Text(verbatim: document.note).font(.callout) }
                 Label(document.isPrivate ? LocalizedStringKey("Only on this iPhone") : LocalizedStringKey("Shared with the family"),
                       systemImage: document.isPrivate ? "iphone" : "person.2.fill")
@@ -327,243 +495,73 @@ struct DocumentDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Edit") { editing = DocumentEditTarget(document: document) }
+                Menu {
+                    Button {
+                        editing = DocumentEditTarget(document: document)
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    Button {
+                        requesting = DocumentRequestTarget(document: document)
+                    } label: {
+                        Label("Ask a family member", systemImage: "person.crop.circle.badge.questionmark")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
             }
         }
         .sheet(item: $editing) { target in
             DocumentForm(family: family, target: target)
         }
-        .sheet(item: Binding(get: { exportURL.map { ExportItem(url: $0) } }, set: { if $0 == nil { exportURL = nil } })) { item in
-            ActivityView(items: [item.url])
+        .sheet(item: $exportRequest) { request in
+            DocumentExportSheet(request: request)
         }
-        .background(
-            // Its own view: one view can present only one file panel.
-            Color.clear.fileExporter(isPresented: $exporting, document: exportFile, contentType: .pdf,
-                                     defaultFilename: document.displayTitle) { result in
-                if case .failure = result { message = "Could not save the file." }
-            }
-        )
-        .fullScreenCover(isPresented: $scanning) {
-            DocumentScannerView(onFinish: { images in
-                scanning = false
-                addImages(images)
-            }, onCancel: { scanning = false })
-            .ignoresSafeArea()
+        .sheet(item: $requesting) { target in
+            DocumentRequestSheet(family: family, target: target)
         }
-        .fileImporter(isPresented: $importing, allowedContentTypes: [.pdf, .image], allowsMultipleSelection: true) { result in
-            if case .success(let urls) = result { importFiles(urls) }
-        }
-        .onChange(of: photoItems) { _, items in
-            guard !items.isEmpty else { return }
-            Task { await importPhotos(items) }
+        .sheet(isPresented: $editingPages) {
+            PageEditorView(family: family, document: document)
         }
         .sheet(item: $viewing) { page in
             VaultGate { PageViewer(page: page) }
         }
-        .confirmationDialog("Delete this page?", isPresented: Binding(get: { deletingPage != nil }, set: { if !$0 { deletingPage = nil } }), titleVisibility: .visible) {
-            Button("Delete", role: .destructive) {
-                if let page = deletingPage {
-                    context.delete(page)
-                    document.updatedAt = Date()
-                    try? context.save()
-                    sync.scanNow()
-                }
-                deletingPage = nil
+        .scanGuide(mode: $guide, scanning: $scanMode)
+        .fullScreenCover(item: $scanMode) { mode in
+            DocumentScannerView(onFinish: { images in
+                scanMode = nil
+                add(DocumentService.pages(from: images, twoSided: mode != .pages, firstSide: mode == .back ? .back : .front))
+            }, onCancel: { scanMode = nil })
+            .ignoresSafeArea()
+        }
+        .fileImporter(isPresented: $importing, allowedContentTypes: [.pdf, .image], allowsMultipleSelection: true) { result in
+            if case .success(let urls) = result {
+                let imported = PageImport.files(urls)
+                message = imported.tooLarge ? "This PDF is too large (max. 20 MB)." : nil
+                add(imported.pages)
+            }
+        }
+        .onChange(of: photoItems) { _, items in
+            guard !items.isEmpty else { return }
+            Task {
+                let new = await PageImport.photos(items)
+                photoItems = []
+                add(new)
             }
         }
     }
 
-    private var addPagesMenu: some View {
-        Menu {
-            if DocumentScannerView.isAvailable {
-                Button { scanning = true } label: { Label("Scan with camera", systemImage: "doc.viewfinder") }
-            }
-            PhotosPicker(selection: $photoItems, maxSelectionCount: 10, matching: .images) {
-                Label("Choose photos", systemImage: "photo.on.rectangle")
-            }
-            Button { importing = true } label: { Label("Import PDF or image file", systemImage: "folder") }
-        } label: {
-            Label("Add pages", systemImage: "plus.rectangle.on.rectangle")
-        }
+    private var exportName: String {
+        let owner = MemberNames(members).name(document.memberID) ?? document.personName
+        return DocumentService.fileName(owner.isEmpty ? document.displayTitle : "\(document.displayTitle) - \(owner)")
     }
 
-    private func download() {
-        message = nil
-        guard let url = DocumentService.exportFile(document, pages: pages) else {
-            message = "Could not create the PDF."
-            return
-        }
-        exportURL = url
-    }
-
-    private func saveToFiles() {
-        message = nil
-        guard let data = DocumentService.pdf(of: pages) else {
-            message = "Could not create the PDF."
-            return
-        }
-        exportFile = PDFFile(data: data)
-        exporting = true
-    }
-
-    private func addImages(_ images: [UIImage]) {
-        let items = images.compactMap { DocumentService.storageJPEG($0).map { (format: "jpg", data: $0) } }
+    private func add(_ items: [NewPage]) {
         guard !items.isEmpty else { return }
         DocumentService.addPages(items, to: document, context: context)
         try? context.save()
         sync.scanNow()
-    }
-
-    private func importPhotos(_ items: [PhotosPickerItem]) async {
-        var images: [UIImage] = []
-        for item in items {
-            if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) { images.append(image) }
-        }
-        photoItems = []
-        addImages(images)
-    }
-
-    private func importFiles(_ urls: [URL]) {
-        var items: [(format: String, data: Data)] = []
-        for url in urls {
-            let access = url.startAccessingSecurityScopedResource()
-            defer { if access { url.stopAccessingSecurityScopedResource() } }
-            guard let data = try? Data(contentsOf: url) else { continue }
-            if UTType(filenameExtension: url.pathExtension)?.conforms(to: .pdf) == true {
-                guard data.count <= DocumentLimits.maxPDFBytes else {
-                    message = "This PDF is too large (max. 20 MB)."
-                    continue
-                }
-                items.append((format: "pdf", data: data))
-            } else if let image = UIImage(data: data), let jpeg = DocumentService.storageJPEG(image) {
-                items.append((format: "jpg", data: jpeg))
-            }
-        }
-        guard !items.isEmpty else { return }
-        DocumentService.addPages(items, to: document, context: context)
-        try? context.save()
-        sync.scanNow()
-    }
-}
-
-enum DocumentLimits {
-    static let maxPDFBytes = 20 * 1024 * 1024
-}
-
-private struct ExportItem: Identifiable {
-    let url: URL
-    var id: String { url.path }
-}
-
-/// The share sheet (Save to Files, AirDrop, Mail, Print …).
-struct ActivityView: UIViewControllerRepresentable {
-    let items: [Any]
-
-    func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: items, applicationActivities: nil)
-    }
-
-    func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
-}
-
-/// A PDF for "Save to Files".
-struct PDFFile: FileDocument {
-    static var readableContentTypes: [UTType] { [.pdf] }
-    var data: Data
-
-    init(data: Data) { self.data = data }
-
-    init(configuration: ReadConfiguration) throws {
-        data = configuration.file.regularFileContents ?? Data()
-    }
-
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        FileWrapper(regularFileWithContents: data)
-    }
-}
-
-private struct PageThumbnail: View {
-    let page: DocumentPage
-
-    var body: some View {
-        Group {
-            if page.isPDF {
-                VStack(spacing: 6) {
-                    Image(systemName: "doc.richtext.fill").font(.largeTitle).foregroundStyle(.red)
-                    Text(verbatim: "PDF").font(.caption.weight(.semibold))
-                }
-                .frame(width: 90, height: 120)
-                .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
-            } else if let data = page.data, let image = UIImage(data: data) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 90, height: 120)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            } else {
-                VStack(spacing: 6) {
-                    ProgressView()
-                    Text("Loading…").font(.caption2).foregroundStyle(.secondary)
-                }
-                .frame(width: 90, height: 120)
-                .background(Color.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
-            }
-        }
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.secondary.opacity(0.3)))
-    }
-}
-
-/// Full-screen page with zoom (photos) or the PDF viewer.
-private struct PageViewer: View {
-    let page: DocumentPage
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            Group {
-                if let data = page.data {
-                    if page.isPDF {
-                        PDFKitView(document: PDFDocument(data: data))
-                    } else {
-                        PDFKitView(document: PDFDocument.single(image: UIImage(data: data)))
-                    }
-                } else {
-                    Text("This page is still downloading from iCloud.").foregroundStyle(.secondary)
-                }
-            }
-            .ignoresSafeArea(edges: .bottom)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-        }
-    }
-}
-
-extension PDFDocument {
-    /// A one-page PDF of a photo (so photos zoom like PDFs).
-    static func single(image: UIImage?) -> PDFDocument? {
-        guard let image, let page = PDFPage(image: image) else { return nil }
-        let document = PDFDocument()
-        document.insert(page, at: 0)
-        return document
-    }
-}
-
-struct PDFKitView: UIViewRepresentable {
-    let document: PDFDocument?
-
-    func makeUIView(context: Context) -> PDFView {
-        let view = PDFView()
-        view.autoScales = true
-        view.displayMode = .singlePageContinuous
-        view.displayDirection = .vertical
-        view.document = document
-        return view
-    }
-
-    func updateUIView(_ view: PDFView, context: Context) {
-        if view.document !== document { view.document = document }
+        Task { await DocumentText.readMissing(familyID: family.id, context: context) }
     }
 }
 
@@ -578,6 +576,8 @@ struct DocumentForm: View {
     @EnvironmentObject private var sync: SyncCoordinator
     @Query private var members: [FamilyMember]
     @Query private var cars: [Car]
+    @Query private var trips: [Trip]
+    @Query private var allDocuments: [FamilyDocument]
     @State private var title: String
     @State private var kind: DocumentKind
     @State private var memberID: UUID?
@@ -591,8 +591,12 @@ struct DocumentForm: View {
     @State private var remind: Bool
     @State private var note: String
     @State private var isPrivate: Bool
-    @State private var pending: [(format: String, data: Data)] = []
-    @State private var scanning = false
+    @State private var tags: [String]
+    @State private var newTag = ""
+    @State private var tripIDs: Set<UUID>
+    @State private var pending: [NewPage] = []
+    @State private var scanMode: ScanMode?
+    @State private var guide: ScanMode?
     @State private var importing = false
     @State private var photoItems: [PhotosPickerItem] = []
     @State private var confirmDelete = false
@@ -604,6 +608,8 @@ struct DocumentForm: View {
         let fid = family.id
         _members = Query(filter: #Predicate<FamilyMember> { $0.familyID == fid && $0.isActive == true }, sort: \FamilyMember.joinedAt)
         _cars = Query(filter: #Predicate<Car> { $0.familyID == fid && $0.isArchived == false }, sort: \Car.sortOrder)
+        _trips = Query(filter: #Predicate<Trip> { $0.familyID == fid && $0.isArchived == false }, sort: \Trip.startDate)
+        _allDocuments = Query(filter: #Predicate<FamilyDocument> { $0.familyID == fid })
         let d = target.document
         let inFiveYears = Calendar.current.date(byAdding: .year, value: 5, to: Date()) ?? Date()
         _title = State(initialValue: d?.title ?? "")
@@ -619,6 +625,24 @@ struct DocumentForm: View {
         _remind = State(initialValue: d?.remind ?? true)
         _note = State(initialValue: d?.note ?? "")
         _isPrivate = State(initialValue: d?.isPrivate ?? false)
+        _tags = State(initialValue: d?.tags ?? [])
+        _tripIDs = State(initialValue: d?.tripIDs ?? [])
+    }
+
+    private var tagChoices: [String] {
+        let year = Calendar.current.component(.year, from: Date())
+        var result = DocumentTags.suggested(year: year).map { tag in
+            tag.hasPrefix("Taxes ") ? String(localized: "Taxes \(year)") : String(localized: String.LocalizationValue(tag))
+        }
+        for tag in allDocuments.flatMap(\.tags) + tags where !result.contains(where: { $0.caseInsensitiveCompare(tag) == .orderedSame }) {
+            result.append(tag)
+        }
+        return result
+    }
+
+    private var upcomingTrips: [Trip] {
+        let today = Calendar.current.startOfDay(for: Date())
+        return trips.filter { $0.endDate >= today || tripIDs.contains($0.id) }
     }
 
     var body: some View {
@@ -666,18 +690,42 @@ struct DocumentForm: View {
                                                            : LocalizedStringKey("Reminder 30 and 7 days before."))
                     }
                 }
+                Section {
+                    FlowTags(choices: tagChoices, selection: $tags)
+                    HStack {
+                        TextField("New tag", text: $newTag)
+                        Button("Add") {
+                            let tag = newTag.trimmingCharacters(in: .whitespaces)
+                            if !tag.isEmpty && !tags.contains(tag) { tags.append(tag) }
+                            newTag = ""
+                        }
+                        .disabled(newTag.trimmingCharacters(in: .whitespaces).isEmpty)
+                    }
+                } header: {
+                    Text("Tags")
+                }
+                if !upcomingTrips.isEmpty {
+                    Section {
+                        ForEach(upcomingTrips) { trip in
+                            Toggle(isOn: Binding(get: { tripIDs.contains(trip.id) }, set: { on in
+                                if on { tripIDs.insert(trip.id) } else { tripIDs.remove(trip.id) }
+                            })) {
+                                Text(verbatim: trip.name)
+                            }
+                        }
+                    } header: {
+                        Text("Needed for trips")
+                    } footer: {
+                        Text("Shown in the trip's travel documents.")
+                    }
+                }
                 if target.document == nil {
                     Section {
                         if !pending.isEmpty {
                             Text("\(pending.count) pages added")
                         }
-                        if DocumentScannerView.isAvailable {
-                            Button { scanning = true } label: { Label("Scan with camera", systemImage: "doc.viewfinder") }
-                        }
-                        PhotosPicker(selection: $photoItems, maxSelectionCount: 10, matching: .images) {
-                            Label("Choose photos", systemImage: "photo.on.rectangle")
-                        }
-                        Button { importing = true } label: { Label("Import PDF or image file", systemImage: "folder") }
+                        AddPagesMenu(twoSided: kind.isTwoSided, onScan: { guide = $0 },
+                                     importing: $importing, photoItems: $photoItems)
                     } header: {
                         Text("Pages")
                     }
@@ -707,19 +755,28 @@ struct DocumentForm: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) { Button("Save") { save() } }
             }
-            .fullScreenCover(isPresented: $scanning) {
+            .scanGuide(mode: $guide, scanning: $scanMode)
+            .fullScreenCover(item: $scanMode) { mode in
                 DocumentScannerView(onFinish: { images in
-                    scanning = false
-                    pending += images.compactMap { DocumentService.storageJPEG($0).map { (format: "jpg", data: $0) } }
-                }, onCancel: { scanning = false })
+                    scanMode = nil
+                    pending += DocumentService.pages(from: images, twoSided: mode != .pages, firstSide: mode == .back ? .back : .front)
+                }, onCancel: { scanMode = nil })
                 .ignoresSafeArea()
             }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.pdf, .image], allowsMultipleSelection: true) { result in
-                if case .success(let urls) = result { importFiles(urls) }
+                if case .success(let urls) = result {
+                    let imported = PageImport.files(urls)
+                    message = imported.tooLarge ? "This PDF is too large (max. 20 MB)." : nil
+                    pending += imported.pages
+                }
             }
             .onChange(of: photoItems) { _, items in
                 guard !items.isEmpty else { return }
-                Task { await importPhotos(items) }
+                Task {
+                    let new = await PageImport.photos(items)
+                    pending += new
+                    photoItems = []
+                }
             }
             .confirmationDialog("Delete this document and all its pages?", isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
@@ -737,33 +794,6 @@ struct DocumentForm: View {
         guard let document = target.document, !document.isPrivate else { return true }
         guard let me = session.currentMember else { return false }
         return me.role == .owner || document.createdByMemberID == nil || document.createdByMemberID == me.id
-    }
-
-    private func importPhotos(_ items: [PhotosPickerItem]) async {
-        for item in items {
-            if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data),
-               let jpeg = DocumentService.storageJPEG(image) {
-                pending.append((format: "jpg", data: jpeg))
-            }
-        }
-        photoItems = []
-    }
-
-    private func importFiles(_ urls: [URL]) {
-        for url in urls {
-            let access = url.startAccessingSecurityScopedResource()
-            defer { if access { url.stopAccessingSecurityScopedResource() } }
-            guard let data = try? Data(contentsOf: url) else { continue }
-            if UTType(filenameExtension: url.pathExtension)?.conforms(to: .pdf) == true {
-                guard data.count <= DocumentLimits.maxPDFBytes else {
-                    message = "This PDF is too large (max. 20 MB)."
-                    continue
-                }
-                pending.append((format: "pdf", data: data))
-            } else if let image = UIImage(data: data), let jpeg = DocumentService.storageJPEG(image) {
-                pending.append((format: "jpg", data: jpeg))
-            }
-        }
     }
 
     private func save() {
@@ -785,6 +815,8 @@ struct DocumentForm: View {
         document.expiresOn = hasExpiry ? expires : nil
         document.remind = hasExpiry && remind
         document.note = note
+        document.tags = tags
+        document.tripIDs = tripIDs
         document.updatedAt = Date()
         if !pending.isEmpty {
             DocumentService.addPages(pending, to: document, context: context)
@@ -792,10 +824,36 @@ struct DocumentForm: View {
         DocumentService.setPrivate(document, isPrivate, context: context)
         try? context.save()
         sync.scanNow()
+        let fid = family.id
         Task {
             if hasExpiry && remind { _ = await PlannerNotifications.requestPermissionIfNeeded() }
             await PlannerNotifications.reschedule(context: context)
+            await DocumentText.readMissing(familyID: fid, context: context)
         }
         dismiss()
+    }
+}
+
+/// Tag choices as toggle chips.
+struct FlowTags: View {
+    let choices: [String]
+    @Binding var selection: [String]
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(choices, id: \.self) { tag in
+                    let isOn = selection.contains { $0.caseInsensitiveCompare(tag) == .orderedSame }
+                    TagChip(title: tag, isOn: isOn) {
+                        if isOn {
+                            selection.removeAll { $0.caseInsensitiveCompare(tag) == .orderedSame }
+                        } else {
+                            selection.append(tag)
+                        }
+                    }
+                }
+            }
+            .padding(.vertical, 2)
+        }
     }
 }

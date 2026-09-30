@@ -66,6 +66,8 @@ extension FamilyDocument: SyncableRecord {
         p.set("createdByMemberID", createdByMemberID)
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
+        if !tagsRaw.isEmpty { p.set("tags", tagsRaw) }
+        if !tripIDsRaw.isEmpty { p.set("trips", tripIDsRaw) }
         // Only ever set in backups (private records are not synced).
         if isPrivate { p.set("private", true) }
         return p
@@ -82,6 +84,8 @@ extension FamilyDocument: SyncableRecord {
         expiresOn = p.date("expiresOn")
         remind = p.bool("remind", default: true)
         note = p.string("note")
+        tagsRaw = p.string("tags")
+        tripIDsRaw = p.string("trips")
         createdByMemberID = p.uuid("createdByMemberID")
         createdAt = p.date("createdAt", default: createdAt)
         updatedAt = p.date("updatedAt", default: updatedAt)
@@ -102,6 +106,9 @@ extension DocumentPage: SyncableRecord {
         p.set("bytes", byteCount)
         p.set("sortOrder", sortOrder)
         p.set("createdAt", createdAt)
+        if !sideRaw.isEmpty { p.set("side", sideRaw) }
+        if quarterTurns != 0 { p.set("turns", quarterTurns) }
+        if !text.isEmpty { p.set("text", text) }
         if isPrivate { p.set("private", true) }
         return p
     }
@@ -112,6 +119,11 @@ extension DocumentPage: SyncableRecord {
         byteCount = p.int("bytes")
         sortOrder = p.int("sortOrder")
         createdAt = p.date("createdAt", default: createdAt)
+        sideRaw = p.string("side")
+        quarterTurns = p.int("turns")
+        let synced = p.string("text")
+        // Text read on another iPhone; keep our own when it sent none.
+        if !synced.isEmpty { text = synced; textScanned = true }
         if p.values["private"] != nil { isPrivate = true }
     }
 

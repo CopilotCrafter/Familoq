@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.1 - Document scanning, combining and copies
+
+### Added
+- Front & back: ID cards, driving licences, residence permits and the car registration are scanned as front and back (with a short guide); "Add back side" for documents with only one side.
+- Download / Share: one page per side or both sides on one A4 page, "Mark as copy" stamp in Deutsch or English with who it is for, black out areas (really removed in the copy), smaller file, black & white, password.
+- Combine several documents into one PDF (in the order you tap them).
+- Edit pages: reorder, turn, mark front/back, replace with a new scan, delete, split into a new document.
+- Imported PDFs become one page per PDF page.
+- Search inside documents: the text of every page is read on the iPhone (for search only).
+- Tags (Car, House, Kids, Insurance, Taxes …) with a filter on top of the list.
+- Travel documents in a trip: pick passports, insurance cards and bookings; they open with Face ID, also without internet.
+- Request a document from a family member: a reminder with a link to the document.
+
 ## 0.9.0 - Cars and document vault
 
 ### Added

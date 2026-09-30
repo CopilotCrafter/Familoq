@@ -144,10 +144,12 @@ extension FamilyReminder: SyncableRecord {
         p.set("createdByMemberID", createdByMemberID)
         p.set("createdAt", createdAt)
         p.set("updatedAt", updatedAt)
+        if let documentID { p.set("documentID", documentID) }
         return p
     }
 
     func applySyncPayload(_ p: SyncPayload) {
+        documentID = p.uuid("documentID")
         title = p.string("title")
         notes = p.string("notes")
         dueDate = p.date("dueDate")

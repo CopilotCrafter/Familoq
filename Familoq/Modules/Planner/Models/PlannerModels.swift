@@ -77,6 +77,8 @@ final class FamilyReminder {
     var completedAt: Date? = nil
     var completedByMemberID: UUID? = nil
     var createdByMemberID: UUID? = nil
+    /// A requested document from the vault ("Please scan the birth certificate").
+    var documentID: UUID? = nil
     var createdAt: Date = Date()
     var updatedAt: Date = Date()
 
