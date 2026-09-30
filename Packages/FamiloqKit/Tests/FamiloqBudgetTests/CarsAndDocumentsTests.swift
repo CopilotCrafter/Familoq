@@ -22,6 +22,35 @@ final class CarsTests: XCTestCase {
         XCTAssertEqual(CarStats.totals(entries).map(\.kind), [.fuel, .parking])
     }
 
+    func testFillUpWithoutKmStillCounts() {
+        let entries = [
+            CarLogEntry(date: d(2026, 9, 1), amount: 80, kind: .fuel, quantity: 45, odometer: 10_000),
+            CarLogEntry(date: d(2026, 9, 5), amount: 50, kind: .fuel, quantity: 30),
+            CarLogEntry(date: d(2026, 9, 12), amount: 60, kind: .fuel, quantity: 35, odometer: 11_000)
+        ]
+        XCTAssertEqual(CarStats.consumption(entries)!, 6.5, accuracy: 0.001)
+    }
+
+    func testPlugInHybridDoesNotMixLitersAndKWh() {
+        let entries = [
+            CarLogEntry(date: d(2026, 9, 1), amount: 70, kind: .fuel, quantity: 40, odometer: 20_000),
+            CarLogEntry(date: d(2026, 9, 3), amount: 9, kind: .charging, quantity: 30, odometer: 20_100),
+            CarLogEntry(date: d(2026, 9, 20), amount: 50, kind: .fuel, quantity: 25, odometer: 20_500)
+        ]
+        XCTAssertEqual(CarStats.consumption(entries)!, 5.0, accuracy: 0.001)
+        XCTAssertEqual(CarStats.averagePrice(entries), Decimal(string: "1.846"))
+    }
+
+    func testQuantityParsing() {
+        XCTAssertEqual(CarQuantity.parse("45,23")!, 45.23, accuracy: 0.0001)
+        XCTAssertEqual(CarQuantity.parse("45.23")!, 45.23, accuracy: 0.0001)
+        XCTAssertEqual(CarQuantity.parse("12,125")!, 12.125, accuracy: 0.0001)
+        XCTAssertEqual(CarQuantity.parse(" 40 ")!, 40, accuracy: 0.0001)
+        XCTAssertNil(CarQuantity.parse(""))
+        XCTAssertNil(CarQuantity.parse("abc"))
+        XCTAssertNil(CarQuantity.parse("0"))
+    }
+
     func testNoConsumptionWithoutTwoReadings() {
         let entries = [
             CarLogEntry(date: d(2026, 9, 1), amount: 80, kind: .fuel, quantity: 45, odometer: 10_000),
@@ -46,8 +75,14 @@ final class CarsTests: XCTestCase {
         for name in ["Snickers", "Kaffee groß", "Supermarkt Tüte", "Scheibenwischer", "Waschanlage Premium"] {
             XCTAssertFalse(FuelReceipt.isFuelItem(name), name)
         }
-        XCTAssertTrue(FuelReceipt.isFuelReceipt(subcategoryKey: "transport.fuel", itemNames: []))
-        XCTAssertFalse(FuelReceipt.isFuelReceipt(subcategoryKey: "groceries.other", itemNames: ["Milch"]))
+        XCTAssertTrue(FuelReceipt.isFuelReceipt(subcategoryKey: "transport.fuel", items: []))
+        XCTAssertFalse(FuelReceipt.isFuelReceipt(subcategoryKey: "groceries.other",
+                                                 items: [ParsedReceiptItem(id: 0, name: "Milch", amount: 1)]))
+        // A supermarket item named "Super …" bought twice is not fuel.
+        XCTAssertFalse(FuelReceipt.isFuelReceipt(subcategoryKey: nil,
+                                                 items: [ParsedReceiptItem(id: 0, name: "Super Nudeln", amount: 2, quantity: 2)]))
+        XCTAssertTrue(FuelReceipt.isFuelReceipt(subcategoryKey: nil,
+                                                items: [ParsedReceiptItem(id: 0, name: "Diesel", amount: 60, quantity: Decimal(string: "35.5"))]))
     }
 
     func testFuelLitersFromAralReceipt() {

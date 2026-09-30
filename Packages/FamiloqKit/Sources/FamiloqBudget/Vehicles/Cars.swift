@@ -113,16 +113,30 @@ public struct CarLogEntry: Equatable, Sendable {
 }
 
 public enum CarStats {
+    /// Liters for fuel cars, kWh when there are only charging entries (a
+    /// plug-in hybrid's liters and kWh are never added together).
+    static func quantityKind(_ entries: [CarLogEntry]) -> CarCostKind {
+        entries.contains { $0.kind == .fuel && ($0.quantity ?? 0) > 0 } ? .fuel : .charging
+    }
+
     /// Average consumption per 100 km from full fill-ups with km readings.
-    /// The first fill-up only sets the start; every later one refills what
-    /// was used since the one before.
+    /// The first reading only sets the start; everything filled up after it
+    /// (also fill-ups without a km reading) until the last reading counts.
     public static func consumption(_ entries: [CarLogEntry]) -> Double? {
-        let fills = entries
-            .filter { $0.kind.hasQuantity && ($0.quantity ?? 0) > 0 && ($0.odometer ?? 0) > 0 }
+        let kind = quantityKind(entries)
+        let fills = entries.filter { $0.kind == kind && ($0.quantity ?? 0) > 0 }
+        let readings = fills.filter { ($0.odometer ?? 0) > 0 }
             .sorted { ($0.odometer ?? 0, $0.date) < ($1.odometer ?? 0, $1.date) }
-        guard fills.count >= 2, let first = fills.first?.odometer, let last = fills.last?.odometer, last > first else { return nil }
-        let used = fills.dropFirst().reduce(0.0) { $0 + ($1.quantity ?? 0) }
-        return used / Double(last - first) * 100
+        guard readings.count >= 2, let first = readings.first, let last = readings.last,
+              let start = first.odometer, let end = last.odometer, end > start else { return nil }
+        let used = fills
+            .filter { fill in
+                if let km = fill.odometer, km > 0 { return km > start && km <= end }
+                return fill.date > first.date && fill.date < last.date
+            }
+            .reduce(0.0) { $0 + ($1.quantity ?? 0) }
+        guard used > 0 else { return nil }
+        return used / Double(end - start) * 100
     }
 
     /// Kilometres driven between the lowest and highest reading.
@@ -139,7 +153,7 @@ public enum CarStats {
     public static func totals(_ entries: [CarLogEntry]) -> [(kind: CarCostKind, amount: Decimal)] {
         var sums: [CarCostKind: Decimal] = [:]
         for entry in entries { sums[entry.kind, default: 0] += entry.amount }
-        return CarCostKind.allCases.compactMap { kind in sums[kind].map { (kind, $0) } }
+        return CarCostKind.allCases.compactMap { kind in sums[kind].map { (kind: kind, amount: $0) } }
     }
 
     /// Everything spent per km driven (nil without two km readings).
@@ -150,7 +164,8 @@ public enum CarStats {
 
     /// Average price per liter (or kWh).
     public static func averagePrice(_ entries: [CarLogEntry]) -> Decimal? {
-        let fills = entries.filter { $0.kind.hasQuantity && ($0.quantity ?? 0) > 0 }
+        let kind = quantityKind(entries)
+        let fills = entries.filter { $0.kind == kind && ($0.quantity ?? 0) > 0 }
         let quantity = fills.reduce(0.0) { $0 + ($1.quantity ?? 0) }
         guard quantity > 0 else { return nil }
         return (total(fills) / Decimal(quantity)).rounded(scale: 3)
@@ -177,21 +192,46 @@ public enum FuelReceipt {
         return false
     }
 
-    /// Fuel receipt: a fuel station rule matched, or an item is fuel.
-    public static func isFuelReceipt(subcategoryKey: String?, itemNames: [String]) -> Bool {
-        subcategoryKey == "transport.fuel" || itemNames.contains(where: isFuelItem)
+    /// A pumped fuel line: a fuel name with liters ("45,23 l x 1,799") -
+    /// not a supermarket item that happens to be called "Super …".
+    public static func isFuelLine(_ item: ParsedReceiptItem) -> Bool {
+        guard isFuelItem(item.name), let quantity = item.quantity, quantity > 0 else { return false }
+        var whole = quantity
+        var rounded = Decimal()
+        NSDecimalRound(&rounded, &whole, 0, .plain)
+        return quantity != rounded || quantity >= 10
     }
 
-    /// Liters of the fuel items (their quantity: "45,23 l x 1,799").
+    /// Fuel receipt: a fuel station rule matched, or fuel was pumped.
+    public static func isFuelReceipt(subcategoryKey: String?, items: [ParsedReceiptItem]) -> Bool {
+        subcategoryKey == "transport.fuel" || items.contains(where: isFuelLine)
+    }
+
+    /// Liters of the fuel lines.
     public static func liters(items: [ParsedReceiptItem]) -> Double? {
-        let total = items.filter { isFuelItem($0.name) }.compactMap(\.quantity).reduce(Decimal(0), +)
+        let total = items.filter(isFuelLine).compactMap(\.quantity).reduce(Decimal(0), +)
         guard total > 0 else { return nil }
         return NSDecimalNumber(decimal: total).doubleValue
     }
 
-    /// Amount of the fuel items (the rest is shop - snacks, coffee).
+    /// Amount of the fuel lines (the rest is shop - snacks, coffee).
     public static func fuelAmount(items: [ParsedReceiptItem]) -> Decimal {
-        items.filter { isFuelItem($0.name) }.reduce(0) { $0 + $1.amount }
+        items.filter(isFuelLine).reduce(0) { $0 + $1.amount }
+    }
+}
+
+/// Liters / kWh typed by hand: "45,23", "45.23" or "12,125" (never a
+/// thousands separator - nobody tanks 12 125 liters).
+public enum CarQuantity {
+    public static func parse(_ text: String) -> Double? {
+        var s = text.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: " ", with: "")
+        s = s.replacingOccurrences(of: ",", with: ".")
+        let parts = s.split(separator: ".", omittingEmptySubsequences: false)
+        if parts.count > 2 {
+            s = parts.dropLast().joined() + "." + parts.last!
+        }
+        guard let value = Double(s), value > 0, value.isFinite else { return nil }
+        return value
     }
 }
 

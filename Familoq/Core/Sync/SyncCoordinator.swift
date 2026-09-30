@@ -472,7 +472,8 @@ final class SyncCoordinator: ObservableObject, CKSyncEngineDelegate {
             // The family itself goes away together with its zone.
             return
         }
-        if let object = try? handler.find(context, id) {
+        // A record kept "Only on this iPhone" is not the family's copy any more.
+        if let object = try? handler.find(context, id), object.isSyncShareable {
             context.delete(object)
         }
         if let entry = ledgerEntry(recordID.recordName) {

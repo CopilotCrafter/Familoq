@@ -126,6 +126,13 @@ struct AgendaRow: View {
     }
 }
 
+enum CarFormatting {
+    /// "45,23" (German) / "45.23" - read back with CarQuantity.parse.
+    static func quantity(_ value: Double) -> String {
+        value.formatted(.number.precision(.fractionLength(0...3)).grouping(.never))
+    }
+}
+
 enum CarFormat {
     static func consumption(_ value: Double, _ fuel: FuelType) -> String {
         value.formatted(.number.precision(.fractionLength(1))) + " " + fuel.unit + "/100 km"
@@ -162,6 +169,7 @@ struct CarDetailView: View {
     @State private var costTarget: CarCostTarget?
     @State private var contractTarget: ContractEditTarget?
     @State private var allYears = false
+    @Environment(\.dismiss) private var dismiss
 
     init(family: Family, car: Car) {
         self.family = family
@@ -176,6 +184,15 @@ struct CarDetailView: View {
     }
 
     var body: some View {
+        // Deleted in the edit sheet: never touch the deleted car, go back.
+        if car.isDeleted || car.modelContext == nil {
+            Color.clear.onAppear { dismiss() }
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
         let calendar = FamiloqCalendar.make()
         let now = Date()
         let year = calendar.component(.year, from: now)
@@ -184,7 +201,7 @@ struct CarDetailView: View {
         let allEntries = CarService.entries(expenses)
         let months = max(1, calendar.component(.month, from: now))
         let currency = family.baseCurrencyCode
-        List {
+        return List {
             Section {
                 Picker("Period", selection: $allYears) {
                     Text(verbatim: String(year)).tag(false)
@@ -219,7 +236,7 @@ struct CarDetailView: View {
                 Button {
                     costTarget = CarCostTarget(expense: nil, carID: car.id, kind: car.fuelType == .electric ? .charging : .fuel)
                 } label: {
-                    Label(car.fuelType == .electric ? "Add charging" : "Add fuel", systemImage: car.fuelType == .electric ? "bolt.fill" : "fuelpump")
+                    Label(car.fuelType == .electric ? LocalizedStringKey("Add charging") : LocalizedStringKey("Add fuel"), systemImage: car.fuelType == .electric ? "bolt.fill" : "fuelpump")
                 }
                 Button {
                     costTarget = CarCostTarget(expense: nil, carID: car.id, kind: .service)
@@ -565,7 +582,7 @@ struct CarCostSheet: View {
         _what = State(initialValue: e?.merchant ?? "")
         _amountText = State(initialValue: e.map { "\($0.amount)" } ?? "")
         _date = State(initialValue: e?.date ?? Date())
-        _quantityText = State(initialValue: e?.fuelQuantity.map { $0.formatted(.number.precision(.fractionLength(0...2)).grouping(.never)) } ?? "")
+        _quantityText = State(initialValue: e?.fuelQuantity.map(CarFormatting.quantity) ?? "")
         _odometerText = State(initialValue: (e?.odometer ?? 0) > 0 ? "\(e?.odometer ?? 0)" : "")
         _note = State(initialValue: e?.note ?? "")
     }
@@ -652,8 +669,8 @@ struct CarCostSheet: View {
 
     private var pricePerUnit: Decimal? {
         guard kind.hasQuantity, let amount = DecimalParser.parse(amountText), amount > 0,
-              let quantity = DecimalParser.parse(quantityText), quantity > 0 else { return nil }
-        return (amount / quantity).rounded(scale: 3)
+              let quantity = CarQuantity.parse(quantityText) else { return nil }
+        return (amount / Decimal(quantity)).rounded(scale: 3)
     }
 
     private func save() {
@@ -685,7 +702,7 @@ struct CarCostSheet: View {
         expense.date = date
         expense.carID = carID
         expense.carCost = kind
-        expense.fuelQuantity = kind.hasQuantity ? DecimalParser.parse(quantityText).map { NSDecimalNumber(decimal: $0).doubleValue } : nil
+        expense.fuelQuantity = kind.hasQuantity ? CarQuantity.parse(quantityText) : nil
         expense.odometer = Int(odometerText.filter(\.isNumber)) ?? 0
         expense.note = note
         expense.updatedAt = Date()
@@ -717,95 +734,84 @@ struct CarCostSheet: View {
 /// Dashboard: monthly cost per car and documents that expire soon.
 struct HouseholdDashboardSection: View {
     let family: Family
-    @Environment(\.modelContext) private var context
-    @EnvironmentObject private var sync: SyncCoordinator
-    @State private var rows: [CarRow] = []
-    @State private var documentCount = 0
-    @State private var expiringCount = 0
+    @Query private var cars: [Car]
+    @Query private var carExpenses: [Expense]
+    @Query private var documents: [FamilyDocument]
 
-    struct CarRow: Identifiable {
-        let car: Car
-        let perMonth: Decimal
-        let due: HouseholdAgenda.Item?
-        var id: UUID { car.id }
+    init(family: Family) {
+        self.family = family
+        let fid = family.id
+        let yearStart = FamiloqCalendar.make().dateInterval(of: .year, for: Date())?.start ?? Date.distantPast
+        _cars = Query(filter: #Predicate<Car> { $0.familyID == fid && $0.isArchived == false },
+                      sort: [SortDescriptor(\Car.sortOrder), SortDescriptor(\Car.createdAt)])
+        _carExpenses = Query(filter: #Predicate<Expense> { $0.familyID == fid && $0.carID != nil && $0.date >= yearStart })
+        _documents = Query(filter: #Predicate<FamilyDocument> { $0.familyID == fid })
     }
 
     var body: some View {
-        Group {
-            if !rows.isEmpty || documentCount > 0 {
-                Section {
-                    ForEach(rows) { row in
-                        NavigationLink {
-                            LazyView(CarDetailView(family: family, car: row.car))
-                        } label: {
-                            HStack {
-                                Label {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(verbatim: row.car.displayName).lineLimit(1)
-                                        if let due = row.due {
-                                            Text(verbatim: "\(due.title): \(due.date.formatted(.dateTime.day().month(.abbreviated)))")
-                                                .font(.caption)
-                                                .foregroundStyle(PlannerDaysLeft.days(until: due.date) <= 14 ? Color.red : Color.orange)
-                                        }
-                                    }
-                                } icon: {
-                                    Image(systemName: row.car.fuelType == .electric ? "bolt.car.fill" : "car.fill")
-                                }
-                                Spacer()
-                                Text("\(row.perMonth.currency(family.baseCurrencyCode)) / month").monospacedDigit().foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                    if documentCount > 0 {
-                        NavigationLink {
-                            LazyView(DocumentsScreen(family: family).navigationTitle("Documents"))
-                        } label: {
-                            HStack {
-                                Label("Documents", systemImage: "doc.text.fill")
-                                Spacer()
-                                if expiringCount > 0 {
-                                    Text("\(expiringCount) expiring").font(.caption).foregroundStyle(.orange)
-                                } else {
-                                    Text("\(documentCount)").foregroundStyle(.secondary)
-                                }
-                            }
-                        }
-                    }
-                } header: {
-                    Text("Cars & documents")
-                } footer: {
-                    if !rows.isEmpty {
-                        Text("Car costs per month: average of this year.")
-                    }
-                }
-            }
-        }
-        .task(id: sync.remoteChangeCount) { load() }
-        .onAppear { load() }
-    }
-
-    private func load() {
         let calendar = FamiloqCalendar.make()
         let now = Date()
-        let year = calendar.component(.year, from: now)
         let months = Decimal(max(1, calendar.component(.month, from: now)))
-        let fid = family.id
-        let cars = CarService.cars(familyID: fid, context: context)
-        let expenses = (try? context.fetch(FetchDescriptor<Expense>(predicate: #Predicate { $0.familyID == fid && $0.carID != nil }))) ?? []
-        rows = cars.map { car in
-            let thisYear = expenses.filter { $0.carID == car.id && calendar.component(.year, from: $0.date) == year }
-            let total = CarStats.total(CarService.entries(thisYear))
-            let due = HouseholdAgenda.carItems([car], now: now, calendar: calendar)
-                .first { $0.kind != .tyres && PlannerDaysLeft.days(until: $0.date) <= 45 }
-            return CarRow(car: car, perMonth: (total / months).rounded(scale: 2), due: due)
-        }
-        let documents = (try? context.fetch(FetchDescriptor<FamilyDocument>(predicate: #Predicate { $0.familyID == fid }))) ?? []
-        documentCount = documents.count
-        expiringCount = documents.filter {
+        let expiring = documents.filter {
             switch DocumentExpiry.state(expiresOn: $0.expiresOn, now: now, calendar: calendar) {
             case .soon?, .expired?: return true
             default: return false
             }
         }.count
+        if !cars.isEmpty || !documents.isEmpty {
+            Section {
+                ForEach(cars) { car in
+                    carRow(car, months: months, calendar: calendar, now: now)
+                }
+                if !documents.isEmpty {
+                    NavigationLink {
+                        LazyView(DocumentsScreen(family: family).navigationTitle("Documents"))
+                    } label: {
+                        HStack {
+                            Label("Documents", systemImage: "doc.text.fill")
+                            Spacer()
+                            if expiring > 0 {
+                                Text("\(expiring) expiring").font(.caption).foregroundStyle(.orange)
+                            } else {
+                                Text(verbatim: "\(documents.count)").foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                }
+            } header: {
+                Text("Cars & documents")
+            } footer: {
+                if !cars.isEmpty {
+                    Text("Car costs per month: average of this year.")
+                }
+            }
+        }
+    }
+
+    private func carRow(_ car: Car, months: Decimal, calendar: Calendar, now: Date) -> some View {
+        let total = CarStats.total(CarService.entries(carExpenses.filter { $0.carID == car.id }))
+        let perMonth = (total / months).rounded(scale: 2)
+        let due = HouseholdAgenda.carItems([car], now: now, calendar: calendar)
+            .first { $0.kind != .tyres && PlannerDaysLeft.days(until: $0.date) <= 45 }
+        return NavigationLink {
+            LazyView(CarDetailView(family: family, car: car))
+        } label: {
+            HStack {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(verbatim: car.displayName).lineLimit(1)
+                        if let due {
+                            Text(verbatim: "\(due.title): \(due.date.formatted(.dateTime.day().month(.abbreviated)))")
+                                .font(.caption)
+                                .foregroundStyle(PlannerDaysLeft.days(until: due.date) <= 14 ? Color.red : Color.orange)
+                        }
+                    }
+                } icon: {
+                    Image(systemName: car.fuelType == .electric ? "bolt.car.fill" : "car.fill")
+                }
+                Spacer()
+                Text("\(perMonth.currency(family.baseCurrencyCode)) / month").monospacedDigit().foregroundStyle(.secondary)
+            }
+        }
     }
 }

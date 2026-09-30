@@ -119,7 +119,7 @@ enum ReceiptDrafting {
         let learned = learnedTargets(itemRules)
         let items = draftItems(from: parsed, lookup: lookup, learned: learned)
         let suggestedKey = lookup.subcategory(suggestion?.subcategoryID)?.systemKey
-        let isFuel = FuelReceipt.isFuelReceipt(subcategoryKey: suggestedKey, itemNames: parsed.items.map(\.name))
+        let isFuel = FuelReceipt.isFuelReceipt(subcategoryKey: suggestedKey, items: parsed.items)
         let liters = FuelReceipt.liters(items: parsed.items)
 
         let total = parsed.total ?? (parsed.items.isEmpty ? nil : parsed.itemsSum)
@@ -147,7 +147,7 @@ enum ReceiptDrafting {
             warnings: parsed.warnings,
             learned: learned,
             isFuel: isFuel,
-            litersText: liters.map { NSDecimalNumber(value: $0).stringValue } ?? ""
+            litersText: liters.map(CarFormatting.quantity) ?? ""
         )
     }
 
@@ -156,7 +156,7 @@ enum ReceiptDrafting {
         guard let car = expenses.first(where: { $0.carID != nil }) else { return }
         draft.isFuel = true
         draft.carID = car.carID
-        draft.litersText = car.fuelQuantity.map { NSDecimalNumber(value: $0).stringValue } ?? ""
+        draft.litersText = car.fuelQuantity.map(CarFormatting.quantity) ?? ""
         draft.odometerText = car.odometer > 0 ? String(car.odometer) : ""
     }
 
@@ -181,7 +181,7 @@ enum ReceiptDrafting {
                     confidence: 1, source: .learned,
                     suggestedCategoryID: target.categoryID, suggestedSubcategoryID: target.subcategoryID)
             }
-            if let transportID, FuelReceipt.isFuelItem(item.name) {
+            if let transportID, FuelReceipt.isFuelLine(item) {
                 return ReceiptDraftItem(
                     name: item.name, amountText: plain(item.amount),
                     categoryID: transportID, subcategoryID: fuelID,
@@ -406,12 +406,21 @@ enum ReceiptSaver {
     /// Fuel receipt: the fuel expense belongs to the chosen car (the rest -
     /// snacks, coffee - stays an ordinary expense).
     static func attachCar(_ draft: ReceiptDraft, to expenses: [Expense], lookup: CategoryLookup) {
-        guard let carID = draft.carID, draft.isFuel else { return }
+        guard draft.isFuel else { return }
         let fuel = expenses.first { lookup.subcategory($0.subcategoryID)?.systemKey == "transport.fuel" }
             ?? expenses.first { lookup.category($0.categoryID)?.systemKey == "transport" }
-            ?? expenses.max { $0.amount < $1.amount }
-        guard let fuel else { return }
-        for other in expenses where other !== fuel && other.carID == carID {
+        // "No car" (or no fuel booked): nothing on this receipt belongs to a car.
+        guard let carID = draft.carID, let fuel else {
+            for expense in expenses where expense.carID != nil {
+                expense.carID = nil
+                expense.carCostRaw = ""
+                expense.fuelMilli = 0
+                expense.odometer = 0
+                expense.updatedAt = Date()
+            }
+            return
+        }
+        for other in expenses where other !== fuel && other.carID != nil {
             other.carID = nil
             other.carCostRaw = ""
             other.fuelMilli = 0
@@ -419,7 +428,7 @@ enum ReceiptSaver {
         }
         fuel.carID = carID
         fuel.carCost = .fuel
-        fuel.fuelQuantity = DecimalParser.parse(draft.litersText).map { NSDecimalNumber(decimal: $0).doubleValue }
+        fuel.fuelQuantity = CarQuantity.parse(draft.litersText)
         fuel.odometer = Int(draft.odometerText.filter(\.isNumber)) ?? 0
         fuel.updatedAt = Date()
     }

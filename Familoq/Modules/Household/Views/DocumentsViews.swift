@@ -21,12 +21,22 @@ struct DocumentsScreen: View {
     }
 }
 
+/// Unlocked once for the list, its documents and their pages; locked again
+/// as soon as Familoq goes to the background.
+@MainActor
+final class VaultLock: ObservableObject {
+    static let shared = VaultLock()
+    @Published var unlocked = false
+}
+
 /// Asks for Face ID / the passcode before showing the vault, and locks again
 /// when the app goes to the background.
 struct VaultGate<Content: View>: View {
     @ViewBuilder let content: () -> Content
     @Environment(\.scenePhase) private var scenePhase
-    @State private var unlocked = false
+    @ObservedObject private var lock = VaultLock.shared
+
+    private var unlocked: Bool { lock.unlocked }
 
     var body: some View {
         Group {
@@ -49,15 +59,17 @@ struct VaultGate<Content: View>: View {
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
-                unlocked = false
+                lock.unlocked = false
                 DocumentService.clearExports()
             }
         }
     }
 
     private func unlock() async {
-        guard !unlocked else { return }
-        unlocked = await AppLock.shared.authenticate(reason: String(localized: "Open the family documents"))
+        guard !lock.unlocked else { return }
+        if await AppLock.shared.authenticate(reason: String(localized: "Open the family documents")) {
+            lock.unlocked = true
+        }
     }
 }
 
@@ -205,6 +217,7 @@ struct DocumentDetailView: View {
     @State private var viewing: DocumentPage?
     @State private var deletingPage: DocumentPage?
     @State private var message: String?
+    @Environment(\.dismiss) private var dismiss
 
     init(family: Family, document: FamilyDocument) {
         self.family = family
@@ -217,8 +230,17 @@ struct DocumentDetailView: View {
     }
 
     var body: some View {
+        // Deleted in the edit sheet: never touch the deleted document, go back.
+        if document.isDeleted || document.modelContext == nil {
+            Color.clear.onAppear { dismiss() }
+        } else {
+            VaultGate { content }
+        }
+    }
+
+    private var content: some View {
         let calendar = FamiloqCalendar.make()
-        List {
+        return List {
             Section {
                 if pages.isEmpty {
                     Text("No pages yet - scan the document or import a photo or PDF.").foregroundStyle(.secondary)
@@ -314,10 +336,13 @@ struct DocumentDetailView: View {
         .sheet(item: Binding(get: { exportURL.map { ExportItem(url: $0) } }, set: { if $0 == nil { exportURL = nil } })) { item in
             ActivityView(items: [item.url])
         }
-        .fileExporter(isPresented: $exporting, document: exportFile, contentType: .pdf,
-                      defaultFilename: document.displayTitle) { result in
-            if case .failure = result { message = "Could not save the file." }
-        }
+        .background(
+            // Its own view: one view can present only one file panel.
+            Color.clear.fileExporter(isPresented: $exporting, document: exportFile, contentType: .pdf,
+                                     defaultFilename: document.displayTitle) { result in
+                if case .failure = result { message = "Could not save the file." }
+            }
+        )
         .fullScreenCover(isPresented: $scanning) {
             DocumentScannerView(onFinish: { images in
                 scanning = false
@@ -333,7 +358,7 @@ struct DocumentDetailView: View {
             Task { await importPhotos(items) }
         }
         .sheet(item: $viewing) { page in
-            PageViewer(page: page)
+            VaultGate { PageViewer(page: page) }
         }
         .confirmationDialog("Delete this page?", isPresented: Binding(get: { deletingPage != nil }, set: { if !$0 { deletingPage = nil } }), titleVisibility: .visible) {
             Button("Delete", role: .destructive) {
@@ -662,6 +687,7 @@ struct DocumentForm: View {
                     Toggle(isOn: $isPrivate) {
                         Label("Only on this iPhone", systemImage: "iphone")
                     }
+                    .disabled(!canChangePrivacy)
                 } footer: {
                     Text(isPrivate ? LocalizedStringKey("Not shared with the family and not stored in iCloud - include it in your own backups.")
                                    : LocalizedStringKey("Shared only with your family through iCloud. Opening documents always needs Face ID or your passcode."))
@@ -703,6 +729,14 @@ struct DocumentForm: View {
                 }
             }
         }
+    }
+
+    /// Taking a shared document off everyone's iPhones is up to whoever
+    /// added it (or the owner).
+    private var canChangePrivacy: Bool {
+        guard let document = target.document, !document.isPrivate else { return true }
+        guard let me = session.currentMember else { return false }
+        return me.role == .owner || document.createdByMemberID == nil || document.createdByMemberID == me.id
     }
 
     private func importPhotos(_ items: [PhotosPickerItem]) async {

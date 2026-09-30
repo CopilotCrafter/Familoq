@@ -62,7 +62,7 @@ struct ExpenseFormView: View {
         _cars = Query(filter: #Predicate<Car> { $0.familyID == fid && $0.isArchived == false }, sort: \Car.sortOrder)
         _carID = State(initialValue: editing?.carID)
         _carCost = State(initialValue: editing?.carCost ?? .fuel)
-        _fuelText = State(initialValue: editing?.fuelQuantity.map { $0.formatted(.number.precision(.fractionLength(0...2)).grouping(.never)) } ?? "")
+        _fuelText = State(initialValue: editing?.fuelQuantity.map(CarFormatting.quantity) ?? "")
         _odometerText = State(initialValue: (editing?.odometer ?? 0) > 0 ? "\(editing?.odometer ?? 0)" : "")
 
         if let e = editing {
@@ -446,7 +446,7 @@ struct ExpenseFormView: View {
         expense.carID = carID
         expense.carCostRaw = carID == nil ? "" : carCost.rawValue
         expense.fuelQuantity = carID != nil && carCost.hasQuantity
-            ? DecimalParser.parse(fuelText).map { NSDecimalNumber(decimal: $0).doubleValue } : nil
+            ? CarQuantity.parse(fuelText) : nil
         expense.odometer = carID == nil ? 0 : (Int(odometerText.filter(\.isNumber)) ?? 0)
         if carID != nil { CarService.rememberCar(carID, memberID: memberID ?? session.currentMember?.id) }
         if photoChanged || editing == nil {
