@@ -1,6 +1,7 @@
-# Fastlane is used ONLY on the CI runner, ONLY for App Store submission
-# (waiting for Apple's build processing + submitting a version for review).
-# Normal TestFlight uploads use scripts/ci/upload-testflight.sh.
+# Fastlane is used ONLY on the CI runner: for App Store submission (waiting
+# for Apple's build processing + submitting a version for review) and for
+# handing TestFlight builds to external tester groups (friends).
+# Plain TestFlight uploads use scripts/ci/upload-testflight.sh.
 #
 # Called by .github/workflows/release.yml - you never run this on Windows.
 
@@ -43,6 +44,27 @@ platform :ios do
       automatic_release: ENV["APP_STORE_AUTO_RELEASE"] == "true",
       run_precheck_before_submit: false,
       force: true
+    )
+  end
+
+  desc "Upload an IPA to TestFlight, wait for processing, give it to external tester groups"
+  lane :testflight_to_groups do |options|
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_PRIVATE_KEY"),
+      in_house: false
+    )
+    groups = options[:groups].to_s.split(",").map(&:strip).reject(&:empty?)
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: options[:ipa],
+      app_identifier: options[:app_identifier],
+      skip_waiting_for_build_processing: false,
+      distribute_external: true,
+      groups: groups,
+      notify_external_testers: true,
+      changelog: options[:changelog].to_s.empty? ? "Bug fixes and improvements." : options[:changelog]
     )
   end
 end
